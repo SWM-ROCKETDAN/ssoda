@@ -1,0 +1,5 @@
+/venv
+.idea
+chromedriver.exe
+/config.py
+__pycache__
