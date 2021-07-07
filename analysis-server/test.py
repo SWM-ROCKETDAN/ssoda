@@ -1,11 +1,11 @@
+import json
+import pprint
 from urllib.request import urlopen
 from urllib.parse import urlencode
-from lxml import etree
-from lxml.etree import ParserError
+from bs4 import BeautifulSoup
 import config
-import requests
 
-API = config.API_LIST[3]
+API = config.API_LIST[0]
 TEST_ID = 'sw_maestro'
 
 
@@ -15,20 +15,43 @@ def get_url(url):
     return proxy_url
 
 
-p_url = get_url('https://www.instagram.com/p/CQw-yv-hQD1/?utm_source=ig_web_copy_link')
-response = requests.get(p_url)
-html_doc = response.content
+post_url_list = ['https://www.instagram.com/p/CH7RveenG_B/?utm_source=ig_web_copy_link',
+                 'https://www.instagram.com/p/CQw-yv-hQD1/?utm_source=ig_web_copy_link',
+                 'https://www.instagram.com/p/Bx4bj61lL-30WS9r0J4hP_nWu4DUNumqYY4Uug0/?utm_medium=copy_link']
 
-try:
-    parser = etree.HTMLParser()
-    html_dom = etree.HTML(html_doc, parser)
-except ParserError as e:
-    print(e)
+p_url = get_url(post_url_list[1])
+response = urlopen(p_url)
+soup = BeautifulSoup(response, "html.parser")
+script_meta = str(soup.find('script', type='application/ld+json'))
+likes = script_meta[script_meta.find('commentCount') + 12: script_meta.find('commentCount') + 22]
+comments = script_meta[script_meta.find('userInteractionCount') + 20: script_meta.find('userInteractionCount') + 30]
 
-# /html/body/div[1]/section/main/div/div[1]/article/div[3]/section[2]/div/div/a
-urls = html_dom.xpath(
-    '/html/body/div[1]')
+# print(likes, comments)
+# likes = re.findall("\d+", likes).pop()
+# comments = re.findall("\d+", comments).pop()
+#
+# print(script_meta)
+# print(likes, comments)
 
-print(html_doc)
-print(html_dom)
-print(urls)
+test = soup.find('script', type='application/ld+json').string
+# print(1, test.text)
+# print(2, test.contents)
+print(type(test))
+print(str(test))
+
+test1 = test[test.find('{'):]
+
+json_acceptable_string = test1.replace("'", "\"")
+d = json.loads(json_acceptable_string)
+print(d)
+pprint.pprint(d)
+if 'commentCount' in d:
+    print(d['commentCount'])
+else:
+    print(0)
+
+if 'interactionStatistic' in d:
+    if 'userInteractionCount' in d['interactionStatistic']:
+        print(d['interactionStatistic']['userInteractionCount'])
+    else:
+        print(0)

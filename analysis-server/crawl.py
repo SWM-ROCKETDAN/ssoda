@@ -4,7 +4,7 @@ from bs4 import BeautifulSoup
 import config
 import re
 
-API = config.API_LIST[3]
+API = config.API_LIST[0]
 TEST_ID = 'sw_maestro'
 
 
