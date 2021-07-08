@@ -5,7 +5,7 @@ from urllib.parse import urlencode
 from bs4 import BeautifulSoup
 import config
 
-API = config.API_LIST[0]
+API = config.API_LIST[1]
 TEST_ID = 'sw_maestro'
 
 
@@ -55,3 +55,5 @@ if 'interactionStatistic' in d:
         print(d['interactionStatistic']['userInteractionCount'])
     else:
         print(0)
+
+print(d['author']['alternateName'])
