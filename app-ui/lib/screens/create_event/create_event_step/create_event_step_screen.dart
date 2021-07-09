@@ -156,26 +156,7 @@ class _CreateEventStepScreenState extends State<CreateEventStepScreen> {
               color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold),
         ),
         onPressed: () {
-          if (_step == maxStep - 1) {
-            Event event = Event(
-                title: titleTextController.value.text,
-                rewardList: rewardList.sublist(0, rewardList.length - 1),
-                hashtagList: hashtagList,
-                period: period,
-                images: imageList,
-                requireList: selectedRequireList,
-                template: template);
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => EventPreviewScreen(event: event),
-              ),
-            );
-          } else {
-            setState(() {
-              _step++;
-            });
-          }
+          _onNextStepButtonPressed(context);
         },
         style: ButtonStyle(
             backgroundColor:
@@ -183,6 +164,77 @@ class _CreateEventStepScreenState extends State<CreateEventStepScreen> {
             shape: MaterialStateProperty.all<OutlinedBorder>(
                 RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(27.0)))),
+      ),
+    );
+  }
+
+  void _showValidationErrorSnackBar(BuildContext context, String message) {
+    final snackBar = SnackBar(content: Text(message));
+    ScaffoldMessenger.of(context).showSnackBar(snackBar);
+  }
+
+  bool _checkStepValidation(BuildContext context) {
+    switch (_step) {
+      case 0:
+        if (titleTextController.value.text.isEmpty) {
+          _showValidationErrorSnackBar(context, '이벤트 제목이 비어있어요!');
+          return false;
+        }
+        break;
+      case 1:
+        if (rewardList.length == 1) {
+          _showValidationErrorSnackBar(context, '이벤트 보상을 최소 1개 이상 등록해주세요!');
+          return false;
+        }
+        break;
+      case 2:
+        if (hashtagList.isEmpty) {
+          _showValidationErrorSnackBar(context, '필수 해시태그를 최소 1개 이상 등록해주세요!');
+          return false;
+        }
+        break;
+      case 3:
+        if (!period.isPermanent &&
+            period.startDate.isAfter(period.finishDate)) {
+          _showValidationErrorSnackBar(context, '종료 날짜가 시작 날짜보다 앞서있어요!');
+          return false;
+        }
+        break;
+      case 4:
+        if (imageList.isEmpty) {
+          _showValidationErrorSnackBar(context, '이벤트 이미지를 최소 1개 이상 등록해주세요!');
+          return false;
+        }
+        break;
+    }
+
+    return true;
+  }
+
+  void _onNextStepButtonPressed(BuildContext context) {
+    if (!_checkStepValidation(context)) return;
+    if (_step == maxStep - 1) {
+      _createPreview(context);
+    } else {
+      setState(() {
+        _step++;
+      });
+    }
+  }
+
+  void _createPreview(BuildContext context) {
+    Event event = Event(
+        title: titleTextController.value.text,
+        rewardList: rewardList.sublist(0, rewardList.length - 1),
+        hashtagList: hashtagList,
+        period: period,
+        images: imageList,
+        requireList: selectedRequireList,
+        template: template);
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => EventPreviewScreen(event: event),
       ),
     );
   }
