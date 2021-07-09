@@ -19,8 +19,8 @@ class RewardCategoryTile {
 List<RewardCategoryTile> categoryTileList = [
   RewardCategoryTile("음료", Icons.local_cafe_outlined, Colors.red.shade300,
       RewardCategory.DRINK),
-  RewardCategoryTile(
-      "음식", Icons.lunch_dining, Colors.green.shade300, RewardCategory.FOOD),
+  RewardCategoryTile("음식", Icons.fastfood_outlined, Colors.green.shade300,
+      RewardCategory.FOOD),
   RewardCategoryTile("쿠폰", Icons.confirmation_num_outlined,
       Colors.blue.shade300, RewardCategory.COUPON)
 ];
