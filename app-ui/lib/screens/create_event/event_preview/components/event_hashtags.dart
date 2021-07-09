@@ -23,14 +23,16 @@ class EventHashtags extends StatelessWidget {
               event.hashtagList.length,
               (index) => Chip(
                     avatar: CircleAvatar(
+                      radius: 14,
                       child: Icon(
                         Icons.tag,
                         color: Colors.white,
+                        size: 18,
                       ),
                       backgroundColor: Colors.black,
                     ),
                     label: Text(event.hashtagList[index]),
-                    labelPadding: const EdgeInsets.fromLTRB(6, 3, 7, 3),
+                    labelPadding: const EdgeInsets.fromLTRB(6, 2, 5, 2),
                     elevation: 3.0,
                     backgroundColor: Colors.white,
                   )))

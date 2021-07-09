@@ -17,7 +17,7 @@ class _EventHashtagsState extends State<EventHashtags> {
         child: Wrap(
             alignment: WrapAlignment.start,
             crossAxisAlignment: WrapCrossAlignment.center,
-            spacing: 8.0,
+            spacing: 9.0,
             children: List.generate(
               widget.hashtagList.length + 1,
               (index) => index == widget.hashtagList.length
@@ -33,15 +33,25 @@ class _EventHashtagsState extends State<EventHashtags> {
                           }),
                     )
                   : Chip(
-                      avatar: Icon(Icons.tag),
+                      avatar: CircleAvatar(
+                        radius: 14,
+                        child: Icon(
+                          Icons.tag,
+                          color: Colors.white,
+                          size: 18,
+                        ),
+                        backgroundColor: Colors.black,
+                      ),
                       onDeleted: () {
                         setState(() {
                           widget.hashtagList.removeAt(index);
                         });
                       },
+                      deleteIconColor: Colors.grey,
                       label: Text('${widget.hashtagList[index]}'),
-                      labelPadding: const EdgeInsets.fromLTRB(0, 4, 0, 4),
-                      deleteIconColor: Colors.black54,
+                      labelPadding: const EdgeInsets.fromLTRB(6, 3, 0, 3),
+                      elevation: 3.0,
+                      backgroundColor: Colors.white,
                     ),
             )));
   }
