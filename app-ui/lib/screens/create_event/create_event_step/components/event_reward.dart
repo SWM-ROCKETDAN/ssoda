@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../../../../models/reward.dart';
+import 'package:hashchecker/models/reward.dart';
 import '../../select_reward_category/select_reward_category_screen.dart';
 import 'dart:io';
 

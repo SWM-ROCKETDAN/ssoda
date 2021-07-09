@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../../../models/event.dart';
+import 'package:hashchecker/models/event.dart';
 import 'components/body.dart';
 
 class EventPreviewScreen extends StatelessWidget {

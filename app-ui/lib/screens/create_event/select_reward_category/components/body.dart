@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../../../../models/category.dart';
+import 'package:hashchecker/models/category.dart';
 import 'category_tile.dart';
 
 class Body extends StatelessWidget {

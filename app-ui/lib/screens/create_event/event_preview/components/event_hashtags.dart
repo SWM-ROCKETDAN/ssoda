@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../../../../models/event.dart';
+import 'package:hashchecker/models/event.dart';
 
 class EventHashtags extends StatelessWidget {
   const EventHashtags({

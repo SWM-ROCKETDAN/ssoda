@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../../../../models/event.dart';
+import 'package:hashchecker/models/event.dart';
 import 'dart:io';
 
 class EventRewards extends StatelessWidget {

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'components/body.dart';
-import '../../../models/category.dart';
+import 'package:hashchecker/models/category.dart';
 
 class SelectRewardCategoryScreen extends StatefulWidget {
   const SelectRewardCategoryScreen({Key? key}) : super(key: key);

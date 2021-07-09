@@ -10,10 +10,10 @@ import 'components/step_text.dart';
 import 'components/step_progressbar.dart';
 import 'components/event_image.dart';
 
-import '../../../models/reward.dart';
-import '../../../models/event.dart';
-import '../../../models/period.dart';
-import '../../../models/template.dart';
+import 'package:hashchecker/models/reward.dart';
+import 'package:hashchecker/models/event.dart';
+import 'package:hashchecker/models/period.dart';
+import 'package:hashchecker/models/template.dart';
 
 import '../event_preview/event_preview_screen.dart';
 

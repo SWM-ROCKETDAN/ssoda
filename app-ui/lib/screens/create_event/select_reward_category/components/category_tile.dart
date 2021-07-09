@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import '../../../../models/category.dart';
-import '../../../../models/reward.dart';
+import 'package:hashchecker/models/category.dart';
+import 'package:hashchecker/models/reward.dart';
 import '../../input_reward_info/input_reward_info_screen.dart';
 
 class CategoryTile extends StatelessWidget {

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../../../../models/event.dart';
+import 'package:hashchecker/models/event.dart';
 
 import 'footer_with_images.dart';
 import 'event_title.dart';

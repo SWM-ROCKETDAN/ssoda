@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-import '../../../models/category.dart';
-import '../../../models/reward.dart';
+import 'package:hashchecker/models/category.dart';
+import 'package:hashchecker/models/reward.dart';
 import 'dart:io';
 
 class InputRewardInfoScreen extends StatefulWidget {

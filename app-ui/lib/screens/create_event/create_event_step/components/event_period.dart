@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../../../../widgets/holo_date_picker/flutter_holo_date_picker.dart';
+import 'package:hashchecker/widgets/holo_date_picker/flutter_holo_date_picker.dart';
 
 class EventPeriod extends StatefulWidget {
   final period;
