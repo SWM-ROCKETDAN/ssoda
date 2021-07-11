@@ -3,11 +3,11 @@ from urllib.parse import urlencode
 from bs4 import BeautifulSoup
 import config
 import re
-import uuid
 import json
 import pprint
+import datetime
 
-API = config.API_LIST[1]
+API = config.API_LIST[0]
 TEST_ID = 'sw_maestro'
 
 
@@ -15,6 +15,21 @@ def get_url(url):
     payload = {'api_key': API, 'proxy': 'residential', 'timeout': '20000', 'url': url}
     proxy_url = 'https://api.webscraping.ai/html?' + urlencode(payload)
     return proxy_url
+
+
+def get_now_time():
+    now = datetime.datetime.now().strftime('%Y-%m-%dT%H:%M:%S')
+    return now
+
+
+def cal_time_gap(start, end):
+    try:
+        date_time_start = datetime.datetime.strptime(start, '%Y-%m-%dT%H:%M:%S')
+        date_time_end = datetime.datetime.strptime(end, '%Y-%m-%dT%H:%M:%S')
+        gap = date_time_start - date_time_end
+        return str(gap.days) + '-' + str(gap.seconds)
+    except:
+        return ''
 
 
 class Crawl:
@@ -65,21 +80,20 @@ class CrawlInstagram(Crawl):
             post_data = json.loads(json_acceptable_string)
 
             # user id
-            pprint.pprint(post_data)
             if 'author' in post_data:
-                user_id = post_data['author']['alternateName'][1:]
+                instagram_id = post_data['author']['alternateName'][1:]
             else:
-                user_id = post_data['alternateName'][1:]
+                instagram_id = post_data['alternateName'][1:]
 
             # likes
             if 'commentCount' in post_data:
-                likes = post_data['commentCount']
+                likes = int(post_data['commentCount'])
             else:
                 likes = 0
 
             # comments
             if 'interactionStatistic' in post_data and 'userInteractionCount' in post_data['interactionStatistic']:
-                comments = post_data['interactionStatistic']['userInteractionCount']
+                comments = int(post_data['interactionStatistic']['userInteractionCount'])
             else:
                 comments = 0
 
@@ -91,30 +105,32 @@ class CrawlInstagram(Crawl):
 
             # uploadDate
             if 'uploadDate' in post_data:
-                start = post_data['uploadDate']
+                upload = post_data['uploadDate']
             else:
-                start = ''
+                upload = ''
+
+            update = get_now_time()
 
             # post
             post = {
                 'url': url,
-                'user_id': str(uuid.uuid4()),
+                'update': update,
                 'status': status,
-                'type': config.SnsType.instagram,
+                'type': config.SnsType.INSTAGRAM,
                 'period': {
-                    'update': '',
-                    'start': '',
-                    'end': '',
-                    'maintain': '',
+                    'upload': upload,
+                    'deleted': '',
+                    'maintain': cal_time_gap(update, upload),
                 },
-                'description': {
+                'desc': {
+                    'id': instagram_id,
                     'likes': likes,
                     'comments': comments,
                     'hashtags': hashtag_data,
                 },
             }
 
-            self.info_urls.append('https://www.instagram.com/' + user_id)
+            self.info_urls.append('https://www.instagram.com/' + instagram_id)
             self.posts.append(post)
 
     def do_crawl_infos(self):
@@ -139,17 +155,20 @@ class CrawlInstagram(Crawl):
             self.infos.append(info)
 
 
-post_url_list = ['https://www.instagram.com/p/CH7RveenG_B/?utm_source=ig_web_copy_link',
-                 'https://www.instagram.com/p/CQw-yv-hQD1/?utm_source=ig_web_copy_link',
-                 'https://www.instagram.com/p/Bx4bj61lL-30WS9r0J4hP_nWu4DUNumqYY4Uug0/?utm_medium=copy_link', ]
+def run_test():
+    post_url_list = [
+        # 'https://www.instagram.com/p/CH7RveenG_B/?utm_source=ig_web_copy_link',
+        'https://www.instagram.com/p/CQw-yv-hQD1/?utm_source=ig_web_copy_link',
+        'https://www.instagram.com/p/Bx4bj61lL-30WS9r0J4hP_nWu4DUNumqYY4Uug0/?utm_medium=copy_link',
+    ]
 
-instagram = CrawlInstagram([post_url_list[2], post_url_list[1]], [])
-instagram.do_crawl_posts()
-# instagram.do_crawl_infos()
+    instagram = CrawlInstagram(post_url_list, [])
+    instagram.do_crawl_posts()
+    # instagram.do_crawl_infos()
 
-print(instagram.get_posts())
-# print(instagram.get_infos())
-# private_url =
+    pprint.pprint(instagram.get_posts())
+    pprint.pprint(instagram.get_infos())
 
-# instagram.do_crawl_info()
-# print(instagram.get_info())
+
+run_test()
+# get_now_time()
