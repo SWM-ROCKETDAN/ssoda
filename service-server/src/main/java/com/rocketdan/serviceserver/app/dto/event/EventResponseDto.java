@@ -5,13 +5,12 @@ import com.rocketdan.serviceserver.domain.event.detail.DetailByType;
 import com.rocketdan.serviceserver.domain.event.element.Period;
 import com.rocketdan.serviceserver.domain.event.element.Reward;
 import lombok.Getter;
-import org.bson.types.ObjectId;
 
 import java.util.List;
 
 @Getter
 public class EventResponseDto {
-    private ObjectId id;
+    private String id;
     private String title;
     private int status;
     private List<String> images;

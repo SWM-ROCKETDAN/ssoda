@@ -1,5 +1,7 @@
 package com.rocketdan.serviceserver.domain.event;
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import com.rocketdan.serviceserver.domain.event.detail.DetailByType;
 import com.rocketdan.serviceserver.domain.event.detail.Hashtag;
 import com.rocketdan.serviceserver.domain.event.element.Period;
@@ -11,6 +13,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @NoArgsConstructor
 @Getter
@@ -18,7 +21,7 @@ import java.util.List;
 public class Event {
     // 이벤트 id
     @Id
-    private ObjectId id;
+    private String id;
 
     // 이벤트 제목
     private String title;
@@ -60,11 +63,31 @@ public class Event {
     }
 
     public void update(String title, int status, List<String> images, Period period, List<Reward> rewards, DetailByType detail) {
-        this.title = title;
-        this.status = status;
-        this.images = images;
-        this.period = period;
-        this.rewards = rewards;
-        this.detail = detail;
+        Optional.ofNullable(title).ifPresent(none -> this.title = title);
+        if (status != this.status) {
+            this.status = status;
+        }
+        Optional.ofNullable(images).ifPresent(none -> {
+            if (!images.containsAll(this.images)) { this.images = images; }
+        });
+        Optional.ofNullable(period).ifPresent(none -> {
+            if (period != this.period) {
+                this.period = period;
+            }
+        });
+        Optional.ofNullable(rewards).ifPresent(none -> {
+            if (!rewards.containsAll(this.rewards)){
+                this.rewards = new ArrayList<Reward>();
+                rewards.forEach(reward ->
+                        this.rewards.add(new Reward(reward.getCategory(), reward.getName(), reward.getImage(), reward.getPrice(), reward.getCount())));
+            }
+        });
+        // hashtag
+        if (type == 1) {
+            Optional.ofNullable(detail).ifPresent(none -> {
+                Hashtag hashtag = (Hashtag) detail;
+                this.detail = new Hashtag(hashtag.getHashtags(), hashtag.getRequirements(), hashtag.getTemplate());
+            });
+        }
     }
 }

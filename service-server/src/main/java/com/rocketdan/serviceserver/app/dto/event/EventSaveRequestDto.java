@@ -1,11 +1,7 @@
 package com.rocketdan.serviceserver.app.dto.event;
 
-import com.rocketdan.serviceserver.domain.event.Event;
-import com.rocketdan.serviceserver.domain.event.detail.DetailByType;
-import com.rocketdan.serviceserver.domain.event.detail.Hashtag;
 import com.rocketdan.serviceserver.domain.event.element.Period;
 import com.rocketdan.serviceserver.domain.event.element.Reward;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
