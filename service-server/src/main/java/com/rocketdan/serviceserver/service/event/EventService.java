@@ -1,7 +1,6 @@
 package com.rocketdan.serviceserver.service.event;
 
 import com.rocketdan.serviceserver.app.dto.event.EventResponseDto;
-import com.rocketdan.serviceserver.app.dto.event.EventUpdateRequestDto;
 import com.rocketdan.serviceserver.app.dto.event.hashtag.HashtagEventSaveRequest;
 import com.rocketdan.serviceserver.app.dto.event.hashtag.HashtagEventUpdateRequest;
 import com.rocketdan.serviceserver.domain.event.Event;
@@ -45,15 +44,13 @@ public class EventService {
                 .map(EventListResponseDto::new)
                 .collect(Collectors.toList());
     }
-
+*/
     @Transactional
-    public void delete (ObjectId id) {
+    public void delete (String id) {
         Event event = eventRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("해당 이벤트가 없습니다. id=" + id));
-
         // JpaRepository에서 이미 delete 메소드를 지원하고 있으니 이를 활용.
         // entity를 파라미터로 삭제할 수도 있고, deleteById 메소드를 이용하면 id로 삭제할 수도 있다.
         // 존재하는 Event인지 확인을 위해 entity 조회 후 그대로 삭제.
         eventRepository.delete(event);
     }
-*/
 }
