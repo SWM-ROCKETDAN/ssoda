@@ -109,7 +109,11 @@ class CrawlInstagram(Crawl):
             else:
                 upload = ''
 
+            # update
             update = get_now_time()
+
+            # maintain
+            maintain = cal_time_gap(update, upload)
 
             # post
             post = {
@@ -120,7 +124,7 @@ class CrawlInstagram(Crawl):
                 'period': {
                     'upload': upload,
                     'deleted': '',
-                    'maintain': cal_time_gap(update, upload),
+                    'maintain': maintain,
                 },
                 'desc': {
                     'id': instagram_id,
