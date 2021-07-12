@@ -31,6 +31,7 @@ public class EventApiController {
 
     @PostMapping("/api/v1/events/hashtag")
     public String save(@RequestBody HashtagEventSaveRequest requestDto) {
+        System.out.println(requestDto.getPeriod().getFinishDate());
         return eventService.saveHashtagEvent(requestDto);
     }
 

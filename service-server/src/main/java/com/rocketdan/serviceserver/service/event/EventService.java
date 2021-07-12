@@ -27,7 +27,7 @@ public class EventService {
     public String updateHashtagEvent(String id, HashtagEventUpdateRequest requestDto) {
         Event event = eventRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("해당 이벤트가 없습니다. id=" + id));
         event.update(requestDto.getTitle(), requestDto.getStatus(), requestDto.getImages(), requestDto.getPeriod(), requestDto.getRewards(), requestDto.getDetail());
-
+        System.out.println(requestDto.getPeriod().getFinishDate());
         return eventRepository.save(event).getId();
     }
 

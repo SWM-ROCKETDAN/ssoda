@@ -62,6 +62,11 @@ public class Event {
         }
     }
 
+    public void updateStatus() {
+
+
+    }
+
     public void update(String title, int status, List<String> images, Period period, List<Reward> rewards, DetailByType detail) {
         Optional.ofNullable(title).ifPresent(none -> this.title = title);
         if (status != this.status) {
