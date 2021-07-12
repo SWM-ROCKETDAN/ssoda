@@ -13,12 +13,14 @@ public class EventListResponseDto {
     private int status;
     private List<String> images;
     private Period period;
+    private int type;
 
     public EventListResponseDto(Event entity) {
         this.id = entity.getId();
         this.title = entity.getTitle();
+        this.status = entity.getStatus();
         this.images = entity.getImages();
         this.period = entity.getPeriod();
-        this.status = entity.getStatus();
+        this.type = entity.getType();
     }
 }

@@ -49,7 +49,7 @@ public class Event {
         this.title = title;
         this.status = status;
         this.images = images;
-        this.period = new Period(period.getPermanent(), period.getStart(), period.getStart());
+        this.period = new Period(period.getIsPermanent(), period.getStartDate(), period.getFinishDate());
         this.rewards = new ArrayList<Reward>();
         rewards.forEach(reward ->
                 this.rewards.add(new Reward(reward.getCategory(), reward.getName(), reward.getImage(), reward.getPrice(), reward.getCount())));

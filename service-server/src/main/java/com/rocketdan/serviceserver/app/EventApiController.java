@@ -1,26 +1,31 @@
 package com.rocketdan.serviceserver.app;
 
+import com.rocketdan.serviceserver.app.dto.event.EventListResponseDto;
 import com.rocketdan.serviceserver.app.dto.event.EventResponseDto;
-import com.rocketdan.serviceserver.app.dto.event.EventUpdateRequestDto;
 import com.rocketdan.serviceserver.app.dto.event.hashtag.HashtagEventSaveRequest;
 import com.rocketdan.serviceserver.app.dto.event.hashtag.HashtagEventUpdateRequest;
 import com.rocketdan.serviceserver.service.event.EventService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RequiredArgsConstructor
 @RestController
 public class EventApiController {
     private final EventService eventService;
 
-    /*
-    @GetMapping("/events")
-    public List<Event> retrieveAllEvents() {
-        return eventRepository.findAll();
-    }*/
+    @GetMapping("/api/v1/events")
+    public List<EventListResponseDto> retrieveAllEvents() {
+        return eventService.findAll();
+    }
+//    @GetMapping("/api/v1/events/")
+//    public EventListResponseDto retrieveEventList() {
+//        return eventService.findListById();
+//    }
 
     @GetMapping("/api/v1/events/{id}")
-    public EventResponseDto finById(@PathVariable String id) {
+    public EventResponseDto findById(@PathVariable String id) {
         return eventService.findById(id);
     }
 

@@ -1,5 +1,6 @@
 package com.rocketdan.serviceserver.service.event;
 
+import com.rocketdan.serviceserver.app.dto.event.EventListResponseDto;
 import com.rocketdan.serviceserver.app.dto.event.EventResponseDto;
 import com.rocketdan.serviceserver.app.dto.event.hashtag.HashtagEventSaveRequest;
 import com.rocketdan.serviceserver.app.dto.event.hashtag.HashtagEventUpdateRequest;
@@ -9,15 +10,14 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @RequiredArgsConstructor
 @Service
 public class EventService {
     private final EventRepository eventRepository;
 
-//    @Transactional
-//    public ObjectId save(EventSaveRequestDto requestDto) {
-//        return eventRepository.save(requestDto.toEntity()).getId();
-//    }
     @Transactional
     public String saveHashtagEvent(HashtagEventSaveRequest requestDto) {
         return eventRepository.save(requestDto.toEntity()).getId();
@@ -35,16 +35,16 @@ public class EventService {
         Event entity = eventRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("해당 이벤트가 없습니다. id=" + id));
         return new EventResponseDto(entity);
     }
-/*
+
     @Transactional//(readOnly = true) // 나는 에러나서 일단 주석
-    public List<EventListResponseDto> findAllDesc() {
+    public List<EventListResponseDto> findAll() {
         return eventRepository.findAll().stream()
                 // 람다식 사용. 실제 코드 : .map(posts -> new PostsListResponseDto(posts))
                 // eventRepository 결과로 넘어온 Event의 Stream을 map울 통해 EventListResponseDto 변환 -> List로 반환하는 메소드
                 .map(EventListResponseDto::new)
                 .collect(Collectors.toList());
     }
-*/
+
     @Transactional
     public void delete (String id) {
         Event event = eventRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("해당 이벤트가 없습니다. id=" + id));

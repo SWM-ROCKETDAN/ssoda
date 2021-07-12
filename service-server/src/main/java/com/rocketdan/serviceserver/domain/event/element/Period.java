@@ -7,11 +7,11 @@ import lombok.Getter;
 @AllArgsConstructor
 public class Period {
     // 이벤트 영구 유지 여부
-    private Boolean permanent;
+    private Boolean isPermanent;
 
     // 이벤트 시작 시간
-    private String start;
+    private String startDate;
 
     // 이벤트 끝 시간
-    private String end;
+    private String finishDate;
 }
