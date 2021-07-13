@@ -12,15 +12,13 @@ import java.util.List;
 @Getter
 public class EventSaveRequestDto {
     private String title;
-    private int status;
     private List<String> images;
     private Period period;
     private List<Reward> rewards;
     private int type;
 
-    public EventSaveRequestDto(String title, int status, List<String> images, Period period, List<Reward> rewards, int type) {
+    public EventSaveRequestDto(String title, List<String> images, Period period, List<Reward> rewards, int type) {
         this.title = title;
-        this.status = status;
         this.images = images;
         this.period = new Period(period.getIsPermanent(), period.getStartDate(), period.getFinishDate());
         this.rewards = new ArrayList<>();

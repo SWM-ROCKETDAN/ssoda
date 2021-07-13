@@ -12,6 +12,7 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -27,7 +28,7 @@ public class Event {
     private String title;
 
     // 이벤트 상태 (대기중/진행중/종료)
-    private int status;
+    private int status = 0;
 
     // 이벤트 이미지 배열
     private List<String> images;
@@ -63,8 +64,39 @@ public class Event {
     }
 
     public void updateStatus() {
+        Date time = new Date();
 
+        // 강제로 종료된 이벤트이거나, 이미 종료된 이벤트의 경우.
+        if (this.status == 2) {
+            return;
+        }
 
+        // 영구적인 이벤트가 아닐 경우
+        if (!this.period.getIsPermanent()) {
+            // 시작 시간이 지났을 경우
+            if ( !time.after(this.period.getStartDate()) ) {
+                // 종료 시간을 지나지 않았을 경우
+                if ( !time.before(this.period.getFinishDate()) ) {
+                    this.status = 1; // 진행중
+                }
+                else {
+                    this.status = 2; // 종료
+                }
+            }
+            else {
+                this.status = 0; // 대기중
+            }
+        }
+        // 영구 이벤트의 경우
+        else {
+            // 시작 시간이 지났을 경우
+            if ( !time.after(this.period.getStartDate()) ) {
+                this.status = 1;
+            }
+            else {
+                this.status = 0;
+            }
+        }
     }
 
     public void update(String title, int status, List<String> images, Period period, List<Reward> rewards, DetailByType detail) {

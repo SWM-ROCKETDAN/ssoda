@@ -20,6 +20,8 @@ public class EventService {
 
     @Transactional
     public String saveHashtagEvent(HashtagEventSaveRequest requestDto) {
+        Event event = eventRepository.save(requestDto.toEntity());
+
         return eventRepository.save(requestDto.toEntity()).getId();
     }
 

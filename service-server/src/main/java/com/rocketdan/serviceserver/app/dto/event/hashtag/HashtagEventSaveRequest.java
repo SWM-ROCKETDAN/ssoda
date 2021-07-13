@@ -13,8 +13,8 @@ public class HashtagEventSaveRequest extends EventSaveRequestDto {
     private Hashtag detail;
 
     @Builder
-    public HashtagEventSaveRequest(String title, int status, List<String> images, Period period, List<Reward> rewards, int type, Hashtag detail) {
-        super(title, status, images, period, rewards, type);
+    public HashtagEventSaveRequest(String title, List<String> images, Period period, List<Reward> rewards, int type, Hashtag detail) {
+        super(title, images, period, rewards, type);
         this.detail = detail;
     }
 
@@ -22,7 +22,6 @@ public class HashtagEventSaveRequest extends EventSaveRequestDto {
         return Event.builder()
                 .title(super.getTitle())
                 .images(super.getImages())
-                .status(super.getStatus())
                 .period(super.getPeriod())
                 .rewards(super.getRewards())
                 .type(super.getType())
