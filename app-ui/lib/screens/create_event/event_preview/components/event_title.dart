@@ -16,7 +16,7 @@ class EventTitle extends StatelessWidget {
       child: SingleChildScrollView(
         scrollDirection: Axis.horizontal,
         child: Text(event.title,
-            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 28)),
+            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25)),
       ),
     );
   }

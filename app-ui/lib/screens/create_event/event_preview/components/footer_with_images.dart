@@ -18,21 +18,25 @@ class FooterWithImages extends StatelessWidget {
       height: size.height * 0.4,
       child: Stack(children: [
         Container(
-          height: size.height * 0.4 - 45,
+          height: size.height * 0.4 - 15,
           decoration: BoxDecoration(
-              boxShadow: [
-                BoxShadow(
-                    blurRadius: 50,
-                    offset: Offset(0, 5),
-                    color: Colors.black.withOpacity(0.35))
-              ],
-              borderRadius: BorderRadius.only(
-                bottomLeft: Radius.circular(25),
-                bottomRight: Radius.circular(25),
-              ),
               image: DecorationImage(
                   image: FileImage(File(event.images[0])), fit: BoxFit.cover)),
         ),
+        Positioned(
+            bottom: 14,
+            right: 0,
+            left: 0,
+            child: Container(
+              height: 30,
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(30),
+                  topRight: Radius.circular(30),
+                ),
+              ),
+            )),
         Positioned(
             bottom: 0,
             right: size.width * 0.36,
@@ -49,7 +53,8 @@ class FooterWithImages extends StatelessWidget {
                     color: Colors.grey,
                     shape: BoxShape.circle,
                     image: DecorationImage(
-                        image: AssetImage('assets/images/bbq.jpg'),
+                        image:
+                            AssetImage('assets/images/store_logo_sample.jpg'),
                         fit: BoxFit.cover))))
       ]),
     );
