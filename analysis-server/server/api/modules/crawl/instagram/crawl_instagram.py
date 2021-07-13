@@ -4,8 +4,8 @@ import config
 import re
 import json
 from server.api.modules.crawl import crawl
-import datetime
 from server.api.modules.crawl import proxy
+import datetime
 
 def get_now_time():
     now = datetime.datetime.now().strftime('%Y-%m-%dT%H:%M:%S')

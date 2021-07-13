@@ -1,4 +1,4 @@
-from analysis.secret import key
+from server.secret import key
 from urllib.parse import urlencode
 
 API_KEY = key.PROXY_API_KEY
