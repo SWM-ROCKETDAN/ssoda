@@ -8,6 +8,7 @@ import 'components/event_require.dart';
 import 'components/event_template.dart';
 import 'components/step_text.dart';
 import 'components/step_progressbar.dart';
+import 'components/step_help.dart';
 import 'components/event_image.dart';
 
 import 'package:hashchecker/models/reward.dart';
@@ -116,7 +117,10 @@ class _CreateEventStepScreenState extends State<CreateEventStepScreen> {
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        StepText(step: _step),
+        Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [StepText(step: _step), StepHelp(step: _step)]),
         SizedBox(height: 15),
         buildStepDetail(),
       ],
