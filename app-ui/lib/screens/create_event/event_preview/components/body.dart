@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hashchecker/models/event.dart';
 
-import 'footer_with_images.dart';
+import 'header_with_images.dart';
 import 'event_title.dart';
 import 'event_rewards.dart';
 import 'event_hashtags.dart';
@@ -20,7 +20,7 @@ class Body extends StatelessWidget {
     return SingleChildScrollView(
         child: Column(
       children: [
-        FooterWithImages(size: size, event: event),
+        HeaderWithImages(size: size, event: event),
         SizedBox(height: 30),
         EventTitle(event: event),
         Padding(
