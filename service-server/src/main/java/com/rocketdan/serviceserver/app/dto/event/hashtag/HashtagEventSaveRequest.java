@@ -7,7 +7,6 @@ import lombok.Builder;
 
 import java.util.Date;
 import java.util.List;
-import java.util.Optional;
 
 public class HashtagEventSaveRequest extends EventSaveRequestDto {
     private List<String> hashtags;

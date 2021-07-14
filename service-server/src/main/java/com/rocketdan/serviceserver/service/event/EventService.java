@@ -1,12 +1,16 @@
 package com.rocketdan.serviceserver.service.event;
 
 import com.rocketdan.serviceserver.app.dto.event.hashtag.HashtagEventSaveRequest;
+import com.rocketdan.serviceserver.app.dto.event.hashtag.HashtagEventUpdateRequest;
 import com.rocketdan.serviceserver.domain.event.Event;
 import com.rocketdan.serviceserver.domain.event.EventRepository;
 import com.rocketdan.serviceserver.domain.event.reward.RewardRepository;
+import com.rocketdan.serviceserver.domain.event.type.Hashtag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Optional;
 
 @RequiredArgsConstructor
 @Service
@@ -23,15 +27,23 @@ public class EventService {
 
         return eventRepository.save(savedEvent).getId();
     }
-/*
-    @Transactional
-    public String updateHashtagEvent(String id, HashtagEventUpdateRequest requestDto) {
-        Event event = eventRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("해당 이벤트가 없습니다. id=" + id));
-        event.update(requestDto.getTitle(), requestDto.getStatus(), requestDto.getImages(), requestDto.getPeriod(), requestDto.getRewards(), requestDto.getDetail());
-        System.out.println(requestDto.getPeriod().getFinishDate());
-        return eventRepository.save(event).getId();
-    }
 
+    @Transactional
+    public Long updateHashtagEvent(Long id, HashtagEventUpdateRequest requestDto) {
+        Hashtag event = (Hashtag) eventRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("해당 이벤트가 없습니다. id=" + id));
+
+        Optional.ofNullable(requestDto.getRewards()).ifPresent(none -> {
+                event.getRewards().forEach(rewardRepository::delete); // 기존에 저장되었던 reward 삭제
+                requestDto.getRewards().forEach(rewardRepository::save); // reward table에 새로운 내용 추가
+        });
+
+        event.update(requestDto.getTitle(), requestDto.getStatus(), requestDto.getStartDate(), requestDto.getFinishDate(),
+                requestDto.getImages(), requestDto.getRewards(),
+                requestDto.getHashtags(), requestDto.getRequirements(), requestDto.getTemplate());
+
+        return id;
+    }
+/*
     public EventResponseDto findById (String id) {
         Event entity = eventRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("해당 이벤트가 없습니다. id=" + id));
         return new EventResponseDto(entity);

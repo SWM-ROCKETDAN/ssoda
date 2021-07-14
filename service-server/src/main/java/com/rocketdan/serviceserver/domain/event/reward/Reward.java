@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.Optional;
 
 @Entity
 @Getter
@@ -14,13 +15,13 @@ public class Reward {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private int category;
+    private Integer category;
     private String name;
     private String image;
-    private int price;
-    private int count;
+    private Integer price;
+    private Integer count;
 
-    public Reward(int category, String name, String image, int price, int count) {
+    public Reward(Integer category, String name, String image, Integer price, Integer count) {
         this.category = category;
         this.name = name;
         this.image = image;

@@ -4,23 +4,25 @@ import com.rocketdan.serviceserver.domain.event.reward.Reward;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.util.Date;
 import java.util.List;
 
 @Getter
 @NoArgsConstructor
 public class EventUpdateRequestDto {
     private String title;
-    private int status;
+    private Integer status;
+    private Date startDate;
+    private Date finishDate;
     private List<String> images;
     private List<Reward> rewards;
-/*
-    public EventUpdateRequestDto(String title, int status, List<String> images, Period period, List<Reward> rewards) {
+
+    public EventUpdateRequestDto(String title, Integer status, Date startDate, Date finishDate, List<String> images, List<Reward> rewards) {
         this.title = title;
         this.status = status;
+        this.startDate = startDate;
+        this.finishDate = finishDate;
         this.images = images;
-        this.period = new Period(period.getIsPermanent(), period.getStartDate(), period.getFinishDate());
-        this.rewards = new ArrayList<>();
-        rewards.forEach(reward ->
-                this.rewards.add(new Reward(reward.getCategory(), reward.getName(), reward.getImage(), reward.getPrice(), reward.getCount())));
-    }*/
+        this.rewards = rewards;
+    }
 }

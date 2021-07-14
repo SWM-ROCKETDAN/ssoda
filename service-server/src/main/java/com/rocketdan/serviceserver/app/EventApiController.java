@@ -35,15 +35,13 @@ public class EventApiController {
     @PostMapping("/api/v1/events/hashtag")
     public Long save(@RequestBody HashtagEventSaveRequest event) {
         return eventService.save(event);
-        //System.out.println(requestDto.getPeriod().getFinishDate());
-        //return eventService.saveHashtagEvent(requestDto);
-    }
-/*
-    @PutMapping("/api/v1/events/hashtag/{id}")
-    public String update(@PathVariable String id, @RequestBody HashtagEventUpdateRequest requestDto) {
-        return eventService.updateHashtagEvent(id, requestDto);
     }
 
+    @PutMapping("/api/v1/events/hashtag/{id}")
+    public Long update(@PathVariable Long id, @RequestBody HashtagEventUpdateRequest requestDto) {
+        return eventService.updateHashtagEvent(id, requestDto);
+    }
+/*
     @DeleteMapping("/api/v1/events/{id}")
     public void deleteEvent(@PathVariable String id) {
         eventService.delete(id);

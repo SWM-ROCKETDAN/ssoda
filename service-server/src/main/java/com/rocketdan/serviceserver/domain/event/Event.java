@@ -89,29 +89,15 @@ public abstract class Event {
             }
         }
     }
-/*
-    public void update(String title, int status, List<String> images, Period period, List<Reward> rewards) {
+
+    public void update(String title, Integer status, Date startDate, Date finishDate, List<String> images, List<Reward> rewards) {
         Optional.ofNullable(title).ifPresent(none -> this.title = title);
-        if (status != this.status) {
-            this.status = status;
-        }
-        Optional.ofNullable(images).ifPresent(none -> {
-            if (!images.containsAll(this.images)) { this.images = images; }
-        });
-        Optional.ofNullable(period).ifPresent(none -> {
-            if (period != this.period) {
-                this.period = period;
-            }
-        });
-        Optional.ofNullable(rewards).ifPresent(none -> {
-            if (!rewards.containsAll(this.rewards)){
-                this.rewards = new ArrayList<Reward>();
-                rewards.forEach(reward ->
-                        this.rewards.add(new Reward(reward.getCategory(), reward.getName(), reward.getImage(), reward.getPrice(), reward.getCount())));
-            }
-        });
+        Optional.ofNullable(status).ifPresent(none -> this.status = status);
+        Optional.ofNullable(startDate).ifPresent(none -> this.startDate = startDate);
+        Optional.ofNullable(finishDate).ifPresent(none -> this.finishDate = finishDate);
+        Optional.ofNullable(images).ifPresent(none -> this.images = images);
+        Optional.ofNullable(rewards).ifPresent(none -> this.rewards = rewards);
     }
-    */
 
     public String getEtype() {
         return this.getEtype();
