@@ -10,17 +10,18 @@ import javax.persistence.*;
 import java.util.*;
 
 @Entity
-//@Inheritance(strategy = InheritanceType.JOINED)
-//@DiscriminatorColumn(name = "ETYPE")
+@Inheritance(strategy = InheritanceType.JOINED)
+@DiscriminatorColumn(name = "ETYPE")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
-public class Event {
+public abstract class Event {
     // 이벤트 id
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     // 이벤트 제목
+    @Column(nullable = false)
     private String title;
 
     // 이벤트 상태 (대기중/진행중/종료)
@@ -45,7 +46,6 @@ public class Event {
     @OneToMany
     private List<Reward> rewards;
 
-    @Builder
     public Event(String title, int status, Date startDate, Date finishDate, List<String> images, List<Reward> rewards) {
         this.title = title;
         this.status = status;
