@@ -1,10 +1,9 @@
 package com.rocketdan.serviceserver.comain.event;
 
 
-import com.rocketdan.serviceserver.domain.event.Event;
 import com.rocketdan.serviceserver.domain.event.EventRepository;
-import com.rocketdan.serviceserver.domain.event.element.Reward;
-import com.rocketdan.serviceserver.domain.event.element.RewardRepository;
+import com.rocketdan.serviceserver.domain.event.reward.Reward;
+import com.rocketdan.serviceserver.domain.event.reward.RewardRepository;
 import com.rocketdan.serviceserver.domain.event.type.Hashtag;
 import org.junit.Test;
 import org.junit.runner.RunWith;

@@ -1,31 +1,38 @@
 package com.rocketdan.serviceserver.app.dto.event.hashtag;
 
 import com.rocketdan.serviceserver.app.dto.event.EventSaveRequestDto;
-import com.rocketdan.serviceserver.domain.event.Event;
 import com.rocketdan.serviceserver.domain.event.type.Hashtag;
-import com.rocketdan.serviceserver.domain.event.element.Period;
-import com.rocketdan.serviceserver.domain.event.element.Reward;
+import com.rocketdan.serviceserver.domain.event.reward.Reward;
 import lombok.Builder;
 
+import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 public class HashtagEventSaveRequest extends EventSaveRequestDto {
-    private Hashtag detail;
-/*
+    private List<String> hashtags;
+    private List<Boolean> requirements;
+    private Integer template;
+
     @Builder
-    public HashtagEventSaveRequest(String title, List<String> images, Period period, List<Reward> rewards, int type, Hashtag detail) {
-        super(title, images, period, rewards, type);
-        this.detail = detail;
+    public HashtagEventSaveRequest(String title, Date startDate, Date finishDate, List<String> images, List<Reward> rewards,
+                                   List<String> hashtags, List<Boolean> requirements, Integer template) {
+        super(title, startDate, finishDate, images, rewards);
+        this.hashtags = hashtags;
+        this.requirements = requirements;
+        this.template = template;
     }
 
-    public Event toEntity() {
-        return Event.builder()
+    public Hashtag toEntity() {
+        return Hashtag.builder()
                 .title(super.getTitle())
+                .startDate(super.getStartDate())
+                .finishDate(super.getFinishDate())
                 .images(super.getImages())
-                .period(super.getPeriod())
                 .rewards(super.getRewards())
-                .type(super.getType())
-                .detail(detail)
+                .hashtags(hashtags)
+                .requirements(requirements)
+                .template(template)
                 .build();
-    }*/
+    }
 }

@@ -1,30 +1,29 @@
 package com.rocketdan.serviceserver.service.event;
 
-import com.rocketdan.serviceserver.app.dto.event.EventListResponseDto;
-import com.rocketdan.serviceserver.app.dto.event.EventResponseDto;
 import com.rocketdan.serviceserver.app.dto.event.hashtag.HashtagEventSaveRequest;
-import com.rocketdan.serviceserver.app.dto.event.hashtag.HashtagEventUpdateRequest;
 import com.rocketdan.serviceserver.domain.event.Event;
 import com.rocketdan.serviceserver.domain.event.EventRepository;
+import com.rocketdan.serviceserver.domain.event.reward.RewardRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
-import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service
 public class EventService {
     private final EventRepository eventRepository;
-/*
+    private final RewardRepository rewardRepository;
+
     @Transactional
-    public String saveHashtagEvent(HashtagEventSaveRequest requestDto) {
-        Event event = eventRepository.save(requestDto.toEntity());
+    public Long save(HashtagEventSaveRequest requestDto) {
+        Event savedEvent = requestDto.toEntity();
+        savedEvent.updateStatus();
 
-        return eventRepository.save(requestDto.toEntity()).getId();
+        requestDto.getRewards().forEach(rewardRepository::save);
+
+        return eventRepository.save(savedEvent).getId();
     }
-
+/*
     @Transactional
     public String updateHashtagEvent(String id, HashtagEventUpdateRequest requestDto) {
         Event event = eventRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("해당 이벤트가 없습니다. id=" + id));

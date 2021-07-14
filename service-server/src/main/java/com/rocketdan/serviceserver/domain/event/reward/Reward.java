@@ -1,6 +1,5 @@
-package com.rocketdan.serviceserver.domain.event.element;
+package com.rocketdan.serviceserver.domain.event.reward;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 

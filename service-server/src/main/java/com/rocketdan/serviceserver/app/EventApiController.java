@@ -2,6 +2,7 @@ package com.rocketdan.serviceserver.app;
 
 import com.rocketdan.serviceserver.app.dto.event.EventListResponseDto;
 import com.rocketdan.serviceserver.app.dto.event.EventResponseDto;
+import com.rocketdan.serviceserver.app.dto.event.EventSaveRequestDto;
 import com.rocketdan.serviceserver.app.dto.event.hashtag.HashtagEventSaveRequest;
 import com.rocketdan.serviceserver.app.dto.event.hashtag.HashtagEventUpdateRequest;
 import com.rocketdan.serviceserver.domain.event.Event;
@@ -14,9 +15,9 @@ import java.util.List;
 
 @RequiredArgsConstructor
 @RestController
-public class EventApiController {/*
+public class EventApiController {
     private final EventService eventService;
-
+/*
     @GetMapping("/api/v1/events")
     public List<EventListResponseDto> retrieveAllEvents() {
         return eventService.findAll();
@@ -31,11 +32,9 @@ public class EventApiController {/*
         return eventService.findById(id);
     }*/
 
-    private final EventRepository eventRepository;
-
     @PostMapping("/api/v1/events/hashtag")
-    public Event save(@RequestBody Event event) {
-        return eventRepository.save(event);
+    public Long save(@RequestBody HashtagEventSaveRequest event) {
+        return eventService.save(event);
         //System.out.println(requestDto.getPeriod().getFinishDate());
         //return eventService.saveHashtagEvent(requestDto);
     }

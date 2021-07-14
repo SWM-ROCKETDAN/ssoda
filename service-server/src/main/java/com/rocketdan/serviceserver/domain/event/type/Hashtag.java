@@ -1,7 +1,7 @@
 package com.rocketdan.serviceserver.domain.event.type;
 
 import com.rocketdan.serviceserver.domain.event.Event;
-import com.rocketdan.serviceserver.domain.event.element.Reward;
+import com.rocketdan.serviceserver.domain.event.reward.Reward;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;

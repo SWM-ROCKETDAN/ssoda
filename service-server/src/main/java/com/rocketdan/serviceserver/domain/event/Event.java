@@ -2,8 +2,7 @@ package com.rocketdan.serviceserver.domain.event;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
-import com.rocketdan.serviceserver.domain.event.element.Period;
-import com.rocketdan.serviceserver.domain.event.element.Reward;
+import com.rocketdan.serviceserver.domain.event.reward.Reward;
 import lombok.*;
 
 import javax.persistence.*;
@@ -26,7 +25,7 @@ public abstract class Event {
 
     // 이벤트 상태 (대기중/진행중/종료)
     @Column(nullable = false)
-    private int status;
+    private Integer status;
 
     // 이벤트 시작 시간
     @JsonFormat(shape=JsonFormat.Shape.STRING, pattern="yyyy-MM-dd'T'HH:mm:ss")
@@ -55,7 +54,6 @@ public abstract class Event {
         this.rewards = rewards;
     }
 
-    /*
     public void updateStatus() {
         Date time = new Date();
 
@@ -65,11 +63,11 @@ public abstract class Event {
         }
 
         // 영구적인 이벤트가 아닐 경우
-        if (!this.period.getIsPermanent()) {
+        if (Optional.ofNullable(this.finishDate).isPresent() ) {
             // 시작 시간이 지났을 경우
-            if ( !time.after(this.period.getStartDate()) ) {
+            if ( time.after(this.startDate) ) {
                 // 종료 시간을 지나지 않았을 경우
-                if ( !time.before(this.period.getFinishDate()) ) {
+                if ( time.before(this.finishDate) ) {
                     this.status = 1; // 진행중
                 }
                 else {
@@ -83,15 +81,15 @@ public abstract class Event {
         // 영구 이벤트의 경우
         else {
             // 시작 시간이 지났을 경우
-            if ( !time.after(this.period.getStartDate()) ) {
-                this.status = 1;
+            if ( time.after(this.startDate) ) {
+                this.status = 1; // 진행중
             }
             else {
-                this.status = 0;
+                this.status = 0; // 대기중
             }
         }
     }
-
+/*
     public void update(String title, int status, List<String> images, Period period, List<Reward> rewards) {
         Optional.ofNullable(title).ifPresent(none -> this.title = title);
         if (status != this.status) {
