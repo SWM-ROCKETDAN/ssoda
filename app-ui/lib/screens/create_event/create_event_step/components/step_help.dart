@@ -23,7 +23,7 @@ class HelpDialog extends StatefulWidget {
   const HelpDialog({
     Key? key,
     required int step,
-  })  : _step = step,
+  })   : _step = step,
         super(key: key);
 
   final int _step;
@@ -60,24 +60,29 @@ class _HelpDialogState extends State<HelpDialog> {
   @override
   Widget build(BuildContext context) {
     return Dialog(
-        child: Container(
-      width: MediaQuery.of(context).size.width * 0.8,
-      child: AnimatedCrossFade(
-          firstCurve: Curves.easeInCirc,
-          firstChild: Image.asset(
-            'assets/images/create-event-step-help/draft.png',
-            width: MediaQuery.of(context).size.width * 0.8,
-            fit: BoxFit.fitWidth,
-          ),
-          secondChild: Image.asset(
-            'assets/images/create-event-step-help/${_stepFileName[widget._step]}.png',
-            width: MediaQuery.of(context).size.width * 0.8,
-            fit: BoxFit.fitWidth,
-          ),
-          crossFadeState: _imageSwitch
-              ? CrossFadeState.showSecond
-              : CrossFadeState.showFirst,
-          duration: const Duration(milliseconds: 500)),
+        child: GestureDetector(
+      onTap: () {
+        Navigator.of(context, rootNavigator: true).pop();
+      },
+      child: Container(
+        width: MediaQuery.of(context).size.width * 0.8,
+        child: AnimatedCrossFade(
+            firstCurve: Curves.easeInCirc,
+            firstChild: Image.asset(
+              'assets/images/create-event-step-help/draft.png',
+              width: MediaQuery.of(context).size.width * 0.8,
+              fit: BoxFit.fitWidth,
+            ),
+            secondChild: Image.asset(
+              'assets/images/create-event-step-help/${_stepFileName[widget._step]}.png',
+              width: MediaQuery.of(context).size.width * 0.8,
+              fit: BoxFit.fitWidth,
+            ),
+            crossFadeState: _imageSwitch
+                ? CrossFadeState.showSecond
+                : CrossFadeState.showFirst,
+            duration: const Duration(milliseconds: 500)),
+      ),
     ));
   }
 }
