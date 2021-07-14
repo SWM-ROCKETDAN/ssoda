@@ -1,25 +1,26 @@
 class Crawl:
     """ Super Class """
-    def __init__(self, post_urls, info_urls):
-        self.post_urls = post_urls
-        self.info_urls = info_urls
-        self.posts = []
-        self.infos = []
 
-    def set_post_url(self, post_urls):
-        self.post_urls = post_urls
+    def __init__(self, post_url, user_url):
+        self.post_url = post_url
+        self.user_url = user_url
+        self.post_data = {}
+        self.account_data = {}
 
-    def set_info_urls(self, info_urls):
-        self.info_urls = info_urls
+    def set_post_url(self, post_url):
+        self.post_url = post_url
+
+    def set_user_url(self, user_url):
+        self.user_url = user_url
 
     def get_post_url(self):
-        return self.post_urls
+        return self.post_url
 
-    def get_info_urls(self):
-        return self.info_urls
+    def get_user_url(self):
+        return self.user_url
 
-    def get_infos(self):
-        return self.infos
+    def get_account_list(self):
+        return self.user_data
 
-    def get_posts(self):
-        return self.posts
+    def get_post_list(self):
+        return self.post_data
