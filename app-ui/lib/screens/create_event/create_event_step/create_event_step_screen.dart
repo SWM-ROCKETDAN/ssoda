@@ -9,6 +9,7 @@ import 'components/event_template.dart';
 import 'components/step_text.dart';
 import 'components/step_progressbar.dart';
 import 'components/step_help.dart';
+import 'components/step_count.dart';
 import 'components/event_image.dart';
 
 import 'package:hashchecker/models/reward.dart';
@@ -96,6 +97,7 @@ class _CreateEventStepScreenState extends State<CreateEventStepScreen> {
   Column buildBody(BuildContext context) {
     return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
       StepProgressbar(context: context, step: _step, maxStep: maxStep),
+      StepCount(step: _step, maxStep: maxStep),
       Expanded(
           child: Padding(
         padding: const EdgeInsets.all(20.0),
