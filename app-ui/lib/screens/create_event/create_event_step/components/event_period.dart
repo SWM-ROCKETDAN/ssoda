@@ -9,8 +9,7 @@ class EventPeriod extends StatefulWidget {
   _EventPeriodState createState() => _EventPeriodState();
 }
 
-class _EventPeriodState extends State<EventPeriod>
-    with TickerProviderStateMixin {
+class _EventPeriodState extends State<EventPeriod> {
   final _dateRangeList = ['30일 간', '다음 달까지', '올해까지', '영구 진행', '직접 입력'];
   String? _dropdownValue;
 
