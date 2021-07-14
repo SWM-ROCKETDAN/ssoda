@@ -2,12 +2,14 @@ import 'reward.dart';
 import 'period.dart';
 import 'template.dart';
 
+enum Status { WAITING, PROCEEDING, ENDED }
+
 class Event {
   final String title;
   final List<Reward?> rewardList;
-  final List<String> hashtagList;
   final Period period;
   final List<String> images;
+  final List<String> hashtagList;
   final List<bool> requireList;
   final Template template;
 

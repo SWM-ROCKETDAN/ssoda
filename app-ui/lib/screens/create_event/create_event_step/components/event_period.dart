@@ -10,6 +10,15 @@ class EventPeriod extends StatefulWidget {
 }
 
 class _EventPeriodState extends State<EventPeriod> {
+  final _dateRangeList = ['한 달 동안', '다음 달까지', '올해까지', '영구 진행', '직접 입력'];
+  String? _dropdownValue;
+
+  @override
+  void initState() {
+    super.initState();
+    _dropdownValue = _dateRangeList[widget.period.dateShortcut];
+  }
+
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
@@ -42,7 +51,7 @@ class _EventPeriodState extends State<EventPeriod> {
               padding: const EdgeInsets.symmetric(horizontal: 25),
               child: DatePickerWidget(
                 looping: true,
-                firstDate: widget.period.finishDate,
+                firstDate: widget.period.startDate,
                 lastDate: DateTime(DateTime.now().year + 3,
                     DateTime.now().month, DateTime.now().day),
                 //initialDate: DateTime.now()
@@ -57,30 +66,65 @@ class _EventPeriodState extends State<EventPeriod> {
                 ),
               ),
             ),
-            height: widget.period.isPermanent ? 0 : 160,
+            height: _dropdownValue != _dateRangeList.last ? 0 : 160,
             duration: Duration(microseconds: 500),
             curve: Curves.easeIn,
           ),
           Visibility(
             child: Text('까지',
                 style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
-            visible: !widget.period.isPermanent,
+            visible: _dropdownValue == _dateRangeList.last,
           ),
           SizedBox(height: 15),
-          CheckboxListTile(
-              title: Text(
-                '영구적으로 진행하기',
-                style: TextStyle(
-                    color: widget.period.isPermanent
-                        ? Theme.of(context).accentColor
-                        : Colors.grey),
+          DropdownButton(
+              value: _dropdownValue,
+              icon: const Icon(
+                Icons.date_range_outlined,
+                color: Colors.indigoAccent,
               ),
-              value: widget.period.isPermanent,
-              onChanged: (value) {
+              iconSize: 24,
+              elevation: 16,
+              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+              underline: Container(
+                height: 2,
+                color: Colors.indigoAccent.shade700,
+              ),
+              onChanged: (String? newValue) {
                 setState(() {
-                  widget.period.isPermanent = value!;
+                  _dropdownValue = newValue!;
                 });
-              }),
+
+                widget.period.dateShortcut =
+                    _dateRangeList.indexOf(_dropdownValue!);
+
+                if (_dropdownValue == _dateRangeList[0]) {
+                  widget.period.finishDate =
+                      widget.period.startDate.add(Duration(days: 30));
+                } else if (_dropdownValue == _dateRangeList[1]) {
+                  widget.period.finishDate = DateTime(
+                          widget.period.startDate.year,
+                          widget.period.startDate.month + 2,
+                          1)
+                      .subtract(Duration(days: 1));
+                } else if (_dropdownValue == _dateRangeList[2]) {
+                  widget.period.finishDate =
+                      DateTime(widget.period.startDate.year + 1, 1, 1)
+                          .subtract(Duration(days: 1));
+                } else if (_dropdownValue == _dateRangeList[3]) {
+                  widget.period.finishDate = null;
+                }
+              },
+              items: _dateRangeList
+                  .map((e) => DropdownMenuItem(child: Text(e), value: e))
+                  .toList()),
+          Visibility(
+            child: Text(
+                widget.period.finishDate != null
+                    ? '${widget.period.finishDate.toString().substring(0, 10)} 까지에요!'
+                    : '이벤트 상품 소진 시까지 진행해요!',
+                style: TextStyle(fontSize: 14, color: Colors.grey)),
+            visible: _dropdownValue != _dateRangeList.last,
+          ),
         ],
       ),
     );

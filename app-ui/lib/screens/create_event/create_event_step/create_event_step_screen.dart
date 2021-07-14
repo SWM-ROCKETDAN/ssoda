@@ -26,7 +26,7 @@ class CreateEventStepScreen extends StatefulWidget {
 }
 
 class _CreateEventStepScreenState extends State<CreateEventStepScreen> {
-  int _step = 0;
+  int _step = 3;
   final maxStep = 7;
 
   // step 1: input event title
@@ -39,7 +39,8 @@ class _CreateEventStepScreenState extends State<CreateEventStepScreen> {
   List<String> hashtagList = [];
 
   // step 4: set event period
-  Period period = Period(DateTime.now(), DateTime.now(), true);
+  Period period =
+      Period(DateTime.now(), DateTime.now().add(Duration(days: 30)), 0);
 
   // step 5: select images
   List<String> imageList = [];
@@ -56,8 +57,6 @@ class _CreateEventStepScreenState extends State<CreateEventStepScreen> {
   void initState() {
     super.initState();
     titleTextController = TextEditingController();
-
-    period = Period(DateTime.now(), DateTime.now(), true);
 
     for (int i = 0; i < requireCnt; i++) {
       requireList.add('#$i 세부 요청사항');
@@ -198,8 +197,8 @@ class _CreateEventStepScreenState extends State<CreateEventStepScreen> {
         }
         break;
       case 3:
-        if (!period.isPermanent &&
-            period.startDate.isAfter(period.finishDate)) {
+        if (period.finishDate != null &&
+            period.startDate.isAfter(period.finishDate!)) {
           _showValidationErrorSnackBar(context, '종료 날짜가 시작 날짜보다 앞서있어요!');
           return false;
         }
