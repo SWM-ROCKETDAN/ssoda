@@ -14,7 +14,7 @@ public class EventListResponseDto {
     private List<String> images;
     private Period period;
     private int type;
-
+/*
     public EventListResponseDto(Event entity) {
         this.id = entity.getId();
         this.title = entity.getTitle();
@@ -22,5 +22,5 @@ public class EventListResponseDto {
         this.images = entity.getImages();
         this.period = entity.getPeriod();
         this.type = entity.getType();
-    }
+    }*/
 }

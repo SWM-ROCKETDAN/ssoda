@@ -1,4 +1,4 @@
-package com.rocketdan.serviceserver.domain.event.detail;
+package com.rocketdan.serviceserver.domain.event.type;
 
 import lombok.Builder;
 import lombok.Getter;
@@ -6,7 +6,7 @@ import lombok.Getter;
 import java.util.List;
 
 @Getter
-public class Hashtag extends DetailByType {
+public class Hashtag {
     private List<String> hashtags;
     private List<Boolean> requirements;
     private int template;

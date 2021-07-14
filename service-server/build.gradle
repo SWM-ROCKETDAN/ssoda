@@ -20,17 +20,17 @@ repositories {
 
 dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-web'
-//	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
-
-	// database
-	implementation('org.springframework.boot:spring-boot-starter-data-mongodb')
+	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
     implementation 'junit:junit:4.13.1'
+
+    // database
+	// compileOnly 'mysql:mysql-connector-java'
+	implementation 'mysql:mysql-connector-java'
 
     compileOnly 'org.projectlombok:lombok'
 	developmentOnly 'org.springframework.boot:spring-boot-devtools'
 	annotationProcessor 'org.projectlombok:lombok'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
-	implementation 'org.springframework.boot:spring-boot-starter-data-mongodb'
 }
 
 test {

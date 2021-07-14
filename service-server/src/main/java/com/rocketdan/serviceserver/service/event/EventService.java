@@ -17,7 +17,7 @@ import java.util.stream.Collectors;
 @Service
 public class EventService {
     private final EventRepository eventRepository;
-
+/*
     @Transactional
     public String saveHashtagEvent(HashtagEventSaveRequest requestDto) {
         Event event = eventRepository.save(requestDto.toEntity());
@@ -54,5 +54,5 @@ public class EventService {
         // entity를 파라미터로 삭제할 수도 있고, deleteById 메소드를 이용하면 id로 삭제할 수도 있다.
         // 존재하는 Event인지 확인을 위해 entity 조회 후 그대로 삭제.
         eventRepository.delete(event);
-    }
+    }*/
 }

@@ -16,7 +16,7 @@ public class EventSaveRequestDto {
     private Period period;
     private List<Reward> rewards;
     private int type;
-
+/*
     public EventSaveRequestDto(String title, List<String> images, Period period, List<Reward> rewards, int type) {
         this.title = title;
         this.images = images;
@@ -25,5 +25,5 @@ public class EventSaveRequestDto {
         rewards.forEach(reward ->
                 this.rewards.add(new Reward(reward.getCategory(), reward.getName(), reward.getImage(), reward.getPrice(), reward.getCount())));
         this.type = type;
-    }
+    }*/
 }

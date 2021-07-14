@@ -1,7 +1,6 @@
 package com.rocketdan.serviceserver.app.dto.event;
 
 import com.rocketdan.serviceserver.domain.event.Event;
-import com.rocketdan.serviceserver.domain.event.detail.DetailByType;
 import com.rocketdan.serviceserver.domain.event.element.Period;
 import com.rocketdan.serviceserver.domain.event.element.Reward;
 import lombok.Getter;
@@ -16,7 +15,7 @@ public class EventResponseDto {
     private List<String> images;
     private Period period;
     private List<Reward> rewards;
-    private int type;
+    private int type;/*
     private DetailByType detail;
 
     public EventResponseDto(Event entity) {
@@ -28,5 +27,5 @@ public class EventResponseDto {
         this.rewards = entity.getRewards();
         this.type = entity.getType();
         this.detail = entity.getDetail();
-    }
+    }*/
 }

@@ -1,6 +1,5 @@
 package com.rocketdan.serviceserver.app.dto.event;
 
-import com.rocketdan.serviceserver.domain.event.detail.DetailByType;
 import com.rocketdan.serviceserver.domain.event.element.Period;
 import com.rocketdan.serviceserver.domain.event.element.Reward;
 import lombok.Getter;
@@ -17,7 +16,7 @@ public class EventUpdateRequestDto {
     private List<String> images;
     private Period period;
     private List<Reward> rewards;
-
+/*
     public EventUpdateRequestDto(String title, int status, List<String> images, Period period, List<Reward> rewards) {
         this.title = title;
         this.status = status;
@@ -26,5 +25,5 @@ public class EventUpdateRequestDto {
         this.rewards = new ArrayList<>();
         rewards.forEach(reward ->
                 this.rewards.add(new Reward(reward.getCategory(), reward.getName(), reward.getImage(), reward.getPrice(), reward.getCount())));
-    }
+    }*/
 }

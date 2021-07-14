@@ -4,6 +4,8 @@ import com.rocketdan.serviceserver.app.dto.event.EventListResponseDto;
 import com.rocketdan.serviceserver.app.dto.event.EventResponseDto;
 import com.rocketdan.serviceserver.app.dto.event.hashtag.HashtagEventSaveRequest;
 import com.rocketdan.serviceserver.app.dto.event.hashtag.HashtagEventUpdateRequest;
+import com.rocketdan.serviceserver.domain.event.Event;
+import com.rocketdan.serviceserver.domain.event.EventRepository;
 import com.rocketdan.serviceserver.service.event.EventService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -12,7 +14,7 @@ import java.util.List;
 
 @RequiredArgsConstructor
 @RestController
-public class EventApiController {
+public class EventApiController {/*
     private final EventService eventService;
 
     @GetMapping("/api/v1/events")
@@ -27,14 +29,17 @@ public class EventApiController {
     @GetMapping("/api/v1/events/{id}")
     public EventResponseDto findById(@PathVariable String id) {
         return eventService.findById(id);
-    }
+    }*/
+
+    private final EventRepository eventRepository;
 
     @PostMapping("/api/v1/events/hashtag")
-    public String save(@RequestBody HashtagEventSaveRequest requestDto) {
-        System.out.println(requestDto.getPeriod().getFinishDate());
-        return eventService.saveHashtagEvent(requestDto);
+    public Event save(@RequestBody Event event) {
+        return eventRepository.save(event);
+        //System.out.println(requestDto.getPeriod().getFinishDate());
+        //return eventService.saveHashtagEvent(requestDto);
     }
-
+/*
     @PutMapping("/api/v1/events/hashtag/{id}")
     public String update(@PathVariable String id, @RequestBody HashtagEventUpdateRequest requestDto) {
         return eventService.updateHashtagEvent(id, requestDto);
@@ -43,5 +48,5 @@ public class EventApiController {
     @DeleteMapping("/api/v1/events/{id}")
     public void deleteEvent(@PathVariable String id) {
         eventService.delete(id);
-    }
+    }*/
 }
