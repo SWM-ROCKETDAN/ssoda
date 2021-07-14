@@ -9,8 +9,9 @@ class EventPeriod extends StatefulWidget {
   _EventPeriodState createState() => _EventPeriodState();
 }
 
-class _EventPeriodState extends State<EventPeriod> {
-  final _dateRangeList = ['한 달 동안', '다음 달까지', '올해까지', '영구 진행', '직접 입력'];
+class _EventPeriodState extends State<EventPeriod>
+    with TickerProviderStateMixin {
+  final _dateRangeList = ['30일 간', '다음 달까지', '올해까지', '영구 진행', '직접 입력'];
   String? _dropdownValue;
 
   @override
@@ -46,33 +47,34 @@ class _EventPeriodState extends State<EventPeriod> {
           ),
           Text('부터',
               style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
-          AnimatedContainer(
-            child: Container(
-              padding: const EdgeInsets.symmetric(horizontal: 25),
-              child: DatePickerWidget(
-                looping: true,
-                firstDate: widget.period.startDate,
-                lastDate: DateTime(DateTime.now().year + 3,
-                    DateTime.now().month, DateTime.now().day),
-                //initialDate: DateTime.now()
-                dateFormat: "yyyy-MMMM-dd",
-                locale: DateTimePickerLocale.ko,
-                onChange: (DateTime newDate, _) {
-                  widget.period.finishDate = newDate;
-                },
-                pickerTheme: DateTimePickerTheme(
-                  itemTextStyle: TextStyle(color: Colors.black, fontSize: 19),
-                  dividerColor: Colors.indigoAccent.shade700,
-                ),
-              ),
-            ),
-            height: _dropdownValue != _dateRangeList.last ? 0 : 160,
-            duration: Duration(microseconds: 500),
-            curve: Curves.easeIn,
-          ),
           Visibility(
-            child: Text('까지',
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+            child: Column(
+              children: [
+                Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 25),
+                  child: DatePickerWidget(
+                    looping: true,
+                    firstDate: widget.period.startDate,
+                    lastDate: DateTime(DateTime.now().year + 3,
+                        DateTime.now().month, DateTime.now().day),
+                    //initialDate: DateTime.now()
+                    dateFormat: "yyyy-MMMM-dd",
+                    locale: DateTimePickerLocale.ko,
+                    onChange: (DateTime newDate, _) {
+                      widget.period.finishDate = newDate;
+                    },
+                    pickerTheme: DateTimePickerTheme(
+                      itemTextStyle:
+                          TextStyle(color: Colors.black, fontSize: 19),
+                      dividerColor: Colors.indigoAccent.shade700,
+                    ),
+                  ),
+                ),
+                Text('까지',
+                    style:
+                        TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+              ],
+            ),
             visible: _dropdownValue == _dateRangeList.last,
           ),
           SizedBox(height: 15),
@@ -84,7 +86,10 @@ class _EventPeriodState extends State<EventPeriod> {
               ),
               iconSize: 24,
               elevation: 16,
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+              style: TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.black87),
               underline: Container(
                 height: 2,
                 color: Colors.indigoAccent.shade700,
@@ -115,7 +120,15 @@ class _EventPeriodState extends State<EventPeriod> {
                 }
               },
               items: _dateRangeList
-                  .map((e) => DropdownMenuItem(child: Text(e), value: e))
+                  .map((e) => DropdownMenuItem(
+                      child: SizedBox(
+                        width: 100,
+                        child: Text(
+                          e,
+                          textAlign: TextAlign.center,
+                        ),
+                      ),
+                      value: e))
                   .toList()),
           Visibility(
             child: Text(
