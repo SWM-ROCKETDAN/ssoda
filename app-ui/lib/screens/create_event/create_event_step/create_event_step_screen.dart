@@ -27,7 +27,7 @@ class CreateEventStepScreen extends StatefulWidget {
 }
 
 class _CreateEventStepScreenState extends State<CreateEventStepScreen> {
-  int _step = 3;
+  int _step = 2;
   final maxStep = 7;
 
   // step 1: input event title
@@ -164,8 +164,8 @@ class _CreateEventStepScreenState extends State<CreateEventStepScreen> {
           _onNextStepButtonPressed(context);
         },
         style: ButtonStyle(
-            backgroundColor:
-                MaterialStateProperty.all<Color>(Colors.indigoAccent.shade700),
+            backgroundColor: MaterialStateProperty.all<Color>(
+                Theme.of(context).primaryColor),
             shape: MaterialStateProperty.all<OutlinedBorder>(
                 RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(27.0)))),

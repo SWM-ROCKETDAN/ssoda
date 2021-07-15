@@ -1,4 +1,4 @@
-import 'category.dart';
+import 'reward_category.dart';
 
 class Reward {
   final String name;

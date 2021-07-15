@@ -18,8 +18,8 @@ class CreateEventButton extends StatelessWidget {
         ),
         onPressed: () {},
         style: ButtonStyle(
-            backgroundColor:
-                MaterialStateProperty.all<Color>(Colors.indigoAccent.shade700),
+            backgroundColor: MaterialStateProperty.all<Color>(
+                Theme.of(context).primaryColor),
             shape: MaterialStateProperty.all<OutlinedBorder>(
                 RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(27.0)))),
