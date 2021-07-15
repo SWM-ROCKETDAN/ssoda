@@ -20,8 +20,6 @@ class _EventTitleState extends State<EventTitle> {
             color: Colors.indigoAccent.shade700),
         decoration: InputDecoration(
           hintText: '우리가게 SNS 해시태그 이벤트',
-          focusedBorder: UnderlineInputBorder(
-              borderSide: BorderSide(color: Colors.indigoAccent.shade700)),
         ));
   }
 }
