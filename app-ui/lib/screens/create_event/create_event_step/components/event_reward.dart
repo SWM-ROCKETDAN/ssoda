@@ -26,7 +26,7 @@ class _EventRewardState extends State<EventReward> {
                     width: 100,
                     child: ElevatedButton(
                       onPressed: () {
-                        _navigateAndCategorySelection(context, index);
+                        _navigateToNextScreen(context, index);
                       },
                       child: Stack(children: [
                         Center(
@@ -47,7 +47,7 @@ class _EventRewardState extends State<EventReward> {
                     ))
                 : GestureDetector(
                     onTap: () {
-                      _navigateAndCategorySelection(context, index);
+                      _navigateToNextScreen(context, index);
                     },
                     child: Container(
                       child: Stack(children: [
@@ -87,14 +87,18 @@ class _EventRewardState extends State<EventReward> {
                   )));
   }
 
-  _navigateAndCategorySelection(BuildContext context, int index) async {
-    final Reward? result = await Navigator.push(context,
-        MaterialPageRoute(builder: (context) => InputRewardInfoScreen()));
+  _navigateToNextScreen(BuildContext context, int index) async {
+    final Reward? result = await Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (context) => InputRewardInfoScreen(
+                  reward: widget.rewardList[index],
+                )));
 
     if (result != null) {
       setState(() {
         widget.rewardList[index] = result;
-        widget.rewardList.add(null);
+        if (widget.rewardList.last != null) widget.rewardList.add(null);
       });
     }
   }
