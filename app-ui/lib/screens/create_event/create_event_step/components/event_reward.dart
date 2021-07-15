@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hashchecker/models/reward.dart';
-import '../../select_reward_category/select_reward_category_screen.dart';
+import 'package:hashchecker/screens/create_event/input_reward_info/input_reward_info_screen.dart';
 import 'dart:io';
 
 class EventReward extends StatefulWidget {
@@ -89,7 +89,7 @@ class _EventRewardState extends State<EventReward> {
 
   _navigateAndCategorySelection(BuildContext context, int index) async {
     final Reward? result = await Navigator.push(context,
-        MaterialPageRoute(builder: (context) => SelectRewardCategoryScreen()));
+        MaterialPageRoute(builder: (context) => InputRewardInfoScreen()));
 
     if (result != null) {
       setState(() {

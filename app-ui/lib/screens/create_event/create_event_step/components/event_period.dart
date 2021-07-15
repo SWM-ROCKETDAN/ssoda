@@ -65,7 +65,6 @@ class _EventPeriodState extends State<EventPeriod> {
                     pickerTheme: DateTimePickerTheme(
                       itemTextStyle:
                           TextStyle(color: Colors.black, fontSize: 19),
-                      dividerColor: Colors.indigoAccent.shade700,
                     ),
                   ),
                 ),
@@ -91,7 +90,7 @@ class _EventPeriodState extends State<EventPeriod> {
                   color: Colors.black87),
               underline: Container(
                 height: 2,
-                color: Colors.indigoAccent.shade700,
+                color: Theme.of(context).primaryColor,
               ),
               onChanged: (String? newValue) {
                 setState(() {

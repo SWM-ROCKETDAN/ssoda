@@ -96,7 +96,7 @@ class _EventTemplateState extends State<EventTemplate> {
                     shape: BoxShape.circle,
                     color: (Theme.of(context).brightness == Brightness.dark
                             ? Colors.white
-                            : Colors.indigoAccent.shade700)
+                            : Theme.of(context).primaryColor)
                         .withOpacity(widget.selectedTemplate.id == entry.key
                             ? 0.9
                             : 0.4)),

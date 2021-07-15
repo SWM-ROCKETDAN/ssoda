@@ -22,7 +22,7 @@ class _EventHashtagsState extends State<EventHashtags> {
               widget.hashtagList.length + 1,
               (index) => index == widget.hashtagList.length
                   ? CircleAvatar(
-                      backgroundColor: Colors.indigoAccent.shade700,
+                      backgroundColor: Theme.of(context).primaryColor,
                       radius: 20,
                       child: IconButton(
                           highlightColor: Colors.transparent,
@@ -80,7 +80,6 @@ class _EventHashtagsState extends State<EventHashtags> {
                         },
                         child: Text(
                           '취소',
-                          style: TextStyle(color: Colors.indigoAccent.shade700),
                         )),
                     ElevatedButton(
                         onPressed: () {
@@ -89,10 +88,7 @@ class _EventHashtagsState extends State<EventHashtags> {
                             Navigator.pop(context);
                           });
                         },
-                        child: Text('등록'),
-                        style: ButtonStyle(
-                            backgroundColor: MaterialStateProperty.all<Color>(
-                                Colors.indigoAccent.shade700)))
+                        child: Text('등록'))
                   ],
                 )
               ],
