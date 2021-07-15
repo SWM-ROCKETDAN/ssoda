@@ -174,7 +174,7 @@ class _InputRewardInfoScreenState extends State<InputRewardInfoScreen> {
                         ),
                       ),
                     ),
-                    SizedBox(height: 5),
+                    SizedBox(height: 10),
                     TextField(
                         textAlign: TextAlign.start,
                         controller: _nameController,
