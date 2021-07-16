@@ -84,7 +84,8 @@ class _EventHashtagsState extends State<EventHashtags> {
                     ElevatedButton(
                         onPressed: () {
                           setState(() {
-                            widget.hashtagList.add(_controller.value.text);
+                            widget.hashtagList
+                                .add(_controller.value.text.trim());
                             Navigator.pop(context);
                           });
                         },
