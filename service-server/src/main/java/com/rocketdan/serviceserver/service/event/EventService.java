@@ -1,5 +1,6 @@
 package com.rocketdan.serviceserver.service.event;
 
+import com.rocketdan.serviceserver.app.dto.event.EventListResponseDto;
 import com.rocketdan.serviceserver.app.dto.event.EventResponseDto;
 import com.rocketdan.serviceserver.app.dto.event.hashtag.HashtagEventResponseDto;
 import com.rocketdan.serviceserver.app.dto.event.hashtag.HashtagEventSaveRequest;
@@ -12,7 +13,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service
@@ -53,7 +56,7 @@ public class EventService {
 
         return new EventResponseDto(entity);
     }
-/*
+
     @Transactional//(readOnly = true) // 나는 에러나서 일단 주석
     public List<EventListResponseDto> findAll() {
         return eventRepository.findAll().stream()
@@ -62,7 +65,7 @@ public class EventService {
                 .map(EventListResponseDto::new)
                 .collect(Collectors.toList());
     }
-*/
+
     @Transactional
     public void delete (Long id) {
         Event event = eventRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("해당 이벤트가 없습니다. id=" + id));

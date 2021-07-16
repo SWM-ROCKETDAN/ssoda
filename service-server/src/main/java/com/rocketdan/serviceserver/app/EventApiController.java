@@ -19,10 +19,11 @@ import java.util.List;
 public class EventApiController {
     private final EventService eventService;
 
-//    @GetMapping("/api/v1/events")
-//    public List<EventListResponseDto> retrieveAllEvents() {
-//        return eventService.findAll();
-//    }
+    @GetMapping("/api/v1/events")
+    public List<EventListResponseDto> retrieveAllEvents() {
+        return eventService.findAll();
+    }
+
 //    @GetMapping("/api/v1/events/")
 //    public EventListResponseDto retrieveEventList() {
 //        return eventService.findListById();
