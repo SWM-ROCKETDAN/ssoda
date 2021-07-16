@@ -101,7 +101,8 @@ class _EventRewardState extends State<EventReward> {
     if (result != null) {
       setState(() {
         widget.rewardList[index] = result;
-        if (widget.rewardList.last != null) widget.rewardList.add(null);
+        if (widget.rewardList.last != null && widget.rewardList.length < 5)
+          widget.rewardList.add(null);
       });
     }
   }

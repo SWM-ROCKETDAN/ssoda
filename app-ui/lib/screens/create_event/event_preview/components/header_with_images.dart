@@ -1,3 +1,4 @@
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:hashchecker/models/event.dart';
 import 'dart:io';
@@ -18,11 +19,22 @@ class HeaderWithImages extends StatelessWidget {
       height: size.height * 0.4,
       child: Stack(children: [
         Container(
-          height: size.height * 0.4 - 15,
-          decoration: BoxDecoration(
-              image: DecorationImage(
-                  image: FileImage(File(event.images[0]!)), fit: BoxFit.cover)),
-        ),
+            color: Colors.grey,
+            child: CarouselSlider(
+              options: CarouselOptions(
+                  autoPlay: true,
+                  height: size.height * 0.4 - 15,
+                  viewportFraction: 1.0,
+                  enlargeCenterPage: false),
+              items: event.images
+                  .map((item) => Container(
+                        child: Center(
+                            child: Image.file(File(item!),
+                                fit: BoxFit.cover,
+                                height: size.height * 0.4 - 15)),
+                      ))
+                  .toList(),
+            )),
         Positioned(
             bottom: 14,
             right: 0,
