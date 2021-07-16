@@ -1,4 +1,4 @@
-package com.rocketdan.serviceserver.service.event;
+package com.rocketdan.serviceserver.service;
 
 import com.rocketdan.serviceserver.app.dto.event.EventListResponseDto;
 import com.rocketdan.serviceserver.app.dto.event.EventResponseDto;
@@ -46,7 +46,7 @@ public class EventService {
         return id;
     }
 
-    public EventResponseDto findById (Long id) {
+    public EventResponseDto findById(Long id) {
         Event entity = eventRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("해당 이벤트가 없습니다. id=" + id));
         entity.updateStatus();
 
@@ -67,7 +67,7 @@ public class EventService {
     }
 
     @Transactional
-    public void delete (Long id) {
+    public void delete(Long id) {
         Event event = eventRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("해당 이벤트가 없습니다. id=" + id));
         // JpaRepository에서 이미 delete 메소드를 지원하고 있으니 이를 활용.
         // entity를 파라미터로 삭제할 수도 있고, deleteById 메소드를 이용하면 id로 삭제할 수도 있다.

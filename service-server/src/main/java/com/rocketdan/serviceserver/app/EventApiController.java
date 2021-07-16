@@ -4,7 +4,7 @@ import com.rocketdan.serviceserver.app.dto.event.EventListResponseDto;
 import com.rocketdan.serviceserver.app.dto.event.EventResponseDto;
 import com.rocketdan.serviceserver.app.dto.event.hashtag.HashtagEventSaveRequest;
 import com.rocketdan.serviceserver.app.dto.event.hashtag.HashtagEventUpdateRequest;
-import com.rocketdan.serviceserver.service.event.EventService;
+import com.rocketdan.serviceserver.service.EventService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -41,7 +41,7 @@ public class EventApiController {
     }
 
     @DeleteMapping("/api/v1/events/{id}")
-    public void deleteEvent(@PathVariable Long id) {
+    public void delete(@PathVariable Long id) {
         eventService.delete(id);
     }
 }
