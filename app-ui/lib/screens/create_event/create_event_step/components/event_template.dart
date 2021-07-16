@@ -26,7 +26,7 @@ class _EventTemplateState extends State<EventTemplate> {
                   borderRadius: BorderRadius.all(Radius.circular(5.0)),
                   child: Stack(
                     children: <Widget>[
-                      Image.file(File(item), fit: BoxFit.cover, width: 1000.0),
+                      Image.asset(item, fit: BoxFit.cover, height: 1000),
                       Positioned(
                         bottom: 0.0,
                         left: 0.0,
@@ -35,7 +35,7 @@ class _EventTemplateState extends State<EventTemplate> {
                           decoration: BoxDecoration(
                             gradient: LinearGradient(
                               colors: [
-                                Color.fromARGB(200, 0, 0, 0),
+                                Color.fromARGB(150, 0, 0, 0),
                                 Color.fromARGB(0, 0, 0, 0)
                               ],
                               begin: Alignment.bottomCenter,
@@ -45,7 +45,8 @@ class _EventTemplateState extends State<EventTemplate> {
                           padding: EdgeInsets.symmetric(
                               vertical: 10.0, horizontal: 20.0),
                           child: Text(
-                            '${templateList.indexOf(item)}번째 템플릿',
+                            '${templateName[templateList.indexOf(item)]}',
+                            textAlign: TextAlign.center,
                             style: TextStyle(
                               color: Colors.white,
                               fontSize: 20.0,
@@ -64,45 +65,49 @@ class _EventTemplateState extends State<EventTemplate> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Container(
-          height: 300,
-          child: CarouselSlider(
-            items: imageSliders,
-            carouselController: _carouselController,
-            options: CarouselOptions(
-                enlargeCenterPage: true,
-                aspectRatio: 2.0,
-                onPageChanged: (index, reason) {
-                  setState(() {
-                    widget.selectedTemplate.id = index;
-                  });
-                }),
+    return SingleChildScrollView(
+      child: Column(
+        children: [
+          Container(
+            height: MediaQuery.of(context).size.height * 0.45,
+            child: CarouselSlider(
+              items: imageSliders,
+              carouselController: _carouselController,
+              options: CarouselOptions(
+                  height: 1000,
+                  viewportFraction: 1.0,
+                  enlargeCenterPage: false,
+                  onPageChanged: (index, reason) {
+                    setState(() {
+                      widget.selectedTemplate.id = index;
+                    });
+                  }),
+            ),
           ),
-        ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: templateList.asMap().entries.map((entry) {
-            return GestureDetector(
-              onTap: () => _carouselController.animateToPage(entry.key),
-              child: Container(
-                width: 12.0,
-                height: 12.0,
-                margin: EdgeInsets.symmetric(vertical: 8.0, horizontal: 4.0),
-                decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    color: (Theme.of(context).brightness == Brightness.dark
-                            ? Colors.white
-                            : Theme.of(context).primaryColor)
-                        .withOpacity(widget.selectedTemplate.id == entry.key
-                            ? 0.9
-                            : 0.4)),
-              ),
-            );
-          }).toList(),
-        ),
-      ],
+          SizedBox(height: 15),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: templateList.asMap().entries.map((entry) {
+              return GestureDetector(
+                onTap: () => _carouselController.animateToPage(entry.key),
+                child: Container(
+                  width: 12.0,
+                  height: 12.0,
+                  margin: EdgeInsets.symmetric(vertical: 8.0, horizontal: 4.0),
+                  decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      color: (Theme.of(context).brightness == Brightness.dark
+                              ? Colors.white
+                              : Theme.of(context).primaryColor)
+                          .withOpacity(widget.selectedTemplate.id == entry.key
+                              ? 0.9
+                              : 0.4)),
+                ),
+              );
+            }).toList(),
+          ),
+        ],
+      ),
     );
   }
 }

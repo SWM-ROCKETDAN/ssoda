@@ -27,7 +27,7 @@ class CreateEventStepScreen extends StatefulWidget {
 }
 
 class _CreateEventStepScreenState extends State<CreateEventStepScreen> {
-  int _step = 1;
+  int _step = 7;
   final maxStep = 7;
 
   // step 1: input event title

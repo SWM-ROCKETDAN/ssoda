@@ -1,3 +1,5 @@
+final templateName = ['기본', '기본', '기본'];
+
 class Template {
   int _id;
 
