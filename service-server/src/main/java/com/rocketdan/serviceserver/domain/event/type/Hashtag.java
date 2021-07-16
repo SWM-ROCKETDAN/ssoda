@@ -8,7 +8,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import javax.persistence.criteria.CriteriaBuilder;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
