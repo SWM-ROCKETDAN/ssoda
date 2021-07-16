@@ -66,9 +66,10 @@ class _EventHashtagsState extends State<EventHashtags> {
                 style: TextStyle(fontWeight: FontWeight.bold),
               ),
               content: TextField(
-                controller: _controller,
-                decoration: InputDecoration(hintText: '여기에 입력'),
-              ),
+                  controller: _controller,
+                  decoration: InputDecoration(
+                    hintText: '여기에 입력',
+                  )),
               actions: [
                 ButtonBar(
                   children: [
@@ -84,9 +85,14 @@ class _EventHashtagsState extends State<EventHashtags> {
                     ElevatedButton(
                         onPressed: () {
                           setState(() {
-                            widget.hashtagList
-                                .add(_controller.value.text.trim());
-                            Navigator.pop(context);
+                            if (_controller.value.text.trim().isNotEmpty &&
+                                widget.hashtagList.indexOf(
+                                        _controller.value.text.trim()) ==
+                                    -1) {
+                              widget.hashtagList
+                                  .add(_controller.value.text.trim());
+                              Navigator.pop(context);
+                            }
                           });
                         },
                         child: Text('등록'))
