@@ -40,7 +40,7 @@ class _EventPeriodState extends State<EventPeriod> {
               },
               pickerTheme: DateTimePickerTheme(
                 itemTextStyle: TextStyle(color: Colors.black, fontSize: 19),
-                dividerColor: Colors.indigoAccent.shade700,
+                dividerColor: Theme.of(context).primaryColor,
               ),
             ),
           ),
@@ -65,6 +65,7 @@ class _EventPeriodState extends State<EventPeriod> {
                     pickerTheme: DateTimePickerTheme(
                       itemTextStyle:
                           TextStyle(color: Colors.black, fontSize: 19),
+                      dividerColor: Theme.of(context).primaryColor,
                     ),
                   ),
                 ),
