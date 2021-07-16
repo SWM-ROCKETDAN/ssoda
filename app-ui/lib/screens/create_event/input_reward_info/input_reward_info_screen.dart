@@ -5,6 +5,10 @@ import 'package:hashchecker/models/reward_category.dart';
 import 'package:hashchecker/models/reward.dart';
 import 'dart:io';
 
+import 'components/input_help.dart';
+import 'components/name_input.dart';
+import 'components/price_and_count_input.dart';
+
 class InputRewardInfoScreen extends StatefulWidget {
   final Reward? reward;
   const InputRewardInfoScreen({Key? key, this.reward}) : super(key: key);
@@ -72,227 +76,158 @@ class _InputRewardInfoScreenState extends State<InputRewardInfoScreen> {
                 child: Column(
                   children: [
                     _imagePath == null
-                        ? SizedBox(
-                            height: 150,
-                            width: 150,
-                            child: ElevatedButton(
-                              onPressed: _getImageFromGallery,
-                              child: Stack(children: [
-                                Center(
-                                  child: Icon(
-                                    Icons.add,
-                                    color: Colors.black45,
-                                    size: 50,
-                                  ),
-                                ),
-                                Positioned(
-                                    bottom: 10,
-                                    left: 0,
-                                    right: 0,
-                                    child: Text('상품 이미지 등록하기',
-                                        textAlign: TextAlign.center,
-                                        style: TextStyle(
-                                            color: Colors.black45,
-                                            fontSize: 10)))
-                              ]),
-                              style: ButtonStyle(
-                                  shape:
-                                      MaterialStateProperty.all<OutlinedBorder>(
-                                          RoundedRectangleBorder(
-                                              borderRadius:
-                                                  BorderRadius.circular(16))),
-                                  backgroundColor:
-                                      MaterialStateProperty.all<Color>(
-                                          Colors.white),
-                                  overlayColor:
-                                      MaterialStateProperty.all<Color>(
-                                          Colors.black12),
-                                  elevation:
-                                      MaterialStateProperty.all<double>(3)),
-                            ))
-                        : GestureDetector(
-                            onTap: _getImageFromGallery,
-                            child: ClipRRect(
-                                borderRadius: BorderRadius.circular(16),
-                                child: Image.file(
-                                  File(_imagePath!),
-                                  fit: BoxFit.cover,
-                                  width: 150,
-                                  height: 150,
-                                )),
-                          ),
+                        ? buildImageUploadButton()
+                        : buildRewardImage(),
                     SizedBox(height: 30),
-                    SizedBox(
-                      height: 100,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: List.generate(
-                          categoryTileList.length,
-                          (index) => GestureDetector(
-                            child: Container(
-                              width: 80,
-                              height: 80,
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: [
-                                  Icon(
-                                    categoryTileList[index].icon,
-                                    color: categoryTileList[index].category ==
-                                            _choosedCategory
-                                        ? Colors.white
-                                        : Colors.black87,
-                                  ),
-                                  SizedBox(height: 8),
-                                  Text(
-                                    categoryTileList[index].name,
-                                    style: TextStyle(
-                                      color: categoryTileList[index].category ==
-                                              _choosedCategory
-                                          ? Colors.white
-                                          : Colors.black87,
-                                    ),
-                                  )
-                                ],
-                              ),
-                              decoration: BoxDecoration(
-                                shape: BoxShape.circle,
-                                color: categoryTileList[index].category ==
-                                        _choosedCategory
-                                    ? Theme.of(context).primaryColor
-                                    : Colors.transparent,
-                              ),
-                            ),
-                            onTap: () {
-                              setState(() {
-                                _choosedCategory =
-                                    categoryTileList[index].category;
-                              });
-                            },
-                          ),
-                        ),
-                      ),
-                    ),
+                    buildCategorySelection(context),
                     SizedBox(height: 10),
-                    TextField(
-                        textAlign: TextAlign.start,
-                        controller: _nameController,
-                        decoration: InputDecoration(
-                            prefixIcon: Icon(Icons.sell_outlined),
-                            labelText: '상품명')),
+                    NameInput(nameController: _nameController),
                     SizedBox(height: 20),
-                    SizedBox(
-                        height: 50,
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceAround,
-                          children: [
-                            Expanded(
-                              child: TextField(
-                                textAlign: TextAlign.end,
-                                controller: _priceController,
-                                keyboardType: TextInputType.number,
-                                decoration: InputDecoration(
-                                    prefixIcon:
-                                        Icon(Icons.monetization_on_outlined),
-                                    labelText: '단가',
-                                    suffixText: '원'),
-                              ),
-                            ),
-                            SizedBox(height: 15),
-                            Expanded(
-                              child: TextField(
-                                  textAlign: TextAlign.end,
-                                  controller: _countController,
-                                  keyboardType: TextInputType.number,
-                                  decoration: InputDecoration(
-                                      prefixIcon: Icon(Icons.toll_outlined),
-                                      labelText: '수량',
-                                      suffixText: '개')),
-                            ),
-                          ],
-                        )),
+                    PriceAndCountInput(
+                        priceController: _priceController,
+                        countController: _countController),
                     SizedBox(height: 15),
-                    InkWell(
-                      onTap: () => showDialog<String>(
-                        context: context,
-                        builder: (BuildContext context) => AlertDialog(
-                          title: Row(children: [
-                            Icon(Icons.help_outline),
-                            Text('  단가와 수량',
-                                style: TextStyle(fontWeight: FontWeight.bold))
-                          ]),
-                          content: const Text(
-                              '추후 마케팅 성과 측정 및 이벤트 조기 종료를 파악하기 위해 입력하는 정보이며 이벤트에 참여하는 고객들에게는 공개되지 않습니다.'),
-                          actions: <Widget>[
-                            TextButton(
-                              onPressed: () => Navigator.pop(context),
-                              child: const Text('확인'),
-                            ),
-                          ],
-                        ),
-                      ),
-                      child: SizedBox(
-                        height: 20,
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Icon(
-                              Icons.help_outline,
-                              size: 12,
-                              color: Colors.black54,
-                            ),
-                            Text(
-                              ' 단가와 수량은 왜 입력하나요?',
-                              style: TextStyle(
-                                  fontSize: 12, color: Colors.black54),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
+                    InputHelp(),
                     SizedBox(height: 15),
                   ],
                 ),
               ),
             ),
-            SizedBox(
-              width: MediaQuery.of(context).size.width,
-              height: 50,
-              child: TextButton(
-                child: Text(
-                  '보상 등록하기',
-                  style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold),
-                ),
-                onPressed: () {
-                  if (isValidReward()) {
-                    Navigator.pop(
-                        context,
-                        Reward(
-                            name: _nameController.value.text.trim(),
-                            imgPath: _imagePath!,
-                            price:
-                                int.parse(_priceController.value.text.trim()),
-                            count:
-                                int.parse(_countController.value.text.trim()),
-                            category: _choosedCategory!));
-                  }
-                },
-                style: ButtonStyle(
-                    backgroundColor: MaterialStateProperty.all<Color>(
-                        Colors.indigoAccent.shade700),
-                    shape: MaterialStateProperty.all<OutlinedBorder>(
-                        RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(27.0)))),
-              ),
-            )
+            buildAddRewardButton(context)
           ],
         ),
       ),
     );
+  }
+
+  SizedBox buildAddRewardButton(BuildContext context) {
+    return SizedBox(
+      width: MediaQuery.of(context).size.width,
+      height: 50,
+      child: TextButton(
+        child: Text(
+          '보상 등록하기',
+          style: TextStyle(
+              color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold),
+        ),
+        onPressed: () {
+          if (isValidReward()) {
+            Navigator.pop(
+                context,
+                Reward(
+                    name: _nameController.value.text.trim(),
+                    imgPath: _imagePath!,
+                    price: int.parse(_priceController.value.text.trim()),
+                    count: int.parse(_countController.value.text.trim()),
+                    category: _choosedCategory!));
+          }
+        },
+        style: ButtonStyle(
+            backgroundColor:
+                MaterialStateProperty.all<Color>(Colors.indigoAccent.shade700),
+            shape: MaterialStateProperty.all<OutlinedBorder>(
+                RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(27.0)))),
+      ),
+    );
+  }
+
+  SizedBox buildCategorySelection(BuildContext context) {
+    return SizedBox(
+      height: 100,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: List.generate(
+          categoryTileList.length,
+          (index) => GestureDetector(
+            child: Container(
+              width: 80,
+              height: 80,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Icon(
+                    categoryTileList[index].icon,
+                    color: categoryTileList[index].category == _choosedCategory
+                        ? Colors.white
+                        : Colors.black87,
+                  ),
+                  SizedBox(height: 8),
+                  Text(
+                    categoryTileList[index].name,
+                    style: TextStyle(
+                      color:
+                          categoryTileList[index].category == _choosedCategory
+                              ? Colors.white
+                              : Colors.black87,
+                    ),
+                  )
+                ],
+              ),
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                color: categoryTileList[index].category == _choosedCategory
+                    ? Theme.of(context).primaryColor
+                    : Colors.transparent,
+              ),
+            ),
+            onTap: () {
+              setState(() {
+                _choosedCategory = categoryTileList[index].category;
+              });
+            },
+          ),
+        ),
+      ),
+    );
+  }
+
+  GestureDetector buildRewardImage() {
+    return GestureDetector(
+      onTap: _getImageFromGallery,
+      child: ClipRRect(
+          borderRadius: BorderRadius.circular(16),
+          child: Image.file(
+            File(_imagePath!),
+            fit: BoxFit.cover,
+            width: 150,
+            height: 150,
+          )),
+    );
+  }
+
+  SizedBox buildImageUploadButton() {
+    return SizedBox(
+        height: 150,
+        width: 150,
+        child: ElevatedButton(
+          onPressed: _getImageFromGallery,
+          child: Stack(children: [
+            Center(
+              child: Icon(
+                Icons.add,
+                color: Colors.black45,
+                size: 50,
+              ),
+            ),
+            Positioned(
+                bottom: 10,
+                left: 0,
+                right: 0,
+                child: Text('상품 이미지 등록하기',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(color: Colors.black45, fontSize: 10)))
+          ]),
+          style: ButtonStyle(
+              shape: MaterialStateProperty.all<OutlinedBorder>(
+                  RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(16))),
+              backgroundColor: MaterialStateProperty.all<Color>(Colors.white),
+              overlayColor: MaterialStateProperty.all<Color>(Colors.black12),
+              elevation: MaterialStateProperty.all<double>(3)),
+        ));
   }
 
   void _showValidationErrorSnackBar(BuildContext context, String message) {
