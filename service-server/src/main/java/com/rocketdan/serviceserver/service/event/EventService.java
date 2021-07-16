@@ -57,7 +57,7 @@ public class EventService {
         return new EventResponseDto(entity);
     }
 
-    @Transactional//(readOnly = true) // 나는 에러나서 일단 주석
+    @Transactional(readOnly = true)
     public List<EventListResponseDto> findAll() {
         return eventRepository.findAll().stream()
                 // 람다식 사용. 실제 코드 : .map(posts -> new PostsListResponseDto(posts))

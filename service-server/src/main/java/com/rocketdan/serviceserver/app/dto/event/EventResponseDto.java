@@ -1,5 +1,6 @@
 package com.rocketdan.serviceserver.app.dto.event;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.rocketdan.serviceserver.domain.event.Event;
 import com.rocketdan.serviceserver.domain.event.reward.Reward;
 import lombok.Getter;
@@ -14,7 +15,9 @@ public class EventResponseDto {
     private Long id;
     private String title;
     private Integer status;
+    @JsonFormat(shape=JsonFormat.Shape.STRING, pattern="yyyy-MM-dd'T'HH:mm:ss")
     private Date startDate;
+    @JsonFormat(shape=JsonFormat.Shape.STRING, pattern="yyyy-MM-dd'T'HH:mm:ss")
     private Date finishDate;
     private List<String> images;
     private List<Reward> rewards;

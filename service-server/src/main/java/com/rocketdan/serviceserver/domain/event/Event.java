@@ -94,7 +94,7 @@ public abstract class Event {
         Optional.ofNullable(title).ifPresent(none -> this.title = title);
         Optional.ofNullable(status).ifPresent(none -> this.status = status);
         Optional.ofNullable(startDate).ifPresent(none -> this.startDate = startDate);
-        Optional.ofNullable(finishDate).ifPresent(none -> this.finishDate = finishDate);
+        this.finishDate = finishDate;
         Optional.ofNullable(images).ifPresent(none -> this.images = images);
         Optional.ofNullable(rewards).ifPresent(none -> this.rewards = rewards);
     }
