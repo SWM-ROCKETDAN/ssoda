@@ -42,9 +42,9 @@ public class EventApiController {
     public Long update(@PathVariable Long id, @RequestBody HashtagEventUpdateRequest requestDto) {
         return eventService.updateHashtagEvent(id, requestDto);
     }
-/*
+
     @DeleteMapping("/api/v1/events/{id}")
-    public void deleteEvent(@PathVariable String id) {
+    public void deleteEvent(@PathVariable Long id) {
         eventService.delete(id);
-    }*/
+    }
 }

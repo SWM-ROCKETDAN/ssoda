@@ -42,7 +42,7 @@ public abstract class Event {
 
     // 이벤트 보상 목록
     @JsonManagedReference
-    @OneToMany
+    @OneToMany(cascade = CascadeType.ALL)
     private List<Reward> rewards;
 
     public Event(String title, int status, Date startDate, Date finishDate, List<String> images, List<Reward> rewards) {

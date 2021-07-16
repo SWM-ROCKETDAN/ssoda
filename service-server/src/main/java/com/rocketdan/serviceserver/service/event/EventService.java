@@ -25,8 +25,6 @@ public class EventService {
         Event savedEvent = requestDto.toEntity();
         savedEvent.updateStatus();
 
-        requestDto.getRewards().forEach(rewardRepository::save);
-
         return eventRepository.save(savedEvent).getId();
     }
 
@@ -36,7 +34,6 @@ public class EventService {
 
         Optional.ofNullable(requestDto.getRewards()).ifPresent(none -> {
                 event.getRewards().forEach(rewardRepository::delete); // 기존에 저장되었던 reward 삭제
-                requestDto.getRewards().forEach(rewardRepository::save); // reward table에 새로운 내용 추가
         });
 
         event.update(requestDto.getTitle(), requestDto.getStatus(), requestDto.getStartDate(), requestDto.getFinishDate(),
@@ -48,6 +45,7 @@ public class EventService {
 
     public EventResponseDto findById (Long id) {
         Event entity = eventRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("해당 이벤트가 없습니다. id=" + id));
+        entity.updateStatus();
 
         if (entity.getType().equals("hashtag")) {
             return new HashtagEventResponseDto((Hashtag) entity);
@@ -64,13 +62,13 @@ public class EventService {
                 .map(EventListResponseDto::new)
                 .collect(Collectors.toList());
     }
-
+*/
     @Transactional
-    public void delete (String id) {
+    public void delete (Long id) {
         Event event = eventRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("해당 이벤트가 없습니다. id=" + id));
         // JpaRepository에서 이미 delete 메소드를 지원하고 있으니 이를 활용.
         // entity를 파라미터로 삭제할 수도 있고, deleteById 메소드를 이용하면 id로 삭제할 수도 있다.
         // 존재하는 Event인지 확인을 위해 entity 조회 후 그대로 삭제.
         eventRepository.delete(event);
-    }*/
+    }
 }
