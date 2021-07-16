@@ -1,5 +1,7 @@
 package com.rocketdan.serviceserver.service.event;
 
+import com.rocketdan.serviceserver.app.dto.event.EventResponseDto;
+import com.rocketdan.serviceserver.app.dto.event.hashtag.HashtagEventResponseDto;
 import com.rocketdan.serviceserver.app.dto.event.hashtag.HashtagEventSaveRequest;
 import com.rocketdan.serviceserver.app.dto.event.hashtag.HashtagEventUpdateRequest;
 import com.rocketdan.serviceserver.domain.event.Event;
@@ -43,12 +45,17 @@ public class EventService {
 
         return id;
     }
-/*
-    public EventResponseDto findById (String id) {
+
+    public EventResponseDto findById (Long id) {
         Event entity = eventRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("해당 이벤트가 없습니다. id=" + id));
+
+        if (entity.getType().equals("hashtag")) {
+            return new HashtagEventResponseDto((Hashtag) entity);
+        }
+
         return new EventResponseDto(entity);
     }
-
+/*
     @Transactional//(readOnly = true) // 나는 에러나서 일단 주석
     public List<EventListResponseDto> findAll() {
         return eventRepository.findAll().stream()

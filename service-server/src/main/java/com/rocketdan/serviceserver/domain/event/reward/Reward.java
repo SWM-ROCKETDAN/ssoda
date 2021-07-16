@@ -1,10 +1,10 @@
 package com.rocketdan.serviceserver.domain.event.reward;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.util.Optional;
 
 @Entity
 @Getter
@@ -12,6 +12,7 @@ import java.util.Optional;
 @NoArgsConstructor
 public class Reward {
     @Id
+    @JsonIgnore
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 

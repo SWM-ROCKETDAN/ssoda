@@ -3,6 +3,7 @@ package com.rocketdan.serviceserver.app;
 import com.rocketdan.serviceserver.app.dto.event.EventListResponseDto;
 import com.rocketdan.serviceserver.app.dto.event.EventResponseDto;
 import com.rocketdan.serviceserver.app.dto.event.EventSaveRequestDto;
+import com.rocketdan.serviceserver.app.dto.event.hashtag.HashtagEventResponseDto;
 import com.rocketdan.serviceserver.app.dto.event.hashtag.HashtagEventSaveRequest;
 import com.rocketdan.serviceserver.app.dto.event.hashtag.HashtagEventUpdateRequest;
 import com.rocketdan.serviceserver.domain.event.Event;
@@ -17,20 +18,20 @@ import java.util.List;
 @RestController
 public class EventApiController {
     private final EventService eventService;
-/*
-    @GetMapping("/api/v1/events")
-    public List<EventListResponseDto> retrieveAllEvents() {
-        return eventService.findAll();
-    }
+
+//    @GetMapping("/api/v1/events")
+//    public List<EventListResponseDto> retrieveAllEvents() {
+//        return eventService.findAll();
+//    }
 //    @GetMapping("/api/v1/events/")
 //    public EventListResponseDto retrieveEventList() {
 //        return eventService.findListById();
 //    }
 
     @GetMapping("/api/v1/events/{id}")
-    public EventResponseDto findById(@PathVariable String id) {
+    public EventResponseDto findById(@PathVariable Long id) {
         return eventService.findById(id);
-    }*/
+    }
 
     @PostMapping("/api/v1/events/hashtag")
     public Long save(@RequestBody HashtagEventSaveRequest event) {

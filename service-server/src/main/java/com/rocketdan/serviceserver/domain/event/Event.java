@@ -99,7 +99,8 @@ public abstract class Event {
         Optional.ofNullable(rewards).ifPresent(none -> this.rewards = rewards);
     }
 
-    public String getEtype() {
-        return this.getEtype();
+    public String getType() {
+        DiscriminatorValue annotation = this.getClass().getAnnotation(DiscriminatorValue.class);
+        return annotation.value();
     }
 }

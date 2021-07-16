@@ -16,7 +16,7 @@ import java.util.Optional;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@DiscriminatorValue("Hashtag")
+@DiscriminatorValue("hashtag")
 public class Hashtag extends Event {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
