@@ -27,7 +27,7 @@ class CreateEventStepScreen extends StatefulWidget {
 }
 
 class _CreateEventStepScreenState extends State<CreateEventStepScreen> {
-  int _step = 0;
+  int _step = 4;
   final maxStep = 7;
 
   // step 1: input event title
@@ -44,7 +44,7 @@ class _CreateEventStepScreenState extends State<CreateEventStepScreen> {
       Period(DateTime.now(), DateTime.now().add(Duration(days: 30)), 0);
 
   // step 5: select images
-  List<String> imageList = [];
+  List<String?> imageList = [null];
 
   // step 6: select requirements
   int requireCnt = 10;

@@ -21,7 +21,7 @@ class HeaderWithImages extends StatelessWidget {
           height: size.height * 0.4 - 15,
           decoration: BoxDecoration(
               image: DecorationImage(
-                  image: FileImage(File(event.images[0])), fit: BoxFit.cover)),
+                  image: FileImage(File(event.images[0]!)), fit: BoxFit.cover)),
         ),
         Positioned(
             bottom: 14,

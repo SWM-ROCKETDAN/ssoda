@@ -8,7 +8,7 @@ class Event {
   final String title;
   final List<Reward?> rewardList;
   final Period period;
-  final List<String> images;
+  final List<String?> images;
   final List<String> hashtagList;
   final List<bool> requireList;
   final Template template;
@@ -17,7 +17,7 @@ class Event {
   List<Reward?> get getRewardList => rewardList;
   List<String> get getHashtagList => hashtagList;
   Period get getPeriod => period;
-  List<String> get getImages => images;
+  List<String?> get getImages => images;
   List<bool> get getRequireList => requireList;
   Template get getTemplate => template;
 
