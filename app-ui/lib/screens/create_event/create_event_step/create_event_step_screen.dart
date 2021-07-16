@@ -229,7 +229,7 @@ class _CreateEventStepScreenState extends State<CreateEventStepScreen> {
 
   void _createPreview(BuildContext context) {
     Event event = Event(
-        title: titleTextController.value.text,
+        title: titleTextController.value.text.trim(),
         rewardList: rewardList.sublist(0, rewardList.length - 1),
         hashtagList: hashtagList,
         period: period,
