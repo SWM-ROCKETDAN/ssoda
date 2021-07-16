@@ -33,10 +33,13 @@ class _EventRewardState extends State<EventReward> {
                             child: Icon(
                           Icons.add,
                           size: 45,
-                          color: Colors.grey.shade400,
+                          color: Colors.black45,
                         )),
                       ]),
                       style: ButtonStyle(
+                          elevation: MaterialStateProperty.all<double>(0),
+                          side: MaterialStateProperty.all<BorderSide>(
+                              BorderSide(color: Colors.black26)),
                           overlayColor: MaterialStateProperty.all<Color>(
                               Colors.grey.shade300),
                           backgroundColor:

@@ -221,12 +221,14 @@ class _InputRewardInfoScreenState extends State<InputRewardInfoScreen> {
                     style: TextStyle(color: Colors.black45, fontSize: 10)))
           ]),
           style: ButtonStyle(
+              side: MaterialStateProperty.all<BorderSide>(
+                  BorderSide(color: Colors.black26)),
               shape: MaterialStateProperty.all<OutlinedBorder>(
                   RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(16))),
               backgroundColor: MaterialStateProperty.all<Color>(Colors.white),
               overlayColor: MaterialStateProperty.all<Color>(Colors.black12),
-              elevation: MaterialStateProperty.all<double>(3)),
+              elevation: MaterialStateProperty.all<double>(0)),
         ));
   }
 
