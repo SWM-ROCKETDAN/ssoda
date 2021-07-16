@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 
 const List<String> stepTextList = [
   '이벤트 제목을 입력해주세요',
-  '단계 별 보상을 등록해주세요',
-  'SNS 게시글에 포함될\n#해시태그를 추가해주세요',
+  '이벤트 보상을 등록해주세요',
+  'SNS 게시글에 꼭 들어갈\n#해시태그를 등록해주세요',
   '이벤트 기간을 설정해주세요',
   '이벤트를 대표하는\n이미지를 등록해주세요',
   '세부적인 요청사항을\n선택해주세요',
@@ -14,7 +14,7 @@ class StepText extends StatelessWidget {
   const StepText({
     Key? key,
     required int step,
-  })   : _step = step,
+  })  : _step = step,
         super(key: key);
 
   final int _step;

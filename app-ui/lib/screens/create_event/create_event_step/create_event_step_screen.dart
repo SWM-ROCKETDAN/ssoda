@@ -8,6 +8,8 @@ import 'components/event_require.dart';
 import 'components/event_template.dart';
 import 'components/step_text.dart';
 import 'components/step_progressbar.dart';
+import 'components/step_help.dart';
+import 'components/step_count.dart';
 import 'components/event_image.dart';
 
 import 'package:hashchecker/models/reward.dart';
@@ -25,7 +27,7 @@ class CreateEventStepScreen extends StatefulWidget {
 }
 
 class _CreateEventStepScreenState extends State<CreateEventStepScreen> {
-  int _step = 0;
+  int _step = 7;
   final maxStep = 7;
 
   // step 1: input event title
@@ -38,10 +40,11 @@ class _CreateEventStepScreenState extends State<CreateEventStepScreen> {
   List<String> hashtagList = [];
 
   // step 4: set event period
-  Period period = Period(DateTime.now(), DateTime.now(), true);
+  Period period =
+      Period(DateTime.now(), DateTime.now().add(Duration(days: 30)), 0);
 
   // step 5: select images
-  List<String> imageList = [];
+  List<String?> imageList = [null];
 
   // step 6: select requirements
   int requireCnt = 10;
@@ -55,8 +58,6 @@ class _CreateEventStepScreenState extends State<CreateEventStepScreen> {
   void initState() {
     super.initState();
     titleTextController = TextEditingController();
-
-    period = Period(DateTime.now(), DateTime.now(), true);
 
     for (int i = 0; i < requireCnt; i++) {
       requireList.add('#$i 세부 요청사항');
@@ -96,6 +97,7 @@ class _CreateEventStepScreenState extends State<CreateEventStepScreen> {
   Column buildBody(BuildContext context) {
     return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
       StepProgressbar(context: context, step: _step, maxStep: maxStep),
+      StepCount(step: _step, maxStep: maxStep),
       Expanded(
           child: Padding(
         padding: const EdgeInsets.all(20.0),
@@ -116,7 +118,10 @@ class _CreateEventStepScreenState extends State<CreateEventStepScreen> {
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        StepText(step: _step),
+        Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [StepText(step: _step), StepHelp(step: _step)]),
         SizedBox(height: 15),
         buildStepDetail(),
       ],
@@ -159,8 +164,8 @@ class _CreateEventStepScreenState extends State<CreateEventStepScreen> {
           _onNextStepButtonPressed(context);
         },
         style: ButtonStyle(
-            backgroundColor:
-                MaterialStateProperty.all<Color>(Colors.indigoAccent.shade700),
+            backgroundColor: MaterialStateProperty.all<Color>(
+                Theme.of(context).primaryColor),
             shape: MaterialStateProperty.all<OutlinedBorder>(
                 RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(27.0)))),
@@ -194,8 +199,8 @@ class _CreateEventStepScreenState extends State<CreateEventStepScreen> {
         }
         break;
       case 3:
-        if (!period.isPermanent &&
-            period.startDate.isAfter(period.finishDate)) {
+        if (period.finishDate != null &&
+            period.startDate.isAfter(period.finishDate!)) {
           _showValidationErrorSnackBar(context, '종료 날짜가 시작 날짜보다 앞서있어요!');
           return false;
         }
@@ -224,7 +229,7 @@ class _CreateEventStepScreenState extends State<CreateEventStepScreen> {
 
   void _createPreview(BuildContext context) {
     Event event = Event(
-        title: titleTextController.value.text,
+        title: titleTextController.value.text.trim(),
         rewardList: rewardList.sublist(0, rewardList.length - 1),
         hashtagList: hashtagList,
         period: period,

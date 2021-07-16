@@ -6,7 +6,7 @@ class StepProgressbar extends StatelessWidget {
     required this.maxStep,
     required int step,
     required this.context,
-  })   : _step = step,
+  })  : _step = step,
         super(key: key);
 
   final int maxStep;
@@ -17,7 +17,7 @@ class StepProgressbar extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       height: 3,
-      color: Colors.indigoAccent.shade700,
+      color: Theme.of(context).primaryColor,
       width: MediaQuery.of(context).size.width / maxStep * (_step + 1),
     );
   }
