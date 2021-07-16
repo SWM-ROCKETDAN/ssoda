@@ -69,12 +69,12 @@ class _HelpDialogState extends State<HelpDialog> {
         child: AnimatedCrossFade(
             firstCurve: Curves.easeInCirc,
             firstChild: Image.asset(
-              'assets/images/create-event-step-help/draft.png',
+              'assets/images/create_event_step_help/draft.png',
               width: MediaQuery.of(context).size.width * 0.8,
               fit: BoxFit.fitWidth,
             ),
             secondChild: Image.asset(
-              'assets/images/create-event-step-help/${_stepFileName[widget._step]}.png',
+              'assets/images/create_event_step_help/${_stepFileName[widget._step]}.png',
               width: MediaQuery.of(context).size.width * 0.8,
               fit: BoxFit.fitWidth,
             ),
