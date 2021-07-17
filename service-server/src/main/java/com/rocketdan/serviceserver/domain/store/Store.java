@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.util.List;
+import java.util.Optional;
 
 @Entity
 @Getter
@@ -54,5 +55,13 @@ public class Store {
         this.description = description;
         this.images = images;
         this.events = events;
+    }
+
+    public void update(String name, Integer category, Address address, String description, List<String> images) {
+        Optional.ofNullable(name).ifPresent(none -> this.name = name);
+        Optional.ofNullable(category).ifPresent(none -> this.category = category);
+        this.address = address;
+        this.description = description;
+        this.images = images;
     }
 }

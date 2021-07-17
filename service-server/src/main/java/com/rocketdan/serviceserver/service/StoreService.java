@@ -2,6 +2,7 @@ package com.rocketdan.serviceserver.service;
 
 import com.rocketdan.serviceserver.app.dto.store.StoreResponseDto;
 import com.rocketdan.serviceserver.app.dto.store.StoreSaveRequestDto;
+import com.rocketdan.serviceserver.app.dto.store.StoreUpdateRequestDto;
 import com.rocketdan.serviceserver.domain.store.Store;
 import com.rocketdan.serviceserver.domain.store.StoreRepository;
 import lombok.RequiredArgsConstructor;
@@ -17,6 +18,13 @@ public class StoreService {
     public Long save(StoreSaveRequestDto requestDto) {
         Store savedStore = requestDto.toEntity();
         return storeRepository.save(savedStore).getId();
+    }
+
+    @Transactional
+    public Long update(Long id, StoreUpdateRequestDto requestDto) {
+        Store store = storeRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("해당 이벤트가 없습니다. id=" + id));
+        store.update(requestDto.getName(), requestDto.getCategory(), requestDto.getAddress(), requestDto.getDescription(), requestDto.getImages());
+        return id;
     }
 
     public StoreResponseDto findById(Long id) {
