@@ -1,6 +1,5 @@
 package com.rocketdan.serviceserver.app.dto.store;
 
-import com.rocketdan.serviceserver.domain.event.Event;
 import com.rocketdan.serviceserver.domain.store.Address;
 import com.rocketdan.serviceserver.domain.store.Store;
 import lombok.Builder;

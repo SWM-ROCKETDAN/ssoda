@@ -1,5 +1,6 @@
 package com.rocketdan.serviceserver.app;
 
+import com.rocketdan.serviceserver.app.dto.store.StoreResponseDto;
 import com.rocketdan.serviceserver.app.dto.store.StoreSaveRequestDto;
 import com.rocketdan.serviceserver.service.StoreService;
 import lombok.RequiredArgsConstructor;
@@ -22,12 +23,12 @@ public class StoreApiController {
 //        return storeService.findListById();
 //    }
 
-//    @GetMapping("/api/v1/stores/{id}")
-//    public StoreResponseDto findById(@PathVariable Long id) {
-//        return storeService.findById(id);
-//    }
+    @GetMapping("/api/v1/stores/{id}")
+    public StoreResponseDto findById(@PathVariable Long id) {
+        return storeService.findById(id);
+    }
 
-    @PostMapping("/api/v1/store")
+    @PostMapping("/api/v1/stores")
     public Long save(@RequestBody StoreSaveRequestDto store) {
         return storeService.save(store);
     }
