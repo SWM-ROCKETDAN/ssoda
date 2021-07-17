@@ -1,14 +1,17 @@
 package com.rocketdan.serviceserver.service;
 
+import com.rocketdan.serviceserver.app.dto.store.StoreListResponseDto;
 import com.rocketdan.serviceserver.app.dto.store.StoreResponseDto;
 import com.rocketdan.serviceserver.app.dto.store.StoreSaveRequestDto;
 import com.rocketdan.serviceserver.app.dto.store.StoreUpdateRequestDto;
-import com.rocketdan.serviceserver.domain.event.Event;
 import com.rocketdan.serviceserver.domain.store.Store;
 import com.rocketdan.serviceserver.domain.store.StoreRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service
@@ -32,6 +35,13 @@ public class StoreService {
         Store entity = storeRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("해당 가게가 없습니다. id=" + id));
 
         return new StoreResponseDto(entity);
+    }
+
+    @Transactional(readOnly = true)
+    public List<StoreListResponseDto> findAll() {
+        return storeRepository.findAll().stream()
+                .map(StoreListResponseDto::new)
+                .collect(Collectors.toList());
     }
 
     @Transactional
