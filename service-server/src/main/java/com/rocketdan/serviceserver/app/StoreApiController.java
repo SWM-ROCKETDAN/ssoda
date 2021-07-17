@@ -37,8 +37,8 @@ public class StoreApiController {
         return storeService.update(id, requestDto);
     }
 
-//    @DeleteMapping("/api/v1/stores/{id}")
-//    public void delete(@PathVariable Long id) {
-//        storeService.delete(id);
-//    }
+    @DeleteMapping("/api/v1/stores/{id}")
+    public void delete(@PathVariable Long id) {
+        storeService.delete(id);
+    }
 }
