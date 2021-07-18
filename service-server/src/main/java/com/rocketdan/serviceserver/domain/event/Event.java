@@ -9,7 +9,7 @@ import javax.persistence.*;
 import java.util.*;
 
 @Entity
-@Inheritance(strategy = InheritanceType.JOINED)
+// @Inheritance(strategy = InheritanceType.JOINED)
 @DiscriminatorColumn(name = "ETYPE")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter

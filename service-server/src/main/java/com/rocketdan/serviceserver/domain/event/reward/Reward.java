@@ -17,9 +17,14 @@ public class Reward {
     private Long id;
 
     private Integer category;
+
+    @Column(nullable = false)
     private String name;
+
     private String image;
+
     private Integer price;
+
     private Integer count;
 
     public Reward(Integer category, String name, String image, Integer price, Integer count) {
