@@ -43,8 +43,8 @@ public class Store {
     private List<String> images;
 
     // 가게에서 개설한 이벤트 목록
-    @JsonManagedReference
-    @OneToMany(cascade = CascadeType.ALL)
+//    @JsonManagedReference
+    @OneToMany(mappedBy = "store", cascade = CascadeType.ALL)
     private List<Event> events;
 
     @Builder

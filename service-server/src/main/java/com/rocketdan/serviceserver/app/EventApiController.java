@@ -25,9 +25,9 @@ public class EventApiController {
         return eventService.findById(id);
     }
 
-    @PostMapping("/api/v1/events/hashtag")
-    public Long save(@RequestBody HashtagEventSaveRequest event) {
-        return eventService.save(event);
+    @PostMapping("/api/v1/stores/{store_id}/events/hashtag")
+    public Long save(@PathVariable Long store_id, @RequestBody HashtagEventSaveRequest event) {
+        return eventService.saveHashtagEvent(store_id, event);
     }
 
     @PutMapping("/api/v1/events/hashtag/{id}")

@@ -1,10 +1,11 @@
-package com.rocketdan.serviceserver.comain.event;
+package com.rocketdan.serviceserver.domain.event;
 
 
 import com.rocketdan.serviceserver.domain.event.EventRepository;
 import com.rocketdan.serviceserver.domain.event.reward.Reward;
 import com.rocketdan.serviceserver.domain.event.reward.RewardRepository;
 import com.rocketdan.serviceserver.domain.event.type.Hashtag;
+import com.rocketdan.serviceserver.domain.store.StoreRepository;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,8 +24,13 @@ public class RelationMappingTest {
     @Autowired
     private RewardRepository rewardRepository;
 
+    @Autowired
+    private StoreRepository storeRepository;
+
     @Test
     public void testOneToManyInsert() {
+        /*Store store1 = new Store
+
         Reward reward1 = new Reward(1, "name1", "img1", 1000, 100);
         Reward reward2 = new Reward(2, "name2", "img2", 2000, 50);
         rewardRepository.save(reward1);
@@ -43,6 +49,6 @@ public class RelationMappingTest {
         Hashtag event2 = new Hashtag("title2", 1, new Date(), new Date(), List.of("img3", "img4"),
                 List.of(reward3, reward4), List.of("bonjour", "안녕"), List.of(false, false, false), 1);
 
-        eventRepository.save(event2);
+        eventRepository.save(event2);*/
     }
 }

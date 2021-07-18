@@ -22,6 +22,7 @@ public class EventResponseDto {
     private List<String> images;
     private List<Reward> rewards;
     private String type;
+    private Long store_id;
 
     public EventResponseDto(Event entity) {
         this.id = entity.getId();
@@ -32,5 +33,6 @@ public class EventResponseDto {
         this.images = entity.getImages();
         this.rewards = entity.getRewards();
         this.type = entity.getType();
+        this.store_id = entity.getStore().getId();
     }
 }

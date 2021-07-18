@@ -21,9 +21,9 @@ public class StoreApiController {
         return storeService.findAll();
     }
 
-    @GetMapping("/api/v1/stores/{store_id}/events")
-    public List<EventListResponseDto> retrieveEventListById(Long store_id) {
-        return storeService.getEventListById(store_id);
+    @GetMapping("/api/v1/stores/{id}/events")
+    public List<EventListResponseDto> retrieveEventListById(@PathVariable Long id) {
+        return storeService.getEventListById(id);
     }
 
     // user 별 list
