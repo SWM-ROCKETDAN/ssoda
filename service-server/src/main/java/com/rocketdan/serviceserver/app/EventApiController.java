@@ -20,11 +20,6 @@ public class EventApiController {
         return eventService.findAll();
     }
 
-//    @GetMapping("/api/v1/events/")
-//    public EventListResponseDto retrieveEventList() {
-//        return eventService.findListById();
-//    }
-
     @GetMapping("/api/v1/events/{id}")
     public EventResponseDto findById(@PathVariable Long id) {
         return eventService.findById(id);
