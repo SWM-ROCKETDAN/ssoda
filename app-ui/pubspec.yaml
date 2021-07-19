@@ -16,6 +16,7 @@ dependencies:
   image_picker:
   carousel_slider: ^4.0.0
   cupertino_icons: ^1.0.3
+  fl_chart: ^0.36.2
 
 dev_dependencies:
   flutter_test:
