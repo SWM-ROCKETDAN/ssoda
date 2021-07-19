@@ -52,7 +52,7 @@ public abstract class Event {
     @ManyToOne
     private Store store;
 
-    public Event(String title, int status, Date startDate, Date finishDate, List<String> images, List<Reward> rewards, Store store) {
+    public Event(String title, Integer status, Date startDate, Date finishDate, List<String> images, List<Reward> rewards, Store store) {
         this.title = title;
         this.status = status;
         this.startDate = startDate;
@@ -66,7 +66,7 @@ public abstract class Event {
         Date time = new Date();
 
         // 강제로 종료된 이벤트이거나, 이미 종료된 이벤트의 경우.
-        if (this.status == 2) {
+        if (Optional.ofNullable(this.status).isPresent() && this.status == 2) {
             return;
         }
 
