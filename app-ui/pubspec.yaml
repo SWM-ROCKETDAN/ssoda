@@ -17,6 +17,7 @@ dependencies:
   carousel_slider: ^4.0.0
   cupertino_icons: ^1.0.3
   fl_chart: ^0.36.2
+  number_display: ^3.0.0
 
 dev_dependencies:
   flutter_test:
