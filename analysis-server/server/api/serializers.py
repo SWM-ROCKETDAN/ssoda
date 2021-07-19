@@ -3,10 +3,9 @@ from .models import EventUser
 from .models import EventPost
 
 
-class EventUserSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = EventUser
-        fields = '__all__'
+class EventUserSerializer(serializers.Serializer):
+    post_url = serializers.CharField(max_length=255)
+    event_reward = serializers.JSONField()
 
 
 class EventPostSerializer(serializers.ModelSerializer):

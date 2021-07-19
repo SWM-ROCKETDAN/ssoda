@@ -6,13 +6,19 @@ from .serializers import EventPostSerializer
 import sys
 from rest_framework.views import APIView
 from django.views.generic import View
+from rest_framework.response import Response
+from .modules.crawl.instagram import crawl_instagram
+
 
 # 이벤트 참여, 보상
 class EventJoinView(APIView):
     # 이벤트 참여자 URL & 이벤트 정보 -> 보상
     def post(self, request):
-        post_serializer = EventPostSerializer(data=request.data)
-        return request
+        user_serializer = EventUserSerializer(data=request.data)
+        if user_serializer.is_valid():
+            print(crawl_instagram.crawl_post(user_serializer.data['post_url']))
+        return Response("ok", status=200)
+
 
 # 이벤트 결과, 분석
 class EventReportView(APIView):
