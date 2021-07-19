@@ -1,5 +1,6 @@
 package com.rocketdan.serviceserver.service;
 
+import com.rocketdan.serviceserver.app.dto.event.EventListResponseDto;
 import com.rocketdan.serviceserver.app.dto.store.StoreListResponseDto;
 import com.rocketdan.serviceserver.app.dto.store.StoreResponseDto;
 import com.rocketdan.serviceserver.app.dto.store.StoreSaveRequestDto;
@@ -35,6 +36,14 @@ public class StoreService {
         Store entity = storeRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("해당 가게가 없습니다. id=" + id));
 
         return new StoreResponseDto(entity);
+    }
+
+    public List<EventListResponseDto> getEventListById(Long id) {
+        Store entity = storeRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("해당 가게가 없습니다. id=" + id));
+
+        return entity.getEvents().stream()
+                .map(EventListResponseDto::new)
+                .collect(Collectors.toList());
     }
 
     @Transactional(readOnly = true)

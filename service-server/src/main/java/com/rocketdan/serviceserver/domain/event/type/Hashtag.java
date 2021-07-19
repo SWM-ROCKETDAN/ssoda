@@ -2,6 +2,7 @@ package com.rocketdan.serviceserver.domain.event.type;
 
 import com.rocketdan.serviceserver.domain.event.Event;
 import com.rocketdan.serviceserver.domain.event.reward.Reward;
+import com.rocketdan.serviceserver.domain.store.Store;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -32,9 +33,9 @@ public class Hashtag extends Event {
     private Integer template;
 
     @Builder
-    public Hashtag(String title, int status, Date startDate, Date finishDate, List<String> images, List<Reward> rewards,
-                   List<String> hashtags, List<Boolean> requirements, int template) {
-        super(title, status, startDate, finishDate, images, rewards);
+    public Hashtag(String title, Integer status, Date startDate, Date finishDate, List<String> images, List<Reward> rewards, Store store,
+                   List<String> hashtags, List<Boolean> requirements, Integer template) {
+        super(title, status, startDate, finishDate, images, rewards, store);
         this.hashtags = hashtags;
         this.requirements = requirements;
         this.template = template;

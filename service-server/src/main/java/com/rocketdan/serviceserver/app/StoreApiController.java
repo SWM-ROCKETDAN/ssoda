@@ -1,5 +1,6 @@
 package com.rocketdan.serviceserver.app;
 
+import com.rocketdan.serviceserver.app.dto.event.EventListResponseDto;
 import com.rocketdan.serviceserver.app.dto.store.StoreListResponseDto;
 import com.rocketdan.serviceserver.app.dto.store.StoreResponseDto;
 import com.rocketdan.serviceserver.app.dto.store.StoreSaveRequestDto;
@@ -18,6 +19,11 @@ public class StoreApiController {
     @GetMapping("/api/v1/stores")
     public List<StoreListResponseDto> retrieveAllStores() {
         return storeService.findAll();
+    }
+
+    @GetMapping("/api/v1/stores/{id}/events")
+    public List<EventListResponseDto> retrieveEventListById(@PathVariable Long id) {
+        return storeService.getEventListById(id);
     }
 
     // user 별 list
