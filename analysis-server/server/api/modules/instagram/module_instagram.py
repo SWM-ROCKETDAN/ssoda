@@ -1,4 +1,5 @@
-from .join.crawl import crawl_instagram
+from .join.crawl.crawl_instagram_post import crawl_post
+from .join.crawl.crawl_instagram_user import crawl_user
 
 class ModuleInstagram:
     # 게시물과 유저를 동시에 크롤링 한다.
@@ -21,9 +22,11 @@ class ModuleInstagram:
         self.user_update_date = None
 
     def crawl_all(self, post_url):
-        data_post = crawl_instagram.crawl_post(post_url)
-        data_user = crawl_instagram.crawl_user(data_post[''])
-        self.post_url = data_post['url']
-        self.post_status = data_post['']
-        pass
+        crawl_post(post_url)
+        crawl_user(self.user_sns_id)
+
+    def get_post(self):
+        post = {
+
+        }
 
