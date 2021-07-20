@@ -27,6 +27,19 @@ class ModuleInstagram:
 
     def get_post(self):
         post = {
+            'url': self.post_url,
+            'status': self.post_status,
+            'upload_date': self.post_upload_date,
+            'private_date': self.post_private_date,
+            'delete_data': self.post_delete_date,
+            'like_count': self.post_like_count,
+            'comment_count': self.post_comment_count,
+            'hashtags': self.post_hashtags,
+            'update_date': self.post_update_date,
+        }
+        return post
+
+    def get_user(self):
+        user = {
 
         }
-
