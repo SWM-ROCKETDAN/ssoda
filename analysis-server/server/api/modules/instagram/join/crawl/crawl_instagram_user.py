@@ -12,7 +12,7 @@ def crawl_user(self, user_id):
     response = urlopen(proxy_url)
     soup = BeautifulSoup(response, "html.parser")
     user_meta = str(soup.find('meta', property="og:description"))
-    print(user_meta)
+
     # preprocessing
     for c in "., ":
         user_meta = user_meta.replace(c, "")

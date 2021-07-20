@@ -4,23 +4,27 @@ from .serializers import JoinSerializer
 from .modules.instagram.join.crawl import crawl_instagram
 from .models import JoinPost
 from .models import JoinUser
-
+from .modules.instagram.module_instagram import ModuleInstagram
 import pprint
 
 
 # 이벤트 참여, 보상
 class JoinView(APIView):
     # 이벤트 참여자 URL & 이벤트 정보 -> 보상
-    def post(self, request):
+    @staticmethod
+    def post(request):
         join_serializer = JoinSerializer(data=request.data)
         if join_serializer.is_valid():
-            data = crawl_instagram.crawl_all(join_serializer.data['url'])
-            data_p, data_u = data[0], data[1]
-            pprint.pprint(data)
-            m_ju = JoinUser(**data_u)
-            m_ju.save()
-            m_jp = JoinPost(event_id=1, user_id=m_ju.id, **data_p)
-            m_jp.save()
+            event_id = join_serializer.data['event_id']
+            post_url = join_serializer.data['url']
+            instagram = ModuleInstagram()
+            instagram.crawl_all(post_url)
+
+            model_join_user = JoinUser(**instagram.get_user())
+            model_join_user.save()
+            model_join_post = JoinPost(event_id=event_id, user_id= model_join_user.id, **instagram.get_post())
+            model_join_post.save()
+
         return Response("ok", status=200)
 
 

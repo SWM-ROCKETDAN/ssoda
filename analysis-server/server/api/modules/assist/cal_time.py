@@ -8,7 +8,6 @@ def get_now_time():
 
 def get_datetime(time):
     date_time = datetime.datetime.strptime(time, '%Y-%m-%dT%H:%M:%S')
-    print(date_time)
     return date_time
 
 
