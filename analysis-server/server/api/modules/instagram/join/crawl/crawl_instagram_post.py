@@ -1,13 +1,13 @@
 from bs4 import BeautifulSoup
 from urllib.request import urlopen
-from server.api.modules.join import proxy
-import server.api.modules.join.cal_time as cal_time
+from server.api.modules.assist import proxy
+from server.api.modules.assist import cal_time
 import server.secret.config as config
 
 import json
 
 
-def do_crawl_post(post_url):
+def do_crawl_post(self, post_url):
     proxy_url = proxy.get_url(post_url)
     response = urlopen(proxy_url)
     soup = BeautifulSoup(response, "html.parser")
@@ -57,8 +57,22 @@ def do_crawl_post(post_url):
     # maintain
     hashtag_data = ','.join(hashtag_data)
 
+    self.post_url = post_url
+    self.post_status = status
+    self.post_upload_date = upload
+    self.post_private_date = None
+    self.post_delete_date = None
+    self.post_like_count = likes
+    self.post_comment_count = comments
+    self.post_hashtags = hashtag_data
+    self.post_update_date = update
+
+    self.user_sns_id = instagram_id
+    self.user_sns_type = 'INSTAGRAM'
+
     # post
     post = {
+        'hello': "test",
         'url': post_url,
         'status': status,
         'upload_date': upload,

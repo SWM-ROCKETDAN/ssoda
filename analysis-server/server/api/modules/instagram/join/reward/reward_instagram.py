@@ -1,7 +1,7 @@
 import server.secret.config as config
-import server.api.modules.reward.instagram.reward_instagram_user as reward_instagram_user
-import server.api.modules.reward.instagram.reward_instagram_post as reward_instagram_post
-import server.api.modules.reward.instagram.reward_instagram_prev as reward_instagram_prev
+import server.api.modules.instagram.join.reward.reward_instagram_user as reward_instagram_user
+import server.api.modules.instagram.join.reward.reward_instagram_post as reward_instagram_post
+import server.api.modules.instagram.join.reward.reward_instagram_prev as reward_instagram_prev
 
 
 # 모든 점수를 합산

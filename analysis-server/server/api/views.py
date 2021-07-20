@@ -1,12 +1,7 @@
-from django.http import HttpResponse, HttpRequest, JsonResponse
-from django.shortcuts import render
-from rest_framework import generics
-import sys
 from rest_framework.views import APIView
-from django.views.generic import View
 from rest_framework.response import Response
 from .serializers import JoinSerializer
-from .modules.join.instagram import crawl_instagram
+from .modules.instagram.join.crawl import crawl_instagram
 from .models import JoinPost
 from .models import JoinUser
 
@@ -19,7 +14,7 @@ class JoinView(APIView):
     def post(self, request):
         join_serializer = JoinSerializer(data=request.data)
         if join_serializer.is_valid():
-            data = crawl_instagram.crawl_post_and_user(join_serializer.data['url'])
+            data = crawl_instagram.crawl_all(join_serializer.data['url'])
             data_p, data_u = data[0], data[1]
             pprint.pprint(data)
             m_ju = JoinUser(**data_u)

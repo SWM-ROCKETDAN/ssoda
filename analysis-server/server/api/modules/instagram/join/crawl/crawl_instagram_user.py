@@ -1,9 +1,10 @@
 from bs4 import BeautifulSoup
 from urllib.request import urlopen
-from server.api.modules.join import proxy
+from server.api.modules.assist import proxy
+from server.api.modules.assist import cal_time
 import re
 import server.secret.config as config
-import server.api.modules.join.cal_time as cal_time
+
 
 def do_crawl_user(user_url):
     proxy_url = proxy.get_url(user_url)
