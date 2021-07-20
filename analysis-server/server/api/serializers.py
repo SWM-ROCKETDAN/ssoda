@@ -3,8 +3,9 @@ from .models import JoinPost
 from .models import JoinUser
 
 
-class JoinUserSerializer(serializers.Serializer):
+class JoinSerializer(serializers.Serializer):
     url = serializers.CharField(max_length=255)
+    event_id = serializers.IntegerField()
     event_reward = serializers.JSONField()
 
 

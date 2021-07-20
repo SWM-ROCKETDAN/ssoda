@@ -61,16 +61,20 @@ def do_crawl_post(post_url):
     post = {
         'url': post_url,
         'status': status,
-        'type': config.SnsType.INSTAGRAM,
         'upload_date': upload,
         'private_date': None,
         'delete_data': None,
-        'like_count ': likes,
-        'comment_count ': comments,
-        'hashtags ': hashtag_data,
+        'like_count': likes,
+        'comment_count': comments,
+        'hashtags': hashtag_data,
         'update_date': update,
+    }
+
+    user = {
+        'sns_id': instagram_id,
+        'sns_type': 'INSTAGRAM',
     }
 
     account_url = 'https://www.instagram.com/' + instagram_id
 
-    return post, account_url
+    return post, user

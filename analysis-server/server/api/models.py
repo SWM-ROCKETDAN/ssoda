@@ -119,9 +119,8 @@ class DjangoSession(models.Model):
 
 
 class JoinPost(models.Model):
-    id = models.IntegerField(primary_key=True)
     event_id = models.IntegerField()
-    user_id = models.IntegerField()
+    user = models.ForeignKey('JoinUser', models.DO_NOTHING)
     url = models.CharField(max_length=255)
     status = models.IntegerField()
     upload_date = models.DateTimeField()
@@ -138,7 +137,6 @@ class JoinPost(models.Model):
 
 
 class JoinUser(models.Model):
-    id = models.IntegerField(primary_key=True)
     sns_id = models.CharField(max_length=255)
     sns_type = models.CharField(max_length=255)
     sns_status = models.IntegerField()

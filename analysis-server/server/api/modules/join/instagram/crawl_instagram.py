@@ -11,7 +11,7 @@ def crawl_user(user_url):
 
 
 def crawl_post_and_user(post_url):
-    post_data, user_url = do_crawl_post(post_url)
-    user_data = do_crawl_user(user_url)
+    post_data, user_data = do_crawl_post(post_url)
+    user_data.update(do_crawl_user('https://www.instagram.com/' + user_data['sns_id']))
 
     return post_data, user_data
