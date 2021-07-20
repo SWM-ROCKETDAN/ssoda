@@ -1,4 +1,4 @@
-import server.api.modules.crawl.instagram.crawl_instagram as ci
+import server.api.modules.join.instagram.crawl_instagram as ci
 import server.secret.test_url as test_url
 import pprint
 

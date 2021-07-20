@@ -1,7 +1,7 @@
 from bs4 import BeautifulSoup
 from urllib.request import urlopen
-from server.api.modules.crawl import proxy
-import server.api.modules.crawl.cal_time as cal_time
+from server.api.modules.join import proxy
+import server.api.modules.join.cal_time as cal_time
 import server.secret.config as config
 
 import json
@@ -47,7 +47,7 @@ def do_crawl_post(post_url):
 
     # uploadDate
     if 'uploadDate' in post_data:
-        upload = post_data['uploadDate']
+        upload = cal_time.get_datetime(post_data['uploadDate'])
     else:
         upload = ''
 
@@ -55,25 +55,20 @@ def do_crawl_post(post_url):
     update = cal_time.get_now_time()
 
     # maintain
-    maintain = cal_time.cal_time_gap(update, upload)
+    hashtag_data = ','.join(hashtag_data)
 
     # post
     post = {
         'url': post_url,
-        'update': update,
         'status': status,
         'type': config.SnsType.INSTAGRAM,
-        'period': {
-            'upload': upload,
-            'deleted': '',
-            'maintain': maintain,
-        },
-        'desc': {
-            'id': instagram_id,
-            'likes': likes,
-            'comments': comments,
-            'hashtags': hashtag_data,
-        },
+        'upload_date': upload,
+        'private_date': None,
+        'delete_data': None,
+        'like_count ': likes,
+        'comment_count ': comments,
+        'hashtags ': hashtag_data,
+        'update_date': update,
     }
 
     account_url = 'https://www.instagram.com/' + instagram_id

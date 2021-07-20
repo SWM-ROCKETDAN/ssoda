@@ -1,6 +1,6 @@
 from bs4 import BeautifulSoup
 from urllib.request import urlopen
-from server.api.modules.crawl import proxy
+from server.api.modules.join import proxy
 import re
 
 

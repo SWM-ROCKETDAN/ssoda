@@ -2,8 +2,14 @@ import datetime
 
 
 def get_now_time():
-    now = datetime.datetime.now().strftime('%Y-%m-%dT%H:%M:%S')
+    now = datetime.datetime.now()
     return now
+
+
+def get_datetime(time):
+    date_time = datetime.datetime.strptime(time, '%Y-%m-%dT%H:%M:%S')
+    print(date_time)
+    return date_time
 
 
 def cal_time_gap(start, end):
