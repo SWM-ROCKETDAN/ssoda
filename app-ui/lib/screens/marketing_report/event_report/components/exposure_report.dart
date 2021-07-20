@@ -44,12 +44,12 @@ class ExposureReport extends StatelessWidget {
                     style: TextStyle(color: kThemeColor, fontSize: 32)),
                 TextSpan(text: ' 명에게 노출되었습니다'),
               ])),
-          SizedBox(height: 30),
+          SizedBox(height: kDefaultPadding * 2),
           SizedBox(
             width: size.width,
             child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
-                crossAxisAlignment: CrossAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
                   Column(
                     children: [
@@ -81,7 +81,7 @@ class ExposureReport extends StatelessWidget {
                                   fontSize: 18),
                             )
                           ]),
-                      SizedBox(height: 5),
+                      SizedBox(height: kDefaultPadding / 3),
                       Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [

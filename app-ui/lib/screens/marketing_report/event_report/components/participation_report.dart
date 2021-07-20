@@ -46,7 +46,7 @@ class ParticipationReport extends StatelessWidget {
                       style: TextStyle(color: kThemeColor, fontSize: 32)),
                   TextSpan(text: ' 명이 참여했습니다')
                 ])),
-            SizedBox(height: 30),
+            SizedBox(height: kDefaultPadding * 2),
             SizedBox(
               height: 140,
               child: Row(
@@ -106,7 +106,7 @@ class ParticipationReport extends StatelessWidget {
                         Expanded(
                           child: Column(
                             children: [
-                              SizedBox(height: 15),
+                              SizedBox(height: kDefaultPadding),
                               Row(children: [
                                 Icon(
                                   Icons.favorite,
@@ -120,7 +120,7 @@ class ParticipationReport extends StatelessWidget {
                                         color: Colors.pinkAccent,
                                         fontWeight: FontWeight.bold)),
                               ]),
-                              SizedBox(height: 10),
+                              SizedBox(height: kDefaultPadding * 2 / 3),
                               Row(children: [
                                 Icon(
                                   Icons.chat_bubble,
@@ -137,7 +137,7 @@ class ParticipationReport extends StatelessWidget {
                             ],
                           ),
                         ),
-                        SizedBox(height: 15),
+                        SizedBox(height: kDefaultPadding),
                         Text('누적 좋아요&덧글'),
                       ],
                     ),

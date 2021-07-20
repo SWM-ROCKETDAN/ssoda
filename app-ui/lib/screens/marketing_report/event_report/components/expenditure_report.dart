@@ -59,7 +59,7 @@ class _ExpenditureReportState extends State<ExpenditureReport> {
                         color: Theme.of(context).primaryColor, fontSize: 32)),
                 TextSpan(text: ' 원 사용하셨습니다'),
               ])),
-          SizedBox(height: 15),
+          SizedBox(height: kDefaultPadding),
           Container(
             height: 200,
             padding: const EdgeInsets.symmetric(horizontal: 15),

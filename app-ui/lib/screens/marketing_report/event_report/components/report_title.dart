@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:hashchecker/constants.dart';
 import 'package:hashchecker/models/event_report.dart';
 
 class ReportTitle extends StatelessWidget {
@@ -14,7 +15,7 @@ class ReportTitle extends StatelessWidget {
     return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
       Text(eventReport.eventName,
           style: TextStyle(color: Colors.white, fontSize: 20)),
-      SizedBox(height: 5),
+      SizedBox(height: kDefaultPadding / 3),
       Text('마케팅 성과 보고서',
           style: TextStyle(
               color: Colors.white, fontWeight: FontWeight.bold, fontSize: 28))

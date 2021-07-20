@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:hashchecker/constants.dart';
 import 'package:hashchecker/models/event_report.dart';
 
 import 'components/custom_appbar.dart';
@@ -51,11 +52,11 @@ class _EventReportScreenState extends State<EventReportScreen> {
                 children: [
                   CustomAppBar(),
                   SizedBox(
-                    height: 30,
+                    height: kDefaultPadding * 2,
                   ),
                   ReportTitle(eventReport: eventReport),
                   SizedBox(
-                    height: 15,
+                    height: kDefaultPadding,
                   ),
                   Expanded(
                     child: SingleChildScrollView(
