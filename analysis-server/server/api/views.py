@@ -4,8 +4,12 @@ from .serializers import JoinSerializer
 from .modules.instagram.join.crawl import crawl_instagram
 from .models import JoinPost
 from .models import JoinUser
-
+from api.modules import
 import pprint
+
+class JoinPostView(APIView):
+    def get(self, request):
+
 
 
 # 이벤트 참여, 보상
