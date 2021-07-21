@@ -14,7 +14,7 @@ class EventTitle extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 20),
-      child: Text(event.title,
+      child: AutoSizeText(event.title,
           style: TextStyle(fontWeight: FontWeight.bold, fontSize: 26),
           maxLines: 1,
           textAlign: TextAlign.center),
