@@ -23,7 +23,7 @@ class MyApp extends StatelessWidget {
           accentColor: kThemeColor,
           visualDensity: VisualDensity.adaptivePlatformDensity,
           scaffoldBackgroundColor: Colors.white),
-      home: EventReportScreen(),
+      home: CreateEventStepScreen(),
     );
   }
 

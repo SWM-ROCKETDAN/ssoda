@@ -233,7 +233,7 @@ class _CreateEventStepScreenState extends State<CreateEventStepScreen> {
         rewardList: rewardList.sublist(0, rewardList.length - 1),
         hashtagList: hashtagList,
         period: period,
-        images: imageList,
+        images: imageList.sublist(0, rewardList.length - 1),
         requireList: selectedRequireList,
         template: template);
     Navigator.push(
