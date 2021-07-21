@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:hashchecker/constants.dart';
 
 import 'components/event_title.dart';
 import 'components/event_reward.dart';
@@ -105,7 +106,7 @@ class _CreateEventStepScreenState extends State<CreateEventStepScreen> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Expanded(child: buildStepComponents()),
-            SizedBox(height: 15),
+            SizedBox(height: kDefaultPadding),
             buildNextStepButton(context)
           ],
         ),
@@ -122,7 +123,7 @@ class _CreateEventStepScreenState extends State<CreateEventStepScreen> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [StepText(step: _step), StepHelp(step: _step)]),
-        SizedBox(height: 15),
+        SizedBox(height: kDefaultPadding),
         buildStepDetail(),
       ],
     );

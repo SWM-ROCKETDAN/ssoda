@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:hashchecker/constants.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:hashchecker/models/reward_category.dart';
 import 'package:hashchecker/models/reward.dart';
@@ -78,17 +79,17 @@ class _InputRewardInfoScreenState extends State<InputRewardInfoScreen> {
                     _imagePath == null
                         ? buildImageUploadButton()
                         : buildRewardImage(),
-                    SizedBox(height: 30),
+                    SizedBox(height: kDefaultPadding * 2),
                     buildCategorySelection(context),
-                    SizedBox(height: 10),
+                    SizedBox(height: kDefaultPadding / 3 * 2),
                     NameInput(nameController: _nameController),
-                    SizedBox(height: 20),
+                    SizedBox(height: kDefaultPadding / 3 * 4),
                     PriceAndCountInput(
                         priceController: _priceController,
                         countController: _countController),
-                    SizedBox(height: 15),
+                    SizedBox(height: kDefaultPadding),
                     InputHelp(),
-                    SizedBox(height: 15),
+                    SizedBox(height: kDefaultPadding),
                   ],
                 ),
               ),
