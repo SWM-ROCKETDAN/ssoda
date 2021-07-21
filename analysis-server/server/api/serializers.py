@@ -3,9 +3,10 @@ from .models import JoinUser
 from .models import JoinPost
 
 
-class JoinPostSerializer(serializers.Serializer):
+class JoinPostSerializer(serializers.ModelSerializer):
     class Meta:
         model = JoinPost
+        fields = '__all__'
 
 
 class JoinSerializer(serializers.Serializer):
