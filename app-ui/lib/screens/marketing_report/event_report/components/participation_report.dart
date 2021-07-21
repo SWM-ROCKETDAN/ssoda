@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:hashchecker/constants.dart';
@@ -33,19 +34,20 @@ class ParticipationReport extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            RichText(
-                text: TextSpan(
+            AutoSizeText.rich(
+                TextSpan(
                     style: TextStyle(
                         color: Colors.black87,
                         fontWeight: FontWeight.bold,
                         fontSize: 18),
                     children: [
-                  TextSpan(text: '총 '),
-                  TextSpan(
-                      text: numberDisplay(eventReport.joinCount),
-                      style: TextStyle(color: kThemeColor, fontSize: 32)),
-                  TextSpan(text: ' 명이 참여했습니다')
-                ])),
+                      TextSpan(text: '총 '),
+                      TextSpan(
+                          text: numberDisplay(eventReport.joinCount),
+                          style: TextStyle(color: kThemeColor, fontSize: 32)),
+                      TextSpan(text: ' 명이 참여했습니다')
+                    ]),
+                maxLines: 1),
             SizedBox(height: kDefaultPadding * 2),
             SizedBox(
               height: 140,

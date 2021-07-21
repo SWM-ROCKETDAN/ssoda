@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:hashchecker/constants.dart';
 import 'package:hashchecker/models/event_report.dart';
 import 'package:number_display/number_display.dart';
+import 'package:auto_size_text/auto_size_text.dart';
 import 'dart:math';
 
 class ExpenditureReport extends StatefulWidget {
@@ -45,20 +46,22 @@ class _ExpenditureReportState extends State<ExpenditureReport> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          RichText(
-              text: TextSpan(
-                  style: TextStyle(
-                      color: Colors.black87,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 18),
-                  children: [
-                TextSpan(text: '총 '),
-                TextSpan(
-                    text: numberDisplay(widget.eventReport.costSum),
-                    style: TextStyle(
-                        color: Theme.of(context).primaryColor, fontSize: 32)),
-                TextSpan(text: ' 원 사용하셨습니다'),
-              ])),
+          AutoSizeText.rich(
+            TextSpan(
+                style: TextStyle(
+                    color: Colors.black87,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 18),
+                children: [
+                  TextSpan(text: '총 '),
+                  TextSpan(
+                      text: numberDisplay(widget.eventReport.costSum),
+                      style: TextStyle(
+                          color: Theme.of(context).primaryColor, fontSize: 32)),
+                  TextSpan(text: ' 원 사용하셨습니다'),
+                ]),
+            maxLines: 1,
+          ),
           SizedBox(height: kDefaultPadding),
           Container(
             height: 200,

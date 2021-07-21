@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:hashchecker/constants.dart';
 import 'package:hashchecker/models/event_report.dart';
@@ -31,19 +32,21 @@ class ExposureReport extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          RichText(
-              text: TextSpan(
-                  style: TextStyle(
-                      color: Colors.black87,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 18),
-                  children: [
-                TextSpan(text: '총 '),
-                TextSpan(
-                    text: numberDisplay(eventReport.exposeCount),
-                    style: TextStyle(color: kThemeColor, fontSize: 32)),
-                TextSpan(text: ' 명에게 노출되었습니다'),
-              ])),
+          AutoSizeText.rich(
+            TextSpan(
+                style: TextStyle(
+                    color: Colors.black87,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 18),
+                children: [
+                  TextSpan(text: '총 '),
+                  TextSpan(
+                      text: numberDisplay(eventReport.exposeCount),
+                      style: TextStyle(color: kThemeColor, fontSize: 32)),
+                  TextSpan(text: ' 명에게 노출되었습니다'),
+                ]),
+            maxLines: 1,
+          ),
           SizedBox(height: kDefaultPadding * 2),
           SizedBox(
             width: size.width,
