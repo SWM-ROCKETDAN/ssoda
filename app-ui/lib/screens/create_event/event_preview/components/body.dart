@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hashchecker/models/event.dart';
 
+import 'event_description.dart';
 import 'header_with_images.dart';
 import 'event_title.dart';
 import 'event_rewards.dart';
@@ -21,8 +22,10 @@ class Body extends StatelessWidget {
         child: Column(
       children: [
         HeaderWithImages(size: size, event: event),
-        SizedBox(height: 30),
+        SizedBox(height: 15),
         EventTitle(event: event),
+        SizedBox(height: 15),
+        EventDescription(event: event),
         Padding(
           padding: const EdgeInsets.fromLTRB(20, 0, 20, 20),
           child: Column(
