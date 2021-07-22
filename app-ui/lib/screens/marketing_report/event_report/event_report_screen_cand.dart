@@ -46,8 +46,9 @@ class _EventReportScreenState extends State<EventReportScreen> {
             headerSliverBuilder: (context, ext) => [
                   SliverAppBar(
                     leading: Icon(Icons.arrow_back),
+                    stretch: true,
                     flexibleSpace: FlexibleSpaceBar(
-                      stretchModes: [StretchMode.zoomBackground],
+                      stretchModes: [StretchMode.blurBackground],
                       title: Column(
                           mainAxisAlignment: MainAxisAlignment.end,
                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -68,7 +69,7 @@ class _EventReportScreenState extends State<EventReportScreen> {
                             )
                           ]),
                       background: Image.asset(
-                        'assets/images/453897.png',
+                        'assets/images/event_report/graph.png',
                         fit: BoxFit.cover,
                         color: Colors.indigoAccent.shade200,
                       ),

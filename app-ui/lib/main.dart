@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:hashchecker/constants.dart';
 import 'package:hashchecker/screens/create_event/create_event_step/create_event_step_screen.dart';
-import 'package:hashchecker/screens/marketing_report/event_report/event_report_screen.dart';
+import 'package:hashchecker/screens/marketing_report/event_report/event_report_screen_cand.dart';
 
 void main() {
   SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
@@ -23,7 +23,7 @@ class MyApp extends StatelessWidget {
           accentColor: kThemeColor,
           visualDensity: VisualDensity.adaptivePlatformDensity,
           scaffoldBackgroundColor: Colors.white),
-      home: CreateEventStepScreen(),
+      home: EventReportScreen(),
     );
   }
 
