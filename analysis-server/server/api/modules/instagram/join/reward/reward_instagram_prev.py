@@ -1,8 +1,26 @@
+import datetime
+
+
 # 이전 데이터 점수 계산 - 게시물 유지 기간, ER 지수
-def calculate_prev(post_upload, post_transition):
-    # 게시물 유지 기간 계산하기 -> event_post db에서 upload_date, transition_date 가져오기 -> 차이 계산
+def cal_time_gap(start, end):
+    try:
+        start_date = datetime.datetime.strptime(start, '%Y-%m-%dT%H:%M:%S')
+        end_date = datetime.datetime.strptime(end, '%Y-%m-%dT%H:%M:%S')
+        gap = start_date - end_date
+        return int(gap.days)
+    except:
+        return 0
 
-    # ER 지수 평균치 계산하기 -> event_user_id로 모든 게시물 검색 -> 좋아요 수 + 댓글 수 / 팔로워 수 평균치 계산
 
-    # 만약 첫 사용자라면 평균 점수 산출
+def reward_maintain(upload_date, delete_date):
+    maintain_day = cal_time_gap(upload_date, delete_date)
+    # 하루 넘으면 100점
+    if maintain_day >= 1:
+        return 100
+    else:
+        return 0
+
+
+def reward_er(like_counts, comment_counts):
+    er = like_counts + comment_counts
     pass

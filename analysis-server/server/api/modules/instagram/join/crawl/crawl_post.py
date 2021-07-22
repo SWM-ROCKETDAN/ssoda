@@ -7,14 +7,14 @@ import server.secret.config as config
 import json
 
 
-def crawl_post(post_url):
-    proxy_url = proxy.get_url(post_url)
+def crawl_post(url):
+    proxy_url = proxy.get_url(url)
     response = urlopen(proxy_url)
     soup = BeautifulSoup(response, "html.parser")
 
     # find data
     post_data = soup.find('script', type='application/ld+json').string
-    hashtag_data = [item["content"] for item in soup.find_all('meta', property="instapp:hashtags")]
+    hashtags = [item["content"] for item in soup.find_all('meta', property="instapp:hashtags")]
 
     # convert dictionary
     post_data = post_data[post_data.find('{'):]
@@ -23,9 +23,9 @@ def crawl_post(post_url):
 
     # user id
     if 'author' in post_data:
-        instagram_id = post_data['author']['alternateName'][1:]
+        sns_id = post_data['author']['alternateName'][1:]
     else:
-        instagram_id = post_data['alternateName'][1:]
+        sns_id = post_data['alternateName'][1:]
 
     # likes
     if 'commentCount' in post_data:
@@ -41,9 +41,9 @@ def crawl_post(post_url):
 
     # status
     if post_data['@type'] == 'Person':
-        status = config.PostStatus.DENY
+        status = config.Status.DENY
     else:
-        status = config.PostStatus.ING
+        status = config.Status.ING
 
     # uploadDate
     if 'uploadDate' in post_data:
@@ -55,17 +55,19 @@ def crawl_post(post_url):
     update = cal_time.get_now_time()
 
     # maintain
-    hashtag_data = ','.join(hashtag_data)
+    hashtags = ','.join(hashtags)
 
     post = {
-        'url': post_url,
+        'sns_id': sns_id,
+        'url': url,
+        'type': config.Type.INSTAGRAM,
         'status': status,
+        'like_count': likes,
+        'comment_count': comments,
+        'hashtags': hashtags,
         'upload_date': upload,
         'private_date': None,
         'delete_data': None,
-        'like_count': likes,
-        'comment_count': comments,
-        'hashtags': hashtag_data,
         'update_date': update,
     }
 

@@ -1,9 +1,9 @@
 # 게시물 점수 계산 - 해시태그
-def calculate_post(post_hashtag_list, event_hashtag_list) -> float:
+def reward_post(post_hashtags, event_hashtags) -> float:
     cnt = 0
 
-    for hashtag in event_hashtag_list:
-        if hashtag in post_hashtag_list:
+    for hashtag in event_hashtags:
+        if hashtag in post_hashtags:
             cnt += 1
 
-    return cnt / len(event_hashtag_list) * 100
+    return cnt / len(event_hashtags) * 100

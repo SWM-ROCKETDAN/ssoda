@@ -41,9 +41,9 @@ def crawl_post(self, post_url):
 
     # status
     if post_data['@type'] == 'Person':
-        status = config.PostStatus.DENY
+        status = config.Status.DENY
     else:
-        status = config.PostStatus.ING
+        status = config.Status.ING
 
     # uploadDate
     if 'uploadDate' in post_data:
