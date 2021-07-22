@@ -7,7 +7,7 @@ import server.secret.config as config
 import json
 
 
-def crawl_post(self, post_url):
+def crawl_post(post_url):
     proxy_url = proxy.get_url(post_url)
     response = urlopen(proxy_url)
     soup = BeautifulSoup(response, "html.parser")
@@ -57,18 +57,16 @@ def crawl_post(self, post_url):
     # maintain
     hashtag_data = ','.join(hashtag_data)
 
+    post = {
+        'url': post_url,
+        'status': status,
+        'upload_date': upload,
+        'private_date': None,
+        'delete_data': None,
+        'like_count': likes,
+        'comment_count': comments,
+        'hashtags': hashtag_data,
+        'update_date': update,
+    }
 
-    self.post_url = post_url
-    self.post_status = status
-    self.post_upload_date = upload
-    self.post_private_date = None
-    self.post_delete_date = None
-    self.post_like_count = likes
-    self.post_comment_count = comments
-    self.post_hashtags = hashtag_data
-    self.post_update_date = update
-
-    self.user_sns_id = instagram_id
-    self.user_sns_type = 'INSTAGRAM'
-
-    return True
+    return post

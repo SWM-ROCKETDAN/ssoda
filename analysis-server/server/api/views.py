@@ -1,19 +1,14 @@
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from django.http import Http404
-from .serializers import JoinSerializer
-from .modules.instagram.join.crawl import crawl_instagram
+from rest_framework import status
 from .models import JoinPost
 from .models import JoinUser
-import pprint
 from .serializers import JoinPostSerializer
-from rest_framework import status
+from .modules.instagram.join.crawl.crawl_post import crawl_post
 
-class JoinPostView(APIView):
-    """"
-    get : join_post
-    post : join_post
-    """
+
+class JoinView(APIView):
     def get_object(self, pk):
         try:
             return JoinPost.objects.get(pk=pk)
@@ -25,31 +20,11 @@ class JoinPostView(APIView):
         serializer = JoinPostSerializer(join_post)
         return Response(serializer.data)
 
+    # JoinPost 크롤링 후 업데이트
     def put(self, request, pk, format=None):
         join_post = self.get_object(pk)
-        serializer = JoinPostSerializer(join_post, data=request.data)
+        serializer = JoinPostSerializer(join_post, crawl_post(join_post.url), partial=True)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-
-# 이벤트 참여, 보상
-class JoinView(APIView):
-    # 이벤트 참여자 URL & 이벤트 정보 -> 보상
-    def post(self, request):
-        join_serializer = JoinSerializer(data=request.data)
-        if join_serializer.is_valid():
-            data = crawl_instagram.crawl_all(join_serializer.data['url'])
-            data_p, data_u = data[0], data[1]
-            pprint.pprint(data)
-            m_ju = JoinUser(**data_u)
-            m_ju.save()
-            m_jp = JoinPost(event_id=1, user_id=m_ju.id, **data_p)
-            m_jp.save()
-        return Response("ok", status=200)
-
-
-# 이벤트 결과, 분석
-class EventReportView(APIView):
-    pass
