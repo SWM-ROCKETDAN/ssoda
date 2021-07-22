@@ -1,11 +1,13 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:fl_chart/fl_chart.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:hashchecker/constants.dart';
 import 'package:hashchecker/models/event_report.dart';
 import 'package:number_display/number_display.dart';
+import 'package:number_slide_animation/number_slide_animation.dart';
 
-class ParticipationReport extends StatelessWidget {
+class ParticipationReport extends StatefulWidget {
   ParticipationReport({
     Key? key,
     required this.size,
@@ -14,14 +16,21 @@ class ParticipationReport extends StatelessWidget {
 
   final Size size;
   final EventReport eventReport;
+
+  @override
+  _ParticipationReportState createState() => _ParticipationReportState();
+}
+
+class _ParticipationReportState extends State<ParticipationReport> {
   final numberDisplay = createDisplay();
+  int? touchedIndex;
 
   @override
   Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.all(20),
-      width: size.width,
-      margin: const EdgeInsets.fromLTRB(5, 5, 5, 20),
+      width: widget.size.width,
+      margin: const EdgeInsets.fromLTRB(5, 5, 5, 15),
       decoration: BoxDecoration(boxShadow: [
         BoxShadow(
           color: Colors.black26,
@@ -34,20 +43,31 @@ class ParticipationReport extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            AutoSizeText.rich(
-                TextSpan(
+            Row(
+              children: [
+                Text('총 ',
                     style: TextStyle(
                         color: Colors.black87,
                         fontWeight: FontWeight.bold,
-                        fontSize: 18),
-                    children: [
-                      TextSpan(text: '총 '),
-                      TextSpan(
-                          text: numberDisplay(eventReport.joinCount),
-                          style: TextStyle(color: kThemeColor, fontSize: 32)),
-                      TextSpan(text: ' 명이 참여했습니다')
-                    ]),
-                maxLines: 1),
+                        fontSize: 18)),
+                NumberSlideAnimation(
+                    number: widget.eventReport.joinCount.toString(),
+                    duration: const Duration(seconds: 3),
+                    curve: Curves.easeOut,
+                    textStyle: TextStyle(
+                        color: kThemeColor,
+                        fontSize: 32,
+                        fontWeight: FontWeight.bold),
+                    format: NumberFormatMode.comma),
+                Text(
+                  ' 명이 참여했습니다',
+                  style: TextStyle(
+                      color: Colors.black87,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 18),
+                )
+              ],
+            ),
             SizedBox(height: kDefaultPadding * 2),
             SizedBox(
               height: 140,
@@ -64,35 +84,56 @@ class ParticipationReport extends StatelessWidget {
                           child: Stack(children: [
                             Center(
                               child: PieChart(PieChartData(
+                                  pieTouchData: PieTouchData(
+                                      touchCallback: (pieTouchResponse) {
+                                    setState(() {
+                                      final desiredTouch =
+                                          pieTouchResponse.touchInput
+                                                  is! PointerExitEvent &&
+                                              pieTouchResponse.touchInput
+                                                  is! PointerUpEvent;
+                                      if (desiredTouch &&
+                                          pieTouchResponse.touchedSection !=
+                                              null) {
+                                        touchedIndex = pieTouchResponse
+                                            .touchedSection!
+                                            .touchedSectionIndex;
+                                      } else {
+                                        touchedIndex = -1;
+                                      }
+                                    });
+                                  }),
                                   centerSpaceRadius: 30,
                                   sectionsSpace: 0,
                                   sections: [
                                     PieChartSectionData(
-                                        radius: 30,
-                                        title: eventReport.livePostCount
+                                        radius: touchedIndex == 0 ? 40 : 30,
+                                        title: widget.eventReport.livePostCount
                                             .toString(),
-                                        value: eventReport.livePostCount
+                                        value: widget.eventReport.livePostCount
                                             .toDouble(),
                                         color: kThemeColor,
                                         titleStyle: TextStyle(
-                                            fontSize: 12,
+                                            fontSize:
+                                                touchedIndex == 0 ? 16 : 12,
                                             fontWeight: FontWeight.bold)),
                                     PieChartSectionData(
-                                        radius: 30,
-                                        title: eventReport.deadPostCount
+                                        radius: touchedIndex == 1 ? 40 : 30,
+                                        title: widget.eventReport.deadPostCount
                                             .toString(),
-                                        value: eventReport.deadPostCount
+                                        value: widget.eventReport.deadPostCount
                                             .toDouble(),
                                         color: Colors.grey.shade300,
                                         titleStyle: TextStyle(
-                                            fontSize: 12,
+                                            fontSize:
+                                                touchedIndex == 1 ? 16 : 12,
                                             fontWeight: FontWeight.bold,
                                             color: Colors.black45))
                                   ])),
                             ),
                             Center(
                                 child: Text(
-                                    '${(eventReport.livePostCount / (eventReport.livePostCount + eventReport.deadPostCount) * 100).toStringAsFixed(1)}%',
+                                    '${(widget.eventReport.livePostCount / (widget.eventReport.livePostCount + widget.eventReport.deadPostCount) * 100).toStringAsFixed(1)}%',
                                     style: TextStyle(
                                         fontSize: 15,
                                         color: kThemeColor,
@@ -115,8 +156,19 @@ class ParticipationReport extends StatelessWidget {
                                   color: Colors.pinkAccent,
                                   size: 28,
                                 ),
-                                Text(
-                                    '  ${numberDisplay(eventReport.likeCount)}개',
+                                SizedBox(width: kDefaultPadding / 3),
+                                NumberSlideAnimation(
+                                  number:
+                                      widget.eventReport.likeCount.toString(),
+                                  duration: const Duration(seconds: 3),
+                                  curve: Curves.easeOut,
+                                  textStyle: TextStyle(
+                                      fontSize: 14,
+                                      color: Colors.pinkAccent,
+                                      fontWeight: FontWeight.bold),
+                                  format: NumberFormatMode.comma,
+                                ),
+                                Text(' 개',
                                     style: TextStyle(
                                         fontSize: 14,
                                         color: Colors.pinkAccent,
@@ -129,8 +181,19 @@ class ParticipationReport extends StatelessWidget {
                                   color: Color(0xFF22d095),
                                   size: 28,
                                 ),
-                                Text(
-                                    '  ${numberDisplay(eventReport.commentCount)}개',
+                                SizedBox(width: kDefaultPadding / 3),
+                                NumberSlideAnimation(
+                                  number: widget.eventReport.commentCount
+                                      .toString(),
+                                  duration: const Duration(seconds: 3),
+                                  curve: Curves.easeOut,
+                                  textStyle: TextStyle(
+                                      fontSize: 14,
+                                      color: Color(0xFF22d095),
+                                      fontWeight: FontWeight.bold),
+                                  format: NumberFormatMode.comma,
+                                ),
+                                Text(' 개',
                                     style: TextStyle(
                                         fontSize: 14,
                                         color: Color(0xFF22d095),

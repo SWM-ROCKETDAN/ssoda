@@ -7,6 +7,8 @@ import 'package:number_display/number_display.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'dart:math';
 
+import 'package:number_slide_animation/number_slide_animation.dart';
+
 class ExpenditureReport extends StatefulWidget {
   const ExpenditureReport({
     Key? key,
@@ -34,7 +36,7 @@ class _ExpenditureReportState extends State<ExpenditureReport> {
     return Container(
       padding: const EdgeInsets.all(20),
       width: widget.size.width,
-      margin: const EdgeInsets.fromLTRB(5, 5, 5, 20),
+      margin: const EdgeInsets.fromLTRB(5, 5, 5, 15),
       decoration: BoxDecoration(boxShadow: [
         BoxShadow(
           color: Colors.black26,
@@ -46,21 +48,31 @@ class _ExpenditureReportState extends State<ExpenditureReport> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          AutoSizeText.rich(
-            TextSpan(
+          Row(
+            children: [
+              Text('총 ',
+                  style: TextStyle(
+                      color: Colors.black87,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 18)),
+              NumberSlideAnimation(
+                number: widget.eventReport.costSum.toString(),
+                duration: const Duration(seconds: 3),
+                curve: Curves.easeOut,
+                textStyle: TextStyle(
+                    color: kThemeColor,
+                    fontSize: 32,
+                    fontWeight: FontWeight.bold),
+                format: NumberFormatMode.comma,
+              ),
+              Text(
+                ' 원 사용하였습니다',
                 style: TextStyle(
                     color: Colors.black87,
                     fontWeight: FontWeight.bold,
                     fontSize: 18),
-                children: [
-                  TextSpan(text: '총 '),
-                  TextSpan(
-                      text: numberDisplay(widget.eventReport.costSum),
-                      style: TextStyle(
-                          color: Theme.of(context).primaryColor, fontSize: 32)),
-                  TextSpan(text: ' 원 사용하셨습니다'),
-                ]),
-            maxLines: 1,
+              )
+            ],
           ),
           SizedBox(height: kDefaultPadding),
           Container(
@@ -86,8 +98,7 @@ class _ExpenditureReportState extends State<ExpenditureReport> {
       barRods: [
         BarChartRodData(
           y: isTouched ? y * 1.1 : y,
-          colors:
-              isTouched ? [Colors.deepPurpleAccent.shade700] : [kThemeColor],
+          colors: isTouched ? [Colors.indigoAccent.shade200] : [kThemeColor],
           width: width,
           backDrawRodData: BackgroundBarChartRodData(
             show: true,

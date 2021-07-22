@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:hashchecker/constants.dart';
 import 'package:hashchecker/models/event_report.dart';
 import 'package:number_display/number_display.dart';
+import 'package:number_slide_animation/number_slide_animation.dart';
 
 class ExposureReport extends StatelessWidget {
   ExposureReport({
@@ -20,7 +21,7 @@ class ExposureReport extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(20),
       width: size.width,
-      margin: const EdgeInsets.fromLTRB(5, 5, 5, 20),
+      margin: const EdgeInsets.fromLTRB(5, 5, 5, 15),
       decoration: BoxDecoration(boxShadow: [
         BoxShadow(
           color: Colors.black26,
@@ -32,20 +33,30 @@ class ExposureReport extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          AutoSizeText.rich(
-            TextSpan(
+          Row(
+            children: [
+              Text('총 ',
+                  style: TextStyle(
+                      color: Colors.black87,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 18)),
+              NumberSlideAnimation(
+                  number: eventReport.exposeCount.toString(),
+                  duration: const Duration(seconds: 3),
+                  curve: Curves.easeOut,
+                  textStyle: TextStyle(
+                      color: kThemeColor,
+                      fontSize: 32,
+                      fontWeight: FontWeight.bold),
+                  format: NumberFormatMode.comma),
+              Text(
+                ' 명에게 노출되었습니다',
                 style: TextStyle(
                     color: Colors.black87,
                     fontWeight: FontWeight.bold,
                     fontSize: 18),
-                children: [
-                  TextSpan(text: '총 '),
-                  TextSpan(
-                      text: numberDisplay(eventReport.exposeCount),
-                      style: TextStyle(color: kThemeColor, fontSize: 32)),
-                  TextSpan(text: ' 명에게 노출되었습니다'),
-                ]),
-            maxLines: 1,
+              )
+            ],
           ),
           SizedBox(height: kDefaultPadding * 2),
           SizedBox(
@@ -76,8 +87,18 @@ class ExposureReport extends StatelessWidget {
                                 style: TextStyle(
                                   color: kThemeColor,
                                 )),
+                            NumberSlideAnimation(
+                              number: eventReport.followerAvg.toString(),
+                              duration: const Duration(seconds: 3),
+                              curve: Curves.easeOut,
+                              textStyle: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  color: kThemeColor,
+                                  fontSize: 18),
+                              format: NumberFormatMode.comma,
+                            ),
                             Text(
-                              '${numberDisplay(eventReport.followerAvg)}명',
+                              '명',
                               style: TextStyle(
                                   fontWeight: FontWeight.bold,
                                   color: kThemeColor,
@@ -92,7 +113,17 @@ class ExposureReport extends StatelessWidget {
                                 style: TextStyle(
                                   color: kThemeColor,
                                 )),
-                            Text('${numberDisplay(eventReport.followerSum)}명',
+                            NumberSlideAnimation(
+                              number: eventReport.followerSum.toString(),
+                              duration: const Duration(seconds: 3),
+                              curve: Curves.easeOut,
+                              textStyle: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  color: kThemeColor,
+                                  fontSize: 18),
+                              format: NumberFormatMode.comma,
+                            ),
+                            Text('명',
                                 style: TextStyle(
                                     fontWeight: FontWeight.bold,
                                     color: kThemeColor,
