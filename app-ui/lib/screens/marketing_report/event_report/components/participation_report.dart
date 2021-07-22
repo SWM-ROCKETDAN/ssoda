@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/gestures.dart';
@@ -24,6 +26,22 @@ class ParticipationReport extends StatefulWidget {
 class _ParticipationReportState extends State<ParticipationReport> {
   final numberDisplay = createDisplay();
   int? touchedIndex;
+  int livePostCount = 0;
+
+  late Timer _everySecond;
+
+  @override
+  void initState() {
+    super.initState();
+    _everySecond = Timer.periodic(Duration(milliseconds: 80), (Timer t) {
+      if (livePostCount == widget.eventReport.livePostCount) return;
+      setState(() {
+        livePostCount += widget.eventReport.livePostCount ~/ 24;
+        if (livePostCount > widget.eventReport.livePostCount)
+          livePostCount = widget.eventReport.livePostCount;
+      });
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -108,10 +126,8 @@ class _ParticipationReportState extends State<ParticipationReport> {
                                   sections: [
                                     PieChartSectionData(
                                         radius: touchedIndex == 0 ? 40 : 30,
-                                        title: widget.eventReport.livePostCount
-                                            .toString(),
-                                        value: widget.eventReport.livePostCount
-                                            .toDouble(),
+                                        title: livePostCount.toString(),
+                                        value: livePostCount.toDouble(),
                                         color: kThemeColor,
                                         titleStyle: TextStyle(
                                             fontSize:
@@ -133,7 +149,7 @@ class _ParticipationReportState extends State<ParticipationReport> {
                             ),
                             Center(
                                 child: Text(
-                                    '${(widget.eventReport.livePostCount / (widget.eventReport.livePostCount + widget.eventReport.deadPostCount) * 100).toStringAsFixed(1)}%',
+                                    '${(livePostCount / (livePostCount + widget.eventReport.deadPostCount) * 100).toStringAsFixed(1)}%',
                                     style: TextStyle(
                                         fontSize: 15,
                                         color: kThemeColor,
@@ -163,14 +179,14 @@ class _ParticipationReportState extends State<ParticipationReport> {
                                   duration: const Duration(seconds: 3),
                                   curve: Curves.easeOut,
                                   textStyle: TextStyle(
-                                      fontSize: 14,
+                                      fontSize: 16,
                                       color: Colors.pinkAccent,
                                       fontWeight: FontWeight.bold),
                                   format: NumberFormatMode.comma,
                                 ),
                                 Text(' 개',
                                     style: TextStyle(
-                                        fontSize: 14,
+                                        fontSize: 16,
                                         color: Colors.pinkAccent,
                                         fontWeight: FontWeight.bold)),
                               ]),
@@ -188,14 +204,14 @@ class _ParticipationReportState extends State<ParticipationReport> {
                                   duration: const Duration(seconds: 3),
                                   curve: Curves.easeOut,
                                   textStyle: TextStyle(
-                                      fontSize: 14,
+                                      fontSize: 16,
                                       color: Color(0xFF22d095),
                                       fontWeight: FontWeight.bold),
                                   format: NumberFormatMode.comma,
                                 ),
                                 Text(' 개',
                                     style: TextStyle(
-                                        fontSize: 14,
+                                        fontSize: 16,
                                         color: Color(0xFF22d095),
                                         fontWeight: FontWeight.bold))
                               ])

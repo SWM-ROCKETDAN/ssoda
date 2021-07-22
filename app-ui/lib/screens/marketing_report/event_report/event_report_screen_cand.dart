@@ -25,7 +25,7 @@ class _EventReportScreenState extends State<EventReportScreen> {
     super.initState();
     eventReport = EventReport(
         eventName: '우리가게 SNS 해시태그 이벤트',
-        joinCount: 384,
+        joinCount: 4379,
         likeCount: 7423,
         livePostCount: 257,
         deadPostCount: 127,
@@ -45,10 +45,15 @@ class _EventReportScreenState extends State<EventReportScreen> {
         body: NestedScrollView(
             headerSliverBuilder: (context, ext) => [
                   SliverAppBar(
-                    leading: Icon(Icons.arrow_back),
-                    stretch: true,
+                    automaticallyImplyLeading: false,
+                    actions: [
+                      Padding(
+                        padding: const EdgeInsets.fromLTRB(0, 10, 20, 15),
+                        child: Icon(Icons.close),
+                      )
+                    ],
                     flexibleSpace: FlexibleSpaceBar(
-                      stretchModes: [StretchMode.blurBackground],
+                      titlePadding: const EdgeInsets.fromLTRB(20, 10, 0, 15),
                       title: Column(
                           mainAxisAlignment: MainAxisAlignment.end,
                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -56,7 +61,7 @@ class _EventReportScreenState extends State<EventReportScreen> {
                             AutoSizeText(
                               eventReport.eventName,
                               style:
-                                  TextStyle(color: Colors.white, fontSize: 12),
+                                  TextStyle(color: Colors.white, fontSize: 14),
                               maxLines: 1,
                             ),
                             AutoSizeText(
@@ -64,7 +69,7 @@ class _EventReportScreenState extends State<EventReportScreen> {
                               style: TextStyle(
                                   color: Colors.white,
                                   fontWeight: FontWeight.bold,
-                                  fontSize: 16),
+                                  fontSize: 18),
                               maxLines: 1,
                             )
                           ]),
@@ -80,7 +85,7 @@ class _EventReportScreenState extends State<EventReportScreen> {
                         borderRadius: BorderRadius.only(
                             bottomLeft: Radius.circular(0),
                             bottomRight: Radius.circular(0))),
-                    expandedHeight: size.height * 0.25,
+                    expandedHeight: size.height * 0.3,
                     pinned: true,
                   ),
                 ],
