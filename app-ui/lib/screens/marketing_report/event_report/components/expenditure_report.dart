@@ -120,7 +120,7 @@ class _ExpenditureReportState extends State<ExpenditureReport> {
     return BarChartData(
       barTouchData: BarTouchData(
         touchTooltipData: BarTouchTooltipData(
-            tooltipBgColor: Colors.blueGrey.withOpacity(0.8),
+            tooltipBgColor: Colors.white.withOpacity(0.8),
             getTooltipItem: (group, groupIndex, rod, rodIndex) {
               String rewardName;
               switch (group.x.toInt()) {
@@ -150,7 +150,7 @@ class _ExpenditureReportState extends State<ExpenditureReport> {
               return BarTooltipItem(
                 rewardName + '\n',
                 TextStyle(
-                  color: Colors.white,
+                  color: kThemeColor,
                   fontWeight: FontWeight.bold,
                   fontSize: 18,
                 ),
@@ -158,7 +158,7 @@ class _ExpenditureReportState extends State<ExpenditureReport> {
                   TextSpan(
                     text: '${numberDisplay(rod.y.toInt())}원',
                     style: TextStyle(
-                      color: Colors.amberAccent,
+                      color: Colors.black87,
                       fontSize: 16,
                       fontWeight: FontWeight.w500,
                     ),
