@@ -1,3 +1,4 @@
+/*
 import 'package:flutter/material.dart';
 import 'package:hashchecker/constants.dart';
 import 'package:hashchecker/models/event_report.dart';
@@ -78,3 +79,4 @@ class _EventReportScreenState extends State<EventReportScreen> {
     );
   }
 }
+*/

@@ -67,80 +67,47 @@ class ExposureReport extends StatelessWidget {
               )
             ],
           ),
-          SizedBox(height: kDefaultPadding * 2),
+          SizedBox(height: kDefaultPadding),
           SizedBox(
             width: size.width,
             child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                crossAxisAlignment: CrossAxisAlignment.end,
-                children: [
-                  Column(
-                    children: [
-                      Icon(
-                        Icons.group_outlined,
-                        size: 40,
-                      ),
-                      Text(
-                        '이벤트 참가자의',
-                        style: TextStyle(fontWeight: FontWeight.bold),
-                      )
-                    ],
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Column(children: [
+                  Icon(
+                    Icons.person_outline,
+                    size: 36,
                   ),
-                  Container(
-                    width: 155,
-                    child: Column(children: [
-                      Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text('평균 팔로워 수',
-                                style: TextStyle(
-                                  color: kThemeColor,
-                                )),
-                            NumberSlideAnimation(
-                              number: eventReport.followerAvg.toString(),
-                              duration: const Duration(seconds: 3),
-                              curve: Curves.easeOut,
-                              textStyle: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  color: kThemeColor,
-                                  fontSize: 18),
-                              format: NumberFormatMode.comma,
-                            ),
-                            Text(
-                              '명',
-                              style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  color: kThemeColor,
-                                  fontSize: 18),
-                            )
-                          ]),
-                      SizedBox(height: kDefaultPadding / 3),
-                      Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text('총 팔로워 수',
-                                style: TextStyle(
-                                  color: kThemeColor,
-                                )),
-                            NumberSlideAnimation(
-                              number: eventReport.followerSum.toString(),
-                              duration: const Duration(seconds: 3),
-                              curve: Curves.easeOut,
-                              textStyle: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  color: kThemeColor,
-                                  fontSize: 18),
-                              format: NumberFormatMode.comma,
-                            ),
-                            Text('명',
-                                style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    color: kThemeColor,
-                                    fontSize: 18))
-                          ]),
-                    ]),
+                  Row(
+                    children: [
+                      Text('1',
+                          style: TextStyle(
+                            color: kThemeColor,
+                            fontSize: 28,
+                            fontWeight: FontWeight.bold,
+                          )),
+                      Text('인 노출 당 ',
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold, fontSize: 14)),
+                      NumberSlideAnimation(
+                          number:
+                              (eventReport.costSum ~/ eventReport.exposeCount)
+                                  .toString(),
+                          duration: const Duration(seconds: 3),
+                          curve: Curves.easeOut,
+                          textStyle: TextStyle(
+                              color: kThemeColor,
+                              fontSize: 28,
+                              fontWeight: FontWeight.bold),
+                          format: NumberFormatMode.comma),
+                      Text('원 사용',
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold, fontSize: 14))
+                    ],
                   )
                 ]),
+              ],
+            ),
           ),
         ],
       ),

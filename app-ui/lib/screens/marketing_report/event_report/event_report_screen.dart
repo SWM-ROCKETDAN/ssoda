@@ -37,7 +37,7 @@ class _EventReportScreenState extends State<EventReportScreen> {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
-    String _dropdownValue = "전체 누적";
+    String _period = "전체 누적";
 
     return Scaffold(
         body: NestedScrollView(
@@ -97,7 +97,7 @@ class _EventReportScreenState extends State<EventReportScreen> {
                       child: Column(
                         children: [
                           DropdownButton<String>(
-                            value: _dropdownValue,
+                            value: _period,
                             icon: const Icon(
                               Icons.timeline_outlined,
                               color: kThemeColor,
@@ -111,7 +111,7 @@ class _EventReportScreenState extends State<EventReportScreen> {
                             ),
                             onChanged: (String? newValue) {
                               setState(() {
-                                _dropdownValue = newValue!;
+                                _period = newValue!;
                               });
                             },
                             items: <String>['어제 대비', '전 주 대비', '요일 별', '전체 누적']
@@ -126,7 +126,9 @@ class _EventReportScreenState extends State<EventReportScreen> {
                             }).toList(),
                           ),
                           ParticipationReport(
-                              size: size, eventReport: eventReport),
+                              size: size,
+                              eventReport: eventReport,
+                              period: _period),
                           ExposureReport(size: size, eventReport: eventReport),
                           ExpenditureReport(
                               size: size, eventReport: eventReport),

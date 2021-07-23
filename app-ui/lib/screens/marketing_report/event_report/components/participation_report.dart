@@ -10,14 +10,16 @@ import 'package:number_display/number_display.dart';
 import 'package:hashchecker/widgets/number_slider/number_slide_animation_widget.dart';
 
 class ParticipationReport extends StatefulWidget {
-  ParticipationReport({
-    Key? key,
-    required this.size,
-    required this.eventReport,
-  }) : super(key: key);
+  ParticipationReport(
+      {Key? key,
+      required this.size,
+      required this.eventReport,
+      required this.period})
+      : super(key: key);
 
   final Size size;
   final EventReport eventReport;
+  final String period;
 
   @override
   _ParticipationReportState createState() => _ParticipationReportState();
