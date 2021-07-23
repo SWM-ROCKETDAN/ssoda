@@ -7,7 +7,7 @@ import 'package:number_display/number_display.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'dart:math';
 
-import 'package:number_slide_animation/number_slide_animation.dart';
+import 'package:hashchecker/widgets/number_slider/number_slide_animation_widget.dart';
 
 class ExpenditureReport extends StatefulWidget {
   const ExpenditureReport({
