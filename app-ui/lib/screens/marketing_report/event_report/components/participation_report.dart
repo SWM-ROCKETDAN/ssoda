@@ -61,7 +61,9 @@ class _ParticipationReportState extends State<ParticipationReport> {
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Row(
+            Wrap(
+              crossAxisAlignment: WrapCrossAlignment.center,
+              runSpacing: 5.0,
               children: [
                 Text('총 ',
                     style: TextStyle(
@@ -78,7 +80,14 @@ class _ParticipationReportState extends State<ParticipationReport> {
                         fontWeight: FontWeight.bold),
                     format: NumberFormatMode.comma),
                 Text(
-                  ' 명이 참여했습니다',
+                  ' 명이 ',
+                  style: TextStyle(
+                      color: Colors.black87,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 18),
+                ),
+                Text(
+                  '참여했습니다',
                   style: TextStyle(
                       color: Colors.black87,
                       fontWeight: FontWeight.bold,

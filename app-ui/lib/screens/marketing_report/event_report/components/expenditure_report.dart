@@ -48,7 +48,9 @@ class _ExpenditureReportState extends State<ExpenditureReport> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Row(
+          Wrap(
+            crossAxisAlignment: WrapCrossAlignment.center,
+            runSpacing: 5.0,
             children: [
               Text('총 ',
                   style: TextStyle(
@@ -66,7 +68,14 @@ class _ExpenditureReportState extends State<ExpenditureReport> {
                 format: NumberFormatMode.comma,
               ),
               Text(
-                ' 원 사용하였습니다',
+                ' 원 ',
+                style: TextStyle(
+                    color: Colors.black87,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 18),
+              ),
+              Text(
+                '사용하였습니다',
                 style: TextStyle(
                     color: Colors.black87,
                     fontWeight: FontWeight.bold,

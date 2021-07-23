@@ -33,7 +33,9 @@ class ExposureReport extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Row(
+          Wrap(
+            crossAxisAlignment: WrapCrossAlignment.center,
+            runSpacing: 5.0,
             children: [
               Text('총 ',
                   style: TextStyle(
@@ -50,7 +52,14 @@ class ExposureReport extends StatelessWidget {
                       fontWeight: FontWeight.bold),
                   format: NumberFormatMode.comma),
               Text(
-                ' 명에게 노출되었습니다',
+                ' 명에게 ',
+                style: TextStyle(
+                    color: Colors.black87,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 18),
+              ),
+              Text(
+                '노출되었습니다',
                 style: TextStyle(
                     color: Colors.black87,
                     fontWeight: FontWeight.bold,
