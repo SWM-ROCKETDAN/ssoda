@@ -3,27 +3,30 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:hashchecker/constants.dart';
 import 'package:hashchecker/models/event_report.dart';
+import 'package:hashchecker/screens/marketing_report/event_report/components/delta_data.dart';
 import 'package:number_display/number_display.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'dart:math';
 
 import 'package:hashchecker/widgets/number_slider/number_slide_animation_widget.dart';
 
-class ExpenditureReport extends StatefulWidget {
-  const ExpenditureReport({
-    Key? key,
-    required this.size,
-    required this.eventReport,
-  }) : super(key: key);
+class ExpenditureReportDaily extends StatefulWidget {
+  const ExpenditureReportDaily(
+      {Key? key,
+      required this.size,
+      required this.eventReport,
+      required this.period})
+      : super(key: key);
 
   final Size size;
   final EventReport eventReport;
+  final String period;
 
   @override
-  _ExpenditureReportState createState() => _ExpenditureReportState();
+  _ExpenditureReportDailyState createState() => _ExpenditureReportDailyState();
 }
 
-class _ExpenditureReportState extends State<ExpenditureReport> {
+class _ExpenditureReportDailyState extends State<ExpenditureReportDaily> {
   final Duration animDuration = const Duration(milliseconds: 250);
   final numberDisplay = createDisplay();
 
@@ -39,15 +42,24 @@ class _ExpenditureReportState extends State<ExpenditureReport> {
       margin: const EdgeInsets.fromLTRB(5, 5, 5, 15),
       decoration: BoxDecoration(boxShadow: [
         BoxShadow(
-          color: Colors.black26,
-          offset: Offset(1.5, 1.5),
-          blurRadius: 2,
-          spreadRadius: 0,
+          color: Colors.green,
+          offset: Offset(0, 0),
+          blurRadius: 0.1,
+          spreadRadius: 1,
         )
       ], color: Colors.white, borderRadius: BorderRadius.circular(20)),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+            Text('오늘',
+                style: TextStyle(
+                    color: Colors.black87,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 14)),
+            DeltaData(
+                value: 380, icon: Icons.arrow_drop_down, color: Colors.green)
+          ]),
           Wrap(
             crossAxisAlignment: WrapCrossAlignment.center,
             runSpacing: 5.0,
@@ -58,7 +70,7 @@ class _ExpenditureReportState extends State<ExpenditureReport> {
                       fontWeight: FontWeight.bold,
                       fontSize: 18)),
               NumberSlideAnimation(
-                number: widget.eventReport.costSum.toString(),
+                number: (widget.eventReport.costSum ~/ 85).toString(),
                 duration: const Duration(seconds: 3),
                 curve: Curves.easeOut,
                 textStyle: TextStyle(
@@ -165,7 +177,7 @@ class _ExpenditureReportState extends State<ExpenditureReport> {
                 ),
                 children: <TextSpan>[
                   TextSpan(
-                    text: '${numberDisplay(rod.y.toInt())}원',
+                    text: '${numberDisplay(rod.y.toInt() ~/ 85)}원',
                     style: TextStyle(
                       color: Colors.black87,
                       fontSize: 16,

@@ -9,8 +9,8 @@ import 'package:hashchecker/models/event_report.dart';
 import 'package:number_display/number_display.dart';
 import 'package:hashchecker/widgets/number_slider/number_slide_animation_widget.dart';
 
-class ParticipationReport extends StatefulWidget {
-  ParticipationReport(
+class ParticipationReportTotal extends StatefulWidget {
+  ParticipationReportTotal(
       {Key? key,
       required this.size,
       required this.eventReport,
@@ -22,10 +22,11 @@ class ParticipationReport extends StatefulWidget {
   final String period;
 
   @override
-  _ParticipationReportState createState() => _ParticipationReportState();
+  _ParticipationReportTotalState createState() =>
+      _ParticipationReportTotalState();
 }
 
-class _ParticipationReportState extends State<ParticipationReport> {
+class _ParticipationReportTotalState extends State<ParticipationReportTotal> {
   final numberDisplay = createDisplay();
   int? touchedIndex;
   int livePostCount = 0;
@@ -35,10 +36,10 @@ class _ParticipationReportState extends State<ParticipationReport> {
   @override
   void initState() {
     super.initState();
-    _everySecond = Timer.periodic(Duration(milliseconds: 80), (Timer t) {
+    _everySecond = Timer.periodic(Duration(milliseconds: 90), (Timer t) {
       if (livePostCount == widget.eventReport.livePostCount) return;
       setState(() {
-        livePostCount += widget.eventReport.livePostCount ~/ 24;
+        livePostCount += widget.eventReport.livePostCount ~/ 27;
         if (livePostCount > widget.eventReport.livePostCount)
           livePostCount = widget.eventReport.livePostCount;
       });

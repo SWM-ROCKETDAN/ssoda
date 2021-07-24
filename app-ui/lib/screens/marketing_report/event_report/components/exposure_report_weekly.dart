@@ -6,17 +6,26 @@ import 'package:hashchecker/models/event_report.dart';
 import 'package:number_display/number_display.dart';
 import 'package:hashchecker/widgets/number_slider/number_slide_animation_widget.dart';
 
-class ExposureReport extends StatelessWidget {
-  ExposureReport({
-    Key? key,
-    required this.size,
-    required this.eventReport,
-  }) : super(key: key);
+import 'delta_data.dart';
+
+class ExposureReportWeekly extends StatefulWidget {
+  ExposureReportWeekly(
+      {Key? key,
+      required this.size,
+      required this.eventReport,
+      required this.period})
+      : super(key: key);
 
   final Size size;
   final EventReport eventReport;
+  final String period;
   final numberDisplay = createDisplay();
 
+  @override
+  _ExposureReportWeeklyState createState() => _ExposureReportWeeklyState();
+}
+
+class _ExposureReportWeeklyState extends State<ExposureReportWeekly> {
   @override
   Widget build(BuildContext context) {
     List<Color> gradientColors = [
@@ -26,19 +35,28 @@ class ExposureReport extends StatelessWidget {
 
     return Container(
       padding: const EdgeInsets.all(20),
-      width: size.width,
+      width: widget.size.width,
       margin: const EdgeInsets.fromLTRB(5, 5, 5, 15),
       decoration: BoxDecoration(boxShadow: [
         BoxShadow(
-          color: Colors.black26,
-          offset: Offset(1.5, 1.5),
-          blurRadius: 2,
-          spreadRadius: 0,
+          color: Colors.green,
+          offset: Offset(0, 0),
+          blurRadius: 0.1,
+          spreadRadius: 1,
         )
       ], color: Colors.white, borderRadius: BorderRadius.circular(20)),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+            Text('이번 주에',
+                style: TextStyle(
+                    color: Colors.black87,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 14)),
+            DeltaData(
+                value: 258, icon: Icons.arrow_drop_up, color: Colors.green)
+          ]),
           Wrap(
             crossAxisAlignment: WrapCrossAlignment.center,
             runSpacing: 5.0,
@@ -49,7 +67,7 @@ class ExposureReport extends StatelessWidget {
                       fontWeight: FontWeight.bold,
                       fontSize: 18)),
               NumberSlideAnimation(
-                  number: eventReport.exposeCount.toString(),
+                  number: (widget.eventReport.exposeCount ~/ 15).toString(),
                   duration: const Duration(seconds: 3),
                   curve: Curves.easeOut,
                   textStyle: TextStyle(
@@ -75,7 +93,7 @@ class ExposureReport extends StatelessWidget {
           ),
           SizedBox(height: kDefaultPadding),
           SizedBox(
-            width: size.width,
+            width: widget.size.width,
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
@@ -96,8 +114,7 @@ class ExposureReport extends StatelessWidget {
                         style: TextStyle(
                             fontWeight: FontWeight.bold, fontSize: 14)),
                     NumberSlideAnimation(
-                        number: (eventReport.costSum ~/ eventReport.exposeCount)
-                            .toString(),
+                        number: '6',
                         duration: const Duration(seconds: 3),
                         curve: Curves.easeOut,
                         textStyle: TextStyle(
@@ -110,54 +127,59 @@ class ExposureReport extends StatelessWidget {
                             fontWeight: FontWeight.bold, fontSize: 14))
                   ],
                 ),
+                SizedBox(
+                  height: kDefaultPadding,
+                ),
                 Container(
-                  width: size.width * 0.7,
-                  height: 120,
+                  width: widget.size.width * 0.7,
+                  height: 150,
                   child: LineChart(LineChartData(
                     gridData: FlGridData(
-                      show: false,
+                      show: true,
                       drawVerticalLine: true,
                       getDrawingHorizontalLine: (value) {
                         return FlLine(
-                          color: const Color(0xff37434d),
+                          color: Colors.black12,
                           strokeWidth: 1,
                         );
                       },
                       getDrawingVerticalLine: (value) {
                         return FlLine(
-                          color: const Color(0xff37434d),
+                          color: Colors.black12,
                           strokeWidth: 1,
                         );
                       },
                     ),
                     titlesData: FlTitlesData(
-                      show: false,
+                      show: true,
                       bottomTitles: SideTitles(
-                        showTitles: false,
-                        reservedSize: 22,
+                        showTitles: true,
+                        reservedSize: 14,
                         getTextStyles: (value) => const TextStyle(
                             color: Color(0xff68737d),
                             fontWeight: FontWeight.bold,
-                            fontSize: 16),
+                            fontSize: 12),
                         getTitles: (value) {
                           switch (value.toInt()) {
+                            case 0:
+                              return '6주 전';
                             case 2:
-                              return 'MAR';
-                            case 5:
-                              return 'JUN';
-                            case 8:
-                              return 'SEP';
+                              return '4주 전';
+                            case 4:
+                              return '2주 전';
+                            case 6:
+                              return '이번 주';
                           }
                           return '';
                         },
                         margin: 8,
                       ),
                       leftTitles: SideTitles(
-                        showTitles: false,
+                        showTitles: true,
                         getTextStyles: (value) => const TextStyle(
                           color: Color(0xff67727d),
                           fontWeight: FontWeight.bold,
-                          fontSize: 15,
+                          fontSize: 12,
                         ),
                         getTitles: (value) {
                           switch (value.toInt()) {
@@ -170,7 +192,7 @@ class ExposureReport extends StatelessWidget {
                           }
                           return '';
                         },
-                        reservedSize: 28,
+                        reservedSize: 14,
                         margin: 12,
                       ),
                     ),
@@ -179,26 +201,26 @@ class ExposureReport extends StatelessWidget {
                         border: Border.all(
                             color: const Color(0xff37434d), width: 0)),
                     minX: 0,
-                    maxX: 11,
+                    maxX: 6,
                     minY: 0,
                     maxY: 6,
                     lineBarsData: [
                       LineChartBarData(
                         spots: [
-                          FlSpot(0, 3),
-                          FlSpot(2.6, 2),
-                          FlSpot(4.9, 5),
-                          FlSpot(6.8, 3.1),
-                          FlSpot(8, 4),
-                          FlSpot(9.5, 3),
-                          FlSpot(11, 4),
+                          FlSpot(0, 1),
+                          FlSpot(1, 2),
+                          FlSpot(2, 5),
+                          FlSpot(3, 1),
+                          FlSpot(4, 3),
+                          FlSpot(5, 2),
+                          FlSpot(6, 5),
                         ],
-                        isCurved: true,
+                        isCurved: false,
                         colors: gradientColors,
                         barWidth: 5,
                         isStrokeCapRound: true,
                         dotData: FlDotData(
-                          show: false,
+                          show: true,
                         ),
                         belowBarData: BarAreaData(
                           show: true,
@@ -217,4 +239,16 @@ class ExposureReport extends StatelessWidget {
       ),
     );
   }
+}
+
+TValue case2<TOptionType, TValue>(
+  TOptionType selectedOption,
+  Map<TOptionType, TValue> branches, [
+  TValue? defaultValue,
+]) {
+  if (!branches.containsKey(selectedOption)) {
+    return defaultValue!;
+  }
+
+  return branches[selectedOption]!;
 }
