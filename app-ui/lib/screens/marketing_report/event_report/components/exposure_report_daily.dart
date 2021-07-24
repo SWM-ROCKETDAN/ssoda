@@ -1,4 +1,3 @@
-import 'package:auto_size_text/auto_size_text.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:hashchecker/constants.dart';
@@ -39,10 +38,10 @@ class _ExposureReportDailyState extends State<ExposureReportDaily> {
       margin: const EdgeInsets.fromLTRB(5, 5, 5, 15),
       decoration: BoxDecoration(boxShadow: [
         BoxShadow(
-          color: Colors.red,
-          offset: Offset(0, 0),
-          blurRadius: 0.1,
-          spreadRadius: 1,
+          color: Colors.black26,
+          offset: Offset(1.5, 1.5),
+          blurRadius: 2,
+          spreadRadius: 0,
         )
       ], color: Colors.white, borderRadius: BorderRadius.circular(20)),
       child: Column(

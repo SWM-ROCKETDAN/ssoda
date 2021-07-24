@@ -5,7 +5,6 @@ import 'package:hashchecker/constants.dart';
 import 'package:hashchecker/models/event_report.dart';
 import 'package:hashchecker/screens/marketing_report/event_report/components/delta_data.dart';
 import 'package:number_display/number_display.dart';
-import 'package:auto_size_text/auto_size_text.dart';
 import 'dart:math';
 
 import 'package:hashchecker/widgets/number_slider/number_slide_animation_widget.dart';
@@ -42,10 +41,10 @@ class _ExpenditureReportDailyState extends State<ExpenditureReportDaily> {
       margin: const EdgeInsets.fromLTRB(5, 5, 5, 15),
       decoration: BoxDecoration(boxShadow: [
         BoxShadow(
-          color: Colors.green,
-          offset: Offset(0, 0),
-          blurRadius: 0.1,
-          spreadRadius: 1,
+          color: Colors.black26,
+          offset: Offset(1.5, 1.5),
+          blurRadius: 2,
+          spreadRadius: 0,
         )
       ], color: Colors.white, borderRadius: BorderRadius.circular(20)),
       child: Column(
