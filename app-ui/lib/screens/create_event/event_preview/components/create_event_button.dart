@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:hashchecker/models/event.dart';
+import 'package:hashchecker/screens/event_join/event_join_screen.dart';
 
 class CreateEventButton extends StatelessWidget {
-  const CreateEventButton({
-    Key? key,
-  }) : super(key: key);
+  final Event event;
+  const CreateEventButton({Key? key, required this.event}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -16,7 +17,14 @@ class CreateEventButton extends StatelessWidget {
           style: TextStyle(
               color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold),
         ),
-        onPressed: () {},
+        onPressed: () {
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => EventJoinScreen(
+                        event: event,
+                      )));
+        },
         style: ButtonStyle(
             backgroundColor: MaterialStateProperty.all<Color>(
                 Theme.of(context).primaryColor),
