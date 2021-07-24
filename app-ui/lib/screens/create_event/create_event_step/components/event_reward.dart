@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:hashchecker/constants.dart';
 import 'package:hashchecker/models/reward.dart';
 import 'package:hashchecker/screens/create_event/input_reward_info/input_reward_info_screen.dart';
 import 'dart:io';
@@ -92,7 +93,7 @@ class _EventRewardState extends State<EventReward> {
                           ]),
                         ),
                       ))),
-        SizedBox(height: 15),
+        SizedBox(height: kDefaultPadding),
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [

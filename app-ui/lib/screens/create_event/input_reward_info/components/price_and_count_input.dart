@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:hashchecker/constants.dart';
 
 class PriceAndCountInput extends StatelessWidget {
   const PriceAndCountInput({
     Key? key,
     required TextEditingController priceController,
     required TextEditingController countController,
-  })   : _priceController = priceController,
+  })  : _priceController = priceController,
         _countController = countController,
         super(key: key);
 
@@ -30,7 +31,7 @@ class PriceAndCountInput extends StatelessWidget {
                     suffixText: '원'),
               ),
             ),
-            SizedBox(height: 15),
+            SizedBox(height: kDefaultPadding),
             Expanded(
               child: TextField(
                   textAlign: TextAlign.end,

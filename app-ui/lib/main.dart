@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:hashchecker/constants.dart';
 import 'package:hashchecker/screens/create_event/create_event_step/create_event_step_screen.dart';
+import 'package:hashchecker/screens/marketing_report/event_report/event_report_screen.dart';
 
 void main() {
   SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
@@ -16,12 +18,12 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'HashChecker',
       theme: ThemeData(
-          primarySwatch: _createMaterialColor(Colors.indigoAccent.shade700),
-          primaryColor: Colors.indigoAccent.shade700,
-          accentColor: Colors.indigoAccent.shade700,
+          primarySwatch: _createMaterialColor(kThemeColor),
+          primaryColor: kThemeColor,
+          accentColor: kThemeColor,
           visualDensity: VisualDensity.adaptivePlatformDensity,
           scaffoldBackgroundColor: Colors.white),
-      home: CreateEventStepScreen(),
+      home: EventReportScreen(),
     );
   }
 

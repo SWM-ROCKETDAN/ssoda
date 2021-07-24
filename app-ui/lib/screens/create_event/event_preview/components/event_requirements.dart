@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:hashchecker/constants.dart';
 import 'package:hashchecker/models/event.dart';
 
 class EventRequirements extends StatelessWidget {
@@ -14,7 +15,7 @@ class EventRequirements extends StatelessWidget {
     return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
       Text('추가 조건',
           style: TextStyle(fontWeight: FontWeight.bold, fontSize: 17)),
-      SizedBox(height: 15),
+      SizedBox(height: kDefaultPadding),
       Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: List.generate(

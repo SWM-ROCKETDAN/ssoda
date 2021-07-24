@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:hashchecker/constants.dart';
 import 'package:hashchecker/models/event.dart';
 
 class EventPeriod extends StatelessWidget {
@@ -14,7 +15,7 @@ class EventPeriod extends StatelessWidget {
     return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
       Text('이벤트 기간',
           style: TextStyle(fontWeight: FontWeight.bold, fontSize: 17)),
-      SizedBox(height: 15),
+      SizedBox(height: kDefaultPadding),
       event.period.finishDate == null
           ? Text('${event.period.startDate.toString().substring(0, 10)} ~ 계속')
           : Text(
