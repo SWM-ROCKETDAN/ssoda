@@ -1,6 +1,6 @@
 from django.contrib import admin
 from . import models
 
-admin.site.register(models.EventPost)
-admin.site.register(models.EventUser)
-# Register your models here.
+# admin.site.register(models.JoinPost)
+# admin.site.register(models.JoinUser)
+# # Register your models here.

@@ -1,19 +1,58 @@
-from django.http import HttpResponse, HttpRequest, JsonResponse
-from django.shortcuts import render
-from rest_framework import generics
-from .serializers import EventUserSerializer
-from .serializers import EventPostSerializer
-import sys
 from rest_framework.views import APIView
-from django.views.generic import View
+from rest_framework.response import Response
+from django.http import Http404
+from rest_framework import status
+from rest_framework import generics
+from .models import JoinPost
+from .models import JoinUser
+from .serializers import JoinPostSerializer
+from .modules.instagram.join.crawl.crawl_post import crawl_post
 
-# 이벤트 참여, 보상
-class EventJoinView(APIView):
-    # 이벤트 참여자 URL & 이벤트 정보 -> 보상
-    def post(self, request):
-        post_serializer = EventPostSerializer(data=request.data)
-        return request
 
-# 이벤트 결과, 분석
-class EventReportView(APIView):
-    pass
+class JoinPostView(APIView):
+    @staticmethod
+    def get_object(pk):
+        try:
+            return JoinPost.objects.get(pk=pk)
+        except JoinPost.DoesNotExist:
+            raise Http404
+
+    def get(self, request, pk, format=None):
+        join_post = self.get_object(pk)
+        serializer = JoinPostSerializer(join_post)
+        return Response(serializer.data)
+
+    def post(self, request, pk, format=None):
+        print(request.data)
+        serializer = JoinPostSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class JoinUserView(APIView):
+    def get_object(pk):
+        try:
+            return JoinUser.objects.get(pk=pk)
+        except JoinUser.DoesNotExist:
+            raise Http404
+
+    def get(self, request, pk, format=None):
+        join_user = self.get_object(pk)
+        serializer = JoinPostSerializer(join_user)
+        return Response(serializer.data)
+
+    # JoinUser 크롤링 후 업데이트
+    def put(self, request, pk, format=None):
+        join_user = self.get_object(pk)
+        serializer = JoinPostSerializer(join_user, crawl_post(join_user.sns_id), partial=True)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class JoinRewardView(APIView):
+    def get(self, request, pk_event, pk_post, pk_user, formant=None):
+        print(pk_event, pk_post, pk_user)
