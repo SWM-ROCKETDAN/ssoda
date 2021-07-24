@@ -53,4 +53,6 @@ class JoinUserView(APIView):
             return Response(serializer.data)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+
 class JoinRewardView(APIView):
+    def get(self, request, pk, formant=None):
