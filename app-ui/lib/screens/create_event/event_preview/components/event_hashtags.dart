@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:hashchecker/constants.dart';
 import 'package:hashchecker/models/event.dart';
 
 class EventHashtags extends StatelessWidget {
@@ -14,7 +15,7 @@ class EventHashtags extends StatelessWidget {
     return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
       Text('필수 해시태그',
           style: TextStyle(fontWeight: FontWeight.bold, fontSize: 17)),
-      SizedBox(height: 15),
+      SizedBox(height: kDefaultPadding),
       Wrap(
           alignment: WrapAlignment.start,
           crossAxisAlignment: WrapCrossAlignment.center,

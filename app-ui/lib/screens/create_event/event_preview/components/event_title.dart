@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hashchecker/models/event.dart';
+import 'package:auto_size_text/auto_size_text.dart';
 
 class EventTitle extends StatelessWidget {
   const EventTitle({
@@ -13,11 +14,10 @@ class EventTitle extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 20),
-      child: SingleChildScrollView(
-        scrollDirection: Axis.horizontal,
-        child: Text(event.title,
-            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25)),
-      ),
+      child: AutoSizeText(event.title,
+          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 26),
+          maxLines: 1,
+          textAlign: TextAlign.center),
     );
   }
 }

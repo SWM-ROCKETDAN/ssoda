@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:hashchecker/constants.dart';
 import 'package:hashchecker/models/event.dart';
 import 'dart:io';
 
@@ -15,7 +16,7 @@ class EventRewards extends StatelessWidget {
     return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
       Text('이벤트 상품',
           style: TextStyle(fontWeight: FontWeight.bold, fontSize: 17)),
-      SizedBox(height: 15),
+      SizedBox(height: kDefaultPadding),
       SizedBox(
         height: 116,
         child: ListView.separated(

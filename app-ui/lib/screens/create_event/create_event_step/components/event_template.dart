@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:hashchecker/constants.dart';
 import 'package:hashchecker/models/template.dart';
 import 'dart:io';
 
@@ -84,7 +85,7 @@ class _EventTemplateState extends State<EventTemplate> {
                   }),
             ),
           ),
-          SizedBox(height: 15),
+          SizedBox(height: kDefaultPadding),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: templateList.asMap().entries.map((entry) {
