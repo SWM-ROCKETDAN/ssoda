@@ -2,6 +2,7 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from django.http import Http404
 from rest_framework import status
+from rest_framework import generics
 from .models import JoinPost
 from .models import JoinUser
 from .serializers import JoinPostSerializer
@@ -21,18 +22,16 @@ class JoinPostView(APIView):
         serializer = JoinPostSerializer(join_post)
         return Response(serializer.data)
 
-    # JoinPost 크롤링 후 업데이트
-    def put(self, request, pk, format=None):
-        join_post = self.get_object(pk)
-        serializer = JoinPostSerializer(join_post, crawl_post(join_post.url), partial=True)
+    def post(self, request, pk, format=None):
+        print(request.data)
+        serializer = JoinPostSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
-            return Response(serializer.data)
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 class JoinUserView(APIView):
-    @staticmethod
     def get_object(pk):
         try:
             return JoinUser.objects.get(pk=pk)
@@ -55,4 +54,5 @@ class JoinUserView(APIView):
 
 
 class JoinRewardView(APIView):
-    def get(self, request, pk, formant=None):
+    def get(self, request, pk_event, pk_post, pk_user, formant=None):
+        print(pk_event, pk_post, pk_user)
