@@ -52,6 +52,7 @@ public class EventService {
         return id;
     }
 
+    @Transactional
     public EventResponseDto findById(Long id) {
         Event entity = eventRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("해당 이벤트가 없습니다. id=" + id));
         entity.updateStatus();
