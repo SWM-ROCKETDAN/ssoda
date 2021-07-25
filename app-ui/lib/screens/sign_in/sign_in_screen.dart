@@ -43,7 +43,7 @@ class _SignInScreenState extends State<SignInScreen> {
             Column(
               children: [
                 NaverSignInButton(size: size),
-                SizedBox(height: kDefaultPadding),
+                SizedBox(height: kDefaultPadding / 3 * 2),
                 KakaoSignInButton(size: size),
               ],
             ),

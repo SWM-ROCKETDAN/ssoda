@@ -17,11 +17,11 @@ class NaverSignInButton extends StatelessWidget {
           child: Row(children: [
             Image.asset(
               'assets/images/sign_in/naver_logo.png',
-              width: 50,
-              height: 50,
+              width: 30,
+              height: 30,
               fit: BoxFit.cover,
             ),
-            SizedBox(width: 10),
+            SizedBox(width: 5),
             Text(
               '네이버로 시작하기',
               style: TextStyle(
@@ -31,10 +31,12 @@ class NaverSignInButton extends StatelessWidget {
             )
           ]),
           style: ButtonStyle(
+              overlayColor: MaterialStateProperty.all<Color>(
+                  Colors.white.withOpacity(0.1)),
               padding: MaterialStateProperty.all<EdgeInsetsGeometry>(
-                  EdgeInsets.fromLTRB(20, 4, 20, 4)),
+                  EdgeInsets.fromLTRB(20, 8, 20, 8)),
               backgroundColor:
-                  MaterialStateProperty.all<Color>(Color(0xFF00C300)),
+                  MaterialStateProperty.all<Color>(Color(0xFF03C75A)),
               shape: MaterialStateProperty.all<OutlinedBorder>(
                   RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(30.0))))),

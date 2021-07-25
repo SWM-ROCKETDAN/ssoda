@@ -17,8 +17,8 @@ class KakaoSignInButton extends StatelessWidget {
           child: Row(children: [
             Image.asset(
               'assets/images/sign_in/kakao_logo.png',
-              width: 50,
-              height: 50,
+              width: 30,
+              height: 30,
               fit: BoxFit.cover,
             ),
             SizedBox(width: 10),
@@ -31,8 +31,10 @@ class KakaoSignInButton extends StatelessWidget {
             )
           ]),
           style: ButtonStyle(
+              overlayColor: MaterialStateProperty.all<Color>(
+                  Colors.white.withOpacity(0.1)),
               padding: MaterialStateProperty.all<EdgeInsetsGeometry>(
-                  EdgeInsets.fromLTRB(20, 4, 20, 4)),
+                  EdgeInsets.fromLTRB(20, 8, 20, 8)),
               backgroundColor:
                   MaterialStateProperty.all<Color>(Color(0xFFFFE600)),
               shape: MaterialStateProperty.all<OutlinedBorder>(
