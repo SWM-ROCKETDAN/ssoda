@@ -1,6 +1,5 @@
 package com.rocketdan.serviceserver.domain.store;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.rocketdan.serviceserver.domain.event.Event;
 import lombok.AccessLevel;
 import lombok.Builder;

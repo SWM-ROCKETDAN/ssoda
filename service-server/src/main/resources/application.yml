@@ -1,0 +1,16 @@
+spring:
+  jpa:
+    database: mysql
+    database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
+    generate-ddl: true
+    show-sql: true
+#    hibernate:
+#      ddl-auto: update
+    open-in-view: false
+  session:
+    store-type: jdbc
+    jdbc:
+      initialize-schema: always
+      table-name: SPRING_SESSION
+  profiles:
+    include: oauth, db

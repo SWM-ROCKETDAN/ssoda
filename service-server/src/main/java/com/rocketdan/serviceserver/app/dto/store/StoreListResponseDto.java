@@ -16,6 +16,6 @@ public class StoreListResponseDto {
         this.id = entity.getId();
         this.name = entity.getName();
         this.category = entity.getCategory();
-        this.images = entity.getImages();
+        this.images = List.copyOf(entity.getImages());
     }
 }
