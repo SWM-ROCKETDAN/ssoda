@@ -96,3 +96,5 @@ class StoreImages(models.Model):
     class Meta:
         managed = False
         db_table = 'store_images'
+
+class JoinPost(models.Model):
