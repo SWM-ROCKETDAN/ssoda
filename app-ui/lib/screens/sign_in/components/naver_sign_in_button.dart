@@ -1,19 +1,32 @@
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 
-class NaverSignInButton extends StatelessWidget {
+class NaverSignInButton extends StatefulWidget {
   const NaverSignInButton({
     Key? key,
     required this.size,
   }) : super(key: key);
 
   final Size size;
+  @override
+  _NaverSignInButtonState createState() => _NaverSignInButtonState();
+}
 
+class _NaverSignInButtonState extends State<NaverSignInButton> {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      width: size.width,
+      width: widget.size.width,
       child: TextButton(
-          onPressed: () {},
+          onPressed: () async {
+            final response = await http.get(
+                Uri.parse('https://jsonplaceholder.typicode.com/albums/1'));
+
+            if (response.statusCode == 200) {
+              print(response.body);
+            } else
+              print('error');
+          },
           child: Row(children: [
             Image.asset(
               'assets/images/sign_in/naver_logo.png',
