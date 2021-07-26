@@ -87,6 +87,9 @@ DATABASES = {
         'PASSWORD': DataBaseConfig.PASSWORD,
         'HOST': DataBaseConfig.HOST,
         'PORT': DataBaseConfig.PORT,
+        'OPTIONS': {
+            'init_command': "SET sql_mode='STRICT_TRANS_TABLES'"
+        },
     },
 }
 

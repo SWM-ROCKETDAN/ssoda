@@ -6,15 +6,15 @@ from .reward_prev import reward_er
 
 
 class Reward:
-    def __init__(self, join_post, join_user, event):
+    def __init__(self, join_post, join_user, rewards):
         self.join_post = join_post
         self.join_user = join_user
-        self.event = event
+        self.rewards = rewards
 
     # 모든 점수를 합산
     def reward_point(self) -> int:
         user_point = reward_user(self.join_user['follow_count']) * config.InstagramReward.CONSTANT_USER
-        post_point = reward_post(self.join_post['hashtags'], self.event['hashtags']) * config.InstagramReward.CONSTANT_POST
+        post_point = reward_post(self.join_post['hashtags'], self.rewards['hashtags']) * config.InstagramReward.CONSTANT_POST
         maintain_point = reward_maintain(self.join_post['upload_date'], self.join_post['delete_date']) * config.InstagramReward.CONSTANT_PREV
         er_point = reward_er(self.join_post['like_count'], self.join_post['comment_count']) * config.InstagramReward.CONSTANT_PREV
 
