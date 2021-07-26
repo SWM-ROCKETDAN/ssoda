@@ -32,12 +32,14 @@ public class StoreService {
         return id;
     }
 
+    @Transactional
     public StoreResponseDto findById(Long id) {
         Store entity = storeRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("해당 가게가 없습니다. id=" + id));
 
         return new StoreResponseDto(entity);
     }
 
+    @Transactional
     public List<EventListResponseDto> getEventListById(Long id) {
         Store entity = storeRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("해당 가게가 없습니다. id=" + id));
 

@@ -37,4 +37,5 @@ out/
 .vscode/
 
 ### env ###
-/src/main/resources/application.yml
+/src/main/resources/application-db.yml
+/src/main/resources/application-oauth.yml

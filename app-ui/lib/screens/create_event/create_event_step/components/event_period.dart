@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:hashchecker/constants.dart';
 import 'package:hashchecker/widgets/holo_date_picker/flutter_holo_date_picker.dart';
 
 class EventPeriod extends StatefulWidget {
@@ -76,7 +77,7 @@ class _EventPeriodState extends State<EventPeriod> {
             ),
             visible: _dropdownValue == _dateRangeList.last,
           ),
-          SizedBox(height: 15),
+          SizedBox(height: kDefaultPadding),
           DropdownButton(
               value: _dropdownValue,
               icon: const Icon(

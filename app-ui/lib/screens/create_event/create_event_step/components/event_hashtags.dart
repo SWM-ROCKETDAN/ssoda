@@ -66,6 +66,7 @@ class _EventHashtagsState extends State<EventHashtags> {
                 style: TextStyle(fontWeight: FontWeight.bold),
               ),
               content: TextField(
+                  autofocus: true,
                   controller: _controller,
                   decoration: InputDecoration(
                     hintText: '여기에 입력',

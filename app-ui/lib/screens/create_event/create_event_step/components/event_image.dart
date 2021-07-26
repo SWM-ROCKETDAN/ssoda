@@ -1,5 +1,6 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
+import 'package:hashchecker/constants.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
 
@@ -74,7 +75,7 @@ class _EventImageState extends State<EventImage> {
                           : Image.file(File(widget.imageList[index]),
                               fit: BoxFit.cover)))).cast<Widget>().toList(),
         )),
-        SizedBox(height: 15),
+        SizedBox(height: kDefaultPadding),
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
