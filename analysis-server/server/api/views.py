@@ -6,9 +6,13 @@ from rest_framework import generics
 from .models import JoinPost
 from .models import JoinUser
 from .models import EventRewards
+from .models import Event
+from .models import Reward
 from .serializers import JoinPostSerializer
 from .serializers import JoinUserSerializer
-
+from .serializers import EventRewardSerializer
+from .serializers import EventSerializer
+from .serializers import RewardSerializer
 from .modules.instagram.join.crawl import crawl
 
 
@@ -77,7 +81,7 @@ class JoinUserView(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     # 테스트 용 post 실제는 없음.
-    def post(self, request, pk, format=None):
+    def post(self, request, pk, formate=None):
         print(request.data)
         serializer = JoinUserSerializer(data=request.data)
         if serializer.is_valid():
@@ -90,15 +94,23 @@ class JoinRewardView(APIView):
     @staticmethod
     def get_object(pk):
         try:
-            return EventRewards.objects.filter(event_id=pk)
-        except EventRewards.DoesNotExist:
+            return Reward.objects.filter(pk=pk)
+        except Reward.DoesNotExist:
             raise Http404
 
     def get(self, request, pk_event, pk_post, pk_user, formant=None):
-        tmp = EventRewards.objects.all()
-        print(tmp)
-        print(pk_event, pk_post, pk_user)
+        reward_list = Reward.objects.all()
+        reward_list_serializer = RewardSerializer(data=reward_list, many=True)
+        reward_list_serializer.is_valid()
+        print(reward_list_serializer.data)
+        return Response(reward_list_serializer.data, status=status.HTTP_400_BAD_REQUEST)
 
 
 class ReportView(APIView):
+    # event = Event.objects.filter(pk=pk_event)
+    # # event_serializer = EventSerializer(data=event, many=True)
+    # # event_serializer.is_valid()
+    # # print(event_serializer)
+    # #
+    # # return Response(event_serializer.data, status=status.HTTP_400_BAD_REQUEST)
     pass

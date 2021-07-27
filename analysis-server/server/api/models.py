@@ -22,7 +22,7 @@ class Event(models.Model):
 
 
 class EventImages(models.Model):
-    event = models.ForeignKey(Event, models.DO_NOTHING)
+    event = models.ForeignKey(Event, related_name='event_images', on_delete=models.CASCADE)
     images = models.CharField(max_length=255)
 
     class Meta:
@@ -31,7 +31,7 @@ class EventImages(models.Model):
 
 class EventRewards(models.Model):
     event = models.ForeignKey(Event, models.DO_NOTHING)
-    rewards = models.OneToOneField('Reward', models.DO_NOTHING)
+    rewards = models.OneToOneField('Reward', related_name='event_id', on_delete=models.CASCADE)
 
     class Meta:
         db_table = 'event_rewards'
