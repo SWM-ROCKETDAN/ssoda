@@ -5,6 +5,3 @@ spring:
     database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
   session:
     store-type: jdbc
-    jdbc:
-      initialize-schema: always
-      table-name: SPRING_SESSION
