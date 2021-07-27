@@ -50,14 +50,14 @@ public class OAuthAttributes {
     // toEntity()
     // * User 엔티티를 생성한다.
     // * OAuthAttributes에서 엔티티를 생성하는 시점은 처음 가입할 때이다.
-    // * 가입할 때의 기본 권한을 GUEST로 주기 위해서 role 빌더값에는 Role.GUEST를 사용
+    // * 가입할 때의 기본 권한을 USER로 주기 위해서 role 빌더값에는 Role.USER를 사용
     // * OAuthAttributes 클래스 생성이 끝났으면 같은 패키지에 SessionUser 클래스를 생성한다.
     public User toEntity() {
         return User.builder()
                 .name(name)
                 .email(email)
                 .picture(picture)
-                .role(Role.GUEST)
+                .role(Role.USER)
                 .build();
     }
 }
