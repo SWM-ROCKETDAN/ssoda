@@ -24,9 +24,9 @@ def crawl_user(sns_id):
         'sns_id': sns_id,
         'url': user_url,
         'type': config.Type.INSTAGRAM,
-        'status': config.Status,
-        'follow_count': user_nums[1],
-        'post_count': user_nums[0],
+        'status': config.Status.ING,
+        'follow_count': user_nums[0],
+        'post_count': user_nums[2],
         'update_date': cal_time.get_now_time()
     }
 
