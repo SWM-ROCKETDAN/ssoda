@@ -1,14 +1,14 @@
-import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:flutter/material.dart';
 import 'package:hashchecker/constants.dart';
+import 'package:hashchecker/models/naver_sign_in.dart';
 
 import 'components/kakao_sign_in_button.dart';
 import 'components/naver_sign_in_button.dart';
 
 import 'dart:async';
 
-import 'package:flutter/services.dart';
 import 'package:flutter_naver_login/flutter_naver_login.dart';
+import 'package:flutter_web_auth/flutter_web_auth.dart';
 
 class SignInScreen extends StatefulWidget {
   const SignInScreen({Key? key}) : super(key: key);
@@ -18,17 +18,15 @@ class SignInScreen extends StatefulWidget {
 }
 
 class _SignInScreenState extends State<SignInScreen> {
-  bool isLogin = false;
+  final NaverSignIn naverSignIn = NaverSignIn(
+      isLogin: false,
+      accessToken: null,
+      expiresAt: null,
+      tokenType: null,
+      refreshToken: null,
+      accountInfo: AccountInfo(name: null, email: null));
 
-  String? accesToken;
-
-  String? expiresAt;
-
-  String? tokenType;
-
-  String? name;
-
-  String? refreshToken;
+  String? callbackResponse;
 
   @override
   Widget build(BuildContext context) {
@@ -38,110 +36,108 @@ class _SignInScreenState extends State<SignInScreen> {
       body: SafeArea(
         child: Padding(
             padding: const EdgeInsets.fromLTRB(20, 20, 20, 30),
-            child: Column(children: [
-              Expanded(
-                  child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      mainAxisSize: MainAxisSize.max,
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      children: <Widget>[
-                    Column(
-                      children: <Widget>[
-                        new Text('isLogin: $isLogin\n'),
-                        new Text('accessToken: $accesToken\n'),
-                        new Text('tokenType: $tokenType\n'),
-                        new Text('user: $name\n'),
-                      ],
-                    ),
-                    ElevatedButton(
-                        key: null,
-                        onPressed: buttonLoginPressed,
-                        child: Text(
-                          "LogIn",
-                          style: TextStyle(
-                              fontSize: 12.0,
-                              color: Colors.white,
-                              fontWeight: FontWeight.normal,
-                              fontFamily: "Roboto"),
-                        )),
-                    ElevatedButton(
-                        key: null,
-                        onPressed: buttonLogoutPressed,
-                        child: Text(
-                          "LogOut",
-                          style: TextStyle(
-                              fontSize: 12.0,
-                              color: Colors.white,
-                              fontWeight: FontWeight.normal,
-                              fontFamily: "Roboto"),
-                        )),
-                    ElevatedButton(
-                        key: null,
-                        onPressed: buttonTokenPressed,
-                        child: Text(
-                          "GetToken",
-                          style: TextStyle(
-                              fontSize: 12.0,
-                              color: Colors.white,
-                              fontWeight: FontWeight.normal,
-                              fontFamily: "Roboto"),
-                        )),
-                    ElevatedButton(
-                        key: null,
-                        onPressed: buttonGetUserPressed,
-                        child: Text(
-                          "GetUser",
-                          style: TextStyle(
-                              fontSize: 12.0,
-                              color: Colors.white,
-                              fontWeight: FontWeight.normal,
-                              fontFamily: "Roboto"),
-                        ))
-                  ])),
-              Column(
+            child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  NaverSignInButton(size: size),
-                  SizedBox(height: kDefaultPadding / 3 * 2),
-                  KakaoSignInButton(size: size),
-                ],
-              ),
-            ])),
+                  Expanded(
+                      child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      Text('네이버 SDK 로그인',
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold, fontSize: 24)),
+                      SizedBox(height: 5),
+                      Text('isLogin: ${naverSignIn.isLogin}'),
+                      SizedBox(height: 5),
+                      Text('accessToken: ${naverSignIn.accessToken}'),
+                      SizedBox(height: 5),
+                      Text('tokenType: ${naverSignIn.tokenType}'),
+                      SizedBox(height: 5),
+                      Text('expiresAt: ${naverSignIn.expiresAt}'),
+                      SizedBox(height: 5),
+                      Text('userName: ${naverSignIn.accountInfo!.name}'),
+                      SizedBox(height: 5),
+                      Text('userEmail: ${naverSignIn.accountInfo!.email}'),
+                      SizedBox(height: 30),
+                      Text('네이버 해경 로그인',
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold, fontSize: 24)),
+                      SizedBox(height: 5),
+                      Text('callbackResponse: $callbackResponse'),
+                    ],
+                  )),
+                  Column(
+                    children: [
+                      NaverSignInButton(
+                        size: size,
+                        signIn: naverSignInPressed,
+                        signOut: naverSignOutPressed,
+                        isLogin: naverSignIn.isLogin,
+                      ),
+                      SizedBox(height: kDefaultPadding / 3 * 2),
+                      KakaoSignInButton(size: size),
+                      SizedBox(height: kDefaultPadding / 3 * 2),
+                      SizedBox(
+                        width: size.width,
+                        child: ElevatedButton(
+                            onPressed: () async {
+                              final result = await FlutterWebAuth.authenticate(
+                                  url:
+                                      "http://ec2-3-37-85-236.ap-northeast-2.compute.amazonaws.com:8080/oauth2/authorization/naver",
+                                  callbackUrlScheme:
+                                      'com.rocketdan.hashchecker');
+                              print(result);
+                              setState(() {
+                                callbackResponse = result;
+                              });
+
+// Extract token from resulting url
+                            },
+                            child: Text('해경 로그인')),
+                      ),
+                    ],
+                  ),
+                ])),
       ),
     );
   }
 
-  Future<void> buttonLoginPressed() async {
+  Future<void> naverSignInPressed() async {
     NaverLoginResult res = await FlutterNaverLogin.logIn();
     setState(() {
-      name = res.account.nickname;
-      isLogin = true;
+      naverSignIn.isLogin = true;
     });
-    buttonTokenPressed();
-    buttonGetUserPressed();
+    getNaverToken();
+    getNaverUser();
   }
 
-  Future<void> buttonTokenPressed() async {
+  Future<void> getNaverToken() async {
     NaverAccessToken res = await FlutterNaverLogin.currentAccessToken;
     setState(() {
-      accesToken = res.accessToken;
-      tokenType = res.tokenType;
+      naverSignIn.accessToken = res.accessToken;
+      naverSignIn.tokenType = res.tokenType;
+      naverSignIn.expiresAt = res.expiresAt;
     });
   }
 
-  Future<void> buttonLogoutPressed() async {
+  Future<void> naverSignOutPressed() async {
     FlutterNaverLogin.logOut();
     setState(() {
-      isLogin = false;
-      accesToken = null;
-      tokenType = null;
-      name = null;
+      naverSignIn.isLogin = false;
+      naverSignIn.accessToken = null;
+      naverSignIn.tokenType = null;
+      naverSignIn.expiresAt = null;
+      naverSignIn.accountInfo!.name = null;
+      naverSignIn.accountInfo!.email = null;
     });
   }
 
-  Future<void> buttonGetUserPressed() async {
+  Future<void> getNaverUser() async {
     NaverAccountResult res = await FlutterNaverLogin.currentAccount();
     setState(() {
-      name = res.name;
+      naverSignIn.accountInfo!.name = res.name;
+      naverSignIn.accountInfo!.email = res.email;
     });
   }
 }
