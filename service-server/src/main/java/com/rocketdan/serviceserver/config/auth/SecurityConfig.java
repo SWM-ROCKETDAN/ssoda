@@ -38,7 +38,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .logoutSuccessUrl("/") // 로그아웃 성공 시 "/" 주소로 이동
                 .and()
                 .oauth2Login() // OAuth 2 로그인 기능에 대한 여러 설정의 진입점
-                .defaultSuccessUrl("hashchecker://")
+                .defaultSuccessUrl("com.rocketdan.hashchecker://")
                 .userInfoEndpoint() // OAuth 2 로그인 성공 이후 사용자 정보를 가져올 때의 설정 담당
                 // userService
                 // * 소셜 로그인 성공 시 후속 조치를 진행할 UserService 인터페이스의 구현체 등록
