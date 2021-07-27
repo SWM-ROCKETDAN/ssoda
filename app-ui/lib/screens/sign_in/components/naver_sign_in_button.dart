@@ -19,8 +19,8 @@ class _NaverSignInButtonState extends State<NaverSignInButton> {
       width: widget.size.width,
       child: TextButton(
           onPressed: () async {
-            final response = await http.get(
-                Uri.parse('https://jsonplaceholder.typicode.com/albums/1'));
+            final response = await http.get(Uri.parse(
+                'http://ec2-3-37-85-236.ap-northeast-2.compute.amazonaws.com:8080/oauth2/authorization/naver'));
 
             if (response.statusCode == 200) {
               print(response.body);

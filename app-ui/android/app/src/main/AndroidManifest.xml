@@ -5,7 +5,8 @@
 
    <application
         android:label="hashchecker"
-        android:icon="@mipmap/ic_launcher">
+        android:icon="@mipmap/ic_launcher"
+        android:useCleartextTraffic="true">
         <activity
             android:name=".MainActivity"
             android:launchMode="singleTop"
