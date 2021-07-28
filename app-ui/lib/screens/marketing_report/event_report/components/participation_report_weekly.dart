@@ -40,7 +40,7 @@ class _ParticipationReportWeeklyState extends State<ParticipationReportWeekly> {
     _everySecond = Timer.periodic(Duration(milliseconds: 90), (Timer t) {
       if (livePostCount == widget.eventReport.livePostCount) return;
       setState(() {
-        livePostCount += widget.eventReport.livePostCount ~/ 27;
+        livePostCount += widget.eventReport.livePostCount ~/ 20;
         if (livePostCount > widget.eventReport.livePostCount)
           livePostCount = widget.eventReport.livePostCount;
       });
@@ -184,7 +184,8 @@ class _ParticipationReportWeeklyState extends State<ParticipationReportWeekly> {
                                         fontWeight: FontWeight.bold))),
                           ]),
                         ),
-                        Text('게시글 유지 비율'),
+                        Text('게시글 유지 비율',
+                            style: TextStyle(fontWeight: FontWeight.bold)),
                       ],
                     ),
                     Column(
@@ -230,7 +231,7 @@ class _ParticipationReportWeeklyState extends State<ParticipationReportWeekly> {
                                   number:
                                       (widget.eventReport.commentCount ~/ 15)
                                           .toString(),
-                                  duration: const Duration(seconds: 3),
+                                  duration: kDefaultNumberSliderDuration,
                                   curve: Curves.easeOut,
                                   textStyle: TextStyle(
                                       fontSize: 16,
@@ -248,7 +249,8 @@ class _ParticipationReportWeeklyState extends State<ParticipationReportWeekly> {
                           ),
                         ),
                         SizedBox(height: kDefaultPadding),
-                        Text('누적 좋아요&덧글'),
+                        Text('누적 좋아요&덧글',
+                            style: TextStyle(fontWeight: FontWeight.bold)),
                       ],
                     ),
                   ]),

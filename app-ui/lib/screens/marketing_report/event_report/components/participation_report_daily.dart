@@ -40,7 +40,7 @@ class _ParticipationReportDailyState extends State<ParticipationReportDaily> {
     _everySecond = Timer.periodic(Duration(milliseconds: 90), (Timer t) {
       if (livePostCount == widget.eventReport.livePostCount) return;
       setState(() {
-        livePostCount += widget.eventReport.livePostCount ~/ 27;
+        livePostCount += widget.eventReport.livePostCount ~/ 20;
         if (livePostCount > widget.eventReport.livePostCount)
           livePostCount = widget.eventReport.livePostCount;
       });
@@ -184,7 +184,8 @@ class _ParticipationReportDailyState extends State<ParticipationReportDaily> {
                                         fontWeight: FontWeight.bold))),
                           ]),
                         ),
-                        Text('게시글 유지 비율'),
+                        Text('게시글 유지 비율',
+                            style: TextStyle(fontWeight: FontWeight.bold)),
                       ],
                     ),
                     Column(
@@ -248,7 +249,8 @@ class _ParticipationReportDailyState extends State<ParticipationReportDaily> {
                           ),
                         ),
                         SizedBox(height: kDefaultPadding),
-                        Text('누적 좋아요&덧글'),
+                        Text('누적 좋아요&덧글',
+                            style: TextStyle(fontWeight: FontWeight.bold)),
                       ],
                     ),
                   ]),

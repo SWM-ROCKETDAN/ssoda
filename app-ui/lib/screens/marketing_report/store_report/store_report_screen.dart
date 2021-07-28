@@ -37,7 +37,7 @@ class _StoreReportScreenState extends State<StoreReportScreen> {
           status: EventStatus.PROCEEDING),
       EventReportItem(
           eventName: '우리가게 7월 한정 쿠폰 이벤트',
-          guestPrice: 6,
+          guestPrice: 10,
           joinCount: 423,
           likeCount: 7318,
           rewardNameList: ['5000원 쿠폰', '10000원 쿠폰'],

@@ -122,7 +122,7 @@ class _EventReportScreenState extends State<EventReportScreen> {
                         )
                       ]),
                     ),
-                    backgroundColor: kThemeColor,
+                    backgroundColor: Colors.black87,
                     foregroundColor: Colors.green,
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.only(

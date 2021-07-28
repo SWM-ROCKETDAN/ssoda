@@ -60,7 +60,7 @@ class EventReportCard extends StatelessWidget {
                             right: 15,
                             child: Container(
                               padding: const EdgeInsets.fromLTRB(4, 1, 4, 2),
-                              width: 50,
+                              width: 60,
                               child: Center(
                                 child: Text(
                                   eventReportList[index].status ==
@@ -68,7 +68,7 @@ class EventReportCard extends StatelessWidget {
                                       ? '진행 중'
                                       : '종료',
                                   style: TextStyle(
-                                      fontSize: 12,
+                                      fontSize: 13,
                                       color: Colors.white,
                                       fontWeight: FontWeight.bold),
                                 ),
@@ -90,42 +90,49 @@ class EventReportCard extends StatelessWidget {
                               style: TextStyle(
                                   fontWeight: FontWeight.bold, fontSize: 18)),
                           SizedBox(height: kDefaultPadding / 2),
-                          Row(
-                            children: [
-                              Icon(
-                                Icons.attach_money,
-                                size: 16,
-                                color: Colors.black54,
-                              ),
-                              SizedBox(width: kDefaultPadding / 5),
-                              Text(
-                                '${numberDisplay(eventReportList[index].guestPrice)}원',
-                                style: TextStyle(
-                                    color: Colors.black54, fontSize: 14),
-                              ),
-                              SizedBox(width: kDefaultPadding / 2),
-                              Icon(
-                                Icons.group,
-                                size: 16,
-                                color: Colors.black54,
-                              ),
-                              SizedBox(width: kDefaultPadding / 3),
-                              Text(
-                                  '${numberDisplay(eventReportList[index].joinCount)}명',
+                          IntrinsicHeight(
+                            child: Row(
+                              children: [
+                                Icon(
+                                  Icons.attach_money,
+                                  size: 16,
+                                  color: Colors.black54,
+                                ),
+                                Text(
+                                  '${numberDisplay(eventReportList[index].guestPrice)}원',
                                   style: TextStyle(
-                                      color: Colors.black54, fontSize: 14)),
-                              SizedBox(width: kDefaultPadding / 2),
-                              Icon(
-                                Icons.favorite,
-                                size: 16,
-                                color: Colors.black54,
-                              ),
-                              SizedBox(width: kDefaultPadding / 3),
-                              Text(
-                                  '${numberDisplay(eventReportList[index].likeCount)}개',
-                                  style: TextStyle(
-                                      color: Colors.black54, fontSize: 14)),
-                            ],
+                                      color: Colors.black54, fontSize: 14),
+                                ),
+                                VerticalDivider(
+                                  width: kDefaultPadding,
+                                  thickness: 1,
+                                ),
+                                Icon(
+                                  Icons.group,
+                                  size: 16,
+                                  color: Colors.black54,
+                                ),
+                                SizedBox(width: kDefaultPadding / 3),
+                                Text(
+                                    '${numberDisplay(eventReportList[index].joinCount)}명',
+                                    style: TextStyle(
+                                        color: Colors.black54, fontSize: 14)),
+                                VerticalDivider(
+                                  width: kDefaultPadding,
+                                  thickness: 1,
+                                ),
+                                Icon(
+                                  Icons.favorite,
+                                  size: 16,
+                                  color: Colors.black54,
+                                ),
+                                SizedBox(width: kDefaultPadding / 3),
+                                Text(
+                                    '${numberDisplay(eventReportList[index].likeCount)}개',
+                                    style: TextStyle(
+                                        color: Colors.black54, fontSize: 14)),
+                              ],
+                            ),
                           ),
                           SizedBox(height: kDefaultPadding / 3),
                           Wrap(

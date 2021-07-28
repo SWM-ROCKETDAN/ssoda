@@ -1,4 +1,6 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:hashchecker/constants.dart';
 import 'package:hashchecker/models/event_report_item.dart';
 
@@ -33,9 +35,14 @@ class CustomSliverAppBar extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.end,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
-                    '우리가게 마케팅 보고서',
-                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+                  SizedBox(
+                    width: MediaQuery.of(context).size.width * 0.525,
+                    child: AutoSizeText(
+                      '우리가게 마케팅 보고서',
+                      style:
+                          TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+                      maxLines: 1,
+                    ),
                   ),
                   SizedBox(height: kDefaultPadding / 4),
                   Text(
@@ -72,11 +79,29 @@ class CustomSliverAppBar extends StatelessWidget {
                           0.0,
                           1.0
                         ])),
-              )
+              ),
+              Positioned(
+                  bottom: 15,
+                  right: 15,
+                  child: Container(
+                      width: 50,
+                      height: 50,
+                      decoration: BoxDecoration(
+                          boxShadow: [
+                            BoxShadow(
+                                blurRadius: 10,
+                                offset: Offset(0, 0),
+                                color: Colors.black54)
+                          ],
+                          shape: BoxShape.circle,
+                          image: DecorationImage(
+                              image: AssetImage(
+                                  'assets/images/store_logo_sample.jpg'),
+                              fit: BoxFit.cover))))
             ]),
           ),
           borderRadius: BorderRadius.vertical(bottom: Radius.circular(0))),
-      backgroundColor: kThemeColor,
+      backgroundColor: Colors.black87,
       shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.vertical(bottom: Radius.circular(0))),
       expandedHeight: size.height * 0.3,
