@@ -31,7 +31,7 @@ class EventImages(models.Model):
 
 class EventRewards(models.Model):
     event = models.ForeignKey(Event, models.DO_NOTHING)
-    rewards = models.OneToOneField('Reward', related_name='event_id', on_delete=models.CASCADE)
+    rewards = models.OneToOneField('Reward', related_name='event_reward', on_delete=models.CASCADE)
 
     class Meta:
         db_table = 'event_rewards'

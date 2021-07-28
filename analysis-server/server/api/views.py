@@ -13,9 +13,10 @@ from .serializers import JoinUserSerializer
 from .serializers import EventRewardSerializer
 from .serializers import EventSerializer
 from .serializers import RewardSerializer
+from .serializers import JoinSerializer
 from .modules.instagram.join.crawl import crawl
-
-
+from django.db.models import Prefetch
+from django.db.models import Subquery, OuterRef
 class JoinPostView(APIView):
     @staticmethod
     def get_object(pk):
@@ -98,12 +99,42 @@ class JoinRewardView(APIView):
         except Reward.DoesNotExist:
             raise Http404
 
-    def get(self, request, pk_event, pk_post, pk_user, formant=None):
-        reward_list = Reward.objects.all()
+    @staticmethod
+    def get_reward_list(pk_event):
+        try:
+            return Reward.objects.all().filter(event_reward__event=pk_event)
+        except Reward.DoesNotExist:
+            raise Http404
+
+    def get(self, request, pk_event, pk_post, pk_user, formate=None):
+        reward_list = self.get_reward_list(pk_event)
         reward_list_serializer = RewardSerializer(data=reward_list, many=True)
         reward_list_serializer.is_valid()
-        print(reward_list_serializer.data)
         return Response(reward_list_serializer.data, status=status.HTTP_400_BAD_REQUEST)
+
+    # 테스트 용
+    def post(self, request, pk_event, pk_post, pk_user, formate=None):
+        print('post 시작')
+        join_user = JoinUser.objects.filter(
+            sns_id=OuterRef('sns_id'),
+            type=OuterRef('type')
+        )
+        join_post = JoinPost.objects.annotate(
+            follow_count=Subquery(
+                join_user.values('follow_count')
+            ),
+            post_count=Subquery(
+                join_user.values('post_count')
+            )
+        )
+
+        # join_post = JoinPost.objects.annotate(user_test=Subquery(
+        #     JoinUser.objects.filter(sns_id=OuterRef('sns_id'))
+        # ))
+        join_post_serializer = JoinSerializer(data=join_post, many=True)
+        join_post_serializer.is_valid()
+        print(join_post_serializer.data)
+        return Response(join_post_serializer.data, status=status.HTTP_400_BAD_REQUEST)
 
 
 class ReportView(APIView):

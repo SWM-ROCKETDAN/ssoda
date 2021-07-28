@@ -12,14 +12,14 @@ class EventSerializer(serializers.ModelSerializer):
         many=True,
         read_only=True,
         slug_field='images'
-     )
+    )
 
     class Meta:
         model = Event
         fields = ['etype', 'id', 'finish_date', 'event_images']
 
 
-class EventImagesSerializer(serializers.ModelSerializer):
+class EventImagesSerializer(serializers.RelatedField):
     class Meta:
         model = EventImages
         fields = '__all__'
@@ -32,14 +32,31 @@ class EventRewardSerializer(serializers.ModelSerializer):
 
 
 class RewardSerializer(serializers.ModelSerializer):
-    event_id = serializers.SlugRelatedField(
-        read_only=True,
-        slug_field='event_id'
-     )
+    event_reward = EventRewardSerializer()
 
     class Meta:
         model = Reward
-        fields = ['id', 'category', 'count', 'image', 'name', 'price', 'event_id']
+        fields = ['id', 'category', 'count', 'image', 'name', 'price', 'event_reward']
+
+
+class JoinSerializer(serializers.Serializer):
+    id = serializers.IntegerField()
+    event_id = serializers.IntegerField()
+    rewards_id = serializers.IntegerField()
+    sns_id = serializers.CharField()
+    url = serializers.CharField()
+    type = serializers.IntegerField()
+    status = serializers.IntegerField()
+    like_count = serializers.IntegerField()
+    comment_count = serializers.IntegerField()
+    hashtags = serializers.CharField()
+    create_date = serializers.DateTimeField()
+    upload_date = serializers.DateTimeField()
+    private_date = serializers.DateTimeField()
+    delete_data = serializers.DateTimeField()
+    update_date = serializers.DateTimeField()
+    follow_count = serializers.IntegerField()
+    post_count = serializers.IntegerField()
 
 
 class JoinPostSerializer(serializers.ModelSerializer):
