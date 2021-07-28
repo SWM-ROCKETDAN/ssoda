@@ -32,7 +32,10 @@ class EventReportCard extends StatelessWidget {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => EventReportScreen(),
+                    builder: (context) => EventReportScreen(
+                      indexForHero: index,
+                      eventThumbnail: eventReportList[index].thumbnail,
+                    ),
                   ),
                 );
               },
@@ -45,9 +48,12 @@ class EventReportCard extends StatelessWidget {
                         BorderRadius.vertical(top: Radius.circular(30)),
                     child: Stack(
                       children: [
-                        Image.asset(
-                          eventReportList[index].thumbnail,
-                          fit: BoxFit.cover,
+                        Hero(
+                          tag: 'reportThumbnail$index', // index for hero ani
+                          child: Image.asset(
+                            eventReportList[index].thumbnail,
+                            fit: BoxFit.cover,
+                          ),
                         ),
                         Positioned(
                             bottom: 15,
