@@ -131,7 +131,7 @@ class _StoreReportScreenState extends State<StoreReportScreen> {
                     ],
                   ),
                 ),
-                SizedBox(height: kDefaultPadding / 3 * 2),
+                SizedBox(height: kDefaultPadding / 3 * 1),
                 Column(
                     children: List.generate(
                   eventReportList.length,
