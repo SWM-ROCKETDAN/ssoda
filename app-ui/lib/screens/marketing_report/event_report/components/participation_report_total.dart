@@ -74,7 +74,7 @@ class _ParticipationReportTotalState extends State<ParticipationReportTotal> {
                         fontSize: 18)),
                 NumberSlideAnimation(
                     number: widget.eventReport.joinCount.toString(),
-                    duration: const Duration(seconds: 3),
+                    duration: kDefaultNumberSliderDuration,
                     curve: Curves.easeOut,
                     textStyle: TextStyle(
                         color: kThemeColor,
@@ -187,7 +187,7 @@ class _ParticipationReportTotalState extends State<ParticipationReportTotal> {
                                 NumberSlideAnimation(
                                   number:
                                       widget.eventReport.likeCount.toString(),
-                                  duration: const Duration(seconds: 3),
+                                  duration: kDefaultNumberSliderDuration,
                                   curve: Curves.easeOut,
                                   textStyle: TextStyle(
                                       fontSize: 16,

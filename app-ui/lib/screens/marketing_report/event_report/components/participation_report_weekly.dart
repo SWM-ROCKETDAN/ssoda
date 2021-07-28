@@ -91,7 +91,7 @@ class _ParticipationReportWeeklyState extends State<ParticipationReportWeekly> {
                         fontSize: 18)),
                 NumberSlideAnimation(
                     number: (widget.eventReport.joinCount ~/ 15).toString(),
-                    duration: const Duration(seconds: 3),
+                    duration: kDefaultNumberSliderDuration,
                     curve: Curves.easeOut,
                     textStyle: TextStyle(
                         color: kThemeColor,
@@ -204,7 +204,7 @@ class _ParticipationReportWeeklyState extends State<ParticipationReportWeekly> {
                                 NumberSlideAnimation(
                                   number: (widget.eventReport.likeCount ~/ 15)
                                       .toString(),
-                                  duration: const Duration(seconds: 3),
+                                  duration: kDefaultNumberSliderDuration,
                                   curve: Curves.easeOut,
                                   textStyle: TextStyle(
                                       fontSize: 16,

@@ -92,7 +92,7 @@ class _ParticipationReportMonthlyState
                         fontSize: 18)),
                 NumberSlideAnimation(
                     number: (widget.eventReport.joinCount ~/ 3).toString(),
-                    duration: const Duration(seconds: 3),
+                    duration: kDefaultNumberSliderDuration,
                     curve: Curves.easeOut,
                     textStyle: TextStyle(
                         color: kThemeColor,
@@ -205,7 +205,7 @@ class _ParticipationReportMonthlyState
                                 NumberSlideAnimation(
                                   number: (widget.eventReport.likeCount ~/ 3)
                                       .toString(),
-                                  duration: const Duration(seconds: 3),
+                                  duration: kDefaultNumberSliderDuration,
                                   curve: Curves.easeOut,
                                   textStyle: TextStyle(
                                       fontSize: 16,

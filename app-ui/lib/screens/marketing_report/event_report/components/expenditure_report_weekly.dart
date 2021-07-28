@@ -72,7 +72,7 @@ class _ExpenditureReportWeeklyState extends State<ExpenditureReportWeekly> {
                       fontSize: 18)),
               NumberSlideAnimation(
                 number: (widget.eventReport.costSum ~/ 15).toString(),
-                duration: const Duration(seconds: 3),
+                duration: kDefaultNumberSliderDuration,
                 curve: Curves.easeOut,
                 textStyle: TextStyle(
                     color: kThemeColor,

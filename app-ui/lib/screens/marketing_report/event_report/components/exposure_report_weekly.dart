@@ -66,7 +66,7 @@ class _ExposureReportWeeklyState extends State<ExposureReportWeekly> {
                       fontSize: 18)),
               NumberSlideAnimation(
                   number: (widget.eventReport.exposeCount ~/ 15).toString(),
-                  duration: const Duration(seconds: 3),
+                  duration: kDefaultNumberSliderDuration,
                   curve: Curves.easeOut,
                   textStyle: TextStyle(
                       color: kThemeColor,
@@ -113,7 +113,7 @@ class _ExposureReportWeeklyState extends State<ExposureReportWeekly> {
                             fontWeight: FontWeight.bold, fontSize: 14)),
                     NumberSlideAnimation(
                         number: '6',
-                        duration: const Duration(seconds: 3),
+                        duration: kDefaultNumberSliderDuration,
                         curve: Curves.easeOut,
                         textStyle: TextStyle(
                             color: kThemeColor,

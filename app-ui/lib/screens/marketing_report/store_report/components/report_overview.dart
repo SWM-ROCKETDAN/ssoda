@@ -41,7 +41,7 @@ class ReportOverview extends StatelessWidget {
                           TextStyle(fontWeight: FontWeight.bold, fontSize: 14)),
                   NumberSlideAnimation(
                       number: storeReportOverview.guestPrice.toString(),
-                      duration: const Duration(seconds: 2),
+                      duration: kDefaultNumberSliderDuration,
                       curve: Curves.easeOut,
                       textStyle: TextStyle(
                           color: kThemeColor,
@@ -67,7 +67,7 @@ class ReportOverview extends StatelessWidget {
                           TextStyle(fontWeight: FontWeight.bold, fontSize: 14)),
                   NumberSlideAnimation(
                       number: storeReportOverview.joinCount.toString(),
-                      duration: const Duration(seconds: 2),
+                      duration: kDefaultNumberSliderDuration,
                       curve: Curves.easeOut,
                       textStyle: TextStyle(
                           color: kThemeColor,
@@ -93,7 +93,7 @@ class ReportOverview extends StatelessWidget {
                           TextStyle(fontWeight: FontWeight.bold, fontSize: 14)),
                   NumberSlideAnimation(
                       number: storeReportOverview.likeCount.toString(),
-                      duration: const Duration(seconds: 2),
+                      duration: kDefaultNumberSliderDuration,
                       curve: Curves.easeOut,
                       textStyle: TextStyle(
                           color: kThemeColor,

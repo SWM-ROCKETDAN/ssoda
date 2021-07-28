@@ -55,7 +55,7 @@ class _ExposureReportTotalState extends State<ExposureReportTotal> {
                       fontSize: 18)),
               NumberSlideAnimation(
                   number: widget.eventReport.exposeCount.toString(),
-                  duration: const Duration(seconds: 3),
+                  duration: kDefaultNumberSliderDuration,
                   curve: Curves.easeOut,
                   textStyle: TextStyle(
                       color: kThemeColor,
@@ -104,7 +104,7 @@ class _ExposureReportTotalState extends State<ExposureReportTotal> {
                         number: (widget.eventReport.costSum ~/
                                 widget.eventReport.exposeCount)
                             .toString(),
-                        duration: const Duration(seconds: 3),
+                        duration: kDefaultNumberSliderDuration,
                         curve: Curves.easeOut,
                         textStyle: TextStyle(
                             color: kThemeColor,
