@@ -16,29 +16,26 @@ class ReportOverview extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-        padding: const EdgeInsets.fromLTRB(30, 20, 20, 20),
+        padding: const EdgeInsets.fromLTRB(35, 20, 40, 20),
         width: size.width,
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Icon(
                   Icons.attach_money,
                   size: 40,
                 ),
-                SizedBox(width: 10),
-                Row(children: [
+                Row(mainAxisAlignment: MainAxisAlignment.end, children: [
+                  Text('게시글 ', style: TextStyle(fontSize: 14)),
                   Text('1',
                       style: TextStyle(
                         color: kThemeColor,
                         fontSize: 28,
                         fontWeight: FontWeight.bold,
                       )),
-                  Text('인 노출 당 ',
-                      style:
-                          TextStyle(fontWeight: FontWeight.bold, fontSize: 14)),
+                  Text(' 인 노출 당 ', style: TextStyle(fontSize: 14)),
                   NumberSlideAnimation(
                       number: storeReportOverview.guestPrice.toString(),
                       duration: kDefaultNumberSliderDuration,
@@ -48,23 +45,20 @@ class ReportOverview extends StatelessWidget {
                           fontSize: 28,
                           fontWeight: FontWeight.bold),
                       format: NumberFormatMode.comma),
-                  Text('원 사용',
-                      style:
-                          TextStyle(fontWeight: FontWeight.bold, fontSize: 14))
+                  Text(' 원 사용', style: TextStyle(fontSize: 14))
                 ]),
               ],
             ),
+            SizedBox(height: kDefaultPadding / 3 * 2),
             Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Icon(
                   Icons.group_outlined,
                   size: 40,
                 ),
-                SizedBox(width: 10),
                 Row(children: [
-                  Text('총 ',
-                      style:
-                          TextStyle(fontWeight: FontWeight.bold, fontSize: 14)),
+                  Text('총 ', style: TextStyle(fontSize: 14)),
                   NumberSlideAnimation(
                       number: storeReportOverview.joinCount.toString(),
                       duration: kDefaultNumberSliderDuration,
@@ -74,23 +68,20 @@ class ReportOverview extends StatelessWidget {
                           fontSize: 28,
                           fontWeight: FontWeight.bold),
                       format: NumberFormatMode.comma),
-                  Text('명 참여',
-                      style:
-                          TextStyle(fontWeight: FontWeight.bold, fontSize: 14))
+                  Text(' 명 이벤트 참여', style: TextStyle(fontSize: 14))
                 ]),
               ],
             ),
+            SizedBox(height: kDefaultPadding / 3 * 2),
             Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Icon(
                   Icons.favorite_outline,
                   size: 40,
                 ),
-                SizedBox(width: 10),
-                Row(children: [
-                  Text('누적 좋아요 ',
-                      style:
-                          TextStyle(fontWeight: FontWeight.bold, fontSize: 14)),
+                Row(mainAxisAlignment: MainAxisAlignment.end, children: [
+                  Text('누적 좋아요 ', style: TextStyle(fontSize: 14)),
                   NumberSlideAnimation(
                       number: storeReportOverview.likeCount.toString(),
                       duration: kDefaultNumberSliderDuration,
@@ -100,9 +91,7 @@ class ReportOverview extends StatelessWidget {
                           fontSize: 28,
                           fontWeight: FontWeight.bold),
                       format: NumberFormatMode.comma),
-                  Text('개',
-                      style:
-                          TextStyle(fontWeight: FontWeight.bold, fontSize: 14))
+                  Text(' 개', style: TextStyle(fontSize: 14))
                 ]),
               ],
             ),

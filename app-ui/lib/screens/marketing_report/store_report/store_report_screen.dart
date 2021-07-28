@@ -17,7 +17,18 @@ class StoreReportScreen extends StatefulWidget {
 }
 
 class _StoreReportScreenState extends State<StoreReportScreen> {
+  List<String> eventSortDropdownItemList = [
+    '최신 등록 순',
+    '높은 객단가 순',
+    '낮은 객단가 순',
+    '높은 참가자 순',
+    '낮은 참가자 순',
+    '높은 좋아요 순',
+    '낮은 좋아요 순'
+  ];
+
   String dropdownValue = '최신 등록 순';
+
   final numberDisplay = createDisplay();
 
   late List<EventReportItem> eventReportList;
@@ -84,43 +95,35 @@ class _StoreReportScreenState extends State<StoreReportScreen> {
                         style: TextStyle(
                             fontWeight: FontWeight.bold, fontSize: 24),
                       ),
-                      DropdownButton<String>(
+                      DropdownButton(
+                          dropdownColor: Colors.white.withOpacity(0.9),
                           value: dropdownValue,
                           icon: const Icon(
                             Icons.sort,
-                            color: kThemeColor,
+                            color: Colors.black87,
                             size: 20,
                           ),
                           iconSize: 24,
-                          elevation: 16,
-                          style:
-                              const TextStyle(color: kThemeColor, fontSize: 12),
+                          elevation: 0,
+                          style: TextStyle(color: Colors.black87, fontSize: 13),
                           underline: Container(
                             height: 1.2,
-                            color: kThemeColor,
+                            color: Colors.black87,
                           ),
                           onChanged: (String? newValue) {
                             setState(() {
                               dropdownValue = newValue!;
                             });
                           },
-                          items: <String>[
-                            '최신 등록 순',
-                            '높은 객단가 순',
-                            '낮은 객단가 순',
-                            '많은 참가자 순',
-                            '적은 참가자 순',
-                            '많은 좋아요 순',
-                            '적은 좋아요 순'
-                          ].map<DropdownMenuItem<String>>((String value) {
+                          items: eventSortDropdownItemList.map((String value) {
                             return DropdownMenuItem<String>(
                               value: value,
                               child: SizedBox(
-                                  width: 80,
+                                  width: 85,
                                   child: Text(
                                     value,
-                                    style:
-                                        TextStyle(fontWeight: FontWeight.bold),
+                                    style: TextStyle(
+                                        fontSize: 13, color: Colors.black87),
                                     textAlign: TextAlign.center,
                                   )),
                             );
