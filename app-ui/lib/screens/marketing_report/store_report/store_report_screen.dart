@@ -3,8 +3,11 @@ import 'package:hashchecker/constants.dart';
 import 'package:hashchecker/models/event.dart';
 import 'package:hashchecker/models/event_report_item.dart';
 import 'package:hashchecker/models/store_report_overview.dart';
-import 'package:hashchecker/widgets/number_slider/number_slide_animation_widget.dart';
+import 'package:hashchecker/screens/marketing_report/store_report/components/event_report_card.dart';
 import 'package:number_display/number_display.dart';
+
+import 'components/custom_sliver_appbar.dart';
+import 'components/report_overview.dart';
 
 class StoreReportScreen extends StatefulWidget {
   const StoreReportScreen({Key? key}) : super(key: key);
@@ -52,79 +55,11 @@ class _StoreReportScreenState extends State<StoreReportScreen> {
     return Scaffold(
       body: NestedScrollView(
         headerSliverBuilder: (context, ext) => [
-          SliverAppBar(
-            automaticallyImplyLeading: false,
-            actions: [
-              Padding(
-                padding: const EdgeInsets.fromLTRB(0, 10, 20, 15),
-                child: Icon(Icons.close),
-              )
-            ],
-            flexibleSpace: ClipRRect(
-                child: FlexibleSpaceBar(
-                  titlePadding: const EdgeInsets.fromLTRB(20, 10, 0, 15),
-                  title: Column(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          '우리가게 마케팅 보고서',
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold, fontSize: 16),
-                        ),
-                        SizedBox(height: 3),
-                        Text(
-                          '${eventReportList.length}개의 이벤트가 진행 중',
-                          style: TextStyle(
-                              color: Colors.white.withOpacity(0.7),
-                              fontSize: 10),
-                        ),
-                        SizedBox(height: kDefaultPadding / 4)
-                      ]),
-                  background: Stack(children: <Widget>[
-                    Container(
-                      decoration: BoxDecoration(
-                        color: Colors.transparent,
-                        image: DecorationImage(
-                          fit: BoxFit.cover,
-                          image: AssetImage(
-                            'assets/images/store1.jpg',
-                          ),
-                        ),
-                      ),
-                      height: size.height * 0.4,
-                    ),
-                    Container(
-                      height: size.height * 0.4,
-                      decoration: BoxDecoration(
-                          color: Colors.white,
-                          gradient: LinearGradient(
-                              begin: FractionalOffset.topCenter,
-                              end: FractionalOffset.bottomCenter,
-                              colors: [
-                                Colors.grey.withOpacity(0.0),
-                                Colors.black.withOpacity(0.8),
-                              ],
-                              stops: [
-                                0.0,
-                                1.0
-                              ])),
-                    )
-                  ]),
-                ),
-                borderRadius:
-                    BorderRadius.vertical(bottom: Radius.circular(0))),
-            backgroundColor: kThemeColor,
-            shape: RoundedRectangleBorder(
-                borderRadius:
-                    BorderRadius.vertical(bottom: Radius.circular(0))),
-            expandedHeight: size.height * 0.3,
-            pinned: true,
-          ),
+          CustomSliverAppBar(eventReportList: eventReportList, size: size),
         ],
         body: SingleChildScrollView(
           child: Padding(
-            padding: const EdgeInsets.fromLTRB(15, 20, 15, 15),
+            padding: const EdgeInsets.fromLTRB(15, 20, 15, 5),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -136,119 +71,8 @@ class _StoreReportScreenState extends State<StoreReportScreen> {
                   ),
                 ),
                 SizedBox(height: kDefaultPadding),
-                Container(
-                    padding: const EdgeInsets.fromLTRB(30, 20, 20, 20),
-                    width: size.width,
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Row(
-                          children: [
-                            Icon(
-                              Icons.attach_money,
-                              size: 40,
-                            ),
-                            SizedBox(width: 10),
-                            Row(children: [
-                              Text('1',
-                                  style: TextStyle(
-                                    color: kThemeColor,
-                                    fontSize: 28,
-                                    fontWeight: FontWeight.bold,
-                                  )),
-                              Text('인 노출 당 ',
-                                  style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 14)),
-                              NumberSlideAnimation(
-                                  number:
-                                      storeReportOverview.guestPrice.toString(),
-                                  duration: const Duration(seconds: 3),
-                                  curve: Curves.easeOut,
-                                  textStyle: TextStyle(
-                                      color: kThemeColor,
-                                      fontSize: 28,
-                                      fontWeight: FontWeight.bold),
-                                  format: NumberFormatMode.comma),
-                              Text('원 사용',
-                                  style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 14))
-                            ]),
-                          ],
-                        ),
-                        Row(
-                          children: [
-                            Icon(
-                              Icons.group_outlined,
-                              size: 40,
-                            ),
-                            SizedBox(width: 10),
-                            Row(children: [
-                              Text('총 ',
-                                  style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 14)),
-                              NumberSlideAnimation(
-                                  number:
-                                      storeReportOverview.joinCount.toString(),
-                                  duration: const Duration(seconds: 3),
-                                  curve: Curves.easeOut,
-                                  textStyle: TextStyle(
-                                      color: kThemeColor,
-                                      fontSize: 28,
-                                      fontWeight: FontWeight.bold),
-                                  format: NumberFormatMode.comma),
-                              Text('명 참여',
-                                  style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 14))
-                            ]),
-                          ],
-                        ),
-                        Row(
-                          children: [
-                            Icon(
-                              Icons.favorite_outline,
-                              size: 40,
-                            ),
-                            SizedBox(width: 10),
-                            Row(children: [
-                              Text('누적 좋아요 ',
-                                  style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 14)),
-                              NumberSlideAnimation(
-                                  number:
-                                      storeReportOverview.likeCount.toString(),
-                                  duration: const Duration(seconds: 3),
-                                  curve: Curves.easeOut,
-                                  textStyle: TextStyle(
-                                      color: kThemeColor,
-                                      fontSize: 28,
-                                      fontWeight: FontWeight.bold),
-                                  format: NumberFormatMode.comma),
-                              Text('개',
-                                  style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 14))
-                            ]),
-                          ],
-                        ),
-                      ],
-                    ),
-                    decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.all(Radius.circular(30)),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.grey.withOpacity(0.2),
-                            spreadRadius: 5,
-                            blurRadius: 20,
-                            offset: Offset(0, 0),
-                          ),
-                        ])),
+                ReportOverview(
+                    size: size, storeReportOverview: storeReportOverview),
                 SizedBox(height: kDefaultPadding / 3 * 5),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 10),
@@ -306,143 +130,11 @@ class _StoreReportScreenState extends State<StoreReportScreen> {
                 Column(
                     children: List.generate(
                   eventReportList.length,
-                  (index) => Container(
-                      width: size.width,
-                      margin: const EdgeInsets.only(bottom: kDefaultPadding),
-                      child: Card(
-                          color: Colors.white,
-                          elevation: 0.75,
-                          child: InkWell(
-                            onTap: () {},
-                            borderRadius: BorderRadius.all(Radius.circular(30)),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                ClipRRect(
-                                  borderRadius: BorderRadius.vertical(
-                                      top: Radius.circular(30)),
-                                  child: Stack(
-                                    children: [
-                                      Image.asset(
-                                        eventReportList[index].thumbnail,
-                                        fit: BoxFit.cover,
-                                      ),
-                                      Positioned(
-                                          bottom: 15,
-                                          right: 15,
-                                          child: Container(
-                                            padding: const EdgeInsets.fromLTRB(
-                                                4, 1, 4, 2),
-                                            width: 50,
-                                            child: Center(
-                                              child: Text(
-                                                eventReportList[index].status ==
-                                                        EventStatus.PROCEEDING
-                                                    ? '진행 중'
-                                                    : '종료',
-                                                style: TextStyle(
-                                                    fontSize: 12,
-                                                    color: Colors.white,
-                                                    fontWeight:
-                                                        FontWeight.bold),
-                                              ),
-                                            ),
-                                            color: eventReportList[index]
-                                                        .status ==
-                                                    EventStatus.PROCEEDING
-                                                ? Colors.greenAccent.shade700
-                                                : Colors.grey.shade600,
-                                          ))
-                                    ],
-                                  ),
-                                ),
-                                Padding(
-                                    padding: const EdgeInsets.fromLTRB(
-                                        15, 10, 15, 10),
-                                    child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Text(eventReportList[index].eventName,
-                                            style: TextStyle(
-                                                fontWeight: FontWeight.bold,
-                                                fontSize: 18)),
-                                        SizedBox(height: kDefaultPadding / 2),
-                                        Row(
-                                          children: [
-                                            Icon(
-                                              Icons.attach_money,
-                                              size: 16,
-                                              color: Colors.black54,
-                                            ),
-                                            SizedBox(
-                                                width: kDefaultPadding / 5),
-                                            Text(
-                                              '${numberDisplay(eventReportList[index].guestPrice)}원',
-                                              style: TextStyle(
-                                                  color: Colors.black54,
-                                                  fontSize: 14),
-                                            ),
-                                            SizedBox(
-                                                width: kDefaultPadding / 2),
-                                            Icon(
-                                              Icons.group,
-                                              size: 16,
-                                              color: Colors.black54,
-                                            ),
-                                            SizedBox(
-                                                width: kDefaultPadding / 3),
-                                            Text(
-                                                '${numberDisplay(eventReportList[index].joinCount)}명',
-                                                style: TextStyle(
-                                                    color: Colors.black54,
-                                                    fontSize: 14)),
-                                            SizedBox(
-                                                width: kDefaultPadding / 2),
-                                            Icon(
-                                              Icons.favorite,
-                                              size: 16,
-                                              color: Colors.black54,
-                                            ),
-                                            SizedBox(
-                                                width: kDefaultPadding / 3),
-                                            Text(
-                                                '${numberDisplay(eventReportList[index].likeCount)}개',
-                                                style: TextStyle(
-                                                    color: Colors.black54,
-                                                    fontSize: 14)),
-                                          ],
-                                        ),
-                                        SizedBox(height: kDefaultPadding / 3),
-                                        Wrap(
-                                            direction: Axis.horizontal,
-                                            spacing: 5.0,
-                                            children: List.generate(
-                                              eventReportList[index]
-                                                  .rewardNameList
-                                                  .length,
-                                              (rewardIndex) => Chip(
-                                                label: Text(
-                                                  eventReportList[index]
-                                                          .rewardNameList[
-                                                      rewardIndex],
-                                                  style:
-                                                      TextStyle(fontSize: 12),
-                                                ),
-                                                padding:
-                                                    const EdgeInsets.all(3),
-                                                backgroundColor: kThemeColor
-                                                    .withOpacity(0.2),
-                                              ),
-                                            )),
-                                      ],
-                                    )),
-                              ],
-                            ),
-                          ),
-                          shape: RoundedRectangleBorder(
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(30))))),
+                  (index) => EventReportCard(
+                      index: index,
+                      size: size,
+                      eventReportList: eventReportList,
+                      numberDisplay: numberDisplay),
                 )),
               ],
             ),
