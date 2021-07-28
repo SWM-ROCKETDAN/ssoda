@@ -37,13 +37,12 @@ class CustomSliverAppBar extends StatelessWidget {
                     '우리가게 마케팅 보고서',
                     style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
                   ),
-                  SizedBox(height: 3),
+                  SizedBox(height: kDefaultPadding / 4),
                   Text(
                     '${eventReportList.length}개의 이벤트가 진행 중',
                     style: TextStyle(
                         color: Colors.white.withOpacity(0.7), fontSize: 10),
                   ),
-                  SizedBox(height: kDefaultPadding / 4)
                 ]),
             background: Stack(children: <Widget>[
               Container(

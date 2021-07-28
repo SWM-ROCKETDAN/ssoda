@@ -89,12 +89,14 @@ class _StoreReportScreenState extends State<StoreReportScreen> {
                           icon: const Icon(
                             Icons.sort,
                             color: kThemeColor,
+                            size: 20,
                           ),
                           iconSize: 24,
                           elevation: 16,
-                          style: const TextStyle(color: kThemeColor),
+                          style:
+                              const TextStyle(color: kThemeColor, fontSize: 12),
                           underline: Container(
-                            height: 2,
+                            height: 1.2,
                             color: kThemeColor,
                           ),
                           onChanged: (String? newValue) {
@@ -114,7 +116,7 @@ class _StoreReportScreenState extends State<StoreReportScreen> {
                             return DropdownMenuItem<String>(
                               value: value,
                               child: SizedBox(
-                                  width: 100,
+                                  width: 80,
                                   child: Text(
                                     value,
                                     style:
