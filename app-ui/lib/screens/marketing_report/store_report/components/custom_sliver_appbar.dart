@@ -18,8 +18,12 @@ class CustomSliverAppBar extends StatelessWidget {
       automaticallyImplyLeading: false,
       actions: [
         Padding(
-          padding: const EdgeInsets.fromLTRB(0, 10, 20, 15),
-          child: Icon(Icons.close),
+          padding: const EdgeInsets.fromLTRB(0, 10, 25, 20),
+          child: GestureDetector(
+              onTap: () {
+                Navigator.of(context).pop();
+              },
+              child: Icon(Icons.close)),
         )
       ],
       flexibleSpace: ClipRRect(
@@ -62,8 +66,8 @@ class CustomSliverAppBar extends StatelessWidget {
                         begin: FractionalOffset.topCenter,
                         end: FractionalOffset.bottomCenter,
                         colors: [
-                          Colors.grey.withOpacity(0.0),
-                          Colors.black.withOpacity(0.8),
+                          Colors.transparent.withOpacity(0.0),
+                          Colors.black.withOpacity(0.7),
                         ],
                         stops: [
                           0.0,

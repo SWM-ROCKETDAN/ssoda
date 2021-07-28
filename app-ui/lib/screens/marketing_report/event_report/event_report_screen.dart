@@ -56,8 +56,12 @@ class _EventReportScreenState extends State<EventReportScreen> {
                     automaticallyImplyLeading: false,
                     actions: [
                       Padding(
-                        padding: const EdgeInsets.fromLTRB(0, 10, 20, 15),
-                        child: Icon(Icons.close),
+                        padding: const EdgeInsets.fromLTRB(0, 10, 25, 20),
+                        child: GestureDetector(
+                            onTap: () {
+                              Navigator.of(context).pop();
+                            },
+                            child: Icon(Icons.close)),
                       )
                     ],
                     flexibleSpace: FlexibleSpaceBar(
@@ -81,11 +85,36 @@ class _EventReportScreenState extends State<EventReportScreen> {
                               maxLines: 1,
                             )
                           ]),
-                      background: Image.asset(
-                        'assets/images/event_report/graph.png',
-                        fit: BoxFit.cover,
-                        color: Colors.indigoAccent.shade200,
-                      ),
+                      background: Stack(children: <Widget>[
+                        Container(
+                          decoration: BoxDecoration(
+                            color: Colors.transparent,
+                            image: DecorationImage(
+                              fit: BoxFit.cover,
+                              image: AssetImage(
+                                'assets/images/event1.jpg',
+                              ),
+                            ),
+                          ),
+                          height: size.height * 0.4,
+                        ),
+                        Container(
+                          height: size.height * 0.4,
+                          decoration: BoxDecoration(
+                              color: Colors.white,
+                              gradient: LinearGradient(
+                                  begin: FractionalOffset.topCenter,
+                                  end: FractionalOffset.bottomCenter,
+                                  colors: [
+                                    Colors.transparent.withOpacity(0.0),
+                                    Colors.black.withOpacity(0.7),
+                                  ],
+                                  stops: [
+                                    0.0,
+                                    1.0
+                                  ])),
+                        )
+                      ]),
                     ),
                     backgroundColor: kThemeColor,
                     foregroundColor: Colors.green,

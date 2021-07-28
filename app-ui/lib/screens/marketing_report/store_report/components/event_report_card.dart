@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hashchecker/constants.dart';
 import 'package:hashchecker/models/event.dart';
+import 'package:hashchecker/screens/marketing_report/event_report/event_report_screen.dart';
 import 'package:number_display/number_display.dart';
 import 'package:hashchecker/models/event_report_item.dart';
 
@@ -27,7 +28,14 @@ class EventReportCard extends StatelessWidget {
             color: Colors.white,
             elevation: 0.75,
             child: InkWell(
-              onTap: () {},
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => EventReportScreen(),
+                  ),
+                );
+              },
               borderRadius: BorderRadius.all(Radius.circular(30)),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
