@@ -38,7 +38,7 @@ class _ParticipationReportTotalState extends State<ParticipationReportTotal> {
     _everySecond = Timer.periodic(Duration(milliseconds: 90), (Timer t) {
       if (livePostCount == widget.eventReport.livePostCount) return;
       setState(() {
-        livePostCount += widget.eventReport.livePostCount ~/ 27;
+        livePostCount += widget.eventReport.livePostCount ~/ 20;
         if (livePostCount > widget.eventReport.livePostCount)
           livePostCount = widget.eventReport.livePostCount;
       });
@@ -53,11 +53,11 @@ class _ParticipationReportTotalState extends State<ParticipationReportTotal> {
       margin: const EdgeInsets.fromLTRB(5, 5, 5, 15),
       decoration: BoxDecoration(boxShadow: [
         BoxShadow(
-          color: Colors.black26,
-          offset: Offset(1.5, 1.5),
-          blurRadius: 2,
-          spreadRadius: 0,
-        )
+          color: Colors.grey.withOpacity(0.2),
+          spreadRadius: 5,
+          blurRadius: 20,
+          offset: Offset(0, 0), // changes position of shadow
+        ),
       ], color: Colors.white, borderRadius: BorderRadius.circular(20)),
       child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -74,7 +74,7 @@ class _ParticipationReportTotalState extends State<ParticipationReportTotal> {
                         fontSize: 18)),
                 NumberSlideAnimation(
                     number: widget.eventReport.joinCount.toString(),
-                    duration: const Duration(seconds: 3),
+                    duration: kDefaultNumberSliderDuration,
                     curve: Curves.easeOut,
                     textStyle: TextStyle(
                         color: kThemeColor,
@@ -167,7 +167,8 @@ class _ParticipationReportTotalState extends State<ParticipationReportTotal> {
                                         fontWeight: FontWeight.bold))),
                           ]),
                         ),
-                        Text('게시글 유지 비율'),
+                        Text('게시글 유지 비율',
+                            style: TextStyle(fontWeight: FontWeight.bold)),
                       ],
                     ),
                     Column(
@@ -187,7 +188,7 @@ class _ParticipationReportTotalState extends State<ParticipationReportTotal> {
                                 NumberSlideAnimation(
                                   number:
                                       widget.eventReport.likeCount.toString(),
-                                  duration: const Duration(seconds: 3),
+                                  duration: kDefaultNumberSliderDuration,
                                   curve: Curves.easeOut,
                                   textStyle: TextStyle(
                                       fontSize: 16,
@@ -212,7 +213,7 @@ class _ParticipationReportTotalState extends State<ParticipationReportTotal> {
                                 NumberSlideAnimation(
                                   number: widget.eventReport.commentCount
                                       .toString(),
-                                  duration: const Duration(seconds: 3),
+                                  duration: kDefaultNumberSliderDuration,
                                   curve: Curves.easeOut,
                                   textStyle: TextStyle(
                                       fontSize: 16,
@@ -230,7 +231,8 @@ class _ParticipationReportTotalState extends State<ParticipationReportTotal> {
                           ),
                         ),
                         SizedBox(height: kDefaultPadding),
-                        Text('누적 좋아요&덧글'),
+                        Text('누적 좋아요&덧글',
+                            style: TextStyle(fontWeight: FontWeight.bold)),
                       ],
                     ),
                   ]),

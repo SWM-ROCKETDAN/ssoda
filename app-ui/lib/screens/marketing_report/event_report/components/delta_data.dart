@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:hashchecker/constants.dart';
 import 'package:hashchecker/widgets/number_slider/number_slide_animation_widget.dart';
 
 class DeltaData extends StatelessWidget {
@@ -20,7 +21,7 @@ class DeltaData extends StatelessWidget {
       ),
       NumberSlideAnimation(
           number: value.toString(),
-          duration: const Duration(seconds: 3),
+          duration: kDefaultNumberSliderDuration,
           curve: Curves.easeOut,
           textStyle: TextStyle(color: color, fontSize: 18),
           format: NumberFormatMode.comma)
