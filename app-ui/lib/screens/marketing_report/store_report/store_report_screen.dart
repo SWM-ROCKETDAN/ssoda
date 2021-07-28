@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:hashchecker/constants.dart';
+import 'package:hashchecker/models/event.dart';
+import 'package:hashchecker/models/event_report_item.dart';
+import 'package:hashchecker/models/store_report_overview.dart';
 import 'package:hashchecker/widgets/number_slider/number_slide_animation_widget.dart';
+import 'package:number_display/number_display.dart';
 
 class StoreReportScreen extends StatefulWidget {
   const StoreReportScreen({Key? key}) : super(key: key);
@@ -11,6 +15,37 @@ class StoreReportScreen extends StatefulWidget {
 
 class _StoreReportScreenState extends State<StoreReportScreen> {
   String dropdownValue = '최신 등록 순';
+  final numberDisplay = createDisplay();
+
+  late List<EventReportItem> eventReportList;
+  late StoreReportOverview storeReportOverview;
+
+  @override
+  void initState() {
+    super.initState();
+    eventReportList = [
+      EventReportItem(
+          eventName: '우리가게 SNS 해시태그 이벤트',
+          guestPrice: 7,
+          joinCount: 839,
+          likeCount: 12341,
+          rewardNameList: ['콜라', '샌드위치', '3000원 쿠폰'],
+          thumbnail: 'assets/images/event1.jpg',
+          status: EventStatus.PROCEEDING),
+      EventReportItem(
+          eventName: '우리가게 7월 한정 쿠폰 이벤트',
+          guestPrice: 6,
+          joinCount: 423,
+          likeCount: 7318,
+          rewardNameList: ['5000원 쿠폰', '10000원 쿠폰'],
+          thumbnail: 'assets/images/event2.jpg',
+          status: EventStatus.ENDED),
+    ];
+
+    storeReportOverview =
+        StoreReportOverview(guestPrice: 7, joinCount: 72345, likeCount: 701543);
+  }
+
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -39,11 +74,12 @@ class _StoreReportScreenState extends State<StoreReportScreen> {
                         ),
                         SizedBox(height: 3),
                         Text(
-                          '3개의 이벤트가 진행 중',
+                          '${eventReportList.length}개의 이벤트가 진행 중',
                           style: TextStyle(
                               color: Colors.white.withOpacity(0.7),
                               fontSize: 10),
-                        )
+                        ),
+                        SizedBox(height: kDefaultPadding / 4)
                       ]),
                   background: Stack(children: <Widget>[
                     Container(
@@ -52,7 +88,7 @@ class _StoreReportScreenState extends State<StoreReportScreen> {
                         image: DecorationImage(
                           fit: BoxFit.cover,
                           image: AssetImage(
-                            'assets/images/sample.jpg',
+                            'assets/images/store1.jpg',
                           ),
                         ),
                       ),
@@ -67,7 +103,7 @@ class _StoreReportScreenState extends State<StoreReportScreen> {
                               end: FractionalOffset.bottomCenter,
                               colors: [
                                 Colors.grey.withOpacity(0.0),
-                                Colors.black.withOpacity(0.7),
+                                Colors.black.withOpacity(0.8),
                               ],
                               stops: [
                                 0.0,
@@ -77,18 +113,18 @@ class _StoreReportScreenState extends State<StoreReportScreen> {
                   ]),
                 ),
                 borderRadius:
-                    BorderRadius.vertical(bottom: Radius.circular(30))),
+                    BorderRadius.vertical(bottom: Radius.circular(0))),
             backgroundColor: kThemeColor,
             shape: RoundedRectangleBorder(
                 borderRadius:
-                    BorderRadius.vertical(bottom: Radius.circular(30))),
+                    BorderRadius.vertical(bottom: Radius.circular(0))),
             expandedHeight: size.height * 0.3,
             pinned: true,
           ),
         ],
         body: SingleChildScrollView(
           child: Padding(
-            padding: const EdgeInsets.fromLTRB(15, 30, 15, 15),
+            padding: const EdgeInsets.fromLTRB(15, 20, 15, 15),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -126,7 +162,8 @@ class _StoreReportScreenState extends State<StoreReportScreen> {
                                       fontWeight: FontWeight.bold,
                                       fontSize: 14)),
                               NumberSlideAnimation(
-                                  number: '7',
+                                  number:
+                                      storeReportOverview.guestPrice.toString(),
                                   duration: const Duration(seconds: 3),
                                   curve: Curves.easeOut,
                                   textStyle: TextStyle(
@@ -154,7 +191,8 @@ class _StoreReportScreenState extends State<StoreReportScreen> {
                                       fontWeight: FontWeight.bold,
                                       fontSize: 14)),
                               NumberSlideAnimation(
-                                  number: '72345',
+                                  number:
+                                      storeReportOverview.joinCount.toString(),
                                   duration: const Duration(seconds: 3),
                                   curve: Curves.easeOut,
                                   textStyle: TextStyle(
@@ -182,7 +220,8 @@ class _StoreReportScreenState extends State<StoreReportScreen> {
                                       fontWeight: FontWeight.bold,
                                       fontSize: 14)),
                               NumberSlideAnimation(
-                                  number: '701543',
+                                  number:
+                                      storeReportOverview.likeCount.toString(),
                                   duration: const Duration(seconds: 3),
                                   curve: Curves.easeOut,
                                   textStyle: TextStyle(
@@ -264,35 +303,147 @@ class _StoreReportScreenState extends State<StoreReportScreen> {
                   ),
                 ),
                 SizedBox(height: kDefaultPadding / 3 * 2),
-                Container(
-                    width: size.width,
-                    height: 150,
-                    decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.all(Radius.circular(30)),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.grey.withOpacity(0.2),
-                            spreadRadius: 5,
-                            blurRadius: 20,
-                            offset: Offset(0, 0),
+                Column(
+                    children: List.generate(
+                  eventReportList.length,
+                  (index) => Container(
+                      width: size.width,
+                      margin: const EdgeInsets.only(bottom: kDefaultPadding),
+                      child: Card(
+                          color: Colors.white,
+                          elevation: 0.75,
+                          child: InkWell(
+                            onTap: () {},
+                            borderRadius: BorderRadius.all(Radius.circular(30)),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                ClipRRect(
+                                  borderRadius: BorderRadius.vertical(
+                                      top: Radius.circular(30)),
+                                  child: Stack(
+                                    children: [
+                                      Image.asset(
+                                        eventReportList[index].thumbnail,
+                                        fit: BoxFit.cover,
+                                      ),
+                                      Positioned(
+                                          bottom: 15,
+                                          right: 15,
+                                          child: Container(
+                                            padding: const EdgeInsets.fromLTRB(
+                                                4, 1, 4, 2),
+                                            width: 50,
+                                            child: Center(
+                                              child: Text(
+                                                eventReportList[index].status ==
+                                                        EventStatus.PROCEEDING
+                                                    ? '진행 중'
+                                                    : '종료',
+                                                style: TextStyle(
+                                                    fontSize: 12,
+                                                    color: Colors.white,
+                                                    fontWeight:
+                                                        FontWeight.bold),
+                                              ),
+                                            ),
+                                            color: eventReportList[index]
+                                                        .status ==
+                                                    EventStatus.PROCEEDING
+                                                ? Colors.greenAccent.shade700
+                                                : Colors.grey.shade600,
+                                          ))
+                                    ],
+                                  ),
+                                ),
+                                Padding(
+                                    padding: const EdgeInsets.fromLTRB(
+                                        15, 10, 15, 10),
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Text(eventReportList[index].eventName,
+                                            style: TextStyle(
+                                                fontWeight: FontWeight.bold,
+                                                fontSize: 18)),
+                                        SizedBox(height: kDefaultPadding / 2),
+                                        Row(
+                                          children: [
+                                            Icon(
+                                              Icons.attach_money,
+                                              size: 16,
+                                              color: Colors.black54,
+                                            ),
+                                            SizedBox(
+                                                width: kDefaultPadding / 5),
+                                            Text(
+                                              '${numberDisplay(eventReportList[index].guestPrice)}원',
+                                              style: TextStyle(
+                                                  color: Colors.black54,
+                                                  fontSize: 14),
+                                            ),
+                                            SizedBox(
+                                                width: kDefaultPadding / 2),
+                                            Icon(
+                                              Icons.group,
+                                              size: 16,
+                                              color: Colors.black54,
+                                            ),
+                                            SizedBox(
+                                                width: kDefaultPadding / 3),
+                                            Text(
+                                                '${numberDisplay(eventReportList[index].joinCount)}명',
+                                                style: TextStyle(
+                                                    color: Colors.black54,
+                                                    fontSize: 14)),
+                                            SizedBox(
+                                                width: kDefaultPadding / 2),
+                                            Icon(
+                                              Icons.favorite,
+                                              size: 16,
+                                              color: Colors.black54,
+                                            ),
+                                            SizedBox(
+                                                width: kDefaultPadding / 3),
+                                            Text(
+                                                '${numberDisplay(eventReportList[index].likeCount)}개',
+                                                style: TextStyle(
+                                                    color: Colors.black54,
+                                                    fontSize: 14)),
+                                          ],
+                                        ),
+                                        SizedBox(height: kDefaultPadding / 3),
+                                        Wrap(
+                                            direction: Axis.horizontal,
+                                            spacing: 5.0,
+                                            children: List.generate(
+                                              eventReportList[index]
+                                                  .rewardNameList
+                                                  .length,
+                                              (rewardIndex) => Chip(
+                                                label: Text(
+                                                  eventReportList[index]
+                                                          .rewardNameList[
+                                                      rewardIndex],
+                                                  style:
+                                                      TextStyle(fontSize: 12),
+                                                ),
+                                                padding:
+                                                    const EdgeInsets.all(3),
+                                                backgroundColor: kThemeColor
+                                                    .withOpacity(0.2),
+                                              ),
+                                            )),
+                                      ],
+                                    )),
+                              ],
+                            ),
                           ),
-                        ])),
-                SizedBox(height: kDefaultPadding / 3 * 4),
-                Container(
-                    width: size.width,
-                    height: 150,
-                    decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.all(Radius.circular(30)),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.grey.withOpacity(0.2),
-                            spreadRadius: 5,
-                            blurRadius: 20,
-                            offset: Offset(0, 0),
-                          ),
-                        ])),
+                          shape: RoundedRectangleBorder(
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(30))))),
+                )),
               ],
             ),
           ),
