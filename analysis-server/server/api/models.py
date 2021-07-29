@@ -39,14 +39,14 @@ class EventRewards(models.Model):
 
 class Hashtag(models.Model):
     template = models.IntegerField()
-    id = models.OneToOneField(Event, models.DO_NOTHING, db_column='id', primary_key=True)
+    id = models.OneToOneField(Event, related_name='hashtag', on_delete=models.CASCADE, db_column='id', primary_key=True)
 
     class Meta:
         db_table = 'hashtag'
 
 
 class HashtagHashtags(models.Model):
-    hashtag = models.ForeignKey(Hashtag, models.DO_NOTHING)
+    hashtag = models.ForeignKey(Hashtag, related_name='hashtag_hashtags', on_delete=models.CASCADE)
     hashtags = models.CharField(max_length=255, blank=True, null=True)
 
     class Meta:

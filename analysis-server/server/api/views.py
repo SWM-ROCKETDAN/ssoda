@@ -8,6 +8,7 @@ from .models import JoinUser
 from .models import EventRewards
 from .models import Event
 from .models import Reward
+from .models import HashtagHashtags
 from .serializers import JoinPostSerializer
 from .serializers import JoinUserSerializer
 from .serializers import EventRewardSerializer
@@ -17,6 +18,8 @@ from .serializers import JoinSerializer
 from .modules.instagram.join.crawl import crawl
 from django.db.models import Prefetch
 from django.db.models import Subquery, OuterRef
+
+
 class JoinPostView(APIView):
     @staticmethod
     def get_object(pk):
@@ -119,12 +122,18 @@ class JoinRewardView(APIView):
             sns_id=OuterRef('sns_id'),
             type=OuterRef('type')
         )
+        hashtag_hashtags = HashtagHashtags.objects.filter(
+            id=OuterRef('event_id')
+        )
         join_post = JoinPost.objects.annotate(
             follow_count=Subquery(
                 join_user.values('follow_count')
             ),
             post_count=Subquery(
                 join_user.values('post_count')
+            ),
+            event_hashtags=Subquery(
+                hashtag_hashtags.values('hashtags')
             )
         )
 
@@ -135,6 +144,15 @@ class JoinRewardView(APIView):
         join_post_serializer.is_valid()
         print(join_post_serializer.data)
         return Response(join_post_serializer.data, status=status.HTTP_400_BAD_REQUEST)
+
+
+class TestView(APIView):
+    def get(self, request, pk_event, pk_post, pk_user, formate=None):
+        event = Event.objects.filter(pk=pk_event)
+        event_serializer = EventSerializer(data=event, many=True)
+        event_serializer.is_valid()
+        print(event_serializer.data)
+        return Response(event_serializer.data, status=status.HTTP_400_BAD_REQUEST)
 
 
 class ReportView(APIView):

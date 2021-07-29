@@ -5,24 +5,47 @@ from .models import Reward
 from .models import EventRewards
 from .models import Event
 from .models import EventImages
+from .models import HashtagHashtags
+from .models import Hashtag
+
+
+class HashtagHashtagsSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = HashtagHashtags
+        fields = '__all__'
+
+
+class HashtagSerializer(serializers.ModelSerializer):
+    hashtag_hashtags = HashtagHashtagsSerializer(many=True)
+
+    class Meta:
+        model = Hashtag
+        fields = '__all__'
 
 
 class EventSerializer(serializers.ModelSerializer):
-    event_images = serializers.SlugRelatedField(
-        many=True,
-        read_only=True,
-        slug_field='images'
-    )
+    hashtag = HashtagSerializer()
 
     class Meta:
         model = Event
-        fields = ['etype', 'id', 'finish_date', 'event_images']
-
-
-class EventImagesSerializer(serializers.RelatedField):
-    class Meta:
-        model = EventImages
         fields = '__all__'
+
+# class EventSerializer(serializers.ModelSerializer):
+#     event_images = serializers.SlugRelatedField(
+#         many=True,
+#         read_only=True,
+#         slug_field='images'
+#     )
+#
+#     class Meta:
+#         model = Event
+#         fields = ['etype', 'id', 'finish_date', 'event_images']
+#
+#
+# class EventImagesSerializer(serializers.RelatedField):
+#     class Meta:
+#         model = EventImages
+#         fields = '__all__'
 
 
 class EventRewardSerializer(serializers.ModelSerializer):
@@ -57,6 +80,7 @@ class JoinSerializer(serializers.Serializer):
     update_date = serializers.DateTimeField()
     follow_count = serializers.IntegerField()
     post_count = serializers.IntegerField()
+    event_hashtags = serializers.CharField()
 
 
 class JoinPostSerializer(serializers.ModelSerializer):
