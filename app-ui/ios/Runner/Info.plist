@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
+<key>NSAppTransportSecurity</key>
 <dict>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
@@ -41,5 +42,26 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
+	<key>NSAllowsArbitraryLoads</key>
+    <true/>
+	<key>LSApplicationQueriesSchemes</key>
+	<array>
+		<string>https</string>
+		<string>http</string>
+	</array>
+	<key>KAKAO_APP_KEY</key>
+	<string>kakao41ed8f7e9708e4d3f7aba2c252c3ffc9</string>
+	<key>LSApplicationQueriesSchemes</key>
+  	<array>
+		<string>kakao41ed8f7e9708e4d3f7aba2c252c3ffc9</string>
+
+		<string>kakaokompassauth</string>
+		<string>storykompassauth</string>
+
+		<string>kakaolink</string>         
+		<string>kakaotalk-5.9.7</string>
+
+		<string>storylink</string>
+  	</array>
 </dict>
 </plist>
