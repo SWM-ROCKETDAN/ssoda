@@ -30,23 +30,6 @@ class EventSerializer(serializers.ModelSerializer):
         model = Event
         fields = '__all__'
 
-# class EventSerializer(serializers.ModelSerializer):
-#     event_images = serializers.SlugRelatedField(
-#         many=True,
-#         read_only=True,
-#         slug_field='images'
-#     )
-#
-#     class Meta:
-#         model = Event
-#         fields = ['etype', 'id', 'finish_date', 'event_images']
-#
-#
-# class EventImagesSerializer(serializers.RelatedField):
-#     class Meta:
-#         model = EventImages
-#         fields = '__all__'
-
 
 class EventRewardSerializer(serializers.ModelSerializer):
     class Meta:
@@ -62,25 +45,16 @@ class RewardSerializer(serializers.ModelSerializer):
         fields = ['id', 'category', 'count', 'image', 'name', 'price', 'event_reward']
 
 
-class JoinSerializer(serializers.Serializer):
-    id = serializers.IntegerField()
-    event_id = serializers.IntegerField()
-    rewards_id = serializers.IntegerField()
-    sns_id = serializers.CharField()
-    url = serializers.CharField()
-    type = serializers.IntegerField()
-    status = serializers.IntegerField()
-    like_count = serializers.IntegerField()
-    comment_count = serializers.IntegerField()
-    hashtags = serializers.CharField()
-    create_date = serializers.DateTimeField()
-    upload_date = serializers.DateTimeField()
-    private_date = serializers.DateTimeField()
-    delete_data = serializers.DateTimeField()
-    update_date = serializers.DateTimeField()
-    follow_count = serializers.IntegerField()
-    post_count = serializers.IntegerField()
-    event_hashtags = serializers.CharField()
+class JoinCollectionSerializer(serializers.ModelSerializer):
+    join_user = serializers.SerializerMethodField()
+
+    class Meta:
+        model = JoinPost
+        fields = '__all__'
+
+    def get_join_user(self, obj):
+        join_user = JoinUser.objects.filter(sns_id=obj.sns_id)
+        return JoinUserSerializer(join_user)
 
 
 class JoinPostSerializer(serializers.ModelSerializer):
@@ -93,3 +67,23 @@ class JoinUserSerializer(serializers.ModelSerializer):
     class Meta:
         model = JoinUser
         fields = '__all__'
+
+# class JoinCollectionSerializer(serializers.Serializer):
+#     id = serializers.IntegerField()
+#     event_id = serializers.IntegerField()
+#     rewards_id = serializers.IntegerField()
+#     sns_id = serializers.CharField()
+#     url = serializers.CharField()
+#     type = serializers.IntegerField()
+#     status = serializers.IntegerField()
+#     like_count = serializers.IntegerField()
+#     comment_count = serializers.IntegerField()
+#     hashtags = serializers.CharField()
+#     create_date = serializers.DateTimeField()
+#     upload_date = serializers.DateTimeField()
+#     private_date = serializers.DateTimeField()
+#     delete_data = serializers.DateTimeField()
+#     update_date = serializers.DateTimeField()
+#     follow_count = serializers.IntegerField()
+#     post_count = serializers.IntegerField()
+#     event_hashtags = serializers.CharField()

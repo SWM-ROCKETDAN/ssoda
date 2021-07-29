@@ -7,7 +7,6 @@
 # Feel free to rename the models, but don't rename db_table values or field names.
 from django.db import models
 
-
 class Event(models.Model):
     etype = models.CharField(max_length=31)
     id = models.BigAutoField(primary_key=True)
@@ -60,6 +59,20 @@ class HashtagRequirements(models.Model):
     class Meta:
         db_table = 'hashtag_requirements'
 
+class JoinUser(models.Model):
+    id = models.BigAutoField(primary_key=True)
+    sns_id = models.CharField(max_length=255)
+    url = models.CharField(max_length=255, blank=True, null=True)
+    type = models.IntegerField()
+    status = models.IntegerField(blank=True, null=True)
+    follow_count = models.IntegerField(blank=True, null=True)
+    post_count = models.IntegerField(blank=True, null=True)
+    create_date = models.DateTimeField()
+    update_date = models.DateTimeField(blank=True, null=True)
+
+    class Meta:
+        db_table = 'join_user'
+
 
 class JoinPost(models.Model):
     id = models.BigAutoField(primary_key=True)
@@ -80,21 +93,6 @@ class JoinPost(models.Model):
 
     class Meta:
         db_table = 'join_post'
-
-
-class JoinUser(models.Model):
-    id = models.BigAutoField(primary_key=True)
-    sns_id = models.CharField(max_length=255)
-    url = models.CharField(max_length=255, blank=True, null=True)
-    type = models.IntegerField()
-    status = models.IntegerField(blank=True, null=True)
-    follow_count = models.IntegerField(blank=True, null=True)
-    post_count = models.IntegerField(blank=True, null=True)
-    create_date = models.DateTimeField()
-    update_date = models.DateTimeField(blank=True, null=True)
-
-    class Meta:
-        db_table = 'join_user'
 
 
 class Reward(models.Model):
