@@ -26,8 +26,6 @@ class _SignInScreenState extends State<SignInScreen> {
       refreshToken: null,
       accountInfo: AccountInfo(name: null, email: null));
 
-  String? callbackResponse;
-
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -59,12 +57,6 @@ class _SignInScreenState extends State<SignInScreen> {
                       Text('userName: ${naverSignIn.accountInfo!.name}'),
                       SizedBox(height: 5),
                       Text('userEmail: ${naverSignIn.accountInfo!.email}'),
-                      SizedBox(height: 30),
-                      Text('네이버 해경 로그인',
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold, fontSize: 24)),
-                      SizedBox(height: 5),
-                      Text('callbackResponse: $callbackResponse'),
                     ],
                   )),
                   Column(
@@ -78,24 +70,6 @@ class _SignInScreenState extends State<SignInScreen> {
                       SizedBox(height: kDefaultPadding / 3 * 2),
                       KakaoSignInButton(size: size),
                       SizedBox(height: kDefaultPadding / 3 * 2),
-                      SizedBox(
-                        width: size.width,
-                        child: ElevatedButton(
-                            onPressed: () async {
-                              final result = await FlutterWebAuth.authenticate(
-                                  url:
-                                      "http://ec2-3-37-85-236.ap-northeast-2.compute.amazonaws.com:8080/oauth2/authorization/naver",
-                                  callbackUrlScheme:
-                                      'com.rocketdan.hashchecker');
-                              print(result);
-                              setState(() {
-                                callbackResponse = result;
-                              });
-
-// Extract token from resulting url
-                            },
-                            child: Text('해경 로그인')),
-                      ),
                     ],
                   ),
                 ])),
