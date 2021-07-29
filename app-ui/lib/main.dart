@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:hashchecker/constants.dart';
+import 'package:hashchecker/env.dart';
 import 'package:hashchecker/screens/create_event/create_event_step/create_event_step_screen.dart';
 import 'package:hashchecker/screens/marketing_report/event_report/event_report_screen.dart';
-import 'package:hashchecker/screens/marketing_report/store_report/store_report_screen.dart';
+import 'package:hashchecker/screens/sign_in/sign_in_screen.dart';
+import 'package:kakao_flutter_sdk/user.dart';
+
 
 void main() {
   SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
@@ -24,7 +27,7 @@ class MyApp extends StatelessWidget {
           accentColor: kThemeColor,
           visualDensity: VisualDensity.adaptivePlatformDensity,
           scaffoldBackgroundColor: Colors.white),
-      home: StoreReportScreen(),
+      home: SignInScreen(),
     );
   }
 
