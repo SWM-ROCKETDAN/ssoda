@@ -17,8 +17,12 @@ import 'components/participation_report_monthly.dart';
 import 'components/participation_report_weekly.dart';
 
 class EventReportScreen extends StatefulWidget {
-  const EventReportScreen({Key? key}) : super(key: key);
+  const EventReportScreen(
+      {Key? key, required this.indexForHero, required this.eventThumbnail})
+      : super(key: key);
 
+  final int indexForHero;
+  final String eventThumbnail; // it will be set api & initState
   @override
   _EventReportScreenState createState() => _EventReportScreenState();
 }
@@ -56,8 +60,12 @@ class _EventReportScreenState extends State<EventReportScreen> {
                     automaticallyImplyLeading: false,
                     actions: [
                       Padding(
-                        padding: const EdgeInsets.fromLTRB(0, 10, 20, 15),
-                        child: Icon(Icons.close),
+                        padding: const EdgeInsets.fromLTRB(0, 10, 25, 20),
+                        child: GestureDetector(
+                            onTap: () {
+                              Navigator.of(context).pop();
+                            },
+                            child: Icon(Icons.close)),
                       )
                     ],
                     flexibleSpace: FlexibleSpaceBar(
@@ -81,13 +89,40 @@ class _EventReportScreenState extends State<EventReportScreen> {
                               maxLines: 1,
                             )
                           ]),
-                      background: Image.asset(
-                        'assets/images/event_report/graph.png',
-                        fit: BoxFit.cover,
-                        color: Colors.indigoAccent.shade200,
-                      ),
+                      background: Stack(children: <Widget>[
+                        Hero(
+                            tag: 'reportThumbnail${widget.indexForHero}',
+                            child: Container(
+                              decoration: BoxDecoration(
+                                color: Colors.transparent,
+                                image: DecorationImage(
+                                  fit: BoxFit.cover,
+                                  image: AssetImage(
+                                    widget.eventThumbnail,
+                                  ),
+                                ),
+                              ),
+                              height: size.height * 0.4,
+                            )),
+                        Container(
+                          height: size.height * 0.4,
+                          decoration: BoxDecoration(
+                              color: Colors.white,
+                              gradient: LinearGradient(
+                                  begin: FractionalOffset.topCenter,
+                                  end: FractionalOffset.bottomCenter,
+                                  colors: [
+                                    Colors.transparent.withOpacity(0.0),
+                                    Colors.black.withOpacity(0.7),
+                                  ],
+                                  stops: [
+                                    0.0,
+                                    1.0
+                                  ])),
+                        )
+                      ]),
                     ),
-                    backgroundColor: kThemeColor,
+                    backgroundColor: Colors.black87,
                     foregroundColor: Colors.green,
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.only(

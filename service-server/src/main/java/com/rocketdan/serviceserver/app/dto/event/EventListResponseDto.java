@@ -25,7 +25,7 @@ public class EventListResponseDto {
         this.status = entity.getStatus();
         this.startDate = entity.getStartDate();
         this.finishDate = entity.getFinishDate();
-        this.images = entity.getImages();
+        this.images = List.copyOf(entity.getImages());
         this.type = entity.getType();
     }
 }

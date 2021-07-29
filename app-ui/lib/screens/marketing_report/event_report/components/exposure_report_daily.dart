@@ -38,11 +38,11 @@ class _ExposureReportDailyState extends State<ExposureReportDaily> {
       margin: const EdgeInsets.fromLTRB(5, 5, 5, 15),
       decoration: BoxDecoration(boxShadow: [
         BoxShadow(
-          color: Colors.black26,
-          offset: Offset(1.5, 1.5),
-          blurRadius: 2,
-          spreadRadius: 0,
-        )
+          color: Colors.grey.withOpacity(0.2),
+          spreadRadius: 5,
+          blurRadius: 20,
+          offset: Offset(0, 0), // changes position of shadow
+        ),
       ], color: Colors.white, borderRadius: BorderRadius.circular(20)),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -66,7 +66,7 @@ class _ExposureReportDailyState extends State<ExposureReportDaily> {
                       fontSize: 18)),
               NumberSlideAnimation(
                   number: (widget.eventReport.exposeCount ~/ 85).toString(),
-                  duration: const Duration(seconds: 3),
+                  duration: kDefaultNumberSliderDuration,
                   curve: Curves.easeOut,
                   textStyle: TextStyle(
                       color: kThemeColor,
@@ -113,7 +113,7 @@ class _ExposureReportDailyState extends State<ExposureReportDaily> {
                             fontWeight: FontWeight.bold, fontSize: 14)),
                     NumberSlideAnimation(
                         number: '7',
-                        duration: const Duration(seconds: 3),
+                        duration: kDefaultNumberSliderDuration,
                         curve: Curves.easeOut,
                         textStyle: TextStyle(
                             color: kThemeColor,

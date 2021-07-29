@@ -2,7 +2,7 @@ import 'reward.dart';
 import 'period.dart';
 import 'template.dart';
 
-enum Status { WAITING, PROCEEDING, ENDED }
+enum EventStatus { WAITING, PROCEEDING, ENDED }
 
 class Event {
   final String title;

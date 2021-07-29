@@ -32,6 +32,7 @@ class JoinPostView(APIView):
 
 
 class JoinUserView(APIView):
+    @staticmethod
     def get_object(pk):
         try:
             return JoinUser.objects.get(pk=pk)

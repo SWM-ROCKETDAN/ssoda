@@ -5,6 +5,7 @@ import com.rocketdan.serviceserver.domain.store.Address;
 import com.rocketdan.serviceserver.domain.store.Store;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -26,7 +27,7 @@ public class StoreResponseDto {
         this.category = entity.getCategory();
         this.address = entity.getAddress();
         this.description = entity.getDescription();
-        this.images = entity.getImages();
+        this.images = List.copyOf(entity.getImages());
         this.event_ids = entity.getEvents().stream().map(Event::getId).collect(Collectors.toList());
     }
 }

@@ -14,8 +14,8 @@ public class HashtagEventResponseDto extends EventResponseDto {
 
     public HashtagEventResponseDto (Hashtag entity) {
         super(entity);
-        this.hashtags = entity.getHashtags();
-        this.requirements = entity.getRequirements();
+        this.hashtags = List.copyOf(entity.getHashtags());
+        this.requirements = List.copyOf(entity.getRequirements());
         this.template = entity.getTemplate();
     }
 }
