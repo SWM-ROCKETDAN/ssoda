@@ -32,5 +32,6 @@ flutter:
     - assets/images/
     - assets/images/create_event_step_help/
     - assets/images/event_report/
+    - assets/images/sign_in/
 
   uses-material-design: true
