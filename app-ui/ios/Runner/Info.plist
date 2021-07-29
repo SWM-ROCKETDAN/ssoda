@@ -49,5 +49,19 @@
 		<string>https</string>
 		<string>http</string>
 	</array>
+	<key>KAKAO_APP_KEY</key>
+	<string>kakao41ed8f7e9708e4d3f7aba2c252c3ffc9</string>
+	<key>LSApplicationQueriesSchemes</key>
+  	<array>
+		<string>kakao41ed8f7e9708e4d3f7aba2c252c3ffc9</string>
+
+		<string>kakaokompassauth</string>
+		<string>storykompassauth</string>
+
+		<string>kakaolink</string>         
+		<string>kakaotalk-5.9.7</string>
+
+		<string>storylink</string>
+  	</array>
 </dict>
 </plist>
