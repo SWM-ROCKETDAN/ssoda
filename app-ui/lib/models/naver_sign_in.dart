@@ -1,21 +1,15 @@
 class NaverSignIn {
   bool isLogin;
   String? accessToken;
-  String? expiresAt;
-  String? tokenType;
-  String? refreshToken;
-  AccountInfo? accountInfo;
+  NaverAccountInfo accountInfo;
   NaverSignIn(
       {required this.isLogin,
-      this.accessToken,
-      this.expiresAt,
-      this.tokenType,
-      this.refreshToken,
-      this.accountInfo});
+      required this.accessToken,
+      required this.accountInfo});
 }
 
-class AccountInfo {
+class NaverAccountInfo {
   String? name;
   String? email;
-  AccountInfo({this.name, this.email});
+  NaverAccountInfo({required this.name, required this.email});
 }

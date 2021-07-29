@@ -2,19 +2,23 @@ import 'package:flutter/material.dart';
 import 'package:hashchecker/constants.dart';
 
 class KakaoSignInButton extends StatelessWidget {
-  const KakaoSignInButton({
-    Key? key,
-    required this.size,
-  }) : super(key: key);
+  const KakaoSignInButton(
+      {Key? key,
+      required this.size,
+      required this.signIn,
+      required this.isLogin})
+      : super(key: key);
 
   final Size size;
+  final VoidCallback signIn;
+  final bool isLogin;
 
   @override
   Widget build(BuildContext context) {
     return SizedBox(
       width: size.width,
       child: TextButton(
-          onPressed: () {},
+          onPressed: signIn,
           child: Center(
             child: Row(mainAxisAlignment: MainAxisAlignment.center, children: [
               Image.asset(
@@ -26,7 +30,7 @@ class KakaoSignInButton extends StatelessWidget {
               ),
               SizedBox(width: kDefaultPadding / 5),
               Text(
-                '카카오로 시작하기',
+                isLogin ? '카카오에서 로그아웃' : '카카오로 시작하기 ',
                 style: TextStyle(
                   color: Color(0xFF191919),
                   fontSize: 16,

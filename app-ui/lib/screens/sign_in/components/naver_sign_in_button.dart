@@ -12,8 +12,8 @@ class NaverSignInButton extends StatelessWidget {
       : super(key: key);
 
   final Size size;
-  final AsyncCallback signIn;
-  final AsyncCallback signOut;
+  final VoidCallback signIn;
+  final VoidCallback signOut;
   final bool isLogin;
 
   @override
@@ -32,7 +32,7 @@ class NaverSignInButton extends StatelessWidget {
                 color: Colors.white,
               ),
               Text(
-                isLogin ? '네이버에서 로그아웃' : '네이버로 시작하기',
+                isLogin ? '네이버에서 로그아웃' : '네이버로 시작하기 ',
                 style: TextStyle(
                   color: Colors.white,
                   fontSize: 16,
