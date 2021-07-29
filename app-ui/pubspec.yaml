@@ -21,8 +21,7 @@ dependencies:
   animated_text_kit: ^4.2.1
   flutter_naver_login: ^1.2.2
   http: ^0.13.3
-  url_launcher: ^6.0.9
-  flutter_web_auth: ^0.3.0
+  kakao_flutter_sdk: ^0.7.0
 
 dev_dependencies:
   flutter_test:
