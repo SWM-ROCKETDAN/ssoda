@@ -1,4 +1,8 @@
+import pprint
+
 from rest_framework import serializers
+from rest_framework.utils import json
+
 from .models import JoinUser
 from .models import JoinPost
 from .models import Reward
@@ -46,15 +50,28 @@ class RewardSerializer(serializers.ModelSerializer):
 
 
 class JoinCollectionSerializer(serializers.ModelSerializer):
-    join_user = serializers.SerializerMethodField()
+    event = EventSerializer()
 
     class Meta:
         model = JoinPost
         fields = '__all__'
 
-    def get_join_user(self, obj):
-        join_user = JoinUser.objects.filter(sns_id=obj.sns_id)
-        return JoinUserSerializer(join_user)
+    def to_representation(self, instance):
+        representation = super().to_representation(instance)
+        try:
+            join_user = JoinUser.objects.filter(sns_id=representation['sns_id'])
+        except Reward.DoesNotExist:
+            pass
+
+        join_user_serializer = JoinUserSerializer(data=join_user, many=True)
+        join_user_serializer.is_valid()
+        if join_user_serializer.data:
+            representation['join_user'] = join_user_serializer.data.pop()
+        else:
+            representation['join_user'] = {}
+        return representation
+
+
 
 
 class JoinPostSerializer(serializers.ModelSerializer):

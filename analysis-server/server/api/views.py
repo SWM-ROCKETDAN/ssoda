@@ -2,22 +2,14 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from django.http import Http404
 from rest_framework import status
-from rest_framework import generics
-from .models import JoinPost
-from .models import JoinUser
-from .models import EventRewards
+from .models import JoinPost, JoinUser
 from .models import Event
 from .models import Reward
-from .models import HashtagHashtags
-from .serializers import JoinPostSerializer
-from .serializers import JoinUserSerializer
-from .serializers import EventRewardSerializer
+from .serializers import JoinPostSerializer, JoinUserSerializer
 from .serializers import EventSerializer
 from .serializers import RewardSerializer
 from .serializers import JoinCollectionSerializer
 from .modules.instagram.join.crawl import crawl
-from django.db.models import Prefetch
-from django.db.models import Subquery, OuterRef
 
 
 class JoinPostView(APIView):
@@ -115,40 +107,10 @@ class JoinRewardView(APIView):
         reward_list_serializer.is_valid()
         return Response(reward_list_serializer.data, status=status.HTTP_400_BAD_REQUEST)
 
-    # 테스트 용
-    # def post(self, request, pk_event, pk_post, pk_user, formate=None):
-    #     print('post 시작')
-    #     join_user = JoinUser.objects.filter(
-    #         sns_id=OuterRef('sns_id'),
-    #         type=OuterRef('type')
-    #     )
-    #     hashtag_hashtags = HashtagHashtags.objects.filter(
-    #         id=OuterRef('event_id')
-    #     )
-    #     join_post = JoinPost.objects.annotate(
-    #         follow_count=Subquery(
-    #             join_user.values('follow_count')
-    #         ),
-    #         post_count=Subquery(
-    #             join_user.values('post_count')
-    #         ),
-    #         event_hashtags=Subquery(
-    #             hashtag_hashtags.values('hashtags')
-    #         )
-    #     )
-    #
-    #     # join_post = JoinPost.objects.annotate(user_test=Subquery(
-    #     #     JoinUser.objects.filter(sns_id=OuterRef('sns_id'))
-    #     # ))
-    #     join_post_serializer = JoinSerializer(data=join_post, many=True)
-    #     join_post_serializer.is_valid()
-    #     print(join_post_serializer.data)
-    #     return Response(join_post_serializer.data, status=status.HTTP_400_BAD_REQUEST)
-    #
 
 class TestView(APIView):
     def get(self, request, pk_event, pk_post, pk_user, formate=None):
-        test_code = 1
+        test_code = 2
         if test_code == 0:
             event = Event.objects.filter(pk=pk_event)
             event_serializer = EventSerializer(data=event, many=True)
@@ -162,27 +124,9 @@ class TestView(APIView):
             join_collection_serializer.is_valid()
             print(join_collection_serializer.data)
             return Response(join_collection_serializer.data, status=status.HTTP_400_BAD_REQUEST)
+        if test_code == 2:
+            join_collection = JoinPost.objects.all()
+            join_collection_serializer = JoinCollectionSerializer(data=join_collection, many=True)
+            join_collection_serializer.is_valid()
+            return Response(join_collection_serializer.data, status=status.HTTP_400_BAD_REQUEST)
 
-
-class TestApi(generics.RetrieveAPIView):
-    serializer_class = JoinCollectionSerializer
-    queryset = JoinPost.objects.all()
-
-    def get(self, request, *args, **kwargs):
-        join_post = JoinPost.objects.filter(pk=1)
-        join_post_serializer = JoinPostSerializer(data=join_post)
-        join_post_serializer.is_valid()
-        join_user = self.serializer_class.get_join_user(self, join_post_serializer.data)
-        serializer = self.serializer_class(join_post, many=True)
-        serializer.is_valid()
-        print(serializer.data)
-        return Response(serializer.data)
-
-class ReportView(APIView):
-    # event = Event.objects.filter(pk=pk_event)
-    # # event_serializer = EventSerializer(data=event, many=True)
-    # # event_serializer.is_valid()
-    # # print(event_serializer)
-    # #
-    # # return Response(event_serializer.data, status=status.HTTP_400_BAD_REQUEST)
-    pass

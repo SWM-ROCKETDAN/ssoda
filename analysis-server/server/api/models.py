@@ -76,7 +76,7 @@ class JoinUser(models.Model):
 
 class JoinPost(models.Model):
     id = models.BigAutoField(primary_key=True)
-    event = models.ForeignKey(Event, models.DO_NOTHING)
+    event = models.ForeignKey(Event, related_name='event', on_delete=models.CASCADE)
     rewards_id = models.IntegerField(blank=True, null=True)
     sns_id = models.CharField(max_length=255, blank=True, null=True)
     url = models.CharField(max_length=255)
