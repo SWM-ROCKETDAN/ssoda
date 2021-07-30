@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:hashchecker/constants.dart';
 import 'package:hashchecker/models/event_report.dart';
 
+import 'components/daily_report.dart';
 import 'components/expenditure_report_total.dart';
 import 'components/expenditure_report_daily.dart';
 import 'components/expenditure_report_monthly.dart';
@@ -11,10 +12,13 @@ import 'components/exposure_report_total.dart';
 import 'components/exposure_report_daily.dart';
 import 'components/exposure_report_monthly.dart';
 import 'components/exposure_report_weekly.dart';
+import 'components/monthly_report.dart';
 import 'components/participation_report_total.dart';
 import 'components/participation_report_daily.dart';
 import 'components/participation_report_monthly.dart';
 import 'components/participation_report_weekly.dart';
+import 'components/total_report.dart';
+import 'components/weekly_report.dart';
 
 class EventReportScreen extends StatefulWidget {
   const EventReportScreen(
@@ -47,196 +51,145 @@ class _EventReportScreenState extends State<EventReportScreen> {
         costPerReward: [50000, 65000, 50000, 75000, 90000]);
   }
 
-  String dropdownValue = "총 합";
-
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
 
     return Scaffold(
-        body: NestedScrollView(
-            headerSliverBuilder: (context, ext) => [
-                  SliverAppBar(
-                    automaticallyImplyLeading: false,
-                    actions: [
-                      Padding(
-                        padding: const EdgeInsets.fromLTRB(0, 10, 25, 20),
-                        child: GestureDetector(
-                            onTap: () {
-                              Navigator.of(context).pop();
-                            },
-                            child: Icon(Icons.close)),
-                      )
-                    ],
-                    flexibleSpace: FlexibleSpaceBar(
-                      titlePadding: const EdgeInsets.fromLTRB(20, 10, 0, 15),
-                      title: Column(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            AutoSizeText(
-                              eventReport.eventName,
-                              style:
-                                  TextStyle(color: Colors.white, fontSize: 14),
-                              maxLines: 1,
-                            ),
-                            AutoSizeText(
-                              '마케팅 성과 보고서',
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 18),
-                              maxLines: 1,
-                            )
-                          ]),
-                      background: Stack(children: <Widget>[
-                        Hero(
-                            tag: 'reportThumbnail${widget.indexForHero}',
-                            child: Container(
-                              decoration: BoxDecoration(
-                                color: Colors.transparent,
-                                image: DecorationImage(
-                                  fit: BoxFit.cover,
-                                  image: AssetImage(
-                                    widget.eventThumbnail,
-                                  ),
+        body: DefaultTabController(
+      length: 4,
+      child: NestedScrollView(
+          headerSliverBuilder: (context, ext) => [
+                SliverAppBar(
+                  automaticallyImplyLeading: false,
+                  actions: [
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(0, 10, 25, 20),
+                      child: GestureDetector(
+                          onTap: () {
+                            Navigator.of(context).pop();
+                          },
+                          child: Icon(Icons.close)),
+                    )
+                  ],
+                  flexibleSpace: FlexibleSpaceBar(
+                    titlePadding: const EdgeInsets.fromLTRB(20, 10, 0, 15),
+                    title: Column(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          AutoSizeText(
+                            eventReport.eventName,
+                            style: TextStyle(color: Colors.white, fontSize: 14),
+                            maxLines: 1,
+                          ),
+                          AutoSizeText(
+                            '마케팅 성과 보고서',
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 18),
+                            maxLines: 1,
+                          )
+                        ]),
+                    background: Stack(children: <Widget>[
+                      Hero(
+                          tag: 'reportThumbnail${widget.indexForHero}',
+                          child: Container(
+                            decoration: BoxDecoration(
+                              color: Colors.transparent,
+                              image: DecorationImage(
+                                fit: BoxFit.cover,
+                                image: AssetImage(
+                                  widget.eventThumbnail,
                                 ),
                               ),
-                              height: size.height * 0.4,
-                            )),
-                        Container(
-                          height: size.height * 0.4,
-                          decoration: BoxDecoration(
-                              color: Colors.white,
-                              gradient: LinearGradient(
-                                  begin: FractionalOffset.topCenter,
-                                  end: FractionalOffset.bottomCenter,
-                                  colors: [
-                                    Colors.transparent.withOpacity(0.0),
-                                    Colors.black.withOpacity(0.7),
-                                  ],
-                                  stops: [
-                                    0.0,
-                                    1.0
-                                  ])),
-                        )
-                      ]),
-                    ),
-                    backgroundColor: Colors.black87,
-                    foregroundColor: Colors.green,
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.only(
-                            bottomLeft: Radius.circular(0),
-                            bottomRight: Radius.circular(0))),
-                    expandedHeight: size.height * 0.3,
-                    pinned: true,
+                            ),
+                            height: size.height * 0.4,
+                          )),
+                      Container(
+                        height: size.height * 0.4,
+                        decoration: BoxDecoration(
+                            color: Colors.white,
+                            gradient: LinearGradient(
+                                begin: FractionalOffset.topCenter,
+                                end: FractionalOffset.bottomCenter,
+                                colors: [
+                                  Colors.transparent.withOpacity(0.0),
+                                  Colors.black.withOpacity(0.7),
+                                ],
+                                stops: [
+                                  0.0,
+                                  1.0
+                                ])),
+                      )
+                    ]),
                   ),
-                ],
-            body: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Expanded(
-                  child: SingleChildScrollView(
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 5),
-                      child: Column(
-                        children: [
-                          DropdownButton<String>(
-                            value: dropdownValue,
-                            icon: const Icon(
-                              Icons.timeline_outlined,
-                              color: kThemeColor,
-                            ),
-                            iconSize: 24,
-                            elevation: 16,
-                            style: TextStyle(color: kThemeColor),
-                            underline: Container(
-                              height: 2,
-                              color: kThemeColor,
-                            ),
-                            onChanged: (String? newValue) {
-                              setState(() {
-                                dropdownValue = newValue!;
-                              });
-                            },
-                            items: <String>['일 별', '주 별', '월 별', '총 합']
-                                .map<DropdownMenuItem<String>>((String value) {
-                              return DropdownMenuItem<String>(
-                                value: value,
-                                child: SizedBox(
-                                  width: 50,
-                                  child: Text(
-                                    value,
-                                    style:
-                                        TextStyle(fontWeight: FontWeight.bold),
-                                    textAlign: TextAlign.center,
-                                  ),
-                                ),
-                              );
-                            }).toList(),
-                          ),
-                          if (dropdownValue == '일 별') ...[
-                            ExposureReportDaily(
-                                size: size,
-                                eventReport: eventReport,
-                                period: dropdownValue),
-                            ParticipationReportDaily(
-                                size: size,
-                                eventReport: eventReport,
-                                period: dropdownValue),
-                            ExpenditureReportDaily(
-                                size: size,
-                                eventReport: eventReport,
-                                period: dropdownValue),
-                          ],
-                          if (dropdownValue == '주 별') ...[
-                            ExposureReportWeekly(
-                                size: size,
-                                eventReport: eventReport,
-                                period: dropdownValue),
-                            ParticipationReportWeekly(
-                                size: size,
-                                eventReport: eventReport,
-                                period: dropdownValue),
-                            ExpenditureReportWeekly(
-                                size: size,
-                                eventReport: eventReport,
-                                period: dropdownValue),
-                          ],
-                          if (dropdownValue == '월 별') ...[
-                            ExposureReportMonthly(
-                                size: size,
-                                eventReport: eventReport,
-                                period: dropdownValue),
-                            ParticipationReportMonthly(
-                                size: size,
-                                eventReport: eventReport,
-                                period: dropdownValue),
-                            ExpenditureReportMonthly(
-                                size: size,
-                                eventReport: eventReport,
-                                period: dropdownValue),
-                          ],
-                          if (dropdownValue == '총 합') ...[
-                            ExposureReportTotal(
-                                size: size,
-                                eventReport: eventReport,
-                                period: dropdownValue),
-                            ParticipationReportTotal(
-                                size: size,
-                                eventReport: eventReport,
-                                period: dropdownValue),
-                            ExpenditureReportTotal(
-                                size: size,
-                                eventReport: eventReport,
-                                period: dropdownValue),
-                          ]
-                        ],
-                      ),
+                  backgroundColor: Colors.black87,
+                  foregroundColor: Colors.green,
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.only(
+                          bottomLeft: Radius.circular(0),
+                          bottomRight: Radius.circular(0))),
+                  expandedHeight: size.height * 0.3,
+                  pinned: true,
+                ),
+                SliverPersistentHeader(
+                  delegate: _SliverAppBarDelegate(
+                    TabBar(
+                      indicatorColor: Colors.black87,
+                      labelColor: Colors.black87,
+                      unselectedLabelColor: Colors.grey,
+                      tabs: [
+                        Tab(text: "일 별"),
+                        Tab(text: "주 별"),
+                        Tab(text: "월 별"),
+                        Tab(text: "종 합"),
+                      ],
                     ),
                   ),
+                  pinned: true,
                 )
               ],
-            )));
+          body: TabBarView(
+            children: [
+              DailyReport(size: size, eventReport: eventReport),
+              WeeklyReport(size: size, eventReport: eventReport),
+              MonthlyReport(size: size, eventReport: eventReport),
+              TotalReport(size: size, eventReport: eventReport)
+            ],
+          )),
+    ));
+  }
+}
+
+class _SliverAppBarDelegate extends SliverPersistentHeaderDelegate {
+  _SliverAppBarDelegate(this._tabBar);
+
+  final TabBar _tabBar;
+
+  @override
+  double get minExtent => _tabBar.preferredSize.height;
+  @override
+  double get maxExtent => _tabBar.preferredSize.height;
+
+  @override
+  Widget build(
+      BuildContext context, double shrinkOffset, bool overlapsContent) {
+    return Container(
+      child: _tabBar,
+      decoration: BoxDecoration(color: Colors.white, boxShadow: [
+        BoxShadow(
+          color: Colors.black12,
+          offset: Offset(0.0, 1.0),
+          blurRadius: 1.0,
+        ),
+      ]),
+    );
+  }
+
+  @override
+  bool shouldRebuild(_SliverAppBarDelegate oldDelegate) {
+    return false;
   }
 }

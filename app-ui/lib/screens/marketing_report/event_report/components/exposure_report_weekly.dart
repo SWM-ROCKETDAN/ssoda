@@ -8,15 +8,11 @@ import 'delta_data.dart';
 
 class ExposureReportWeekly extends StatefulWidget {
   ExposureReportWeekly(
-      {Key? key,
-      required this.size,
-      required this.eventReport,
-      required this.period})
+      {Key? key, required this.size, required this.eventReport})
       : super(key: key);
 
   final Size size;
   final EventReport eventReport;
-  final String period;
   final numberDisplay = createDisplay();
 
   @override

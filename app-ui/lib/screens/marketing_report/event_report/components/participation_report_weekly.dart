@@ -12,15 +12,11 @@ import 'delta_data.dart';
 
 class ParticipationReportWeekly extends StatefulWidget {
   ParticipationReportWeekly(
-      {Key? key,
-      required this.size,
-      required this.eventReport,
-      required this.period})
+      {Key? key, required this.size, required this.eventReport})
       : super(key: key);
 
   final Size size;
   final EventReport eventReport;
-  final String period;
 
   @override
   _ParticipationReportWeeklyState createState() =>

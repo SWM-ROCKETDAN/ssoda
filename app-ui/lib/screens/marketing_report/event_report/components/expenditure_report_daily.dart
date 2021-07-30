@@ -11,15 +11,11 @@ import 'package:hashchecker/widgets/number_slider/number_slide_animation_widget.
 
 class ExpenditureReportDaily extends StatefulWidget {
   const ExpenditureReportDaily(
-      {Key? key,
-      required this.size,
-      required this.eventReport,
-      required this.period})
+      {Key? key, required this.size, required this.eventReport})
       : super(key: key);
 
   final Size size;
   final EventReport eventReport;
-  final String period;
 
   @override
   _ExpenditureReportDailyState createState() => _ExpenditureReportDailyState();
@@ -57,7 +53,7 @@ class _ExpenditureReportDailyState extends State<ExpenditureReportDaily> {
                     fontWeight: FontWeight.bold,
                     fontSize: 14)),
             DeltaData(
-                value: 380, icon: Icons.arrow_drop_down, color: Colors.green)
+                value: 380, icon: Icons.arrow_drop_down, color: Colors.red)
           ]),
           Wrap(
             crossAxisAlignment: WrapCrossAlignment.center,

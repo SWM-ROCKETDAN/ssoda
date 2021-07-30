@@ -10,15 +10,11 @@ import 'package:hashchecker/widgets/number_slider/number_slide_animation_widget.
 
 class ParticipationReportTotal extends StatefulWidget {
   ParticipationReportTotal(
-      {Key? key,
-      required this.size,
-      required this.eventReport,
-      required this.period})
+      {Key? key, required this.size, required this.eventReport})
       : super(key: key);
 
   final Size size;
   final EventReport eventReport;
-  final String period;
 
   @override
   _ParticipationReportTotalState createState() =>

@@ -12,15 +12,11 @@ import 'delta_data.dart';
 
 class ExpenditureReportWeekly extends StatefulWidget {
   const ExpenditureReportWeekly(
-      {Key? key,
-      required this.size,
-      required this.eventReport,
-      required this.period})
+      {Key? key, required this.size, required this.eventReport})
       : super(key: key);
 
   final Size size;
   final EventReport eventReport;
-  final String period;
 
   @override
   _ExpenditureReportWeeklyState createState() =>
@@ -59,7 +55,7 @@ class _ExpenditureReportWeeklyState extends State<ExpenditureReportWeekly> {
                     fontWeight: FontWeight.bold,
                     fontSize: 14)),
             DeltaData(
-                value: 3736, icon: Icons.arrow_drop_down, color: Colors.green)
+                value: 3736, icon: Icons.arrow_drop_down, color: Colors.red)
           ]),
           Wrap(
             crossAxisAlignment: WrapCrossAlignment.center,

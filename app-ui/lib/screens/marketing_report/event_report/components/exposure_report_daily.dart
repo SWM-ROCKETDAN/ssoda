@@ -8,16 +8,11 @@ import 'package:hashchecker/widgets/number_slider/number_slide_animation_widget.
 import 'delta_data.dart';
 
 class ExposureReportDaily extends StatefulWidget {
-  ExposureReportDaily(
-      {Key? key,
-      required this.size,
-      required this.eventReport,
-      required this.period})
+  ExposureReportDaily({Key? key, required this.size, required this.eventReport})
       : super(key: key);
 
   final Size size;
   final EventReport eventReport;
-  final String period;
   final numberDisplay = createDisplay();
 
   @override
