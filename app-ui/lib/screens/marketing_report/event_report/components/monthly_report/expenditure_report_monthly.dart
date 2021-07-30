@@ -8,10 +8,10 @@ import 'dart:math';
 
 import 'package:hashchecker/widgets/number_slider/number_slide_animation_widget.dart';
 
-import 'delta_data.dart';
+import '../delta_data.dart';
 
-class ExpenditureReportWeekly extends StatefulWidget {
-  const ExpenditureReportWeekly(
+class ExpenditureReportMonthly extends StatefulWidget {
+  const ExpenditureReportMonthly(
       {Key? key, required this.size, required this.eventReport})
       : super(key: key);
 
@@ -19,11 +19,11 @@ class ExpenditureReportWeekly extends StatefulWidget {
   final EventReport eventReport;
 
   @override
-  _ExpenditureReportWeeklyState createState() =>
-      _ExpenditureReportWeeklyState();
+  _ExpenditureReportMonthlyState createState() =>
+      _ExpenditureReportMonthlyState();
 }
 
-class _ExpenditureReportWeeklyState extends State<ExpenditureReportWeekly> {
+class _ExpenditureReportMonthlyState extends State<ExpenditureReportMonthly> {
   final Duration animDuration = const Duration(milliseconds: 250);
   final numberDisplay = createDisplay();
 
@@ -49,13 +49,13 @@ class _ExpenditureReportWeeklyState extends State<ExpenditureReportWeekly> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-            Text('이번 주에',
+            Text('이번 달에',
                 style: TextStyle(
                     color: Colors.black87,
                     fontWeight: FontWeight.bold,
                     fontSize: 14)),
             DeltaData(
-                value: 3736, icon: Icons.arrow_drop_down, color: Colors.red)
+                value: 13400, icon: Icons.arrow_drop_up, color: Colors.green)
           ]),
           Wrap(
             crossAxisAlignment: WrapCrossAlignment.center,
@@ -67,7 +67,7 @@ class _ExpenditureReportWeeklyState extends State<ExpenditureReportWeekly> {
                       fontWeight: FontWeight.bold,
                       fontSize: 18)),
               NumberSlideAnimation(
-                number: (widget.eventReport.costSum ~/ 15).toString(),
+                number: (widget.eventReport.costSum ~/ 3).toString(),
                 duration: kDefaultNumberSliderDuration,
                 curve: Curves.easeOut,
                 textStyle: TextStyle(
@@ -89,7 +89,7 @@ class _ExpenditureReportWeeklyState extends State<ExpenditureReportWeekly> {
                     color: Colors.black87,
                     fontWeight: FontWeight.bold,
                     fontSize: 18),
-              )
+              ),
             ],
           ),
           SizedBox(height: kDefaultPadding),
@@ -174,7 +174,7 @@ class _ExpenditureReportWeeklyState extends State<ExpenditureReportWeekly> {
                 ),
                 children: <TextSpan>[
                   TextSpan(
-                    text: '${numberDisplay(rod.y.toInt() ~/ 15)}원',
+                    text: '${numberDisplay(rod.y.toInt() ~/ 3)}원',
                     style: TextStyle(
                       color: Colors.black87,
                       fontSize: 16,

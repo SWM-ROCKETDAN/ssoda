@@ -4,11 +4,11 @@ import 'package:hashchecker/constants.dart';
 import 'package:hashchecker/models/event_report.dart';
 import 'package:number_display/number_display.dart';
 import 'package:hashchecker/widgets/number_slider/number_slide_animation_widget.dart';
-import 'delta_data.dart';
 
-class ExposureReportWeekly extends StatefulWidget {
-  ExposureReportWeekly(
-      {Key? key, required this.size, required this.eventReport})
+import '../delta_data.dart';
+
+class ExposureReportDaily extends StatefulWidget {
+  ExposureReportDaily({Key? key, required this.size, required this.eventReport})
       : super(key: key);
 
   final Size size;
@@ -16,10 +16,10 @@ class ExposureReportWeekly extends StatefulWidget {
   final numberDisplay = createDisplay();
 
   @override
-  _ExposureReportWeeklyState createState() => _ExposureReportWeeklyState();
+  _ExposureReportDailyState createState() => _ExposureReportDailyState();
 }
 
-class _ExposureReportWeeklyState extends State<ExposureReportWeekly> {
+class _ExposureReportDailyState extends State<ExposureReportDaily> {
   @override
   Widget build(BuildContext context) {
     List<Color> gradientColors = [
@@ -43,13 +43,12 @@ class _ExposureReportWeeklyState extends State<ExposureReportWeekly> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-            Text('이번 주에',
+            Text('오늘',
                 style: TextStyle(
                     color: Colors.black87,
                     fontWeight: FontWeight.bold,
                     fontSize: 14)),
-            DeltaData(
-                value: 258, icon: Icons.arrow_drop_up, color: Colors.green)
+            DeltaData(value: 57, icon: Icons.arrow_drop_down, color: Colors.red)
           ]),
           Wrap(
             crossAxisAlignment: WrapCrossAlignment.center,
@@ -61,7 +60,7 @@ class _ExposureReportWeeklyState extends State<ExposureReportWeekly> {
                       fontWeight: FontWeight.bold,
                       fontSize: 18)),
               NumberSlideAnimation(
-                  number: (widget.eventReport.exposeCount ~/ 15).toString(),
+                  number: (widget.eventReport.exposeCount ~/ 85).toString(),
                   duration: kDefaultNumberSliderDuration,
                   curve: Curves.easeOut,
                   textStyle: TextStyle(
@@ -108,7 +107,7 @@ class _ExposureReportWeeklyState extends State<ExposureReportWeekly> {
                         style: TextStyle(
                             fontWeight: FontWeight.bold, fontSize: 14)),
                     NumberSlideAnimation(
-                        number: '6',
+                        number: '7',
                         duration: kDefaultNumberSliderDuration,
                         curve: Curves.easeOut,
                         textStyle: TextStyle(
@@ -156,13 +155,19 @@ class _ExposureReportWeeklyState extends State<ExposureReportWeekly> {
                         getTitles: (value) {
                           switch (value.toInt()) {
                             case 0:
-                              return '6주 전';
+                              return '월';
+                            case 1:
+                              return '화';
                             case 2:
-                              return '4주 전';
+                              return '수';
+                            case 3:
+                              return '목';
                             case 4:
-                              return '2주 전';
+                              return '금';
+                            case 5:
+                              return '토';
                             case 6:
-                              return '이번 주';
+                              return '일';
                           }
                           return '';
                         },
@@ -201,13 +206,13 @@ class _ExposureReportWeeklyState extends State<ExposureReportWeekly> {
                     lineBarsData: [
                       LineChartBarData(
                         spots: [
-                          FlSpot(0, 1),
-                          FlSpot(1, 2),
-                          FlSpot(2, 5),
-                          FlSpot(3, 1),
-                          FlSpot(4, 3),
-                          FlSpot(5, 2),
-                          FlSpot(6, 5),
+                          FlSpot(0, 4),
+                          FlSpot(1, 6),
+                          FlSpot(2, 2),
+                          FlSpot(3, 3),
+                          FlSpot(4, 1),
+                          FlSpot(5, 5),
+                          FlSpot(6, 2),
                         ],
                         isCurved: false,
                         colors: gradientColors,

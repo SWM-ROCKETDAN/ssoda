@@ -8,10 +8,10 @@ import 'package:hashchecker/models/event_report.dart';
 import 'package:number_display/number_display.dart';
 import 'package:hashchecker/widgets/number_slider/number_slide_animation_widget.dart';
 
-import 'delta_data.dart';
+import '../delta_data.dart';
 
-class ParticipationReportWeekly extends StatefulWidget {
-  ParticipationReportWeekly(
+class ParticipationReportMonthly extends StatefulWidget {
+  ParticipationReportMonthly(
       {Key? key, required this.size, required this.eventReport})
       : super(key: key);
 
@@ -19,11 +19,12 @@ class ParticipationReportWeekly extends StatefulWidget {
   final EventReport eventReport;
 
   @override
-  _ParticipationReportWeeklyState createState() =>
-      _ParticipationReportWeeklyState();
+  _ParticipationReportMonthlyState createState() =>
+      _ParticipationReportMonthlyState();
 }
 
-class _ParticipationReportWeeklyState extends State<ParticipationReportWeekly> {
+class _ParticipationReportMonthlyState
+    extends State<ParticipationReportMonthly> {
   final numberDisplay = createDisplay();
   int? touchedIndex;
   int livePostCount = 0;
@@ -68,13 +69,13 @@ class _ParticipationReportWeeklyState extends State<ParticipationReportWeekly> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-              Text('이번 주에',
+              Text('이번 달에',
                   style: TextStyle(
                       color: Colors.black87,
                       fontWeight: FontWeight.bold,
                       fontSize: 14)),
               DeltaData(
-                  value: 31, icon: Icons.arrow_drop_down, color: Colors.red)
+                  value: 198, icon: Icons.arrow_drop_up, color: Colors.green)
             ]),
             Wrap(
               crossAxisAlignment: WrapCrossAlignment.center,
@@ -86,7 +87,7 @@ class _ParticipationReportWeeklyState extends State<ParticipationReportWeekly> {
                         fontWeight: FontWeight.bold,
                         fontSize: 18)),
                 NumberSlideAnimation(
-                    number: (widget.eventReport.joinCount ~/ 15).toString(),
+                    number: (widget.eventReport.joinCount ~/ 3).toString(),
                     duration: kDefaultNumberSliderDuration,
                     curve: Curves.easeOut,
                     textStyle: TextStyle(
@@ -107,7 +108,7 @@ class _ParticipationReportWeeklyState extends State<ParticipationReportWeekly> {
                       color: Colors.black87,
                       fontWeight: FontWeight.bold,
                       fontSize: 18),
-                )
+                ),
               ],
             ),
             SizedBox(height: kDefaultPadding * 2),
@@ -199,7 +200,7 @@ class _ParticipationReportWeeklyState extends State<ParticipationReportWeekly> {
                                 ),
                                 SizedBox(width: kDefaultPadding / 3),
                                 NumberSlideAnimation(
-                                  number: (widget.eventReport.likeCount ~/ 15)
+                                  number: (widget.eventReport.likeCount ~/ 3)
                                       .toString(),
                                   duration: kDefaultNumberSliderDuration,
                                   curve: Curves.easeOut,
@@ -224,9 +225,8 @@ class _ParticipationReportWeeklyState extends State<ParticipationReportWeekly> {
                                 ),
                                 SizedBox(width: kDefaultPadding / 3),
                                 NumberSlideAnimation(
-                                  number:
-                                      (widget.eventReport.commentCount ~/ 15)
-                                          .toString(),
+                                  number: (widget.eventReport.commentCount ~/ 3)
+                                      .toString(),
                                   duration: kDefaultNumberSliderDuration,
                                   curve: Curves.easeOut,
                                   textStyle: TextStyle(

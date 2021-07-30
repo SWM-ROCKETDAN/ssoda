@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 
 import '../../../../constants.dart';
 import '../../../../models/event_report.dart';
-import 'expenditure_report_total.dart';
-import 'exposure_report_total.dart';
-import 'participation_report_total.dart';
+import './total_report/expenditure_report_total.dart';
+import './total_report/exposure_report_total.dart';
+import './total_report/participation_report_total.dart';
 
 class TotalReport extends StatelessWidget {
   const TotalReport({

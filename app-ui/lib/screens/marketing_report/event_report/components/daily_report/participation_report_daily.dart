@@ -8,10 +8,10 @@ import 'package:hashchecker/models/event_report.dart';
 import 'package:number_display/number_display.dart';
 import 'package:hashchecker/widgets/number_slider/number_slide_animation_widget.dart';
 
-import 'delta_data.dart';
+import '../delta_data.dart';
 
-class ParticipationReportMonthly extends StatefulWidget {
-  ParticipationReportMonthly(
+class ParticipationReportDaily extends StatefulWidget {
+  ParticipationReportDaily(
       {Key? key, required this.size, required this.eventReport})
       : super(key: key);
 
@@ -19,12 +19,11 @@ class ParticipationReportMonthly extends StatefulWidget {
   final EventReport eventReport;
 
   @override
-  _ParticipationReportMonthlyState createState() =>
-      _ParticipationReportMonthlyState();
+  _ParticipationReportDailyState createState() =>
+      _ParticipationReportDailyState();
 }
 
-class _ParticipationReportMonthlyState
-    extends State<ParticipationReportMonthly> {
+class _ParticipationReportDailyState extends State<ParticipationReportDaily> {
   final numberDisplay = createDisplay();
   int? touchedIndex;
   int livePostCount = 0;
@@ -69,13 +68,13 @@ class _ParticipationReportMonthlyState
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-              Text('이번 달에',
+              Text('오늘',
                   style: TextStyle(
                       color: Colors.black87,
                       fontWeight: FontWeight.bold,
                       fontSize: 14)),
               DeltaData(
-                  value: 198, icon: Icons.arrow_drop_up, color: Colors.green)
+                  value: 9, icon: Icons.arrow_drop_up, color: Colors.green)
             ]),
             Wrap(
               crossAxisAlignment: WrapCrossAlignment.center,
@@ -87,7 +86,7 @@ class _ParticipationReportMonthlyState
                         fontWeight: FontWeight.bold,
                         fontSize: 18)),
                 NumberSlideAnimation(
-                    number: (widget.eventReport.joinCount ~/ 3).toString(),
+                    number: (widget.eventReport.joinCount ~/ 85).toString(),
                     duration: kDefaultNumberSliderDuration,
                     curve: Curves.easeOut,
                     textStyle: TextStyle(
@@ -200,7 +199,7 @@ class _ParticipationReportMonthlyState
                                 ),
                                 SizedBox(width: kDefaultPadding / 3),
                                 NumberSlideAnimation(
-                                  number: (widget.eventReport.likeCount ~/ 3)
+                                  number: (widget.eventReport.likeCount ~/ 85)
                                       .toString(),
                                   duration: kDefaultNumberSliderDuration,
                                   curve: Curves.easeOut,
@@ -225,8 +224,9 @@ class _ParticipationReportMonthlyState
                                 ),
                                 SizedBox(width: kDefaultPadding / 3),
                                 NumberSlideAnimation(
-                                  number: (widget.eventReport.commentCount ~/ 3)
-                                      .toString(),
+                                  number:
+                                      (widget.eventReport.commentCount ~/ 85)
+                                          .toString(),
                                   duration: kDefaultNumberSliderDuration,
                                   curve: Curves.easeOut,
                                   textStyle: TextStyle(
