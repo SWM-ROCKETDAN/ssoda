@@ -1,7 +1,5 @@
 package com.rocketdan.serviceserver.domain.user;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.rocketdan.serviceserver.domain.store.Store;
 import lombok.Builder;
 import lombok.Getter;
@@ -36,8 +34,7 @@ public class User {
     @Column(nullable = false)
     private Role role;
 
-    @JsonManagedReference
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Store> stores;
 
     @Builder

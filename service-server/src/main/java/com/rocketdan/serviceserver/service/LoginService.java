@@ -1,7 +1,7 @@
 package com.rocketdan.serviceserver.service;
 
+import com.rocketdan.serviceserver.app.dto.user.LoginDto;
 import com.rocketdan.serviceserver.app.dto.user.LoginRequestDto;
-import com.rocketdan.serviceserver.app.dto.user.UserResponseDto;
 import com.rocketdan.serviceserver.core.security.AuthToken;
 import com.rocketdan.serviceserver.core.service.LoginUseCase;
 import com.rocketdan.serviceserver.domain.user.Role;
@@ -25,23 +25,24 @@ public class LoginService implements LoginUseCase {
     private final UserRepository userRepository;
 
     @Override
-    public Optional<UserResponseDto> login(LoginRequestDto loginRequestDto) {
+    public Optional<LoginDto> login(LoginRequestDto loginRequestDto) {
         User user = saveOrUpdate(loginRequestDto);
 
-        UserResponseDto userResponseDto = UserResponseDto.builder()
+        LoginDto loginDto = LoginDto.builder()
+                .id(user.getId())
                 .name(user.getName())
                 .email(user.getEmail())
                 .role(Role.USER)
                 .build();
 
-        return Optional.ofNullable(userResponseDto);
+        return Optional.ofNullable(loginDto);
     }
 
     @Override
-    public AuthToken createAuthToken(UserResponseDto userResponseDto) {
+    public AuthToken createAuthToken(LoginDto loginDto) {
 
         Date expiredDate = Date.from(LocalDateTime.now().plusMinutes(LOGIN_RETENTION_MINUTES).atZone(ZoneId.systemDefault()).toInstant());
-        return jwtAuthTokenProvider.createAuthToken(userResponseDto.getEmail(), userResponseDto.getRole().getCode(), expiredDate);
+        return jwtAuthTokenProvider.createAuthToken(loginDto.getEmail(), loginDto.getRole().getCode(), expiredDate);
     }
 
     private User saveOrUpdate(LoginRequestDto loginRequestDto) {
