@@ -1,27 +1,19 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:hashchecker/constants.dart';
 
 class NaverSignInButton extends StatelessWidget {
-  const NaverSignInButton(
-      {Key? key,
-      required this.size,
-      required this.signIn,
-      required this.signOut,
-      required this.isLogin})
+  const NaverSignInButton({Key? key, required this.size, required this.signIn})
       : super(key: key);
 
   final Size size;
   final VoidCallback signIn;
-  final VoidCallback signOut;
-  final bool isLogin;
 
   @override
   Widget build(BuildContext context) {
     return SizedBox(
       width: size.width,
       child: TextButton(
-          onPressed: isLogin ? signOut : signIn,
+          onPressed: signIn,
           child: Center(
             child: Row(mainAxisAlignment: MainAxisAlignment.center, children: [
               Image.asset(
@@ -32,7 +24,7 @@ class NaverSignInButton extends StatelessWidget {
                 color: Colors.white,
               ),
               Text(
-                isLogin ? '네이버에서 로그아웃' : '네이버로 시작하기 ',
+                '네이버로 시작하기 ',
                 style: TextStyle(
                   color: Colors.white,
                   fontSize: 16,

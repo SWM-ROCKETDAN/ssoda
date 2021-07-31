@@ -1,17 +1,18 @@
+import 'dart:async';
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:hashchecker/api.dart';
 import 'package:hashchecker/constants.dart';
-import 'package:hashchecker/models/kakao_sign_in.dart';
-import 'package:hashchecker/models/naver_sign_in.dart';
+import 'package:hashchecker/models/user_social_account.dart';
 import 'package:kakao_flutter_sdk/auth.dart';
 import 'package:kakao_flutter_sdk/user.dart';
 import 'package:kakao_flutter_sdk/common.dart';
+import 'package:flutter_naver_login/flutter_naver_login.dart';
+import 'package:http/http.dart' as http;
 
 import 'components/kakao_sign_in_button.dart';
 import 'components/naver_sign_in_button.dart';
-
-import 'dart:async';
-
-import 'package:flutter_naver_login/flutter_naver_login.dart';
 
 class SignInScreen extends StatefulWidget {
   const SignInScreen({Key? key}) : super(key: key);
@@ -21,17 +22,6 @@ class SignInScreen extends StatefulWidget {
 }
 
 class _SignInScreenState extends State<SignInScreen> {
-  final NaverSignIn naverSignIn = NaverSignIn(
-      isLogin: false,
-      accessToken: null,
-      accountInfo: NaverAccountInfo(name: null, email: null));
-
-  final KakaoSignIn kakaoSignIn = KakaoSignIn(
-      isLogin: false,
-      authCode: null,
-      accessToken: null,
-      accountInfo: KakaoAccountInfo(name: null, email: null));
-
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -45,49 +35,19 @@ class _SignInScreenState extends State<SignInScreen> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Expanded(
-                      child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      Text('네이버 SDK 로그인',
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold, fontSize: 24)),
-                      SizedBox(height: 5),
-                      Text('isLogin: ${naverSignIn.isLogin}'),
-                      SizedBox(height: 5),
-                      Text('accessToken: ${naverSignIn.accessToken}'),
-                      SizedBox(height: 5),
-                      Text('userName: ${naverSignIn.accountInfo.name}'),
-                      SizedBox(height: 5),
-                      Text('userEmail: ${naverSignIn.accountInfo.email}'),
-                      SizedBox(height: kDefaultPadding * 3),
-                      Text('카카오 SDK 로그인',
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold, fontSize: 24)),
-                      SizedBox(height: 5),
-                      Text('isLogin: ${kakaoSignIn.isLogin}'),
-                      SizedBox(height: 5),
-                      Text('accessToken: ${kakaoSignIn.accessToken}'),
-                      SizedBox(height: 5),
-                      Text('userName: ${kakaoSignIn.accountInfo.name}'),
-                      SizedBox(height: 5),
-                      Text('userEmail: ${kakaoSignIn.accountInfo.email}'),
-                    ],
-                  )),
+                    child: Text('ㅎㅇ'),
+                  ),
                   Column(
                     children: [
                       NaverSignInButton(
                         size: size,
                         signIn: naverLoginPressed,
-                        signOut: naverLogoutPressed,
-                        isLogin: naverSignIn.isLogin,
                       ),
                       SizedBox(height: kDefaultPadding / 3 * 2),
                       KakaoSignInButton(
                         size: size,
                         signIn: kakaoLoginPressed,
-                        isLogin: kakaoSignIn.isLogin,
                       ),
-                      SizedBox(height: kDefaultPadding / 3 * 2),
                     ],
                   ),
                 ])),
@@ -107,28 +67,20 @@ class _SignInScreenState extends State<SignInScreen> {
       // get account info
       NaverAccountResult account = await FlutterNaverLogin.currentAccount();
 
-      // set state
-      setState(() {
-        naverSignIn.isLogin = true;
-        naverSignIn.accessToken = token.accessToken;
-        naverSignIn.accountInfo.name = account.name;
-        naverSignIn.accountInfo.email = account.email;
-      });
+      // authorize to spring server with user account info
+      signIn(UserSocialAccount(
+          name: account.name,
+          email: account.email,
+          image: account.profileImage));
 
       // on login error
     } else if (loginResult.status == NaverLoginStatus.error) {
-      print('${loginResult.errorMessage}');
+      showLoginFailDialog();
     }
   }
 
   Future<void> naverLogoutPressed() async {
     FlutterNaverLogin.logOut();
-    setState(() {
-      naverSignIn.isLogin = false;
-      naverSignIn.accessToken = null;
-      naverSignIn.accountInfo.name = null;
-      naverSignIn.accountInfo.email = null;
-    });
   }
 
   Future<void> kakaoLoginPressed() async {
@@ -136,51 +88,95 @@ class _SignInScreenState extends State<SignInScreen> {
       // check if is kakaotalk installed
       final installed = await isKakaoTalkInstalled();
 
+      final String authCode;
+
       // login & get auth code via kakaotalk app
       if (installed) {
         await UserApi.instance.loginWithKakaoTalk();
 
-        kakaoSignIn.authCode = await AuthCodeClient.instance.requestWithTalk();
+        authCode = await AuthCodeClient.instance.requestWithTalk();
 
         // login & get auth code kakao web
       } else {
         await UserApi.instance.loginWithKakaoAccount();
 
-        kakaoSignIn.authCode = await AuthCodeClient.instance.request();
+        authCode = await AuthCodeClient.instance.request();
       }
 
-      print(kakaoSignIn.authCode);
       // get token
       AccessTokenResponse token =
-          await AuthApi.instance.issueAccessToken(kakaoSignIn.authCode!);
-
-      // store access token for requesting api future
-      AccessTokenStore.instance.toStore(token);
+          await AuthApi.instance.issueAccessToken(authCode);
 
       // get account info
       User user = await UserApi.instance.me();
 
-      // set state
-      setState(() {
-        kakaoSignIn.isLogin = true;
-        kakaoSignIn.accessToken = token.accessToken;
-        kakaoSignIn.accountInfo.name = user.kakaoAccount!.profile!.nickname;
-        kakaoSignIn.accountInfo.email = user.kakaoAccount!.email;
-        kakaoSignIn.accessToken = token.accessToken;
-      });
+      // if email isn't connected to kakao account
+      if (user.kakaoAccount!.email == null) {
+        showLoginFailDialog();
+        return;
+      }
+
+      // authorize to spring server with user account info
+      signIn(UserSocialAccount(
+          name: user.kakaoAccount!.profile!.nickname,
+          email: user.kakaoAccount!.email!,
+          image: user.kakaoAccount!.profile!.profileImageUrl!));
     } catch (e) {
-      print('error in login: $e');
+      showLoginFailDialog();
     }
   }
+
+  Future<void> signIn(UserSocialAccount account) async {
+    late String xAuthToken;
+
+    final response = await http.post(Uri.parse(getApi(API.LOGIN)),
+        body: jsonEncode(account.toJson()),
+        headers: {
+          "Accept": "application/json",
+          "content-type": "application/json"
+        });
+
+    if (response.statusCode == 200) {
+      xAuthToken = jsonDecode(response.body)['message'];
+
+      // apiTest
+      final apiTest = await http.get(
+        Uri.parse(getApi(API.GET_ALL_EVENTS)),
+        headers: {'x-auth-token': xAuthToken},
+      );
+      print(apiTest.body);
+    } else {
+      showLoginFailDialog();
+    }
+  }
+
+  void showLoginFailDialog() {
+    showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+            title: Center(
+                child: Text(
+              "로그인 오류",
+              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+            )),
+            content: IntrinsicHeight(
+              child: Column(children: [
+                Text("로그인 도중 오류가 발생하였습니다.", style: TextStyle(fontSize: 14)),
+                SizedBox(height: kDefaultPadding / 3),
+                Text("네트워크 연결 상태를 확인해주세요.", style: TextStyle(fontSize: 14)),
+              ]),
+            ),
+            contentPadding: const EdgeInsets.fromLTRB(15, 15, 15, 5),
+            actions: [
+              Center(
+                child: ElevatedButton(
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                    child: Text('확인')),
+              )
+            ],
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(15))));
+  }
 }
-
-/* check if it is first login and skip login
-
-AccessToken token = await AccessTokenStore.instance.fromStore();
-if (token.refreshToken == null) {
-  Navigator.of(context).pushReplacementNamed('/login');
-} else {
-  Navigator.of(context).pushReplacementNamed("/main");
-}
-
-*/

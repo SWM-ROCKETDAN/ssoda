@@ -28,7 +28,7 @@ class MyApp extends StatelessWidget {
           accentColor: kThemeColor,
           visualDensity: VisualDensity.adaptivePlatformDensity,
           scaffoldBackgroundColor: Colors.white),
-      home: StoreReportScreen(),
+      home: SignInScreen(),
     );
   }
 
