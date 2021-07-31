@@ -10,6 +10,8 @@ from .serializers import EventSerializer
 from .serializers import RewardSerializer
 from .serializers import JoinCollectionSerializer
 from .modules.instagram.join.crawl import crawl
+from server.secret.test_url import G_SCHOOL_INSTAGRAM
+from server.api.modules.assist.cal_time import get_now_time
 
 
 class JoinPostView(APIView):
@@ -133,3 +135,38 @@ class TestView(APIView):
             event_serializer = EventSerializer(data=event, many=True)
             event_serializer.is_valid()
             return Response(event_serializer.data, status=status.HTTP_200_OK)
+
+    def post(self, request, test):
+        # G 스쿨 이벤트 8개 게시물
+        if test == 0:
+            for url in G_SCHOOL_INSTAGRAM:
+                data = crawl.crawl_post(url)
+                data['url'] = url
+                data['create_date'] = get_now_time()
+                data['event'] = 1
+                join_post_serializer = JoinPostSerializer(data=data)
+                if join_post_serializer.is_valid():
+                    join_post_serializer.save()
+                data = crawl.crawl_user(data['sns_id'])
+                join_user_serializer = JoinUserSerializer(data=data)
+                if join_user_serializer.is_valid():
+                    join_user_serializer.save()
+            return Response(join_post_serializer.data, status=status.HTTP_200_OK)
+        if test == 1:
+            join_post = JoinPost.objects.all()
+            join_post_serializer = JoinPostSerializer(data=join_post, many=True)
+            join_post_serializer.is_valid()
+            sns_id_list = []
+            for item in join_post_serializer.data:
+                try:
+                    join_user = JoinUser.objects.get(sns_id=item['sns_id'])
+                except JoinUser.DoesNotExist:
+                    data = crawl.crawl_user(item['sns_id'])
+                    data['create_date'] = get_now_time()
+                    print(data)
+                    join_user_serializer = JoinUserSerializer(data=data)
+                    if join_user_serializer.is_valid():
+                        join_user_serializer.save()
+                    print(join_user_serializer.data)
+
+            return Response(status=status.HTTP_200_OK)
