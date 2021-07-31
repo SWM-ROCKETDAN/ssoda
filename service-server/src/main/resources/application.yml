@@ -7,10 +7,10 @@ spring:
 #    hibernate:
 #      ddl-auto: update
     open-in-view: false
-  session:
-    store-type: jdbc
-    jdbc:
-      initialize-schema: always
-      table-name: SPRING_SESSION
+#  session:
+#    store-type: jdbc
+#    jdbc:
+#      initialize-schema: always
+#      table-name: SPRING_SESSION
   profiles:
-    include: oauth, db
+    include: jwt, db

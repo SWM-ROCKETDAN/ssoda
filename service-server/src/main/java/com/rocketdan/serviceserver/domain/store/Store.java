@@ -1,6 +1,7 @@
 package com.rocketdan.serviceserver.domain.store;
 
 import com.rocketdan.serviceserver.domain.event.Event;
+import com.rocketdan.serviceserver.domain.user.User;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -19,7 +20,8 @@ public class Store {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    // private String user_id;
+    @ManyToOne
+    private User user;
 
     // 가게 이름
     @Column(nullable = false)
@@ -47,8 +49,9 @@ public class Store {
     private List<Event> events;
 
     @Builder
-    public Store(String name, Integer category, Address address, String description, List<String> images, List<Event> events) {
+    public Store(String name, User user, Integer category, Address address, String description, List<String> images, List<Event> events) {
         this.name = name;
+        this.user = user;
         this.category = category;
         this.address = address;
         this.description = description;

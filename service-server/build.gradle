@@ -24,8 +24,17 @@ dependencies {
     implementation 'junit:junit:4.13.1'
 
     // database
-	// compileOnly 'mysql:mysql-connector-java'
 	implementation 'mysql:mysql-connector-java'
+
+	// 소셜 로그인 등 클라이언트 입자에서 소셜 기능 구현 시 필요한 의존성
+	// spring-security-oauth2-client와 spring-security-oauth2-jose를 기본으로 관리해준다.
+//	implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
+//	implementation 'org.springframework.session:spring-session-jdbc'
+
+	// JWT
+	implementation 'io.jsonwebtoken:jjwt-api:0.11.2'
+	runtimeOnly 'io.jsonwebtoken:jjwt-impl:0.11.2'
+	runtimeOnly 'io.jsonwebtoken:jjwt-jackson:0.11.2'
 
     compileOnly 'org.projectlombok:lombok'
 	developmentOnly 'org.springframework.boot:spring-boot-devtools'
