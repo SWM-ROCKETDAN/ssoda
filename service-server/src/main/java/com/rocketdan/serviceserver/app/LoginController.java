@@ -24,7 +24,7 @@ public class LoginController {
     @PostMapping
     public CommonResponse login(@RequestBody LoginRequestDto loginRequestDto) {
 
-        Optional<UserResponseDto> optionalUserDto = loginService.login(loginRequestDto.getEmail());
+        Optional<UserResponseDto> optionalUserDto = loginService.login(loginRequestDto);
 
         if (optionalUserDto.isPresent()) {
 
