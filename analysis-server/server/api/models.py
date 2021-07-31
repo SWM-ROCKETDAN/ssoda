@@ -29,8 +29,8 @@ class EventImages(models.Model):
 
 
 class EventRewards(models.Model):
-    event = models.ForeignKey(Event, models.DO_NOTHING)
-    rewards = models.OneToOneField('Reward', related_name='event_reward', on_delete=models.CASCADE)
+    event = models.ForeignKey(Event, related_name='event_rewards', on_delete=models.CASCADE)
+    rewards = models.OneToOneField('Reward', related_name='event_reward_set', on_delete=models.CASCADE)
 
     class Meta:
         db_table = 'event_rewards'
@@ -77,7 +77,7 @@ class JoinUser(models.Model):
 class JoinPost(models.Model):
     id = models.BigAutoField(primary_key=True)
     event = models.ForeignKey(Event, related_name='event', on_delete=models.CASCADE)
-    rewards_id = models.IntegerField(blank=True, null=True)
+    rewards_level = models.IntegerField(blank=True, null=True)
     sns_id = models.CharField(max_length=255, blank=True, null=True)
     url = models.CharField(max_length=255)
     type = models.IntegerField(blank=True, null=True)

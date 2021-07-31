@@ -27,12 +27,10 @@ class HashtagSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
-class EventSerializer(serializers.ModelSerializer):
-    hashtag = HashtagSerializer()
-
+class RewardSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Event
-        fields = '__all__'
+        model = Reward
+        fields = ['id', 'category', 'count', 'image', 'name', 'price']
 
 
 class EventRewardSerializer(serializers.ModelSerializer):
@@ -40,13 +38,29 @@ class EventRewardSerializer(serializers.ModelSerializer):
         model = EventRewards
         fields = ['event', 'rewards']
 
+    def to_representation(self, instance):
+        representation = super().to_representation(instance)
+        try:
+            reward = Reward.objects.filter(id=representation['rewards'])
+        except Reward.DoesNotExist:
+            pass
 
-class RewardSerializer(serializers.ModelSerializer):
-    event_reward = EventRewardSerializer()
+        reward_serializer = RewardSerializer(data=reward, many=True)
+        reward_serializer.is_valid()
+        if reward_serializer.data:
+            representation['rewards'] = reward_serializer.data.pop()
+        else:
+            representation['reward'] = {}
+        return representation
+
+
+class EventSerializer(serializers.ModelSerializer):
+    hashtag = HashtagSerializer()
+    event_rewards = EventRewardSerializer(many=True)
 
     class Meta:
-        model = Reward
-        fields = ['id', 'category', 'count', 'image', 'name', 'price', 'event_reward']
+        model = Event
+        fields = '__all__'
 
 
 class JoinCollectionSerializer(serializers.ModelSerializer):
@@ -72,8 +86,6 @@ class JoinCollectionSerializer(serializers.ModelSerializer):
         return representation
 
 
-
-
 class JoinPostSerializer(serializers.ModelSerializer):
     class Meta:
         model = JoinPost
@@ -84,23 +96,3 @@ class JoinUserSerializer(serializers.ModelSerializer):
     class Meta:
         model = JoinUser
         fields = '__all__'
-
-# class JoinCollectionSerializer(serializers.Serializer):
-#     id = serializers.IntegerField()
-#     event_id = serializers.IntegerField()
-#     rewards_id = serializers.IntegerField()
-#     sns_id = serializers.CharField()
-#     url = serializers.CharField()
-#     type = serializers.IntegerField()
-#     status = serializers.IntegerField()
-#     like_count = serializers.IntegerField()
-#     comment_count = serializers.IntegerField()
-#     hashtags = serializers.CharField()
-#     create_date = serializers.DateTimeField()
-#     upload_date = serializers.DateTimeField()
-#     private_date = serializers.DateTimeField()
-#     delete_data = serializers.DateTimeField()
-#     update_date = serializers.DateTimeField()
-#     follow_count = serializers.IntegerField()
-#     post_count = serializers.IntegerField()
-#     event_hashtags = serializers.CharField()

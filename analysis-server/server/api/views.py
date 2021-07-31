@@ -28,7 +28,7 @@ class JoinPostView(APIView):
             raise status.HTTP_404_NOT_FOUND
 
     # GET 요청 -> post 크롤링 -> join_post 업데이트
-    def get(self, request, pk, format=None):
+    def get(self, request, pk, formate=None):
         join_post = self.get_object(pk)
         join_post_serializer = JoinPostSerializer(join_post)
         join_post_url = join_post_serializer.data.get('url')
@@ -40,7 +40,7 @@ class JoinPostView(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     # 테스트 용 post 실제는 없음.
-    def post(self, request, pk, format=None):
+    def post(self, request, pk, formate=None):
         print(request.data)
         serializer = JoinPostSerializer(data=request.data)
         if serializer.is_valid():
@@ -65,7 +65,7 @@ class JoinUserView(APIView):
             raise status.HTTP_404_NOT_FOUND
 
     # GET 요청 -> user 크롤링 -> join_user 업데이트
-    def get(self, request, pk, format=None):
+    def get(self, request, pk, formate=None):
         join_user = self.get_object(pk)
         join_user_serializer = JoinUserSerializer(join_user)
         join_user_url = join_user_serializer.data.get('sns_id')
@@ -94,31 +94,24 @@ class JoinRewardView(APIView):
         except Reward.DoesNotExist:
             raise Http404
 
-    @staticmethod
-    def get_reward_list(pk_event):
-        try:
-            return Reward.objects.all().filter(event_reward__event=pk_event)
-        except Reward.DoesNotExist:
-            raise Http404
-
-    def get(self, request, pk_event, pk_post, pk_user, formate=None):
-        reward_list = self.get_reward_list(pk_event)
-        reward_list_serializer = RewardSerializer(data=reward_list, many=True)
-        reward_list_serializer.is_valid()
-        return Response(reward_list_serializer.data, status=status.HTTP_400_BAD_REQUEST)
+    def get(self, request, pk, formate=None):
+        join_collection = JoinPost.objects.all()
+        join_collection_serializer = JoinCollectionSerializer(data=join_collection, many=True)
+        join_collection_serializer.is_valid()
+        return Response(join_collection_serializer.data, status=status.HTTP_400_BAD_REQUEST)
 
 
 class TestView(APIView):
-    def get(self, request, pk_event, pk_post, pk_user, formate=None):
-        test_code = 2
+    def get(self, request, test, formate=None):
+        test_code = test
         if test_code == 0:
-            event = Event.objects.filter(pk=pk_event)
+            event = Event.objects.filter(pk=1)
             event_serializer = EventSerializer(data=event, many=True)
             event_serializer.is_valid()
             print(event_serializer.data)
             return Response(event_serializer.data, status=status.HTTP_400_BAD_REQUEST)
         if test_code == 1:
-            join_collection = JoinPost.objects.filter(pk=pk_post)
+            join_collection = JoinPost.objects.filter(pk=1)
             join_collection_serializer = JoinCollectionSerializer(data=join_collection)
             print(join_collection_serializer)
             join_collection_serializer.is_valid()
@@ -129,4 +122,14 @@ class TestView(APIView):
             join_collection_serializer = JoinCollectionSerializer(data=join_collection, many=True)
             join_collection_serializer.is_valid()
             return Response(join_collection_serializer.data, status=status.HTTP_400_BAD_REQUEST)
-
+        elif test_code == 3:
+            reward = Reward.objects.all()
+            print(reward)
+            reward_serializer = RewardSerializer(data=reward, many=True)
+            reward_serializer.is_valid()
+            return Response(reward_serializer.data, status=status.HTTP_400_BAD_REQUEST)
+        elif test_code == 4:
+            event = Event.objects.all()
+            event_serializer = EventSerializer(data=event, many=True)
+            event_serializer.is_valid()
+            return Response(event_serializer.data, status=status.HTTP_200_OK)

@@ -6,12 +6,11 @@ from .reward_prev import reward_er
 
 
 class Reward:
-    def __init__(self, join_post_list, join_user_list, join_post, join_user, event):
-        self.join_post_list = join_post_list
-        self.join_user_list = join_user_list
-        self.join_post = join_post
-        self.join_user = join_user
-        self.event = event
+    def __init__(self, join_collection):
+        self.join_collection = join_collection
+
+    def test(self):
+        print(self.join_collection)
 
     @staticmethod
     def get_reward_point(join_post, join_user, hashtags) -> int:
