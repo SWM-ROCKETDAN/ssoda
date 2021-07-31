@@ -4,6 +4,7 @@ import com.rocketdan.serviceserver.Exception.CustomAuthenticationException;
 import com.rocketdan.serviceserver.domain.user.Role;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 import org.springframework.web.servlet.HandlerInterceptor;
@@ -22,6 +23,12 @@ public class AuthInterceptor implements HandlerInterceptor {
     @Override
     public boolean preHandle(HttpServletRequest servletRequest, HttpServletResponse servletResponse, Object handler)
             throws Exception {
+
+        // GET 요청의 경우 인가 과정을 거치지 않는다.
+        if (servletRequest.getMethod().equals(HttpMethod.GET.name())) {
+            log.info("GET request pass Authorization");
+            return true;
+        }
 
         log.info("preHandle!!");
 
