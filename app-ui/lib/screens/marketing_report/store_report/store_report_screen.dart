@@ -56,8 +56,8 @@ class _StoreReportScreenState extends State<StoreReportScreen> {
           status: EventStatus.ENDED),
     ];
 
-    storeReportOverview =
-        StoreReportOverview(guestPrice: 7, joinCount: 72345, likeCount: 701543);
+    storeReportOverview = StoreReportOverview(
+        guestPrice: 7.13, joinCount: 62345, likeCount: 8201543);
   }
 
   @override
@@ -77,7 +77,7 @@ class _StoreReportScreenState extends State<StoreReportScreen> {
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 10),
                   child: Text(
-                    '개요',
+                    '종합',
                     style: TextStyle(fontWeight: FontWeight.bold, fontSize: 24),
                   ),
                 ),

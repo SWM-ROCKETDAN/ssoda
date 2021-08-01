@@ -4,26 +4,23 @@ import 'package:hashchecker/constants.dart';
 import 'package:hashchecker/models/event_report.dart';
 import 'package:number_display/number_display.dart';
 import 'package:hashchecker/widgets/number_slider/number_slide_animation_widget.dart';
-import 'delta_data.dart';
 
-class ExposureReportWeekly extends StatefulWidget {
-  ExposureReportWeekly(
-      {Key? key,
-      required this.size,
-      required this.eventReport,
-      required this.period})
+import '../delta_data.dart';
+
+class ExposureReportMonthly extends StatefulWidget {
+  ExposureReportMonthly(
+      {Key? key, required this.size, required this.eventReport})
       : super(key: key);
 
   final Size size;
   final EventReport eventReport;
-  final String period;
   final numberDisplay = createDisplay();
 
   @override
-  _ExposureReportWeeklyState createState() => _ExposureReportWeeklyState();
+  _ExposureReportMonthlyState createState() => _ExposureReportMonthlyState();
 }
 
-class _ExposureReportWeeklyState extends State<ExposureReportWeekly> {
+class _ExposureReportMonthlyState extends State<ExposureReportMonthly> {
   @override
   Widget build(BuildContext context) {
     List<Color> gradientColors = [
@@ -47,13 +44,13 @@ class _ExposureReportWeeklyState extends State<ExposureReportWeekly> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-            Text('이번 주에',
+            Text('이번 달에',
                 style: TextStyle(
                     color: Colors.black87,
                     fontWeight: FontWeight.bold,
                     fontSize: 14)),
             DeltaData(
-                value: 258, icon: Icons.arrow_drop_up, color: Colors.green)
+                value: 1287, icon: Icons.arrow_drop_up, color: Colors.green)
           ]),
           Wrap(
             crossAxisAlignment: WrapCrossAlignment.center,
@@ -65,7 +62,7 @@ class _ExposureReportWeeklyState extends State<ExposureReportWeekly> {
                       fontWeight: FontWeight.bold,
                       fontSize: 18)),
               NumberSlideAnimation(
-                  number: (widget.eventReport.exposeCount ~/ 15).toString(),
+                  number: (widget.eventReport.exposeCount ~/ 6).toString(),
                   duration: kDefaultNumberSliderDuration,
                   curve: Curves.easeOut,
                   textStyle: TextStyle(
@@ -86,7 +83,7 @@ class _ExposureReportWeeklyState extends State<ExposureReportWeekly> {
                     color: Colors.black87,
                     fontWeight: FontWeight.bold,
                     fontSize: 18),
-              )
+              ),
             ],
           ),
           SizedBox(height: kDefaultPadding),
@@ -112,7 +109,7 @@ class _ExposureReportWeeklyState extends State<ExposureReportWeekly> {
                         style: TextStyle(
                             fontWeight: FontWeight.bold, fontSize: 14)),
                     NumberSlideAnimation(
-                        number: '6',
+                        number: '12',
                         duration: kDefaultNumberSliderDuration,
                         curve: Curves.easeOut,
                         textStyle: TextStyle(
@@ -160,13 +157,21 @@ class _ExposureReportWeeklyState extends State<ExposureReportWeekly> {
                         getTitles: (value) {
                           switch (value.toInt()) {
                             case 0:
-                              return '6주 전';
+                              return '12월';
+                            case 1:
+                              return '1월';
                             case 2:
-                              return '4주 전';
+                              return '2월';
+                            case 3:
+                              return '3월';
                             case 4:
-                              return '2주 전';
+                              return '4월';
+                            case 5:
+                              return '5월';
+                            case 5:
+                              return '6월';
                             case 6:
-                              return '이번 주';
+                              return '7월';
                           }
                           return '';
                         },
@@ -205,12 +210,12 @@ class _ExposureReportWeeklyState extends State<ExposureReportWeekly> {
                     lineBarsData: [
                       LineChartBarData(
                         spots: [
-                          FlSpot(0, 1),
-                          FlSpot(1, 2),
-                          FlSpot(2, 5),
-                          FlSpot(3, 1),
-                          FlSpot(4, 3),
-                          FlSpot(5, 2),
+                          FlSpot(0, 3),
+                          FlSpot(1, 5),
+                          FlSpot(2, 1),
+                          FlSpot(3, 2),
+                          FlSpot(4, 6),
+                          FlSpot(5, 3),
                           FlSpot(6, 5),
                         ],
                         isCurved: false,

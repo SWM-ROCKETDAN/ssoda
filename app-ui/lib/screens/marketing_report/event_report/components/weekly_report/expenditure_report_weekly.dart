@@ -8,26 +8,22 @@ import 'dart:math';
 
 import 'package:hashchecker/widgets/number_slider/number_slide_animation_widget.dart';
 
-import 'delta_data.dart';
+import '../delta_data.dart';
 
-class ExpenditureReportMonthly extends StatefulWidget {
-  const ExpenditureReportMonthly(
-      {Key? key,
-      required this.size,
-      required this.eventReport,
-      required this.period})
+class ExpenditureReportWeekly extends StatefulWidget {
+  const ExpenditureReportWeekly(
+      {Key? key, required this.size, required this.eventReport})
       : super(key: key);
 
   final Size size;
   final EventReport eventReport;
-  final String period;
 
   @override
-  _ExpenditureReportMonthlyState createState() =>
-      _ExpenditureReportMonthlyState();
+  _ExpenditureReportWeeklyState createState() =>
+      _ExpenditureReportWeeklyState();
 }
 
-class _ExpenditureReportMonthlyState extends State<ExpenditureReportMonthly> {
+class _ExpenditureReportWeeklyState extends State<ExpenditureReportWeekly> {
   final Duration animDuration = const Duration(milliseconds: 250);
   final numberDisplay = createDisplay();
 
@@ -53,13 +49,13 @@ class _ExpenditureReportMonthlyState extends State<ExpenditureReportMonthly> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-            Text('이번 달에',
+            Text('이번 주에',
                 style: TextStyle(
                     color: Colors.black87,
                     fontWeight: FontWeight.bold,
                     fontSize: 14)),
             DeltaData(
-                value: 13400, icon: Icons.arrow_drop_up, color: Colors.red)
+                value: 3736, icon: Icons.arrow_drop_down, color: Colors.red)
           ]),
           Wrap(
             crossAxisAlignment: WrapCrossAlignment.center,
@@ -71,7 +67,7 @@ class _ExpenditureReportMonthlyState extends State<ExpenditureReportMonthly> {
                       fontWeight: FontWeight.bold,
                       fontSize: 18)),
               NumberSlideAnimation(
-                number: (widget.eventReport.costSum ~/ 3).toString(),
+                number: (widget.eventReport.costSum ~/ 15).toString(),
                 duration: kDefaultNumberSliderDuration,
                 curve: Curves.easeOut,
                 textStyle: TextStyle(
@@ -93,7 +89,7 @@ class _ExpenditureReportMonthlyState extends State<ExpenditureReportMonthly> {
                     color: Colors.black87,
                     fontWeight: FontWeight.bold,
                     fontSize: 18),
-              ),
+              )
             ],
           ),
           SizedBox(height: kDefaultPadding),
@@ -178,7 +174,7 @@ class _ExpenditureReportMonthlyState extends State<ExpenditureReportMonthly> {
                 ),
                 children: <TextSpan>[
                   TextSpan(
-                    text: '${numberDisplay(rod.y.toInt() ~/ 3)}원',
+                    text: '${numberDisplay(rod.y.toInt() ~/ 15)}원',
                     style: TextStyle(
                       color: Colors.black87,
                       fontSize: 16,

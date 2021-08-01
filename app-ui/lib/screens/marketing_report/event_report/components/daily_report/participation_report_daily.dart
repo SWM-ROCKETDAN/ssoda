@@ -8,24 +8,22 @@ import 'package:hashchecker/models/event_report.dart';
 import 'package:number_display/number_display.dart';
 import 'package:hashchecker/widgets/number_slider/number_slide_animation_widget.dart';
 
-class ParticipationReportTotal extends StatefulWidget {
-  ParticipationReportTotal(
-      {Key? key,
-      required this.size,
-      required this.eventReport,
-      required this.period})
+import '../delta_data.dart';
+
+class ParticipationReportDaily extends StatefulWidget {
+  ParticipationReportDaily(
+      {Key? key, required this.size, required this.eventReport})
       : super(key: key);
 
   final Size size;
   final EventReport eventReport;
-  final String period;
 
   @override
-  _ParticipationReportTotalState createState() =>
-      _ParticipationReportTotalState();
+  _ParticipationReportDailyState createState() =>
+      _ParticipationReportDailyState();
 }
 
-class _ParticipationReportTotalState extends State<ParticipationReportTotal> {
+class _ParticipationReportDailyState extends State<ParticipationReportDaily> {
   final numberDisplay = createDisplay();
   int? touchedIndex;
   int livePostCount = 0;
@@ -46,6 +44,12 @@ class _ParticipationReportTotalState extends State<ParticipationReportTotal> {
   }
 
   @override
+  void dispose() {
+    _everySecond.cancel();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.all(20),
@@ -63,6 +67,15 @@ class _ParticipationReportTotalState extends State<ParticipationReportTotal> {
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
+            Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+              Text('오늘',
+                  style: TextStyle(
+                      color: Colors.black87,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 14)),
+              DeltaData(
+                  value: 9, icon: Icons.arrow_drop_up, color: Colors.green)
+            ]),
             Wrap(
               crossAxisAlignment: WrapCrossAlignment.center,
               runSpacing: 5.0,
@@ -73,7 +86,7 @@ class _ParticipationReportTotalState extends State<ParticipationReportTotal> {
                         fontWeight: FontWeight.bold,
                         fontSize: 18)),
                 NumberSlideAnimation(
-                    number: widget.eventReport.joinCount.toString(),
+                    number: (widget.eventReport.joinCount ~/ 85).toString(),
                     duration: kDefaultNumberSliderDuration,
                     curve: Curves.easeOut,
                     textStyle: TextStyle(
@@ -94,7 +107,7 @@ class _ParticipationReportTotalState extends State<ParticipationReportTotal> {
                       color: Colors.black87,
                       fontWeight: FontWeight.bold,
                       fontSize: 18),
-                )
+                ),
               ],
             ),
             SizedBox(height: kDefaultPadding * 2),
@@ -186,8 +199,8 @@ class _ParticipationReportTotalState extends State<ParticipationReportTotal> {
                                 ),
                                 SizedBox(width: kDefaultPadding / 3),
                                 NumberSlideAnimation(
-                                  number:
-                                      widget.eventReport.likeCount.toString(),
+                                  number: (widget.eventReport.likeCount ~/ 85)
+                                      .toString(),
                                   duration: kDefaultNumberSliderDuration,
                                   curve: Curves.easeOut,
                                   textStyle: TextStyle(
@@ -211,8 +224,9 @@ class _ParticipationReportTotalState extends State<ParticipationReportTotal> {
                                 ),
                                 SizedBox(width: kDefaultPadding / 3),
                                 NumberSlideAnimation(
-                                  number: widget.eventReport.commentCount
-                                      .toString(),
+                                  number:
+                                      (widget.eventReport.commentCount ~/ 85)
+                                          .toString(),
                                   duration: kDefaultNumberSliderDuration,
                                   curve: Curves.easeOut,
                                   textStyle: TextStyle(
