@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 @ControllerAdvice
 public class GlobalExceptionHandler {
 
+    // 로그인
+
     @ExceptionHandler(CustomAuthenticationException.class)
     protected ResponseEntity<CommonResponse> handleCustomAuthenticationException(CustomAuthenticationException e) {
 
@@ -52,4 +54,21 @@ public class GlobalExceptionHandler {
 
         return new ResponseEntity<>(response, HttpStatus.UNAUTHORIZED);
     }
+
+    // 이벤트 참여
+
+    @ExceptionHandler(JoinEventFailedException.class)
+    protected ResponseEntity<CommonResponse> handleJoinEventFailedException(JoinEventFailedException e) {
+
+        log.info("handleJoinEventFailedException", e);
+
+        CommonResponse response = CommonResponse.builder()
+                .code(ErrorCode.DUPLICATE_POST_URL.getCode())
+                .message(ErrorCode.DUPLICATE_POST_URL.getMessage())
+                .status(ErrorCode.DUPLICATE_POST_URL.getStatus())
+                .build();
+
+        return new ResponseEntity<>(response, HttpStatus.FORBIDDEN);
+    }
+
 }
