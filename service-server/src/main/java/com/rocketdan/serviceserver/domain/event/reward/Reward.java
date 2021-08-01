@@ -8,13 +8,14 @@ import javax.persistence.*;
 
 @Entity
 @Getter
-//@AllArgsConstructor
 @NoArgsConstructor
 public class Reward {
     @Id
     @JsonIgnore
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    private Long level;
 
     private Integer category;
 
@@ -27,7 +28,8 @@ public class Reward {
 
     private Integer count;
 
-    public Reward(Integer category, String name, String image, Integer price, Integer count) {
+    public Reward(Long level, Integer category, String name, String image, Integer price, Integer count) {
+        this.level = level;
         this.category = category;
         this.name = name;
         this.image = image;
