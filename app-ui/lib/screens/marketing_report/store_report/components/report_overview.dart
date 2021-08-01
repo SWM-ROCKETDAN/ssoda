@@ -29,13 +29,13 @@ class ReportOverview extends StatelessWidget {
           Expanded(
             child: Container(
               padding: const EdgeInsets.all(20),
-              margin: const EdgeInsets.symmetric(horizontal: 7),
+              margin: const EdgeInsets.symmetric(horizontal: 6),
               decoration: BoxDecoration(boxShadow: [
                 BoxShadow(
                   color: Colors.grey.withOpacity(0.2),
-                  spreadRadius: 5,
-                  blurRadius: 20,
-                  offset: Offset(0, 0), // changes position of shadow
+                  spreadRadius: 1,
+                  blurRadius: 3,
+                  offset: Offset(2, 2), // changes position of shadow
                 ),
               ], color: Colors.white, borderRadius: BorderRadius.circular(20)),
               child: Column(
@@ -44,6 +44,7 @@ class ReportOverview extends StatelessWidget {
                   Icon(Icons.attach_money, size: 28),
                   AutoSizeText(
                     '평균 객단가',
+                    minFontSize: 10,
                     maxLines: 1,
                   ),
                   Divider(height: 7),
@@ -52,7 +53,9 @@ class ReportOverview extends StatelessWidget {
                       TextSpan(
                           text: numberDisplay(storeReportOverview.guestPrice),
                           style: TextStyle(
-                              color: kThemeColor, fontWeight: FontWeight.bold)),
+                              color: kThemeColor,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 16)),
                       TextSpan(text: ' 원')
                     ]),
                     maxLines: 1,
@@ -64,13 +67,13 @@ class ReportOverview extends StatelessWidget {
           Expanded(
             child: Container(
               padding: const EdgeInsets.all(20),
-              margin: const EdgeInsets.symmetric(horizontal: 7),
+              margin: const EdgeInsets.symmetric(horizontal: 6),
               decoration: BoxDecoration(boxShadow: [
                 BoxShadow(
                   color: Colors.grey.withOpacity(0.2),
-                  spreadRadius: 5,
-                  blurRadius: 20,
-                  offset: Offset(0, 0), // changes position of shadow
+                  spreadRadius: 1,
+                  blurRadius: 3,
+                  offset: Offset(2, 2), // changes position of shadow
                 ),
               ], color: Colors.white, borderRadius: BorderRadius.circular(20)),
               child: Column(
@@ -79,6 +82,7 @@ class ReportOverview extends StatelessWidget {
                   Icon(Icons.group, size: 28),
                   AutoSizeText(
                     '누적 참여자',
+                    minFontSize: 10,
                     maxLines: 1,
                   ),
                   Divider(height: 7),
@@ -87,7 +91,9 @@ class ReportOverview extends StatelessWidget {
                       TextSpan(
                           text: numberDisplay(storeReportOverview.joinCount),
                           style: TextStyle(
-                              color: kThemeColor, fontWeight: FontWeight.bold)),
+                              color: kThemeColor,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 16)),
                       TextSpan(text: ' 명')
                     ]),
                     maxLines: 1,
@@ -99,13 +105,13 @@ class ReportOverview extends StatelessWidget {
           Expanded(
             child: Container(
               padding: const EdgeInsets.all(20),
-              margin: const EdgeInsets.symmetric(horizontal: 7),
+              margin: const EdgeInsets.symmetric(horizontal: 6),
               decoration: BoxDecoration(boxShadow: [
                 BoxShadow(
                   color: Colors.grey.withOpacity(0.2),
-                  spreadRadius: 5,
-                  blurRadius: 20,
-                  offset: Offset(0, 0), // changes position of shadow
+                  spreadRadius: 1,
+                  blurRadius: 3,
+                  offset: Offset(2, 2), // changes position of shadow
                 ),
               ], color: Colors.white, borderRadius: BorderRadius.circular(20)),
               child: Column(
@@ -114,6 +120,7 @@ class ReportOverview extends StatelessWidget {
                   Icon(Icons.favorite, size: 28),
                   AutoSizeText(
                     '누적 좋아요',
+                    minFontSize: 10,
                     maxLines: 1,
                   ),
                   Divider(height: 7),
@@ -122,7 +129,9 @@ class ReportOverview extends StatelessWidget {
                       TextSpan(
                           text: numberDisplay(storeReportOverview.likeCount),
                           style: TextStyle(
-                              color: kThemeColor, fontWeight: FontWeight.bold)),
+                              color: kThemeColor,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 16)),
                       TextSpan(text: ' 개')
                     ]),
                     maxLines: 1,
