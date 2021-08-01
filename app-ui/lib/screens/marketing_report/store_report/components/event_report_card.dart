@@ -39,13 +39,13 @@ class EventReportCard extends StatelessWidget {
                   ),
                 );
               },
-              borderRadius: BorderRadius.all(Radius.circular(30)),
+              borderRadius: BorderRadius.all(Radius.circular(20)),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   ClipRRect(
                     borderRadius:
-                        BorderRadius.vertical(top: Radius.circular(30)),
+                        BorderRadius.vertical(top: Radius.circular(20)),
                     child: Stack(
                       children: [
                         Hero(
@@ -156,6 +156,6 @@ class EventReportCard extends StatelessWidget {
               ),
             ),
             shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.all(Radius.circular(30)))));
+                borderRadius: BorderRadius.all(Radius.circular(20)))));
   }
 }
