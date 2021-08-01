@@ -1,7 +1,7 @@
 package com.rocketdan.serviceserver.domain.event;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.rocketdan.serviceserver.domain.event.reward.Reward;
 import com.rocketdan.serviceserver.domain.store.Store;
 import lombok.*;
@@ -10,7 +10,7 @@ import javax.persistence.*;
 import java.util.*;
 
 @Entity
- @Inheritance(strategy = InheritanceType.JOINED)
+@Inheritance(strategy = InheritanceType.JOINED)
 @DiscriminatorColumn(name = "ETYPE")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
@@ -43,13 +43,13 @@ public abstract class Event {
     private List<String> images;
 
     // 이벤트 보상 목록
-    @JsonManagedReference
     @OneToMany(cascade = CascadeType.ALL)
     @Column(nullable = false)
     private List<Reward> rewards;
 
     // link된 store
     @ManyToOne
+    @JsonBackReference
     private Store store;
 
     public Event(String title, Integer status, Date startDate, Date finishDate, List<String> images, List<Reward> rewards, Store store) {

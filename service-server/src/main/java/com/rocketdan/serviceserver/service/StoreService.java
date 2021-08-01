@@ -7,6 +7,8 @@ import com.rocketdan.serviceserver.app.dto.store.StoreSaveRequestDto;
 import com.rocketdan.serviceserver.app.dto.store.StoreUpdateRequestDto;
 import com.rocketdan.serviceserver.domain.store.Store;
 import com.rocketdan.serviceserver.domain.store.StoreRepository;
+import com.rocketdan.serviceserver.domain.user.User;
+import com.rocketdan.serviceserver.domain.user.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -19,9 +21,14 @@ import java.util.stream.Collectors;
 public class StoreService {
     private final StoreRepository storeRepository;
 
+    private final UserRepository userRepository;
+
     @Transactional
-    public Long save(StoreSaveRequestDto requestDto) {
+    public Long save(Long user_id, StoreSaveRequestDto requestDto) {
+        User linkedUser = userRepository.findById(user_id).orElseThrow(() -> new IllegalArgumentException("해당 가게가 없습니다. id=" + user_id));
         Store savedStore = requestDto.toEntity();
+        savedStore.setUser(linkedUser);
+
         return storeRepository.save(savedStore).getId();
     }
 

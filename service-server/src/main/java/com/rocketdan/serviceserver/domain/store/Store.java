@@ -44,7 +44,6 @@ public class Store {
     private List<String> images;
 
     // 가게에서 개설한 이벤트 목록
-//    @JsonManagedReference
     @OneToMany(mappedBy = "store", cascade = CascadeType.ALL)
     private List<Event> events;
 
@@ -65,5 +64,13 @@ public class Store {
         this.address = address;
         this.description = description;
         this.images = images;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+
+        if (!user.getStores().contains(this)) {
+            user.getStores().add(this);
+        }
     }
 }
