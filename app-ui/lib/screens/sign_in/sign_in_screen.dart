@@ -4,6 +4,8 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:hashchecker/api.dart';
 import 'package:hashchecker/constants.dart';
+import 'package:hashchecker/models/address.dart';
+import 'package:hashchecker/models/store.dart';
 import 'package:hashchecker/models/user_social_account.dart';
 import 'package:kakao_flutter_sdk/auth.dart';
 import 'package:kakao_flutter_sdk/user.dart';
@@ -22,6 +24,23 @@ class SignInScreen extends StatefulWidget {
 }
 
 class _SignInScreenState extends State<SignInScreen> {
+  String? strstr;
+  String? xAuthToken;
+  String? userId;
+
+  Store myStore = Store(
+      name: 'yjyoon',
+      category: 1,
+      address: Address(
+          city: '서울',
+          country: '노원구',
+          town: '월계동',
+          roadCode: '000000000000',
+          road: '광운로 20',
+          zipCode: "00000"),
+      description: "상세 설명",
+      images: <String>["img1", "img2", "img3"]);
+
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -35,7 +54,13 @@ class _SignInScreenState extends State<SignInScreen> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Expanded(
-                    child: Text('ㅎㅇ'),
+                    child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text('${userId}\n'),
+                          Text('${xAuthToken}\n'),
+                          Text('$strstr'),
+                        ]),
                   ),
                   Column(
                     children: [
@@ -48,6 +73,30 @@ class _SignInScreenState extends State<SignInScreen> {
                         size: size,
                         signIn: kakaoLoginPressed,
                       ),
+                      ElevatedButton(
+                          onPressed: () async {
+                            final response = await http.get(
+                              Uri.parse(
+                                  'http://ec2-3-37-85-236.ap-northeast-2.compute.amazonaws.com:8080/api/v1/stores/users/2'),
+                            );
+                            setState(() {
+                              strstr = response.body;
+                            });
+                          },
+                          child: Text('api호출 1')),
+                      ElevatedButton(
+                          onPressed: () async {
+                            final apiTest = await http.post(
+                                Uri.parse(
+                                    'http://ec2-3-37-85-236.ap-northeast-2.compute.amazonaws.com:8080/api/v1/stores'),
+                                body: jsonEncode(myStore.toJson()),
+                                headers: {'x-auth-token': xAuthToken!});
+                            print(jsonEncode(myStore.toJson()));
+                            setState(() {
+                              strstr = '${apiTest.body}';
+                            });
+                          },
+                          child: Text('api호출 2'))
                     ],
                   ),
                 ])),
@@ -127,8 +176,6 @@ class _SignInScreenState extends State<SignInScreen> {
   }
 
   Future<void> signIn(UserSocialAccount account) async {
-    late String xAuthToken;
-
     final response = await http.post(Uri.parse(getApi(API.LOGIN)),
         body: jsonEncode(account.toJson()),
         headers: {
@@ -137,14 +184,13 @@ class _SignInScreenState extends State<SignInScreen> {
         });
 
     if (response.statusCode == 200) {
-      xAuthToken = jsonDecode(response.body)['message'];
+      setState(() {
+        xAuthToken = response.headers['x-auth-token']!;
+        userId = jsonDecode(response.body)['message']!;
+      });
 
       // apiTest
-      final apiTest = await http.get(
-        Uri.parse(getApi(API.GET_ALL_EVENTS)),
-        headers: {'x-auth-token': xAuthToken},
-      );
-      print(apiTest.body);
+
     } else {
       showLoginFailDialog();
     }
