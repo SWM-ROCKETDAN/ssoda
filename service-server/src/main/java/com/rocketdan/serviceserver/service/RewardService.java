@@ -10,13 +10,13 @@ import reactor.core.publisher.Mono;
 @Service
 public class RewardService {
     private WebClient webClient = WebClient.builder()
-            .baseUrl("http://analysisserverurl:8080")
+            .baseUrl("http://analysisserverurl:8080/api/v1/join/reward")
             .build();
 
     // analysis-server에 put 요청
     public RewardLevelResponseDto getRewardLevel(Long joinPostId) {
         return webClient.get() // PUT method
-                .uri("/api/v1/join/reward/" + joinPostId) // baseUrl 이후 uri
+                .uri("/" + joinPostId) // baseUrl 이후 uri
                 .retrieve() // client message 전송
                 .onStatus(HttpStatus::is4xxClientError, clientResponse -> Mono.error(JoinEventFailedException::new))
                 .bodyToMono(RewardLevelResponseDto.class) // body type

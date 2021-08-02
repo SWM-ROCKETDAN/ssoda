@@ -27,7 +27,7 @@ public class JoinPostService {
     private final EventRepository eventRepository;
 
     private WebClient webClient = WebClient.builder()
-            .baseUrl("http://analysisserverurl:8080")
+            .baseUrl("http://analysisserverurl:8080/api/v1/join/post")
             .build();
 
     public Long save(Long event_id, String url) {
@@ -54,7 +54,7 @@ public class JoinPostService {
     // analysis-server에 put 요청
     public void putJoinPost(Long joinPostId) {
         webClient.put() // PUT method
-                .uri("/api/v1/join/post/" + joinPostId) // baseUrl 이후 uri
+                .uri("/" + joinPostId) // baseUrl 이후 uri
 //                .bodyValue(bodyEmpInfo) // set body value
                 .retrieve() // client message 전송
                 .onStatus(HttpStatus::is4xxClientError, clientResponse -> Mono.error(JoinEventFailedException::new));
