@@ -77,7 +77,7 @@ class _SignInScreenState extends State<SignInScreen> {
                           onPressed: () async {
                             final response = await http.get(
                               Uri.parse(
-                                  'http://ec2-3-37-85-236.ap-northeast-2.compute.amazonaws.com:8080/api/v1/stores/users/2'),
+                                  'http://ec2-3-37-85-236.ap-northeast-2.compute.amazonaws.com:8080/api/v1/stores/5'),
                             );
                             setState(() {
                               strstr = response.body;
@@ -88,9 +88,13 @@ class _SignInScreenState extends State<SignInScreen> {
                           onPressed: () async {
                             final apiTest = await http.post(
                                 Uri.parse(
-                                    'http://ec2-3-37-85-236.ap-northeast-2.compute.amazonaws.com:8080/api/v1/stores'),
+                                    'http://ec2-3-37-85-236.ap-northeast-2.compute.amazonaws.com:8080/api/v1/stores/users/${userId}'),
                                 body: jsonEncode(myStore.toJson()),
-                                headers: {'x-auth-token': xAuthToken!});
+                                headers: {
+                                  'x-auth-token': xAuthToken!,
+                                  "Accept": "application/json",
+                                  "content-type": "application/json"
+                                });
                             print(jsonEncode(myStore.toJson()));
                             setState(() {
                               strstr = '${apiTest.body}';
