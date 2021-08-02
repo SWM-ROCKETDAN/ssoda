@@ -32,6 +32,10 @@ public class JoinApiController {
         Long joinUserId = joinUserService.save(joinPostId);
 
         // analysis-server에 join_user update 요청
+        CommonResponse putJoinUserResponse = joinUserService.putJoinUser(joinUserId);
+        if (!putJoinUserResponse.getCode().equals("JOIN_USER200")) {
+            throw new JoinEventFailedException();
+        }
 
         // analysis-server에 reward level 요청
 
