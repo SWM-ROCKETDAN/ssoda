@@ -46,6 +46,16 @@ public class JoinUserService {
     }
 
     // analysis-server에 put 요청
+    public void putJoinUser(Long joinUserId) {
+        webClient.put() // PUT method
+                .uri("/api/v1/join/user/" + joinUserId) // baseUrl 이후 uri
+//                .bodyValue(bodyEmpInfo) // set body value
+                .retrieve() // client message 전송
+                .onStatus(HttpStatus::is4xxClientError, clientResponse -> Mono.error(JoinEventFailedException::new));
+//                .bodyToMono(CommonResponse.class) // body type
+//                .block(); // await
+    }
+    /*
     public CommonResponse putJoinUser(Long joinUserId) {
         return webClient.put() // PUT method
                 .uri("/api/v1/join/user/" + joinUserId) // baseUrl 이후 uri
@@ -55,4 +65,5 @@ public class JoinUserService {
                 .bodyToMono(CommonResponse.class) // body type
                 .block(); // await
     }
+    */
 }
