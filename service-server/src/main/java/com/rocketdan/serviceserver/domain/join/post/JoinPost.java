@@ -18,7 +18,6 @@ public class JoinPost {
     private Long id;
 
     @ManyToOne
-    @Column(nullable = false)
     private Event event;
 
     private String snsId;

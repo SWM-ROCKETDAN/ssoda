@@ -57,15 +57,29 @@ public class GlobalExceptionHandler {
 
     // 이벤트 참여
 
+    @ExceptionHandler(DuplicateUrlException.class)
+    protected ResponseEntity<CommonResponse> handleDuplicateUrlException(DuplicateUrlException e) {
+
+        log.info("handleDuplicateUrlException", e);
+
+        CommonResponse response = CommonResponse.builder()
+                .code(ErrorCode.DUPLICATE_POST_URL.getCode())
+                .message(ErrorCode.DUPLICATE_POST_URL.getMessage())
+                .status(ErrorCode.DUPLICATE_POST_URL.getStatus())
+                .build();
+
+        return new ResponseEntity<>(response, HttpStatus.FORBIDDEN);
+    }
+
     @ExceptionHandler(JoinEventFailedException.class)
     protected ResponseEntity<CommonResponse> handleJoinEventFailedException(JoinEventFailedException e) {
 
         log.info("handleJoinEventFailedException", e);
 
         CommonResponse response = CommonResponse.builder()
-                .code(ErrorCode.DUPLICATE_POST_URL.getCode())
-                .message(ErrorCode.DUPLICATE_POST_URL.getMessage())
-                .status(ErrorCode.DUPLICATE_POST_URL.getStatus())
+                .code(ErrorCode.JOIN_EVENT_FAILED.getCode())
+                .message(ErrorCode.JOIN_EVENT_FAILED.getMessage())
+                .status(ErrorCode.JOIN_EVENT_FAILED.getStatus())
                 .build();
 
         return new ResponseEntity<>(response, HttpStatus.FORBIDDEN);

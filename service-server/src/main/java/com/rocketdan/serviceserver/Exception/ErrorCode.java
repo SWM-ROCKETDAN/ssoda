@@ -9,7 +9,8 @@ public enum ErrorCode {
     LOGIN_FAILED(401, "AUTH002", " LOGIN_FAILED."),
     INVALID_JWT_TOKEN(401, "AUTH003", "INVALID_JWT_TOKEN."),
     // 이벤트 참여
-    DUPLICATE_POST_URL(403, "EVENT_JOIN001", "DUPLICATE_POST_URL.");
+    DUPLICATE_POST_URL(403, "EVENT_JOIN001", "DUPLICATE_POST_URL."),
+    JOIN_EVENT_FAILED(403, "EVENT_JOIN002", "JOIN_EVENT_FAILED.");
 
     private final String code;
     private final String message;

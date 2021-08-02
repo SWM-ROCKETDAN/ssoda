@@ -1,11 +1,12 @@
 package com.rocketdan.serviceserver.web;
 
+import com.rocketdan.serviceserver.Exception.JoinEventFailedException;
+import com.rocketdan.serviceserver.core.CommonResponse;
 import com.rocketdan.serviceserver.service.JoinPostService;
 import com.rocketdan.serviceserver.service.JoinUserService;
-import com.rocketdan.serviceserver.service.RewardService;
 import com.rocketdan.serviceserver.web.dto.RewardRequestDto;
-import com.rocketdan.serviceserver.web.dto.RewardResponseDto;
 import lombok.RequiredArgsConstructor;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -14,14 +15,18 @@ import org.springframework.web.bind.annotation.*;
 public class JoinApiController {
     private final JoinPostService joinPostService;
     private final JoinUserService joinUserService;
-    private final RewardService rewardService;
 
+    @Transactional
     @GetMapping("/events/{event_id}")
-    public RewardResponseDto retrieveRewardLevel(@PathVariable Long event_id, @RequestBody RewardRequestDto rewardRequestDto) {
+    public void retrieveRewardLevel(@PathVariable Long event_id, @RequestBody RewardRequestDto rewardRequestDto) {
         // join_post 저장
         Long joinPostId = joinPostService.save(event_id, rewardRequestDto.getUrl());
 
         // analysis-server에 join_post update 요청
+        CommonResponse putJoinPostResponse = joinPostService.putJoinPost(joinPostId);
+        if (!putJoinPostResponse.getCode().equals("JOIN_POST200")) {
+            throw new JoinEventFailedException();
+        }
 
         // join_post의 snsId, type, createDate를 join_user에 저장
         Long joinUserId = joinUserService.save(joinPostId);
@@ -30,6 +35,6 @@ public class JoinApiController {
 
         // analysis-server에 reward level 요청
 
-        return new RewardResponseDto();
+        //return new RewardResponseDto();
     }
 }
