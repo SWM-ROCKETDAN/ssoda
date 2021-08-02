@@ -99,8 +99,8 @@ class JoinRewardView(APIView):
         join_collection_serializer = JoinCollectionSerializer(data=join_collection, many=True)
         join_collection_serializer.is_valid()
         join_reward = JoinReward(join_collection_serializer.data, pk)
-        join_reward.get_reward_rate()
-        # join_reward.test()
+        join_reward.get_reward_rate_list()
+        join_reward.get_reward_point_rate()
         return Response(join_collection_serializer.data, status=status.HTTP_400_BAD_REQUEST)
 
 

@@ -48,15 +48,26 @@ class JoinReward:
 
         return reward_rate_list
 
-    def get_reward_point_rate_level(self):
+    def get_reward_point_rate(self):
         reward_point_dict = self.get_reward_point_dict()
         reward_point_list = []
+
         for key, val in reward_point_dict.items():
             reward_point_list.append(val)
-        reward_point_list.sort()
-        
-        pass
 
+        reward_point_list.sort()
+        reward_point_rate = 0
+        cnt = 0
+        for key, val in reward_point_dict.items():
+            cnt += 1
+            if key == self.pk:
+                print(val)
+                reward_point_rate = (reward_point_list.index(val) + 1) / len(reward_point_dict)
+
+        print(reward_point_rate)
+        print(reward_point_list)
+        return reward_point_rate
+        
     def get_this_reward_point_rate(self) -> float:
         this_reward_point = self.get_this_reward_point()
         prev_reward_point_list = self.get_prev_reward_point_list()
