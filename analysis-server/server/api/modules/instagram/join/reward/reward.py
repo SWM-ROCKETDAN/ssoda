@@ -5,37 +5,57 @@ from .reward_prev import reward_maintain
 from .reward_prev import reward_er
 
 
-class Reward:
-    def __init__(self, join_collection):
-        self.join_collection = join_collection
-
-    def test(self):
-        print(self.join_collection)
+class JoinReward:
+    def __init__(self, join_collection_list, pk):
+        self.join_collection_list = join_collection_list
+        self.pk = pk
 
     @staticmethod
-    def get_reward_point(join_post, join_user, hashtags) -> int:
-        user_point = reward_user(join_user['follow_count']) * config.InstagramReward.CONSTANT_USER
-        post_point = reward_post(join_post['hashtags'], hashtags['hashtags']) * config.InstagramReward.CONSTANT_POST
-        maintain_point = reward_maintain(join_post['upload_date'],
-                                         join_post['delete_date']) * config.InstagramReward.CONSTANT_PREV
-        er_point = reward_er(join_post['like_count'], join_post['comment_count']) * config.InstagramReward.CONSTANT_PREV
+    def get_reward_point(join_collection) -> int:
+        user_point = reward_user(join_collection['join_user']['follow_count']) * config.InstagramReward.CONSTANT_USER
+
+        hashtag_list = []
+        for hashtag_hashtag in join_collection['event']['hashtag']['hashtag_hashtags']:
+            hashtag_list.append(hashtag_hashtag['hashtags'])
+        post_point = reward_post(join_collection['hashtags'], hashtag_list)
+
+        maintain_point = reward_maintain(join_collection['upload_date'],
+                                         join_collection['delete_date']) * config.InstagramReward.CONSTANT_PREV
+
+        er_point = reward_er(join_collection['like_count'], join_collection['comment_count']) * config.InstagramReward.CONSTANT_PREV
 
         reward_point = post_point + user_point + maintain_point + er_point
 
         return reward_point
 
-    def get_this_reward_point(self) -> int:
-        this_reward_point = self.get_reward_point(self.join_post, self.join_post, self.event)
+    def get_reward_point_dict(self) -> dict:
+        reward_point_dict = {}
+        for join_collection in self.join_collection_list:
+            reward_point_dict[join_collection['id']] = self.get_reward_point(join_collection)
+        return reward_point_dict
 
-        return this_reward_point
+    def get_reward_rate_list(self):
+        reward_rate_list = []
+        reward_count_sum = 0
+        for item in self.join_collection_list:
+            if item['id'] == self.pk:
+                for event_rewards in item['event']['event_rewards']:
+                    reward_rate_list.append(event_rewards['rewards']['count'])
+                    reward_count_sum += event_rewards['rewards']['count']
 
-    def get_prev_reward_point_list(self) -> list:
-        prev_reward_point_list = []
-        for i in range(0, len(self.join_user_list)):
-            prev_reward_point = self.get_reward_point(self.join_post_list[i], self.join_user_list[i], self.event)
-            prev_reward_point_list.append(prev_reward_point)
+        for key, val in enumerate(reward_rate_list):
+            reward_rate_list[key] = val / reward_count_sum
 
-        return prev_reward_point_list
+        return reward_rate_list
+
+    def get_reward_point_rate_level(self):
+        reward_point_dict = self.get_reward_point_dict()
+        reward_point_list = []
+        for key, val in reward_point_dict.items():
+            reward_point_list.append(val)
+        reward_point_list.sort()
+        
+        pass
 
     def get_this_reward_point_rate(self) -> float:
         this_reward_point = self.get_this_reward_point()

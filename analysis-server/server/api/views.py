@@ -2,14 +2,12 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from django.http import Http404
 from rest_framework import status
-from .models import JoinPost, JoinUser
-from .models import Event
-from .models import Reward
-from .serializers import JoinPostSerializer, JoinUserSerializer
+from .models import JoinPost, JoinUser, Event, Reward
+from .serializers import JoinPostSerializer, JoinUserSerializer, JoinCollectionSerializer
 from .serializers import EventSerializer
 from .serializers import RewardSerializer
-from .serializers import JoinCollectionSerializer
 from .modules.instagram.join.crawl import crawl
+from .modules.instagram.join.reward.reward import JoinReward
 from server.secret.test_url import G_SCHOOL_INSTAGRAM
 from server.api.modules.assist.cal_time import get_now_time
 
@@ -100,6 +98,9 @@ class JoinRewardView(APIView):
         join_collection = JoinPost.objects.all()
         join_collection_serializer = JoinCollectionSerializer(data=join_collection, many=True)
         join_collection_serializer.is_valid()
+        join_reward = JoinReward(join_collection_serializer.data, pk)
+        join_reward.get_reward_rate()
+        # join_reward.test()
         return Response(join_collection_serializer.data, status=status.HTTP_400_BAD_REQUEST)
 
 

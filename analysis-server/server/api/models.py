@@ -88,7 +88,7 @@ class JoinPost(models.Model):
     create_date = models.DateTimeField()
     upload_date = models.DateTimeField(blank=True, null=True)
     private_date = models.DateTimeField(blank=True, null=True)
-    delete_data = models.DateTimeField(blank=True, null=True)
+    delete_date = models.DateTimeField(blank=True, null=True)
     update_date = models.DateTimeField(blank=True, null=True)
 
     class Meta:
