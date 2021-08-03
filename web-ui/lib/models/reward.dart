@@ -14,4 +14,21 @@ class Reward {
       required this.price,
       required this.count,
       required this.category});
+
+  Map<String, dynamic> toJson() => {
+        'category': category.index,
+        'name': name,
+        'image': imgPath,
+        'price': price,
+        'count': count,
+      };
+
+  factory Reward.fromJson(Map<String, dynamic> json) {
+    return Reward(
+        name: json['name'],
+        imgPath: json['image'],
+        category: RewardCategory.values[json['category']],
+        price: json['price'],
+        count: json['count']);
+  }
 }
