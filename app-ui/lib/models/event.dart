@@ -1,6 +1,7 @@
 import 'reward.dart';
 import 'period.dart';
 import 'template.dart';
+import 'package:intl/intl.dart';
 
 enum EventStatus { WAITING, PROCEEDING, ENDED }
 
@@ -29,4 +30,30 @@ class Event {
       required this.images,
       required this.requireList,
       required this.template});
+
+  Map<String, dynamic> toJson() => {
+        'title': title,
+        'startDate': DateFormat('yyyy-MM-ddTHH:mm:ss').format(period.startDate),
+        'finishDate': period.finishDate == null
+            ? null
+            : DateFormat('yyyy-MM-ddTHH:mm:ss').format(period.finishDate!),
+        'images': images,
+        'rewards': rewardList,
+        'hashtags': hashtagList,
+        'requirements': requireList,
+        'template': template.id
+      };
+
+  Event.fromJson(Map<String, dynamic> json)
+      : title = json['title'],
+        rewardList = json['rewards'],
+        period = Period(
+            DateFormat('yyyy-MM-ddTHH:mm:ss').parse(json['startDate']),
+            json['finishDate'] == null
+                ? null
+                : DateFormat('yyyy-MM-ddTHH:mm:ss').parse(json['finishDate'])),
+        images = json['images'],
+        hashtagList = json['hashtags'],
+        requireList = json['requirements'],
+        template = Template(json['template']);
 }
