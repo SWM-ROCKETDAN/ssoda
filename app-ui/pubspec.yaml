@@ -22,7 +22,11 @@ dependencies:
   animated_text_kit: ^4.2.1
   flutter_naver_login: ^1.2.2
   kakao_flutter_sdk: ^0.7.0
-  
+  intl: ^0.17.0
+  provider: ^5.0.0
+  qr_flutter: ^4.0.0
+  path_provider: ^2.0.2
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
