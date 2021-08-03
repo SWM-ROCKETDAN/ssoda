@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:hashchecker_web/api.dart';
 import 'package:hashchecker_web/models/event.dart';
 import 'components/body.dart';
 import 'package:http/http.dart' as http;
@@ -41,10 +42,11 @@ class _EventJoinScreenState extends State<EventJoinScreen> {
   }
 
   Future<Event> fetchEvent() async {
-    final response = await http.get(
-      Uri.parse(
-          'http://ec2-3-37-85-236.ap-northeast-2.compute.amazonaws.com:8080/api/v1/events/${widget.id}'),
-    );
+    final response = await http
+        .get(Uri.parse(getApi(API.GET_EVENT, parameter: widget.id)), headers: {
+      "Access-Control-Allow-Origin": "*",
+      "Access-Control-Allow-Methods": "POST, GET, OPTIONS, PUT, DELETE, HEAD",
+    });
     if (response.statusCode == 200) {
       print(jsonDecode(response.body));
       return Event.fromJson(jsonDecode(utf8.decode(response.bodyBytes)));
