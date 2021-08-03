@@ -5,13 +5,21 @@ import 'package:flutter/material.dart';
 import 'package:hashchecker/api.dart';
 import 'package:hashchecker/constants.dart';
 import 'package:hashchecker/models/address.dart';
+import 'package:hashchecker/models/event.dart';
+import 'package:hashchecker/models/period.dart';
+import 'package:hashchecker/models/reward.dart';
+import 'package:hashchecker/models/reward_category.dart';
 import 'package:hashchecker/models/store.dart';
+import 'package:hashchecker/models/template.dart';
+import 'package:hashchecker/models/token.dart';
 import 'package:hashchecker/models/user_social_account.dart';
+import 'package:hashchecker/screens/create_event/create_event_step/create_event_step_screen.dart';
 import 'package:kakao_flutter_sdk/auth.dart';
 import 'package:kakao_flutter_sdk/user.dart';
 import 'package:kakao_flutter_sdk/common.dart';
 import 'package:flutter_naver_login/flutter_naver_login.dart';
 import 'package:http/http.dart' as http;
+import 'package:provider/provider.dart';
 
 import 'components/kakao_sign_in_button.dart';
 import 'components/naver_sign_in_button.dart';
@@ -28,18 +36,21 @@ class _SignInScreenState extends State<SignInScreen> {
   String? xAuthToken;
   String? userId;
 
-  Store myStore = Store(
-      name: 'yjyoon',
-      category: 1,
-      address: Address(
-          city: '서울',
-          country: '노원구',
-          town: '월계동',
-          roadCode: '000000000000',
-          road: '광운로 20',
-          zipCode: "00000"),
-      description: "상세 설명",
-      images: <String>["img1", "img2", "img3"]);
+  Event myEvent = Event(
+      title: 'yjyoon2',
+      rewardList: <Reward>[
+        Reward(
+            name: 'reward1',
+            imgPath: 'img',
+            price: 1234,
+            count: 1234,
+            category: RewardCategory.DRINK),
+      ],
+      hashtagList: <String>['hash1', 'hash2'],
+      period: Period(DateTime.now(), DateTime.now()),
+      images: <String>['img1', 'img2', 'img3'],
+      requireList: <bool>[true, false, true],
+      template: Template(0));
 
   @override
   Widget build(BuildContext context) {
@@ -77,7 +88,7 @@ class _SignInScreenState extends State<SignInScreen> {
                           onPressed: () async {
                             final response = await http.get(
                               Uri.parse(
-                                  'http://ec2-3-37-85-236.ap-northeast-2.compute.amazonaws.com:8080/api/v1/stores/5'),
+                                  'http://ec2-3-37-85-236.ap-northeast-2.compute.amazonaws.com:8080/api/v1/events/7'),
                             );
                             setState(() {
                               strstr = response.body;
@@ -88,14 +99,15 @@ class _SignInScreenState extends State<SignInScreen> {
                           onPressed: () async {
                             final apiTest = await http.post(
                                 Uri.parse(
-                                    'http://ec2-3-37-85-236.ap-northeast-2.compute.amazonaws.com:8080/api/v1/stores/users/${userId}'),
-                                body: jsonEncode(myStore.toJson()),
+                                    'http://ec2-3-37-85-236.ap-northeast-2.compute.amazonaws.com:8080/api/v1/events/hashtag/stores/5'),
+                                body: jsonEncode(myEvent.toJson()),
                                 headers: {
                                   'x-auth-token': xAuthToken!,
                                   "Accept": "application/json",
                                   "content-type": "application/json"
                                 });
-                            print(jsonEncode(myStore.toJson()));
+                            print(jsonEncode(myEvent.toJson()));
+                            print(apiTest.body);
                             setState(() {
                               strstr = '${apiTest.body}';
                             });
@@ -193,8 +205,17 @@ class _SignInScreenState extends State<SignInScreen> {
         userId = jsonDecode(response.body)['message']!;
       });
 
-      // apiTest
+      // global accessToken with provider
+      context.read<Token>().token = xAuthToken;
 
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => CreateEventStepScreen(),
+        ),
+      );
+
+      print(context.read<Token>().token);
     } else {
       showLoginFailDialog();
     }

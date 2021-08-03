@@ -17,7 +17,7 @@ class _EventPeriodState extends State<EventPeriod> {
   @override
   void initState() {
     super.initState();
-    _dropdownValue = _dateRangeList[widget.period.dateShortcut];
+    _dropdownValue = '30일 간';
   }
 
   @override
@@ -98,9 +98,6 @@ class _EventPeriodState extends State<EventPeriod> {
                 setState(() {
                   _dropdownValue = newValue!;
                 });
-
-                widget.period.dateShortcut =
-                    _dateRangeList.indexOf(_dropdownValue!);
 
                 if (_dropdownValue == _dateRangeList[0]) {
                   widget.period.finishDate =
