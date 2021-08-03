@@ -1,0 +1,31 @@
+name: hashchecker_web
+description: Hashchecker web service.
+
+publish_to: 'none'
+
+version: 1.0.0+1
+
+environment:
+  sdk: ">=2.12.0 <3.0.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  cupertino_icons: ^1.0.2
+  auto_size_text: ^3.0.0-nullsafety.0
+  carousel_slider: ^4.0.0
+  fluro: ^2.0.3
+  http: ^0.13.3
+  intl: ^0.17.0
+  url_strategy: ^0.2.0
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+flutter:
+  assets:
+    - assets/images/sample/
+
+  uses-material-design: true
