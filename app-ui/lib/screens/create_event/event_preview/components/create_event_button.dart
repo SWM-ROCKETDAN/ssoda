@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:hashchecker/api.dart';
 import 'package:hashchecker/models/event.dart';
 import 'package:hashchecker/models/token.dart';
+import 'package:hashchecker/screens/create_event/show_qrcode/show_qrcode_screen.dart';
 import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
 
@@ -32,8 +33,15 @@ class CreateEventButton extends StatelessWidget {
                 "Accept": "application/json",
                 "content-type": "application/json"
               });
-          print(jsonEncode(event.toJson()));
-          print(response.body);
+
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => ShowQrcodeScreen(
+                eventId: response.body,
+              ),
+            ),
+          );
         },
         style: ButtonStyle(
             backgroundColor: MaterialStateProperty.all<Color>(

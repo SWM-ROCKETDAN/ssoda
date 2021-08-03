@@ -88,7 +88,7 @@ class _SignInScreenState extends State<SignInScreen> {
                           onPressed: () async {
                             final response = await http.get(
                               Uri.parse(
-                                  'http://ec2-3-37-85-236.ap-northeast-2.compute.amazonaws.com:8080/api/v1/events/7'),
+                                  'http://ec2-3-37-85-236.ap-northeast-2.compute.amazonaws.com:8080/api/v1/events'),
                             );
                             setState(() {
                               strstr = response.body;
