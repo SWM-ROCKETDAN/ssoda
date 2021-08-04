@@ -28,7 +28,7 @@ class JoinPostView(APIView):
             raise status.HTTP_404_NOT_FOUND
 
     # GET 요청 -> post 크롤링 -> join_post 업데이트
-    def put(self, request, pk, formate=None):
+    def get(self, request, pk, formate=None):
         join_post = self.get_object(pk)
         join_post_serializer = JoinPostSerializer(join_post)
         join_post_url = join_post_serializer.data.get('url')
