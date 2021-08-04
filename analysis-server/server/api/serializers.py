@@ -1,14 +1,7 @@
 from rest_framework import serializers
-from rest_framework.utils import json
-
-from .models import JoinUser
-from .models import JoinPost
-from .models import Reward
-from .models import EventRewards
-from .models import Event
-from .models import EventImages
-from .models import HashtagHashtags
-from .models import Hashtag
+from .models import JoinUser, JoinPost
+from .models import Event, Reward, EventRewards
+from .models import Hashtag, HashtagHashtags
 
 
 class HashtagHashtagsSerializer(serializers.ModelSerializer):

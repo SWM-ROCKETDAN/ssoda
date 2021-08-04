@@ -7,6 +7,7 @@
 # Feel free to rename the models, but don't rename db_table values or field names.
 from django.db import models
 
+
 class Event(models.Model):
     etype = models.CharField(max_length=31)
     id = models.BigAutoField(primary_key=True)
@@ -58,6 +59,7 @@ class HashtagRequirements(models.Model):
 
     class Meta:
         db_table = 'hashtag_requirements'
+
 
 class JoinUser(models.Model):
     id = models.BigAutoField(primary_key=True)
