@@ -1,5 +1,5 @@
 const baseUrl =
-    'http://ec2-3-37-85-236.ap-northeast-2.compute.amazonaws.com:8080/api/v1/';
+    'http://ec2-3-37-85-236.ap-northeast-2.compute.amazonaws.com:8080/api/v1';
 
 enum API { GET_EVENT }
 
