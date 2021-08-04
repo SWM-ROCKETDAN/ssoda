@@ -177,7 +177,7 @@ class _ParticipationReportTotalState extends State<ParticipationReportTotal> {
                               Row(children: [
                                 Icon(
                                   Icons.favorite,
-                                  color: Colors.pinkAccent,
+                                  color: Colors.pink,
                                   size: 28,
                                 ),
                                 SizedBox(width: kDefaultPadding / 3),
@@ -188,21 +188,21 @@ class _ParticipationReportTotalState extends State<ParticipationReportTotal> {
                                   curve: Curves.easeOut,
                                   textStyle: TextStyle(
                                       fontSize: 16,
-                                      color: Colors.pinkAccent,
+                                      color: Colors.pink,
                                       fontWeight: FontWeight.bold),
                                   format: NumberFormatMode.comma,
                                 ),
                                 Text(' 개',
                                     style: TextStyle(
                                         fontSize: 16,
-                                        color: Colors.pinkAccent,
+                                        color: Colors.pink,
                                         fontWeight: FontWeight.bold)),
                               ]),
                               SizedBox(height: kDefaultPadding * 2 / 3),
                               Row(children: [
                                 Icon(
                                   Icons.chat_bubble,
-                                  color: Color(0xFF22d095),
+                                  color: Color(0xFF1fbf89),
                                   size: 28,
                                 ),
                                 SizedBox(width: kDefaultPadding / 3),
@@ -213,14 +213,14 @@ class _ParticipationReportTotalState extends State<ParticipationReportTotal> {
                                   curve: Curves.easeOut,
                                   textStyle: TextStyle(
                                       fontSize: 16,
-                                      color: Color(0xFF22d095),
+                                      color: Color(0xFF1fbf89),
                                       fontWeight: FontWeight.bold),
                                   format: NumberFormatMode.comma,
                                 ),
                                 Text(' 개',
                                     style: TextStyle(
                                         fontSize: 16,
-                                        color: Color(0xFF22d095),
+                                        color: Color(0xFF1fbf89),
                                         fontWeight: FontWeight.bold))
                               ])
                             ],
