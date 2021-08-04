@@ -36,8 +36,8 @@ class JoinPostView(APIView):
         serializer = JoinPostSerializer(join_post, join_post_crawl, partial=True)
         if serializer.is_valid():
             serializer.save()
-            return Response(serializer.data, status=status.HTTP_206_PARTIAL_CONTENT)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+            return Response("성공", status=status.HTTP_206_PARTIAL_CONTENT)
+        return Response("에러", status=status.HTTP_400_BAD_REQUEST)
 
     # 테스트 용 post 실제는 없음.
     def post(self, request, pk, formate=None):
