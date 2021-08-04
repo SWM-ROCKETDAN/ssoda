@@ -89,12 +89,6 @@ class JoinPostSerializer(serializers.ModelSerializer):
         model = JoinPost
         fields = '__all__'
 
-    def validate_url(self, attrs):
-        url = JoinPost.objects.filter(url=attrs)
-        if url.exists():
-            raise serializers.ValidationError('This url already exists')
-        return attrs
-
 
 class JoinUserSerializer(serializers.ModelSerializer):
     class Meta:
