@@ -27,7 +27,7 @@ public class JoinPostService {
     private final EventRepository eventRepository;
 
     private WebClient webClient = WebClient.builder()
-            .baseUrl("http://analysisserverurl:8080/api/v1/join/post")
+            .baseUrl("http://54.180.141.90:8080/api/v1/join/post")
             .build();
 
     public Long save(Long event_id, String url) {

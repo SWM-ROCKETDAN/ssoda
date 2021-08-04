@@ -23,7 +23,7 @@ public class JoinUserService {
     private final JoinPostRepository joinPostRepository;
 
     private WebClient webClient = WebClient.builder()
-            .baseUrl("http://analysisserverurl:8080/api/v1/join/user")
+            .baseUrl("http://54.180.141.90:8080/api/v1/join/user")
             .build();
 
     @Transactional

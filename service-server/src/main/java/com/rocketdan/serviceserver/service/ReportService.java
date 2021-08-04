@@ -11,7 +11,7 @@ import reactor.core.publisher.Mono;
 @Service
 public class ReportService {
     private WebClient webClient = WebClient.builder()
-            .baseUrl("http://analysisserverurl:8080/api/v1/report")
+            .baseUrl("http://54.180.141.90:8080/api/v1/report")
             .build();
 
     // analysis-server에 event report get 요청

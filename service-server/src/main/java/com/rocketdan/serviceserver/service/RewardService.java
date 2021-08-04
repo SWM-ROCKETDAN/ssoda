@@ -10,7 +10,7 @@ import reactor.core.publisher.Mono;
 @Service
 public class RewardService {
     private WebClient webClient = WebClient.builder()
-            .baseUrl("http://analysisserverurl:8080/api/v1/join/reward")
+            .baseUrl("http://54.180.141.90:8080/api/v1/join/reward")
             .build();
 
     // analysis-server에 put 요청
