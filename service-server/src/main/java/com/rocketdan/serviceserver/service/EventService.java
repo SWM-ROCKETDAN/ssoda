@@ -11,6 +11,7 @@ import com.rocketdan.serviceserver.domain.event.reward.RewardRepository;
 import com.rocketdan.serviceserver.domain.event.type.Hashtag;
 import com.rocketdan.serviceserver.domain.store.Store;
 import com.rocketdan.serviceserver.domain.store.StoreRepository;
+import com.rocketdan.serviceserver.s3.dto.UploadFileDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -28,9 +29,9 @@ public class EventService {
     private final StoreRepository storeRepository;
 
     @Transactional
-    public Long saveHashtagEvent(Long store_id, HashtagEventSaveRequest requestDto) {
+    public Long saveHashtagEvent(Long store_id, HashtagEventSaveRequest requestDto, List<String> imgPaths) {
         Store linkedStore = storeRepository.findById(store_id).orElseThrow(() -> new IllegalArgumentException("해당 가게가 없습니다. id=" + store_id));
-        Event savedEvent = requestDto.toEntity();
+        Event savedEvent = requestDto.toEntity(imgPaths);
         savedEvent.setStore(linkedStore);
         savedEvent.updateStatus();
 

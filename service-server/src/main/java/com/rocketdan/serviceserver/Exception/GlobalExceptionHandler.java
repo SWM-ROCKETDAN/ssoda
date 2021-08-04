@@ -1,5 +1,7 @@
 package com.rocketdan.serviceserver.Exception;
 
+import com.rocketdan.serviceserver.Exception.file.FileConvertException;
+import com.rocketdan.serviceserver.Exception.file.FileUploadException;
 import com.rocketdan.serviceserver.core.CommonResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -51,5 +53,35 @@ public class GlobalExceptionHandler {
                 .build();
 
         return new ResponseEntity<>(response, HttpStatus.UNAUTHORIZED);
+    }
+
+    // file 처리
+
+    @ExceptionHandler(FileUploadException.class)
+    protected ResponseEntity<CommonResponse> handleFileUploadException(FileUploadException e) {
+
+        log.info("handleFileUploadException", e);
+
+        CommonResponse response = CommonResponse.builder()
+                .code(ErrorCode.FILE_UPLOAD_FAILED.getCode())
+                .message(ErrorCode.FILE_UPLOAD_FAILED.getMessage())
+                .status(ErrorCode.FILE_UPLOAD_FAILED.getStatus())
+                .build();
+
+        return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    @ExceptionHandler(FileConvertException.class)
+    protected ResponseEntity<CommonResponse> handleFileConvertException(FileConvertException e) {
+
+        log.info("handleFileConvertException", e);
+
+        CommonResponse response = CommonResponse.builder()
+                .code(ErrorCode.FILE_CONVERT_FAILED.getCode())
+                .message(ErrorCode.FILE_CONVERT_FAILED.getMessage())
+                .status(ErrorCode.FILE_CONVERT_FAILED.getStatus())
+                .build();
+
+        return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 }
