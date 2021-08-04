@@ -27,79 +27,115 @@ class _ShowQrcodeScreenState extends State<ShowQrcodeScreen> {
 
   @override
   Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
+
     return Scaffold(
-        body: Padding(
-      padding: const EdgeInsets.all(20.0),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Expanded(
-              child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              SizedBox(height: kDefaultPadding),
-              SizedBox(
+        body: Column(children: [
+      Container(
+        width: size.width,
+        height: size.height * 0.4 + size.width * 0.19,
+        child: Stack(children: [
+          Container(
+            width: size.width,
+            height: size.height * 0.4,
+            child: ClipRRect(
+                child: Image.asset(
+                  'assets/images/create_event_complete.png',
+                  fit: BoxFit.cover,
+                  //color: kThemeColor.withOpacity(0.3),
+                ),
+                borderRadius:
+                    BorderRadius.vertical(bottom: Radius.circular(150))),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.vertical(bottom: Radius.circular(150)),
+              color: kThemeColor.withOpacity(0.22),
+            ),
+          ),
+          Positioned(
+            child: Card(
+              elevation: 5,
+              child: SizedBox(
                   child: QrImage(
                     data: qrcodeUrl,
                     version: QrVersions.auto,
-                    size: 220,
                   ),
-                  height: 150,
-                  width: 150),
-              SizedBox(height: kDefaultPadding / 3),
+                  height: size.width * 0.38,
+                  width: size.width * 0.38),
+            ),
+            bottom: 0,
+            left: size.width * 0.3,
+            right: size.width * 0.3,
+          )
+        ]),
+      ),
+      SizedBox(height: kDefaultPadding),
+      TextButton(
+        child: Text(
+          'QR코드 이미지 저장',
+          style: TextStyle(
+            color: kThemeColor,
+            fontSize: 12,
+          ),
+        ),
+        onPressed: saveQrImgToGallery,
+        style: ButtonStyle(
+            padding: MaterialStateProperty.all<EdgeInsetsGeometry>(
+                EdgeInsets.fromLTRB(12, 10, 12, 10)),
+            backgroundColor:
+                MaterialStateProperty.all<Color>(kThemeColor.withOpacity(0.2)),
+            shape: MaterialStateProperty.all<OutlinedBorder>(
+                RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12)))),
+      ),
+      SizedBox(height: kDefaultPadding),
+      Expanded(
+        child: Container(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
               Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-                Icon(Icons.check_circle_outlined),
+                Icon(Icons.check, color: Colors.greenAccent.shade700),
                 SizedBox(width: kDefaultPadding / 3),
                 Text(
                   '이벤트가 등록되었습니다 ',
                   style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                 ),
               ]),
-              SizedBox(height: kDefaultPadding * 1.75),
-              TextButton(
-                child: Text(
-                  'QR코드 저장하기',
-                  style: TextStyle(
-                    color: kThemeColor,
-                    fontSize: 12,
-                  ),
-                ),
-                onPressed: saveQrImgToGallery,
-                style: ButtonStyle(
-                    padding: MaterialStateProperty.all<EdgeInsetsGeometry>(
-                        EdgeInsets.fromLTRB(12, 10, 12, 10)),
-                    backgroundColor: MaterialStateProperty.all<Color>(
-                        kThemeColor.withOpacity(0.2)),
-                    shape: MaterialStateProperty.all<OutlinedBorder>(
-                        RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(12)))),
+              SizedBox(height: kDefaultPadding),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(Icons.help_outline, size: 16, color: Colors.black45),
+                  Text(
+                    ' QR 코드는 어떻게 사용하나요?',
+                    style: TextStyle(color: Colors.black45, fontSize: 12),
+                  )
+                ],
               )
             ],
-          )),
-          SizedBox(
-            width: MediaQuery.of(context).size.width,
-            height: 50,
-            child: TextButton(
-              child: Text(
-                '확인',
-                style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold),
-              ),
-              onPressed: () {},
-              style: ButtonStyle(
-                  backgroundColor:
-                      MaterialStateProperty.all<Color>(kThemeColor),
-                  shape: MaterialStateProperty.all<OutlinedBorder>(
-                      RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(27.0)))),
-            ),
-          )
-        ],
+          ),
+        ),
       ),
-    ));
+      Container(
+        margin: const EdgeInsets.all(20),
+        width: MediaQuery.of(context).size.width,
+        height: 50,
+        child: TextButton(
+          child: Text(
+            '확인',
+            style: TextStyle(
+                color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold),
+          ),
+          onPressed: () {},
+          style: ButtonStyle(
+              backgroundColor: MaterialStateProperty.all<Color>(kThemeColor),
+              shape: MaterialStateProperty.all<OutlinedBorder>(
+                  RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(27.0)))),
+        ),
+      )
+    ]));
   }
 
   Future<void> writeToFile(ByteData data, String path) async {
