@@ -10,7 +10,8 @@ class EventPeriod extends StatefulWidget {
   _EventPeriodState createState() => _EventPeriodState();
 }
 
-class _EventPeriodState extends State<EventPeriod> {
+class _EventPeriodState extends State<EventPeriod>
+    with SingleTickerProviderStateMixin {
   final _dateRangeList = ['30일 간', '다음 달까지', '올해까지', '영구 진행', '직접 입력'];
   String? _dropdownValue;
 
@@ -45,51 +46,50 @@ class _EventPeriodState extends State<EventPeriod> {
               ),
             ),
           ),
-          Text('부터',
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
-          Visibility(
-            child: Column(
-              children: [
-                Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 25),
-                  child: DatePickerWidget(
-                    looping: true,
-                    firstDate: widget.period.startDate,
-                    lastDate: DateTime(DateTime.now().year + 3,
-                        DateTime.now().month, DateTime.now().day),
-                    //initialDate: DateTime.now()
-                    dateFormat: "yyyy-MMMM-dd",
-                    locale: DateTimePickerLocale.ko,
-                    onChange: (DateTime newDate, _) {
-                      widget.period.finishDate = newDate;
-                    },
-                    pickerTheme: DateTimePickerTheme(
-                      itemTextStyle:
-                          TextStyle(color: Colors.black, fontSize: 19),
-                      dividerColor: Theme.of(context).primaryColor,
+          Text('부터', style: TextStyle(fontSize: 18)),
+          AnimatedSize(
+            duration: const Duration(milliseconds: 500),
+            curve: Curves.fastOutSlowIn,
+            vsync: this,
+            child: Container(
+              height: _dropdownValue == _dateRangeList.last ? 190 : 0,
+              child: Column(
+                children: [
+                  Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 25),
+                    child: DatePickerWidget(
+                      looping: true,
+                      firstDate: widget.period.startDate,
+                      lastDate: DateTime(DateTime.now().year + 3,
+                          DateTime.now().month, DateTime.now().day),
+                      //initialDate: DateTime.now()
+                      dateFormat: "yyyy-MMMM-dd",
+                      locale: DateTimePickerLocale.ko,
+                      onChange: (DateTime newDate, _) {
+                        widget.period.finishDate = newDate;
+                      },
+                      pickerTheme: DateTimePickerTheme(
+                        itemTextStyle:
+                            TextStyle(color: Colors.black, fontSize: 19),
+                        dividerColor: Theme.of(context).primaryColor,
+                      ),
                     ),
                   ),
-                ),
-                Text('까지',
-                    style:
-                        TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
-              ],
+                  Text('까지', style: TextStyle(fontSize: 18)),
+                ],
+              ),
             ),
-            visible: _dropdownValue == _dateRangeList.last,
           ),
           SizedBox(height: kDefaultPadding),
           DropdownButton(
               value: _dropdownValue,
               icon: const Icon(
                 Icons.date_range_outlined,
-                color: Colors.indigoAccent,
+                color: kThemeColor,
               ),
               iconSize: 24,
               elevation: 16,
-              style: TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.black87),
+              style: TextStyle(fontSize: 18, color: Colors.black87),
               underline: Container(
                 height: 2,
                 color: Theme.of(context).primaryColor,
