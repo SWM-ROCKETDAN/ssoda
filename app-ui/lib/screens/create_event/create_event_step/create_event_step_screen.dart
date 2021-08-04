@@ -122,7 +122,10 @@ class _CreateEventStepScreenState extends State<CreateEventStepScreen> {
         Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             crossAxisAlignment: CrossAxisAlignment.start,
-            children: [StepText(step: _step), StepHelp(step: _step)]),
+            children: [
+              StepText(step: _step),
+              if (_step != 3 && _step != 5 && _step != 6) StepHelp(step: _step)
+            ]),
         SizedBox(height: kDefaultPadding),
         buildStepDetail(),
       ],
@@ -165,8 +168,7 @@ class _CreateEventStepScreenState extends State<CreateEventStepScreen> {
           _onNextStepButtonPressed(context);
         },
         style: ButtonStyle(
-            backgroundColor: MaterialStateProperty.all<Color>(
-                Theme.of(context).primaryColor),
+            backgroundColor: MaterialStateProperty.all<Color>(kThemeColor),
             shape: MaterialStateProperty.all<OutlinedBorder>(
                 RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(27.0)))),
@@ -214,7 +216,7 @@ class _CreateEventStepScreenState extends State<CreateEventStepScreen> {
         }
         break;
       case 4:
-        if (imageList.isEmpty) {
+        if (imageList.length == 1 && imageList.last == null) {
           _showValidationErrorSnackBar(context, '이벤트 이미지를 최소 1개 이상 등록해주세요!');
           return false;
         }
