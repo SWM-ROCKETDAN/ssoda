@@ -61,46 +61,23 @@ class JoinReward:
         for key, val in reward_point_dict.items():
             cnt += 1
             if key == self.pk:
-                print(val)
-                reward_point_rate = (reward_point_list.index(val) + 1) / len(reward_point_dict)
-
-        print(reward_point_rate)
-        print(reward_point_list)
+                reward_point_rate = 1 - (reward_point_list.index(val) + 1) / len(reward_point_dict)
+        print(reward_point_dict)
         return reward_point_rate
-        
-    def get_this_reward_point_rate(self) -> float:
-        this_reward_point = self.get_this_reward_point()
-        prev_reward_point_list = self.get_prev_reward_point_list()
-        prev_reward_point_list.sort()
-
-        index = 0
-        for idx, val in enumerate(prev_reward_point_list):
-            if this_reward_point <= val:
-                index = idx
-                break
-
-        return 1 - index / len(prev_reward_point_list)
-
-    def get_this_reward_level_rate_list(self) -> list:
-        count_sum = 0
-        reward_level_rate_list = []
-        for reward in self.event:
-            count_sum += reward['count']
-            reward_level_rate_list.append(reward['count'])
-
-        for idx, val in enumerate(reward_level_rate_list):
-            if idx == 0:
-                reward_level_rate_list[idx] = 1 - val / count_sum
-            else:
-                reward_level_rate_list[idx] = reward_level_rate_list[idx - 1] - (val / count_sum)
-
-        return reward_level_rate_list
 
     def get_reward_level(self) -> int:
-        this_reward_point_rate = self.get_this_reward_point_rate()
-        this_reward_level_rate_list = self.get_this_reward_level_rate_list()
+        reward_rate_list = self.get_reward_rate_list()
+        reward_point_rate = self.get_reward_point_rate()
 
-        for i in range(10):
-            pass
+        reward_level = 1
+        for key, val in enumerate(reward_rate_list):
+            if val > reward_point_rate:
+                reward_level = key + 1
 
-        return 0
+        print(reward_rate_list)
+        print(reward_point_rate)
+        print(reward_level)
+        return reward_level
+
+
+
