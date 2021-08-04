@@ -6,6 +6,7 @@ import 'package:hashchecker/api.dart';
 import 'package:hashchecker/constants.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:gallery_saver/gallery_saver.dart';
 
 class ShowQrcodeScreen extends StatefulWidget {
   final String eventId;
@@ -138,13 +139,14 @@ class _ShowQrcodeScreenState extends State<ShowQrcodeScreen> {
   Future<void> saveQrImgToGallery() async {
     String path = await createQrImg(qrcodeUrl);
 
-    /* gallery saver library not work */
-    //final success = await GallerySaver.saveImage(path);
+    final success = await GallerySaver.saveImage(path);
 
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-        content: Text(path),
+        content:
+            Text(success! ? 'QR 코드 이미지를 갤러리에 저장하였습니다.' : 'QR 코드 저장에 실패하였습니다.'),
         behavior: SnackBarBehavior.floating,
+        duration: const Duration(milliseconds: 2000),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(12.0),
         ),
