@@ -124,8 +124,7 @@ class _InputRewardInfoScreenState extends State<InputRewardInfoScreen> {
           }
         },
         style: ButtonStyle(
-            backgroundColor:
-                MaterialStateProperty.all<Color>(Colors.indigoAccent.shade700),
+            backgroundColor: MaterialStateProperty.all<Color>(kThemeColor),
             shape: MaterialStateProperty.all<OutlinedBorder>(
                 RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(27.0)))),
@@ -170,7 +169,7 @@ class _InputRewardInfoScreenState extends State<InputRewardInfoScreen> {
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
                 color: categoryTileList[index].category == _choosedCategory
-                    ? Theme.of(context).primaryColor
+                    ? kThemeColor
                     : Colors.transparent,
               ),
             ),

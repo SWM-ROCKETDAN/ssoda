@@ -90,8 +90,8 @@ class _ShowQrcodeScreenState extends State<ShowQrcodeScreen> {
               ),
               onPressed: () {},
               style: ButtonStyle(
-                  backgroundColor: MaterialStateProperty.all<Color>(
-                      Colors.indigoAccent.shade700),
+                  backgroundColor:
+                      MaterialStateProperty.all<Color>(kThemeColor),
                   shape: MaterialStateProperty.all<OutlinedBorder>(
                       RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(27.0)))),

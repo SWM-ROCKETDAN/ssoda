@@ -175,7 +175,14 @@ class _CreateEventStepScreenState extends State<CreateEventStepScreen> {
   }
 
   void _showValidationErrorSnackBar(BuildContext context, String message) {
-    final snackBar = SnackBar(content: Text(message));
+    final snackBar = SnackBar(
+      content: Text(message),
+      behavior: SnackBarBehavior.floating,
+      duration: const Duration(milliseconds: 2500),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(12.0),
+      ),
+    );
     ScaffoldMessenger.of(context).showSnackBar(snackBar);
   }
 
