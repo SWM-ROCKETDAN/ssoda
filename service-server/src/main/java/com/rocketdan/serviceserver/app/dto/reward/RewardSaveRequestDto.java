@@ -6,6 +6,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.List;
+
 @Setter
 @Getter
 @NoArgsConstructor
@@ -16,6 +18,8 @@ public class RewardSaveRequestDto {
     private MultipartFile image;
     private Integer price;
     private Integer count;
+
+    private List<RewardResponseDto> rewardResponseDtoList;
 
     public Reward toEntity(String image) {
         return Reward.builder()
