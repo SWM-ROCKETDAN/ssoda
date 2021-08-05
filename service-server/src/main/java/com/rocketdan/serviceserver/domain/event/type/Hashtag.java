@@ -34,9 +34,9 @@ public class Hashtag extends Event {
     private Integer template;
 
     @Builder
-    public Hashtag(String title, Integer status, Date startDate, Date finishDate, List<String> images, Store store,
+    public Hashtag(String title, Integer status, Date startDate, Date finishDate, List<String> images, List<Reward> rewards, Store store,
                    List<String> hashtags, List<Boolean> requirements, Integer template) {
-        super(title, status, startDate, finishDate, images, store);
+        super(title, status, startDate, finishDate, images, rewards, store);
         this.hashtags = hashtags;
         this.requirements = requirements;
         this.template = template;

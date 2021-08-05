@@ -51,12 +51,13 @@ public abstract class Event {
     @JsonBackReference
     private Store store;
 
-    public Event(String title, Integer status, Date startDate, Date finishDate, List<String> images, Store store) {
+    public Event(String title, Integer status, Date startDate, Date finishDate, List<String> images, List<Reward> rewards, Store store) {
         this.title = title;
         this.status = status;
         this.startDate = startDate;
         this.finishDate = finishDate;
         this.images = images;
+        this.rewards = rewards;
         this.store = store;
     }
 

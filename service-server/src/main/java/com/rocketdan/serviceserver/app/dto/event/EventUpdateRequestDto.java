@@ -18,14 +18,12 @@ public class EventUpdateRequestDto {
     @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
     private Date finishDate;
     private List<String> images;
-    private List<Reward> rewards;
 
-    public EventUpdateRequestDto(String title, Integer status, Date startDate, Date finishDate, List<String> images, List<Reward> rewards) {
+    public EventUpdateRequestDto(String title, Integer status, Date startDate, Date finishDate, List<String> images) {
         this.title = title;
         this.status = status;
         this.startDate = startDate;
         this.finishDate = finishDate;
         this.images = images;
-        this.rewards = rewards;
     }
 }
