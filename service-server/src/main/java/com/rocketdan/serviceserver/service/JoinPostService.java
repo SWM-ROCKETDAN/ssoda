@@ -1,5 +1,6 @@
 package com.rocketdan.serviceserver.service;
 
+import com.rocketdan.serviceserver.Exception.AnalysisServerErrorException;
 import com.rocketdan.serviceserver.Exception.DuplicateUrlException;
 import com.rocketdan.serviceserver.Exception.JoinEventFailedException;
 import com.rocketdan.serviceserver.core.CommonResponse;
@@ -30,6 +31,7 @@ public class JoinPostService {
             .baseUrl("http://54.180.141.90:8080/api/v1/join/post")
             .build();
 
+    @Transactional
     public Long save(Long event_id, String url) {
         // 중복된 url일 경우 exception 발생
         if (duplicateCheck(url)) {
@@ -51,25 +53,14 @@ public class JoinPostService {
         return joinPost.isPresent(); // 중복 : true, 중복 x : false
     }
 
-    // analysis-server에 put 요청
-    public void putJoinPost(Long joinPostId) {
-        webClient.put() // PUT method
-                .uri("/" + joinPostId) // baseUrl 이후 uri
-//                .bodyValue(bodyEmpInfo) // set body value
-                .retrieve() // client message 전송
-                .onStatus(HttpStatus::is4xxClientError, clientResponse -> Mono.error(JoinEventFailedException::new));
-//                .bodyToMono(CommonResponse.class) // body type
-//                .block(); // await
-    }
-    /*
     public CommonResponse putJoinPost(Long joinPostId) {
         return webClient.put() // PUT method
-                .uri("/api/v1/join/post/" + joinPostId) // baseUrl 이후 uri
-//                .bodyValue(bodyEmpInfo) // set body value
+                .uri("/" + joinPostId + "/") // baseUrl 이후 uri
                 .retrieve() // client message 전송
                 .onStatus(HttpStatus::is4xxClientError, clientResponse -> Mono.error(JoinEventFailedException::new))
+                .onStatus(HttpStatus::is5xxServerError, clientResponse -> Mono.error(AnalysisServerErrorException::new))
                 .bodyToMono(CommonResponse.class) // body type
                 .block(); // await
     }
-*/
+
 }

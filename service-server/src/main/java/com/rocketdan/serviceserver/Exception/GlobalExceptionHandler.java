@@ -85,4 +85,18 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(response, HttpStatus.FORBIDDEN);
     }
 
+    @ExceptionHandler(AnalysisServerErrorException.class)
+    protected ResponseEntity<CommonResponse> handleAnalysisServerErrorException(AnalysisServerErrorException e) {
+
+        log.info("handleAnalysisServerErrorException", e);
+
+        CommonResponse response = CommonResponse.builder()
+                .code(ErrorCode.ANALYSIS_SERVER_ERROR.getCode())
+                .message(ErrorCode.ANALYSIS_SERVER_ERROR.getMessage())
+                .status(ErrorCode.ANALYSIS_SERVER_ERROR.getStatus())
+                .build();
+
+        return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
 }

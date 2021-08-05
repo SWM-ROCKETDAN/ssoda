@@ -1,5 +1,6 @@
 package com.rocketdan.serviceserver.service;
 
+import com.rocketdan.serviceserver.Exception.AnalysisServerErrorException;
 import com.rocketdan.serviceserver.Exception.JoinEventFailedException;
 import com.rocketdan.serviceserver.web.dto.RewardLevelResponseDto;
 import org.springframework.http.HttpStatus;
@@ -16,9 +17,10 @@ public class RewardService {
     // analysis-server에 put 요청
     public RewardLevelResponseDto getRewardLevel(Long joinPostId) {
         return webClient.get() // PUT method
-                .uri("/" + joinPostId) // baseUrl 이후 uri
+                .uri("/" + joinPostId + "/") // baseUrl 이후 uri
                 .retrieve() // client message 전송
                 .onStatus(HttpStatus::is4xxClientError, clientResponse -> Mono.error(JoinEventFailedException::new))
+                .onStatus(HttpStatus::is5xxServerError, clientResponse -> Mono.error(AnalysisServerErrorException::new))
                 .bodyToMono(RewardLevelResponseDto.class) // body type
                 .block(); // await
     }
