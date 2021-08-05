@@ -23,7 +23,7 @@ public class RewardApiController {
     }
 
     @PostMapping("/events/{event_id}")
-    public List<Long> save(@PathVariable Long event_id, @RequestBody List<RewardSaveRequestDto> rewards) {
+    public List<Long> save(@PathVariable Long event_id, @ModelAttribute List<RewardSaveRequestDto> rewards) {
         List<Long> reward_ids = new ArrayList<>();
 
         // 리워드 1개씩 저장
