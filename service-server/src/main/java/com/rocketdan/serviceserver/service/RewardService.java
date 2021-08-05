@@ -1,17 +1,14 @@
 package com.rocketdan.serviceserver.service;
 
-import com.rocketdan.serviceserver.app.dto.event.hashtag.HashtagEventSaveRequest;
+import com.rocketdan.serviceserver.app.dto.reward.RewardResponseDto;
 import com.rocketdan.serviceserver.app.dto.reward.RewardSaveRequestDto;
 import com.rocketdan.serviceserver.domain.event.Event;
 import com.rocketdan.serviceserver.domain.event.EventRepository;
 import com.rocketdan.serviceserver.domain.event.reward.Reward;
 import com.rocketdan.serviceserver.domain.event.reward.RewardRepository;
-import com.rocketdan.serviceserver.domain.store.Store;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
 
 @RequiredArgsConstructor
 @Service
@@ -27,4 +24,11 @@ public class RewardService {
 
         return rewardRepository.save(savedReward).getId();
     }
+
+    @Transactional(readOnly = true)
+    public RewardResponseDto findById(Long id) {
+        Reward entity = rewardRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("해당 리워드가 없습니다. id=" + id));
+        return new RewardResponseDto(entity);
+    }
+
 }

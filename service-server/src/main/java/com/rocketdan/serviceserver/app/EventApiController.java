@@ -4,6 +4,7 @@ import com.rocketdan.serviceserver.app.dto.event.EventListResponseDto;
 import com.rocketdan.serviceserver.app.dto.event.EventResponseDto;
 import com.rocketdan.serviceserver.app.dto.event.hashtag.HashtagEventSaveRequest;
 import com.rocketdan.serviceserver.app.dto.event.hashtag.HashtagEventUpdateRequest;
+import com.rocketdan.serviceserver.app.dto.reward.RewardResponseDto;
 import com.rocketdan.serviceserver.domain.event.reward.Reward;
 import com.rocketdan.serviceserver.s3.service.ImageManagerService;
 import com.rocketdan.serviceserver.service.EventService;
@@ -28,6 +29,11 @@ public class EventApiController {
     @GetMapping
     public List<EventListResponseDto> retrieveAllEvents() {
         return eventService.findAll();
+    }
+
+    @GetMapping("/{id}/rewards")
+    public List<RewardResponseDto> retrieveEventListById(@PathVariable Long id) {
+        return eventService.getRewardListById(id);
     }
 
     @GetMapping("/{id}")
