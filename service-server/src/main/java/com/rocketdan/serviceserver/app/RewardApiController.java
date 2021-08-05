@@ -27,7 +27,7 @@ public class RewardApiController {
         List<Long> reward_ids = new ArrayList<>();
 
         // 리워드 1개씩 저장
-        for (RewardSaveRequestDto reward : rewards.getRewardSaveRequestDtoList() ){
+        for (RewardSaveRequestDto reward : rewards.getRewards() ){
             String imgPath = imageManagerService.upload("image/reward", reward.getImage());
             reward_ids.add(rewardService.save(event_id, reward, imgPath));
         }
