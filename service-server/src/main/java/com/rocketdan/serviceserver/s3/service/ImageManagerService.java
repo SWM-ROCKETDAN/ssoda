@@ -36,7 +36,7 @@ public class ImageManagerService {
         File uploadFile = null;
         try {
             Optional<File> uploadFileOpt = fileManager.convertMultipartFileToFile(mf);
-            if(uploadFileOpt.isEmpty()) {
+            if (uploadFileOpt.isEmpty()) {
                 throw new FileConvertException();
             }
             uploadFile = uploadFileOpt.get();
@@ -51,7 +51,7 @@ public class ImageManagerService {
             throw new FileUploadException();
         } finally {
             // 파일 삭제
-            if(uploadFile != null){
+            if (uploadFile != null) {
                 uploadFile.delete();
             }
         }
@@ -61,12 +61,10 @@ public class ImageManagerService {
     /**
      * 이미지 업로드
      */
-    public List<String> upload(String folderName, MultipartHttpServletRequest request) {
-        List<MultipartFile> images = request.getFiles(formDataFileKey);
-
+    // 이미지 list 업로드
+    public List<String> upload(String folderName, List<MultipartFile> images) {
         String foldDiv = LocalDate.now().format(DateTimeFormatter.ofPattern("yyyyMM"));
         String filePath = folderName + File.separator + foldDiv;
-
 
         List<String> fileNames = new ArrayList<>();
 
@@ -78,17 +76,11 @@ public class ImageManagerService {
         return fileNames;
     }
 
-    public List<String> uploadTest(String folderName, List<MultipartFile> images) {
+    // 이미지 1개 업로드
+    public String upload(String folderName, MultipartFile image) {
         String foldDiv = LocalDate.now().format(DateTimeFormatter.ofPattern("yyyyMM"));
         String filePath = folderName + File.separator + foldDiv;
 
-        List<String> fileNames = new ArrayList<>();
-
-        for (MultipartFile mf : images) {
-            // 파일 업로드 호출
-            fileNames.add(createAndUploadFile(mf, filePath));
-        }
-
-        return fileNames;
+        return createAndUploadFile(image, filePath);
     }
 }

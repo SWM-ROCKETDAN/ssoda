@@ -4,12 +4,14 @@ import com.rocketdan.serviceserver.app.dto.event.EventListResponseDto;
 import com.rocketdan.serviceserver.app.dto.event.EventResponseDto;
 import com.rocketdan.serviceserver.app.dto.event.hashtag.HashtagEventSaveRequest;
 import com.rocketdan.serviceserver.app.dto.event.hashtag.HashtagEventUpdateRequest;
+import com.rocketdan.serviceserver.domain.event.reward.Reward;
 import com.rocketdan.serviceserver.s3.service.ImageManagerService;
 import com.rocketdan.serviceserver.service.EventService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartHttpServletRequest;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -31,9 +33,9 @@ public class EventApiController {
     }
 
     @PostMapping("/hashtag/stores/{store_id}")
-    public Long saveHashtagEvent(@PathVariable Long store_id, @RequestPart("request") HashtagEventSaveRequest event, @RequestPart("files") MultipartHttpServletRequest files) {
-        List<String> imgPaths = imageManagerService.upload("image/event", files);
-        return eventService.saveHashtagEvent(store_id, event, imgPaths);
+    public Long saveHashtagEvent(@PathVariable Long store_id, @ModelAttribute HashtagEventSaveRequest event) {
+        List<String> eventImgPaths = imageManagerService.upload("image/event", event.getImages());
+        return eventService.saveHashtagEvent(store_id, event, eventImgPaths);
     }
 
     @PutMapping("/hashtag/{id}")

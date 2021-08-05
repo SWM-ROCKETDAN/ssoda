@@ -7,25 +7,20 @@ import com.rocketdan.serviceserver.app.dto.event.hashtag.HashtagEventSaveRequest
 import com.rocketdan.serviceserver.app.dto.event.hashtag.HashtagEventUpdateRequest;
 import com.rocketdan.serviceserver.domain.event.Event;
 import com.rocketdan.serviceserver.domain.event.EventRepository;
-import com.rocketdan.serviceserver.domain.event.reward.RewardRepository;
 import com.rocketdan.serviceserver.domain.event.type.Hashtag;
 import com.rocketdan.serviceserver.domain.store.Store;
 import com.rocketdan.serviceserver.domain.store.StoreRepository;
-import com.rocketdan.serviceserver.s3.dto.UploadFileDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service
 public class EventService {
     private final EventRepository eventRepository;
-    private final RewardRepository rewardRepository;
-
     private final StoreRepository storeRepository;
 
     @Transactional
@@ -42,12 +37,7 @@ public class EventService {
     public Long updateHashtagEvent(Long id, HashtagEventUpdateRequest requestDto) {
         Hashtag event = (Hashtag) eventRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("해당 이벤트가 없습니다. id=" + id));
 
-        Optional.ofNullable(requestDto.getRewards()).ifPresent(none -> {
-                event.getRewards().forEach(rewardRepository::delete); // 기존에 저장되었던 reward 삭제
-        });
-
-        event.update(requestDto.getTitle(), requestDto.getStatus(), requestDto.getStartDate(), requestDto.getFinishDate(),
-                requestDto.getImages(), requestDto.getRewards(),
+        event.update(requestDto.getTitle(), requestDto.getStatus(), requestDto.getStartDate(), requestDto.getFinishDate(), requestDto.getImages(),
                 requestDto.getHashtags(), requestDto.getRequirements(), requestDto.getTemplate());
 
         return id;
