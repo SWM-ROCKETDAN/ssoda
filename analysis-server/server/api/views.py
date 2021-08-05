@@ -1,5 +1,5 @@
 from rest_framework.views import APIView
-from rest_framework.response import Response
+from django.http import JsonResponse
 from rest_framework import status
 from .models import JoinPost, JoinUser
 from .serializers import JoinPostSerializer, JoinUserSerializer, JoinCollectionSerializer
@@ -7,7 +7,6 @@ from .modules.instagram.join.crawl.crawl_post import crawl_post
 from .modules.instagram.join.crawl.crawl_user import crawl_user
 from .modules.instagram.join.reward.reward import JoinReward
 from .modules.instagram.report.report import EventReport
-import json
 
 
 class JoinPostView(APIView):
@@ -24,8 +23,8 @@ class JoinPostView(APIView):
         join_post_serializer = JoinPostSerializer(join_post, crawl_post(JoinPostSerializer(join_post).data.get('url')), partial=True)
         if join_post_serializer.is_valid():
             join_post_serializer.save()
-            return Response(json.dumps(join_post_serializer.data), status=status.HTTP_200_OK)
-        return Response("에러", status=status.HTTP_400_BAD_REQUEST)
+            return JsonResponse(join_post_serializer.data, status=status.HTTP_200_OK)
+        return JsonResponse("에러", status=status.HTTP_400_BAD_REQUEST)
 
 
 class JoinUserView(APIView):
@@ -43,8 +42,8 @@ class JoinUserView(APIView):
         join_user_serializer = JoinUserSerializer(join_user, join_user_crawl, partial=True)
         if join_user_serializer.is_valid():
             join_user_serializer.save()
-            return Response(json.dumps(join_user_serializer.data), status=status.HTTP_200_OK)
-        return Response("error", status=status.HTTP_400_BAD_REQUEST)
+            return JsonResponse(join_user_serializer.data, status=status.HTTP_200_OK)
+        return JsonResponse(status=status.HTTP_400_BAD_REQUEST)
 
 
 class JoinRewardView(APIView):
@@ -61,7 +60,7 @@ class JoinRewardView(APIView):
         join_collection_serializer.is_valid()
         join_reward = JoinReward(join_collection_serializer.data, pk)
         reward_level = join_reward.get_reward_level()
-        return Response(json.dumps({'reward_level': reward_level}), status=status.HTTP_200_OK)
+        return JsonResponse({'reward_level': reward_level}, status=status.HTTP_200_OK)
 
 
 class ReportEventView(APIView):
@@ -78,4 +77,4 @@ class ReportEventView(APIView):
         join_collection_serializer.is_valid()
         event_report = EventReport(join_collection_serializer.data, pk)
         event_report.test()
-        return Response(status=status.HTTP_200_OK)
+        return JsonResponse(status=status.HTTP_200_OK)
