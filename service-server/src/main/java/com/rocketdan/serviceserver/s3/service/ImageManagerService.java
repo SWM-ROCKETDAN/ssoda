@@ -77,4 +77,18 @@ public class ImageManagerService {
 
         return fileNames;
     }
+
+    public List<String> uploadTest(String folderName, List<MultipartFile> images) {
+        String foldDiv = LocalDate.now().format(DateTimeFormatter.ofPattern("yyyyMM"));
+        String filePath = folderName + File.separator + foldDiv;
+
+        List<String> fileNames = new ArrayList<>();
+
+        for (MultipartFile mf : images) {
+            // 파일 업로드 호출
+            fileNames.add(createAndUploadFile(mf, filePath));
+        }
+
+        return fileNames;
+    }
 }
