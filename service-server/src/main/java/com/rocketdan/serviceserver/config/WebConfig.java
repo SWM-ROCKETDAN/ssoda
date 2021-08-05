@@ -3,6 +3,7 @@ package com.rocketdan.serviceserver.config;
 import com.rocketdan.serviceserver.provider.security.AuthInterceptor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
@@ -20,4 +21,12 @@ public class WebConfig implements WebMvcConfigurer {
                 // /api/v1/login/** 으로의 유입은 인터셉터를 거치지 않는다. (로그인 시도는 인증에 상관없이 가능하다,)
                 .excludePathPatterns("api/v1/login/**", "/api/v1/events/{id}");
     }
+
+    @Override
+    public void addCorsMappings(CorsRegistry registry) {
+        registry.addMapping("/**")
+                .allowedOrigins("http://ec2-13-124-246-123.ap-northeast-2.compute.amazonaws.com")
+                .allowedMethods("GET");
+    }
+
 }
