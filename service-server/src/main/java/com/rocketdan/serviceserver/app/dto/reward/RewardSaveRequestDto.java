@@ -19,7 +19,7 @@ public class RewardSaveRequestDto {
     private Integer price;
     private Integer count;
 
-    private List<RewardResponseDto> rewardResponseDtoList;
+    private List<RewardSaveRequestDto> rewardSaveRequestDtoList;
 
     public Reward toEntity(String image) {
         return Reward.builder()

@@ -23,11 +23,11 @@ public class RewardApiController {
     }
 
     @PostMapping("/events/{event_id}")
-    public List<Long> save(@PathVariable Long event_id, @ModelAttribute List<RewardSaveRequestDto> rewards) {
+    public List<Long> save(@PathVariable Long event_id, @ModelAttribute RewardSaveRequestDto rewards) {
         List<Long> reward_ids = new ArrayList<>();
 
         // 리워드 1개씩 저장
-        for (RewardSaveRequestDto reward : rewards ){
+        for (RewardSaveRequestDto reward : rewards.getRewardSaveRequestDtoList() ){
             String imgPath = imageManagerService.upload("image/reward", reward.getImage());
             reward_ids.add(rewardService.save(event_id, reward, imgPath));
         }
