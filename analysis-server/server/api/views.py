@@ -1,6 +1,6 @@
 from rest_framework.views import APIView
+from rest_framework.response import Response
 from django.http import JsonResponse
-from django.http import HttpResponse
 from rest_framework import status
 from .models import JoinPost, JoinUser
 from .serializers import JoinPostSerializer, JoinUserSerializer, JoinCollectionSerializer
@@ -9,6 +9,11 @@ from .modules.instagram.join.crawl.crawl_user import crawl_user
 from .modules.instagram.join.reward.reward import JoinReward
 from .modules.instagram.report.report import EventReport
 
+error = {
+    "message": "INVALID_JWT_TOKEN.",
+    "status": 401,
+    "code": "AUTH003"
+}
 
 class JoinPostView(APIView):
     @staticmethod
@@ -24,8 +29,8 @@ class JoinPostView(APIView):
         join_post_serializer = JoinPostSerializer(join_post, crawl_post(JoinPostSerializer(join_post).data.get('url')), partial=True)
         if join_post_serializer.is_valid():
             join_post_serializer.save()
-            return HttpResponse()
-        return HttpResponse()
+            return JsonResponse(error, status=status.HTTP_200_OK)
+        return JsonResponse(error, status=status.HTTP_400_BAD_REQUEST)
 
 
 class JoinUserView(APIView):
@@ -43,8 +48,8 @@ class JoinUserView(APIView):
         join_user_serializer = JoinUserSerializer(join_user, join_user_crawl, partial=True)
         if join_user_serializer.is_valid():
             join_user_serializer.save()
-            return HttpResponse()
-        return HttpResponse()
+            return JsonResponse(error, status=status.HTTP_200_OK)
+        return JsonResponse(error, status=status.HTTP_400_BAD_REQUEST)
 
 
 class JoinRewardView(APIView):
@@ -61,7 +66,7 @@ class JoinRewardView(APIView):
         join_collection_serializer.is_valid()
         join_reward = JoinReward(join_collection_serializer.data, pk)
         reward_level = join_reward.get_reward_level()
-        return HttpResponse()
+        return JsonResponse(error, status=status.HTTP_200_OK)
 
 
 class ReportEventView(APIView):
