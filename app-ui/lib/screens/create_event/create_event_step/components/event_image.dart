@@ -15,8 +15,9 @@ class EventImage extends StatefulWidget {
 
 class _EventImageState extends State<EventImage> {
   Future _getImageFromGallery(int index) async {
-    var image =
-        await ImagePicker.platform.pickImage(source: ImageSource.gallery);
+    final ImagePicker _imagePicker = ImagePicker();
+    final XFile? image =
+        await _imagePicker.pickImage(source: ImageSource.gallery);
     setState(() {
       if (widget.imageList[index] == null && widget.imageList.length < 3)
         widget.imageList.add(null);

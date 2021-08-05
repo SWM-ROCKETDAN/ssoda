@@ -12,7 +12,10 @@ import 'components/price_and_count_input.dart';
 
 class InputRewardInfoScreen extends StatefulWidget {
   final Reward? reward;
-  const InputRewardInfoScreen({Key? key, this.reward}) : super(key: key);
+  final int level;
+  const InputRewardInfoScreen(
+      {Key? key, required this.reward, required this.level})
+      : super(key: key);
 
   @override
   _InputRewardInfoScreenState createState() => _InputRewardInfoScreenState();
@@ -26,8 +29,9 @@ class _InputRewardInfoScreenState extends State<InputRewardInfoScreen> {
   String? _imagePath;
 
   Future _getImageFromGallery() async {
-    var image =
-        await ImagePicker.platform.pickImage(source: ImageSource.gallery);
+    final ImagePicker _imagePicker = ImagePicker();
+    final XFile? image =
+        await _imagePicker.pickImage(source: ImageSource.gallery);
     if (image != null) {
       setState(() {
         _imagePath = image.path;
@@ -120,6 +124,7 @@ class _InputRewardInfoScreenState extends State<InputRewardInfoScreen> {
                     imgPath: _imagePath!,
                     price: int.parse(_priceController.value.text.trim()),
                     count: int.parse(_countController.value.text.trim()),
+                    level: widget.level,
                     category: _choosedCategory!));
           }
         },
