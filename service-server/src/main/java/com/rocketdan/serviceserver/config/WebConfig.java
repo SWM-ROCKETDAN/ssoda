@@ -18,6 +18,6 @@ public class WebConfig implements WebMvcConfigurer {
                 // 반드시 인증&인가를 통과한 후 접근할 수 있다.
                 .addPathPatterns("api/v1/users/**", "/api/v1/events/hashtag/**", "/api/v1/stores/**")
                 // /api/v1/login/** 으로의 유입은 인터셉터를 거치지 않는다. (로그인 시도는 인증에 상관없이 가능하다,)
-                .excludePathPatterns("api/v1/login/**", "/api/v1/events/{id}");
+                .excludePathPatterns("api/v1/login/**", "/api/v1/events/{id}", "/test");
     }
 }
