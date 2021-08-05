@@ -13,7 +13,6 @@ import java.util.List;
 @NoArgsConstructor
 @Getter
 @Setter
-@ToString
 public class EventSaveRequestDto {
     private String title;
     @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
