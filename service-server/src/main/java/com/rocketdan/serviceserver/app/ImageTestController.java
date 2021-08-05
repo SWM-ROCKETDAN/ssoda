@@ -7,14 +7,14 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-
 @RestController
 @RequiredArgsConstructor
 public class ImageTestController {
     private final ImageManagerService imageManagerService;
 
     @PostMapping("/test")
-    public void imgTest(@ModelAttribute TestDto testDto) {
+    public void imgTest(@ModelAttribute @RequestBody TestDto testDto) {
+        System.out.println(testDto.getAge());
         List<String> imgPaths = imageManagerService.uploadTest("image/event", testDto.getFiles());
         System.out.println(imgPaths);
     }

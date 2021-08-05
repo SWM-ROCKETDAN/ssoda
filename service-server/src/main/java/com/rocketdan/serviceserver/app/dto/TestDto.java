@@ -1,11 +1,11 @@
 package com.rocketdan.serviceserver.app.dto;
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
+@Setter
 @Getter
 @NoArgsConstructor
 public class TestDto {
@@ -13,4 +13,12 @@ public class TestDto {
     private Integer age;
     private MultipartFile file;
     private List<MultipartFile> files;
+
+    @Builder
+    public TestDto(String name, Integer age, MultipartFile file, List<MultipartFile> files) {
+        this.name = name;
+        this.age = age;
+        this.file = file;
+        this.files = files;
+    }
 }
