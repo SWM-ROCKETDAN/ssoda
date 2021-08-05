@@ -16,7 +16,7 @@ import sys
 
 sys.path.append(os.path.dirname(os.path.abspath(os.path.dirname(os.path.abspath(os.path.dirname(__file__))))))
 
-from server.secret.key import DataBaseConfig
+from server.secret.config import DataBaseConfig
 import pymysql
 pymysql.install_as_MySQLdb()
 # Build paths inside the project like this: BASE_DIR / 'subdir'.

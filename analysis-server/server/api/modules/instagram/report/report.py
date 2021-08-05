@@ -1,9 +1,12 @@
-# 노출 수
-class Report:
-    def __init__(self, event, post_list, user_list):
-        self.event = event
-        self.post_list = post_list
-        self.user_list = user_list
+import pprint
+from .report_exposure import get_day_list, get_day_exposure_list
 
-    def get_d(self):
-        pass
+
+class EventReport:
+    def __init__(self, join_collection_list, pk):
+        self.join_collection_list = join_collection_list
+        self.pk = pk
+
+    def test(self):
+        pprint.pprint("test코드 입니다.")
+        get_day_exposure_list(self.join_collection_list)
