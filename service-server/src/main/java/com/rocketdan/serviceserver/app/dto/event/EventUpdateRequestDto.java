@@ -3,6 +3,7 @@ package com.rocketdan.serviceserver.app.dto.event;
 import com.rocketdan.serviceserver.domain.event.reward.Reward;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.util.Date;
 import java.util.List;
@@ -12,7 +13,9 @@ import java.util.List;
 public class EventUpdateRequestDto {
     private String title;
     private Integer status;
+    @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
     private Date startDate;
+    @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
     private Date finishDate;
     private List<String> images;
     private List<Reward> rewards;
