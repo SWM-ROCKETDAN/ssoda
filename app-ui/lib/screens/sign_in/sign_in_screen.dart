@@ -74,6 +74,16 @@ class _SignInScreenState extends State<SignInScreen> {
                         signIn: kakaoLoginPressed,
                       ),
                       ElevatedButton(
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => CreateEventStepScreen(),
+                              ),
+                            );
+                          },
+                          child: Text('이벤트 생성 Step')),
+                      ElevatedButton(
                           onPressed: () async {
                             final ImagePicker _imagePicker = ImagePicker();
                             final XFile? image = await _imagePicker.pickImage(
