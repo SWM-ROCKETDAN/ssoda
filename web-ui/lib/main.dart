@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hashchecker_web/models/frouter.dart';
 import 'package:hashchecker_web/screens/event_list_view/event_list_view_screen.dart';
+import 'package:hashchecker_web/screens/reward_get/reward_get_screen.dart';
 import 'package:url_strategy/url_strategy.dart';
 
 void main() {
@@ -20,7 +21,7 @@ class MyApp extends StatelessWidget {
           primarySwatch: Colors.indigo,
           visualDensity: VisualDensity.adaptivePlatformDensity,
           scaffoldBackgroundColor: Colors.white),
-      home: EventListViewScreen(),
+      home: RewardGetScreen(),
     );
   }
 }

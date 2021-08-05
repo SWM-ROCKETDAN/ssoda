@@ -1,6 +1,7 @@
 import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
 import 'package:hashchecker_web/screens/event_join/event_join_screen.dart';
+import 'package:hashchecker_web/screens/reward_get/reward_get_screen.dart';
 
 class FRouter {
   static FluroRouter router = FluroRouter();
