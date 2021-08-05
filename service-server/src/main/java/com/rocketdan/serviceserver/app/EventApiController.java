@@ -42,7 +42,7 @@ public class EventApiController {
     }
 
     @PutMapping("/hashtag/{id}")
-    public Long updateHashtagEvent(@PathVariable Long id, @RequestBody HashtagEventUpdateRequest requestDto) {
+    public Long updateHashtagEvent(@PathVariable Long id, @ModelAttribute HashtagEventUpdateRequest requestDto) {
         return eventService.updateHashtagEvent(id, requestDto);
     }
 
