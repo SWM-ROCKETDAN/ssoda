@@ -4,6 +4,7 @@ import com.rocketdan.serviceserver.domain.event.reward.Reward;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Date;
 import java.util.List;
@@ -17,9 +18,9 @@ public class EventUpdateRequestDto {
     private Date startDate;
     @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
     private Date finishDate;
-    private List<String> images;
+    private List<MultipartFile> images;
 
-    public EventUpdateRequestDto(String title, Integer status, Date startDate, Date finishDate, List<String> images) {
+    public EventUpdateRequestDto(String title, Integer status, Date startDate, Date finishDate, List<MultipartFile> images) {
         this.title = title;
         this.status = status;
         this.startDate = startDate;

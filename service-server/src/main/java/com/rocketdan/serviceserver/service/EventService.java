@@ -34,10 +34,10 @@ public class EventService {
     }
 
     @Transactional
-    public Long updateHashtagEvent(Long id, HashtagEventUpdateRequest requestDto) {
+    public Long updateHashtagEvent(Long id, HashtagEventUpdateRequest requestDto, List<String> imgPaths) {
         Hashtag event = (Hashtag) eventRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("해당 이벤트가 없습니다. id=" + id));
 
-        event.update(requestDto.getTitle(), requestDto.getStatus(), requestDto.getStartDate(), requestDto.getFinishDate(), requestDto.getImages(),
+        event.update(requestDto.getTitle(), requestDto.getStatus(), requestDto.getStartDate(), requestDto.getFinishDate(), imgPaths,
                 requestDto.getHashtags(), requestDto.getRequirements(), requestDto.getTemplate());
 
         return id;

@@ -37,13 +37,14 @@ public class EventApiController {
 
     @PostMapping("/hashtag/stores/{store_id}")
     public Long saveHashtagEvent(@PathVariable Long store_id, @ModelAttribute HashtagEventSaveRequest event) {
-        List<String> eventImgPaths = imageManagerService.upload("image/event", event.getImages());
-        return eventService.saveHashtagEvent(store_id, event, eventImgPaths);
+        List<String> imgPaths = imageManagerService.upload("image/event", event.getImages());
+        return eventService.saveHashtagEvent(store_id, event, imgPaths);
     }
 
     @PutMapping("/hashtag/{id}")
     public Long updateHashtagEvent(@PathVariable Long id, @ModelAttribute HashtagEventUpdateRequest requestDto) {
-        return eventService.updateHashtagEvent(id, requestDto);
+        List<String> imgPaths = imageManagerService.upload("image/event", requestDto.getImages());
+        return eventService.updateHashtagEvent(id, requestDto, imgPaths);
     }
 
     @DeleteMapping("/{id}")
