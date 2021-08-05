@@ -40,7 +40,7 @@ class HeaderWithImages extends StatelessWidget {
             right: 0,
             left: 0,
             child: Container(
-              height: 30,
+              height: size.width * 0.14 - 15,
               decoration: BoxDecoration(
                 color: Colors.white,
                 borderRadius: BorderRadius.only(
@@ -55,12 +55,13 @@ class HeaderWithImages extends StatelessWidget {
             left: size.width * 0.36,
             child: Container(
                 height: size.width * 0.28,
+                width: size.width * 0.28,
                 decoration: BoxDecoration(
                     boxShadow: [
                       BoxShadow(
-                          blurRadius: 50,
+                          blurRadius: 25,
                           offset: Offset(0, 5),
-                          color: Colors.black.withOpacity(0.3))
+                          color: Colors.black.withOpacity(0.25))
                     ],
                     color: Colors.grey,
                     shape: BoxShape.circle,

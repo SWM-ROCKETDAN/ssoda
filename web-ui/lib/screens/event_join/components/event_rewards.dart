@@ -18,15 +18,14 @@ class EventRewards extends StatelessWidget {
           style: TextStyle(fontWeight: FontWeight.bold, fontSize: 17)),
       SizedBox(height: kDefaultPadding),
       SizedBox(
-        height: 116,
+        height: 150,
         child: ListView.separated(
           itemBuilder: (context, index) => ClipRRect(
             borderRadius: BorderRadius.circular(8.0),
             child: Image.asset(
               event.rewardList[index]!.imgPath,
               fit: BoxFit.cover,
-              width: 100,
-              height: 110,
+              width: 130,
             ),
           ),
           itemCount: event.rewardList.length,
