@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:hashchecker_web/screens/reward_get/reward_get_screen.dart';
 
 class EventListViewScreen extends StatefulWidget {
   const EventListViewScreen({Key? key}) : super(key: key);

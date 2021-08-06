@@ -21,8 +21,8 @@ class HeaderWithReward extends StatelessWidget {
           width: size.width,
           height: size.height * 0.4,
           child: ClipRRect(
-              child: Image.network(
-                '$s3Url$rewardImagePath',
+              child: Image.asset(
+                'assets/images/confetti.png',
                 fit: BoxFit.cover,
               ),
               borderRadius:
@@ -37,8 +37,8 @@ class HeaderWithReward extends StatelessWidget {
             child: Column(children: [
               ClipRRect(
                   borderRadius: BorderRadius.all(Radius.circular(15)),
-                  child: Image.asset(
-                    'assets/images/sample/rewardImage1.jpg',
+                  child: Image.network(
+                    '$s3Url$rewardImagePath',
                     fit: BoxFit.cover,
                     height: size.width * 0.5,
                     width: size.width * 0.5,

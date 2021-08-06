@@ -107,7 +107,7 @@ class _EventJoinWithUrlState extends State<EventJoinWithUrl> {
         context,
         MaterialPageRoute(
           builder: (context) => RewardGetScreen(
-              eventTitle: widget.data['event'].name,
+              eventTitle: widget.data['event'].title,
               rewardName: reward.name,
               rewardImage: reward.imgPath),
         ),
