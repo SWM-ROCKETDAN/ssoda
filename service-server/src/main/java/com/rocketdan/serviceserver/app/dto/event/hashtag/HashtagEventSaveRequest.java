@@ -1,15 +1,11 @@
 package com.rocketdan.serviceserver.app.dto.event.hashtag;
 
 import com.rocketdan.serviceserver.app.dto.event.EventSaveRequestDto;
-import com.rocketdan.serviceserver.app.dto.reward.RewardSaveRequestDto;
 import com.rocketdan.serviceserver.domain.event.type.Hashtag;
-import com.rocketdan.serviceserver.domain.event.reward.Reward;
 import lombok.Builder;
-import org.joda.time.DateTime;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 

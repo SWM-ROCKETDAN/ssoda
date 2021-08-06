@@ -1,4 +1,4 @@
-package com.rocketdan.serviceserver.domain.event.reward;
+package com.rocketdan.serviceserver.domain.reward;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;

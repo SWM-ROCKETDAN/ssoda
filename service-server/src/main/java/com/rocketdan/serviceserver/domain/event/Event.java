@@ -1,12 +1,9 @@
 package com.rocketdan.serviceserver.domain.event;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonFormat;
-import com.rocketdan.serviceserver.domain.event.reward.Reward;
+import com.rocketdan.serviceserver.domain.reward.Reward;
 import com.rocketdan.serviceserver.domain.store.Store;
 import lombok.*;
-import org.joda.time.DateTime;
-import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import java.util.*;

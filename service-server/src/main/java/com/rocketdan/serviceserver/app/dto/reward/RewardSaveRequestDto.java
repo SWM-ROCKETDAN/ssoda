@@ -1,6 +1,6 @@
 package com.rocketdan.serviceserver.app.dto.reward;
 
-import com.rocketdan.serviceserver.domain.event.reward.Reward;
+import com.rocketdan.serviceserver.domain.reward.Reward;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;

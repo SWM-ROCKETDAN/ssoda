@@ -1,4 +1,4 @@
-package com.rocketdan.serviceserver.domain.event.reward;
+package com.rocketdan.serviceserver.domain.reward;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.rocketdan.serviceserver.domain.event.Event;

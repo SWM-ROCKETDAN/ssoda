@@ -1,7 +1,6 @@
 package com.rocketdan.serviceserver.app.dto.event.hashtag;
 
 import com.rocketdan.serviceserver.app.dto.event.EventUpdateRequestDto;
-import com.rocketdan.serviceserver.domain.event.reward.Reward;
 import lombok.Builder;
 import lombok.Getter;
 import org.springframework.format.annotation.DateTimeFormat;

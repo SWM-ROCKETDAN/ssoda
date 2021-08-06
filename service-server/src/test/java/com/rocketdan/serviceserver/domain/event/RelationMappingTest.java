@@ -1,19 +1,13 @@
 package com.rocketdan.serviceserver.domain.event;
 
 
-import com.rocketdan.serviceserver.domain.event.EventRepository;
-import com.rocketdan.serviceserver.domain.event.reward.Reward;
-import com.rocketdan.serviceserver.domain.event.reward.RewardRepository;
-import com.rocketdan.serviceserver.domain.event.type.Hashtag;
+import com.rocketdan.serviceserver.domain.reward.RewardRepository;
 import com.rocketdan.serviceserver.domain.store.StoreRepository;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
-
-import java.util.Date;
-import java.util.List;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest

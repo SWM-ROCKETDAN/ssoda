@@ -8,7 +8,6 @@ import com.rocketdan.serviceserver.app.dto.event.hashtag.HashtagEventUpdateReque
 import com.rocketdan.serviceserver.app.dto.reward.RewardResponseDto;
 import com.rocketdan.serviceserver.domain.event.Event;
 import com.rocketdan.serviceserver.domain.event.EventRepository;
-import com.rocketdan.serviceserver.domain.event.reward.RewardRepository;
 import com.rocketdan.serviceserver.domain.event.type.Hashtag;
 import com.rocketdan.serviceserver.domain.store.Store;
 import com.rocketdan.serviceserver.domain.store.StoreRepository;

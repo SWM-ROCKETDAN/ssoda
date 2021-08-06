@@ -1,13 +1,12 @@
 package com.rocketdan.serviceserver.domain.event.type;
 
 import com.rocketdan.serviceserver.domain.event.Event;
-import com.rocketdan.serviceserver.domain.event.reward.Reward;
+import com.rocketdan.serviceserver.domain.reward.Reward;
 import com.rocketdan.serviceserver.domain.store.Store;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.joda.time.DateTime;
 
 import javax.persistence.*;
 import java.util.Date;
