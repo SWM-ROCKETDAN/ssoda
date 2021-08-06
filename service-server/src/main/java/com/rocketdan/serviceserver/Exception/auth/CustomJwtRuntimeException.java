@@ -1,4 +1,6 @@
-package com.rocketdan.serviceserver.Exception;
+package com.rocketdan.serviceserver.Exception.auth;
+
+import com.rocketdan.serviceserver.Exception.ErrorCode;
 
 public class CustomJwtRuntimeException extends RuntimeException {
 
