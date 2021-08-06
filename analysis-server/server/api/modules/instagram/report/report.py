@@ -26,6 +26,7 @@ class EventReport:
         day_comment_count_list = [0 for i in range(7)]
         day_post_count_list = [0 for i in range(7)]
         day_delete_count_list = [0 for i in range(7)]
+        day_expenditure_list = [0 for i in range(7)]
 
         for join_post_and_join_user in self.join_post_and_join_user_list:
             # exposure_count_list
@@ -38,12 +39,14 @@ class EventReport:
                     day_post_count_list[key] += 1
                     if join_post_and_join_user['status'] == Status.END:
                         day_delete_count_list[key] += 1
+                    if join_post_and_join_user['rewards_level']:
+                        day_expenditure_list.append(int(join_post_and_join_user['rewards_level']))
+
 
         print(self.event)
-
         print(day_exposure_list)
         print(day_like_count_list)
         print(day_comment_count_list)
         print(day_post_count_list)
         print(day_delete_count_list)
-
+        print(day_expenditure_list)
