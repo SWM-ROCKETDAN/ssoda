@@ -7,6 +7,7 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.joda.time.DateTime;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -41,9 +42,9 @@ public class Hashtag extends Event {
         this.template = template;
     }
 
-    public void update(String title, Integer status, Date startDate, Date finishDate, List<String> images, List<Reward> rewards,
+    public void update(String title, Integer status, Date startDate, Date finishDate, List<String> images,
                   List<String> hashtags, List<Boolean> requirements, Integer template) {
-        super.update(title, status, startDate, finishDate, images, rewards);
+        super.update(title, status, startDate, finishDate, images);
         Optional.ofNullable(hashtags).ifPresent(none -> this.hashtags = hashtags);
         Optional.ofNullable(requirements).ifPresent(none -> this.requirements = requirements);
         Optional.ofNullable(template).ifPresent(none -> this.template = template);

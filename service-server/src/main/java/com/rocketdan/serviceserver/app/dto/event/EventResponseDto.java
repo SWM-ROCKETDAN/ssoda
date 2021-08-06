@@ -20,7 +20,6 @@ public class EventResponseDto {
     @JsonFormat(shape=JsonFormat.Shape.STRING, pattern="yyyy-MM-dd'T'HH:mm:ss")
     private Date finishDate;
     private List<String> images;
-    private List<Reward> rewards;
     private String type;
     private Long store_id;
 
@@ -31,7 +30,6 @@ public class EventResponseDto {
         this.startDate = entity.getStartDate();
         this.finishDate = entity.getFinishDate();
         this.images = List.copyOf(entity.getImages());
-        this.rewards = List.copyOf(entity.getRewards());
         this.type = entity.getType();
         this.store_id = entity.getStore().getId();
     }

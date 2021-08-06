@@ -1,6 +1,6 @@
 spring:
   profiles:
-    include: jwt, db
+    include: jwt, db, aws
   jpa:
     database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
   session:
