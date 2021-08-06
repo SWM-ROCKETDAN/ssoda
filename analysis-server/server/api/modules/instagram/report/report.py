@@ -8,9 +8,19 @@ TEST_DATE = datetime(2021, 8, 1).date()
 def get_day_list():
     day_list = []
     for i in reversed(range(7)):
-        # day_list.append(datetime.now().date() - timedelta(days=i))
-        day_list.append(TEST_DATE - timedelta(days=i))
+        # day = TEST_DATE - timedelta(days=i)
+        day = datetime.now().date() - timedelta(days=i)
+        day_list.append(day)
     return day_list
+
+
+def get_week_list():
+    week_iso_list = []
+    for i in reversed(range(7)):
+        week = datetime.now() - timedelta(weeks=i)
+        week_iso = week.isocalendar()
+        week_iso_list.append(week_iso)
+    return week_iso_list
 
 
 class EventReport:
@@ -19,7 +29,7 @@ class EventReport:
         self.event = event
 
     def test(self):
-        pprint.pprint("test코드 입니다.")
+        pprint.pprint("test 코드 입니다.")
         day_list = get_day_list()
         day_exposure_list = [0 for i in range(7)]
         day_like_count_list = [0 for i in range(7)]
@@ -39,9 +49,9 @@ class EventReport:
                     day_post_count_list[key] += 1
                     if join_post_and_join_user['status'] == Status.END:
                         day_delete_count_list[key] += 1
-                    if join_post_and_join_user['rewards_level']:
-                        day_expenditure_list.append(int(join_post_and_join_user['rewards_level']))
-
+                    if join_post_and_join_user['reward']:
+                        print(join_post_and_join_user['reward'])
+                        pass
 
         print(self.event)
         print(day_exposure_list)

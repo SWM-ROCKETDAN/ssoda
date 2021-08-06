@@ -4,9 +4,7 @@ from rest_framework.utils import json
 from .models import JoinUser
 from .models import JoinPost
 from .models import Reward
-from .models import EventRewards
 from .models import Event
-from .models import EventImages
 from .models import HashtagHashtags
 from .models import Hashtag
 
@@ -28,43 +26,38 @@ class HashtagSerializer(serializers.ModelSerializer):
 class RewardSerializer(serializers.ModelSerializer):
     class Meta:
         model = Reward
-        fields = ['id', 'category', 'count', 'image', 'name', 'price']
+        fields = '__all__'
 
 
-class EventRewardSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = EventRewards
-        fields = ['event', 'rewards']
-
-    def to_representation(self, instance):
-        representation = super().to_representation(instance)
-        try:
-            reward = Reward.objects.filter(id=representation['rewards'])
-        except Reward.DoesNotExist:
-            pass
-
-        reward_serializer = RewardSerializer(data=reward, many=True)
-        reward_serializer.is_valid()
-        if reward_serializer.data:
-            representation['rewards'] = reward_serializer.data.pop()
-        else:
-            representation['reward'] = {}
-        return representation
+# class EventRewardSerializer(serializers.ModelSerializer):
+#     class Meta:
+#         model = EventRewards
+#         fields = ['event', 'rewards']
+#
+#     def to_representation(self, instance):
+#         representation = super().to_representation(instance)
+#         try:
+#             reward = Reward.objects.filter(id=representation['rewards'])
+#         except Reward.DoesNotExist:
+#             pass
+#
+#         reward_serializer = RewardSerializer(data=reward, many=True)
+#         reward_serializer.is_valid()
+#         if reward_serializer.data:
+#             representation['rewards'] = reward_serializer.data.pop()
+#         else:
+#             representation['reward'] = {}
+#         return representation
 
 
 class EventSerializer(serializers.ModelSerializer):
     hashtag = HashtagSerializer()
-    event_rewards = EventRewardSerializer(many=True)
+    rewards = RewardSerializer(many=True)
 
     class Meta:
         model = Event
         fields = '__all__'
 
-
-class EventTestSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Event
-        fields = '__all__'
 
 class JoinCollectionSerializer(serializers.ModelSerializer):
     event = EventSerializer()
@@ -90,6 +83,8 @@ class JoinCollectionSerializer(serializers.ModelSerializer):
 
 
 class JoinPostAndJoinUserSerializer(serializers.ModelSerializer):
+    reward = RewardSerializer()
+
     class Meta:
         model = JoinPost
         fields = '__all__'
