@@ -44,7 +44,7 @@ class DoneButton extends StatelessWidget {
                       MaterialStateProperty.all<Color>(kThemeColor),
                   shape: MaterialStateProperty.all<OutlinedBorder>(
                       RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(27.0)))),
+                          borderRadius: BorderRadius.circular(27)))),
             ),
           ),
         ],
