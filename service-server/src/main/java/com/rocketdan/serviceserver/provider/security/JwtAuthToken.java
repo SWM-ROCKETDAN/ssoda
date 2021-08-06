@@ -1,6 +1,6 @@
 package com.rocketdan.serviceserver.provider.security;
 
-import com.rocketdan.serviceserver.Exception.CustomJwtRuntimeException;
+import com.rocketdan.serviceserver.Exception.auth.CustomJwtRuntimeException;
 import com.rocketdan.serviceserver.core.security.AuthToken;
 import io.jsonwebtoken.*;
 import lombok.Getter;

@@ -1,15 +1,13 @@
 package com.rocketdan.serviceserver.web;
 
-import com.rocketdan.serviceserver.Exception.JoinEventFailedException;
+import com.rocketdan.serviceserver.Exception.join.JoinEventFailedException;
 import com.rocketdan.serviceserver.core.CommonResponse;
-import com.rocketdan.serviceserver.domain.join.post.JoinPost;
 import com.rocketdan.serviceserver.service.JoinPostService;
 import com.rocketdan.serviceserver.service.JoinUserService;
 import com.rocketdan.serviceserver.service.RewardService;
-import com.rocketdan.serviceserver.web.dto.RewardLevelRequestDto;
-import com.rocketdan.serviceserver.web.dto.RewardLevelResponseDto;
+import com.rocketdan.serviceserver.web.dto.reward.RewardLevelRequestDto;
+import com.rocketdan.serviceserver.web.dto.reward.RewardLevelResponseDto;
 import lombok.RequiredArgsConstructor;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 @RestController

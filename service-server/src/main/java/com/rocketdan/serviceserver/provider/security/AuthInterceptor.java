@@ -1,6 +1,6 @@
 package com.rocketdan.serviceserver.provider.security;
 
-import com.rocketdan.serviceserver.Exception.CustomAuthenticationException;
+import com.rocketdan.serviceserver.Exception.auth.CustomAuthenticationException;
 import com.rocketdan.serviceserver.domain.user.Role;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

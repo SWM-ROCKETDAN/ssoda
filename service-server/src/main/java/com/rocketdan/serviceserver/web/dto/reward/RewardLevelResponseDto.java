@@ -1,4 +1,4 @@
-package com.rocketdan.serviceserver.web.dto;
+package com.rocketdan.serviceserver.web.dto.reward;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -6,5 +6,5 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 public class RewardLevelResponseDto {
-    private Integer reward_level;
+    private Long reward_id;
 }

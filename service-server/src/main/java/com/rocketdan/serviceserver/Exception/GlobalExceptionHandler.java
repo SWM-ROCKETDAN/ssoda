@@ -1,5 +1,11 @@
 package com.rocketdan.serviceserver.Exception;
 
+import com.rocketdan.serviceserver.Exception.analysis.AnalysisServerErrorException;
+import com.rocketdan.serviceserver.Exception.join.DuplicateUrlException;
+import com.rocketdan.serviceserver.Exception.join.JoinEventFailedException;
+import com.rocketdan.serviceserver.Exception.auth.CustomAuthenticationException;
+import com.rocketdan.serviceserver.Exception.auth.CustomJwtRuntimeException;
+import com.rocketdan.serviceserver.Exception.auth.LoginFailedException;
 import com.rocketdan.serviceserver.core.CommonResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;

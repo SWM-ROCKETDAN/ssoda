@@ -1,4 +1,4 @@
-package com.rocketdan.serviceserver.web.dto;
+package com.rocketdan.serviceserver.web.dto.reward;
 
 import lombok.Getter;
 

@@ -1,8 +1,8 @@
 package com.rocketdan.serviceserver.service;
 
-import com.rocketdan.serviceserver.Exception.AnalysisServerErrorException;
-import com.rocketdan.serviceserver.Exception.DuplicateUrlException;
-import com.rocketdan.serviceserver.Exception.JoinEventFailedException;
+import com.rocketdan.serviceserver.Exception.analysis.AnalysisServerErrorException;
+import com.rocketdan.serviceserver.Exception.join.DuplicateUrlException;
+import com.rocketdan.serviceserver.Exception.join.JoinEventFailedException;
 import com.rocketdan.serviceserver.core.CommonResponse;
 import com.rocketdan.serviceserver.domain.event.Event;
 import com.rocketdan.serviceserver.domain.event.EventRepository;
@@ -10,9 +10,7 @@ import com.rocketdan.serviceserver.domain.join.post.JoinPost;
 import com.rocketdan.serviceserver.domain.join.post.JoinPostRepository;
 import lombok.RequiredArgsConstructor;
 
-import org.hibernate.mapping.Join;
 import org.springframework.http.HttpStatus;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.reactive.function.client.WebClient;
@@ -28,7 +26,7 @@ public class JoinPostService {
     private final EventRepository eventRepository;
 
     private WebClient webClient = WebClient.builder()
-            .baseUrl("http://54.180.141.90:8080/api/v1/join/post")
+            .baseUrl("http://54.180.141.90:8080/api/v1/join/posts")
             .build();
 
     @Transactional

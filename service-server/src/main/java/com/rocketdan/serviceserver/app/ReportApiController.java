@@ -15,12 +15,12 @@ import org.springframework.web.bind.annotation.RestController;
 public class ReportApiController {
     private final ReportService reportService;
 
-    @GetMapping("/event/{event_id}")
+    @GetMapping("/events/{event_id}")
     public ReportOfEventDto retrieveReportOfEvent(@PathVariable Long event_id) {
         return reportService.getReportOfEvent(event_id);
     }
 
-    @GetMapping("/store/{store_id}")
+    @GetMapping("/stores/{store_id}")
     public ReportOfStoreDto retrieveReportOfStore(@PathVariable Long store_id) {
         return reportService.getReportOfStore(store_id);
     }

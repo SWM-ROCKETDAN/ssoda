@@ -1,7 +1,7 @@
 package com.rocketdan.serviceserver.service;
 
-import com.rocketdan.serviceserver.Exception.AnalysisServerErrorException;
-import com.rocketdan.serviceserver.Exception.JoinEventFailedException;
+import com.rocketdan.serviceserver.Exception.analysis.AnalysisServerErrorException;
+import com.rocketdan.serviceserver.Exception.join.JoinEventFailedException;
 import com.rocketdan.serviceserver.core.CommonResponse;
 import com.rocketdan.serviceserver.domain.join.post.JoinPost;
 import com.rocketdan.serviceserver.domain.join.post.JoinPostRepository;
@@ -9,7 +9,6 @@ import com.rocketdan.serviceserver.domain.join.user.JoinUser;
 import com.rocketdan.serviceserver.domain.join.user.JoinUserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.reactive.function.client.WebClient;
@@ -25,7 +24,7 @@ public class JoinUserService {
     private final JoinPostRepository joinPostRepository;
 
     private WebClient webClient = WebClient.builder()
-            .baseUrl("http://54.180.141.90:8080/api/v1/join/user")
+            .baseUrl("http://54.180.141.90:8080/api/v1/join/users")
             .build();
 
     @Transactional

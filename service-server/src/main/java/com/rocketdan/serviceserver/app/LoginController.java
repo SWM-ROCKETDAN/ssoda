@@ -1,6 +1,6 @@
 package com.rocketdan.serviceserver.app;
 
-import com.rocketdan.serviceserver.Exception.LoginFailedException;
+import com.rocketdan.serviceserver.Exception.auth.LoginFailedException;
 import com.rocketdan.serviceserver.app.dto.user.LoginDto;
 import com.rocketdan.serviceserver.app.dto.user.LoginRequestDto;
 import com.rocketdan.serviceserver.core.CommonResponse;
