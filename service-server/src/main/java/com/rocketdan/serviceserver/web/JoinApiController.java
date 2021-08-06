@@ -25,7 +25,7 @@ public class JoinApiController {
 
         // (2) analysis-server에 join_post update 요청
         CommonResponse putJoinPostResponse = joinPostService.putJoinPost(joinPostId);
-        if (!putJoinPostResponse.getCode().equals("OK")) {
+        if (!putJoinPostResponse.getCode().equals("SUCCESS001")) {
             throw new JoinEventFailedException();
         }
 
@@ -34,7 +34,7 @@ public class JoinApiController {
 
         // (4) analysis-server에 join_user update 요청
         CommonResponse putJoinUserResponse = joinUserService.putJoinUser(joinUserId);
-        if (!putJoinUserResponse.getCode().equals("OK")) {
+        if (!putJoinUserResponse.getCode().equals("SUCCESS002")) {
             throw new JoinEventFailedException();
         }
 
