@@ -38,10 +38,8 @@ class CreateEventButton extends StatelessWidget {
                 ? null
                 : DateFormat('yyyy-MM-ddTHH:mm:ss')
                     .format(event.period.finishDate!),
-            'images': List.generate(
-                event.images.length,
-                (index) async =>
-                    await MultipartFile.fromFile(event.images[index]!)),
+            'images': List.generate(event.images.length,
+                (index) => MultipartFile.fromFileSync(event.images[index]!)),
             'hashtags': event.hashtagList,
             'requirements': event.requireList,
             'template': event.template.id
@@ -50,9 +48,14 @@ class CreateEventButton extends StatelessWidget {
           var eventResponse = await dio
               .post(getApi(API.CREATE_EVENT, parameter: "1"), data: eventData);
 
+          if (eventResponse.statusCode != 200) {
+            print('event error');
+          }
+
           var rewardsData = FormData();
 
-          for (int i = 0; i < event.requireList.length; i++) {
+          for (int i = 0; i < event.rewardList.length; i++) {
+            if (event.rewardList[i] == null) continue;
             rewardsData.fields
                 .add(MapEntry('rewards[$i].name', event.rewardList[i]!.name));
             rewardsData.fields.add(MapEntry(
@@ -69,6 +72,10 @@ class CreateEventButton extends StatelessWidget {
               getApi(API.CREATE_REWARDS,
                   parameter: eventResponse.data.toString()),
               data: rewardsData);
+
+          if (rewardsResponse.statusCode != 200) {
+            print('rewards error');
+          }
 
           print(rewardsResponse.data);
 

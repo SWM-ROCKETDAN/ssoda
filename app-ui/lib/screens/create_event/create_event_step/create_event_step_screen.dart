@@ -240,14 +240,10 @@ class _CreateEventStepScreenState extends State<CreateEventStepScreen> {
   void _createPreview(BuildContext context) {
     Event event = Event(
         title: titleTextController.value.text.trim(),
-        rewardList: rewardList.last == null
-            ? rewardList.sublist(0, rewardList.length - 1)
-            : rewardList,
+        rewardList: rewardList.where((reward) => reward != null).toList(),
         hashtagList: hashtagList,
         period: period,
-        images: imageList.last == null
-            ? imageList.sublist(0, rewardList.length - 1)
-            : imageList,
+        images: imageList.where((image) => image != null).toList(),
         requireList: selectedRequireList,
         template: template);
     Navigator.push(
