@@ -38,6 +38,8 @@ class JoinReward:
         reward_rate_list = []
         reward_count_sum = 0
         for item in self.join_collection_list:
+            # print(item['event'])
+            print(item['event']['rewards'])
             if item['id'] == self.pk:
                 for event_rewards in item['event']['event_rewards']:
                     reward_rate_list.append(event_rewards['rewards']['count'])
