@@ -1,14 +1,15 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:hashchecker_web/models/event.dart';
+import 'package:hashchecker_web/models/reward.dart';
 
 class EventDescription extends StatelessWidget {
   const EventDescription({
     Key? key,
-    required this.event,
+    required this.data,
   }) : super(key: key);
 
-  final Event event;
+  final Map<String, dynamic> data;
 
   @override
   Widget build(BuildContext context) {
@@ -30,9 +31,9 @@ class EventDescription extends StatelessWidget {
 
   String _createRewardNameList() {
     String rewardNameList = "";
-    for (int i = 0; i < event.rewardList.length; i++) {
-      rewardNameList += event.rewardList[i]!.name;
-      if (i < event.rewardList.length - 1) rewardNameList += " / ";
+    for (int i = 0; i < data['rewards'].length; i++) {
+      rewardNameList += data['rewards'].name;
+      if (i < data['rewards'].rewardList.length - 1) rewardNameList += " / ";
     }
     return rewardNameList;
   }

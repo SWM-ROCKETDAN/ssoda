@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:hashchecker_web/constants.dart';
 import 'package:hashchecker_web/models/event.dart';
+import 'package:hashchecker_web/models/reward.dart';
 
 class EventHashtags extends StatelessWidget {
   const EventHashtags({
     Key? key,
-    required this.event,
+    required this.data,
   }) : super(key: key);
 
-  final Event event;
+  final Map<String, dynamic> data;
 
   @override
   Widget build(BuildContext context) {
@@ -21,7 +22,7 @@ class EventHashtags extends StatelessWidget {
           crossAxisAlignment: WrapCrossAlignment.center,
           spacing: 8.0,
           children: List.generate(
-              event.hashtagList.length,
+              data['event'].hashtagList.length,
               (index) => Chip(
                     avatar: CircleAvatar(
                       radius: 14,
@@ -32,7 +33,7 @@ class EventHashtags extends StatelessWidget {
                       ),
                       backgroundColor: Colors.black,
                     ),
-                    label: Text(event.hashtagList[index]),
+                    label: Text(data['event'].hashtagList[index]),
                     labelPadding: const EdgeInsets.fromLTRB(6, 2, 5, 2),
                     elevation: 3.0,
                     backgroundColor: Colors.white,

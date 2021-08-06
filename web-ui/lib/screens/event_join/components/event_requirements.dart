@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:hashchecker_web/constants.dart';
 import 'package:hashchecker_web/models/event.dart';
+import 'package:hashchecker_web/models/reward.dart';
 
 class EventRequirements extends StatelessWidget {
   const EventRequirements({
     Key? key,
-    required this.event,
+    required this.data,
   }) : super(key: key);
 
-  final Event event;
+  final Map<String, dynamic> data;
 
   @override
   Widget build(BuildContext context) {
@@ -19,9 +20,9 @@ class EventRequirements extends StatelessWidget {
       Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: List.generate(
-              event.requireList.length,
-              (index) => event.requireList[index]
-                  ? Text('${index}번째 요청사항\n')
+              data['event'].requireList.length,
+              (index) => data['event'].requireList[index]
+                  ? Text('$index번째 요청사항\n')
                   : Container()))
     ]);
   }

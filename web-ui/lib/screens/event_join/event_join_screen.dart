@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:hashchecker_web/api.dart';
 import 'package:hashchecker_web/models/event.dart';
+import 'package:hashchecker_web/models/reward.dart';
 import 'components/body.dart';
 import 'package:http/http.dart' as http;
 
@@ -15,22 +16,22 @@ class EventJoinScreen extends StatefulWidget {
 }
 
 class _EventJoinScreenState extends State<EventJoinScreen> {
-  late Future<Event> event;
+  late Future<Map<String, dynamic>> data;
 
   @override
   void initState() {
     super.initState();
-    event = fetchEvent();
+    data = fetchData();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: FutureBuilder<Event>(
-      future: event,
+        body: FutureBuilder<dynamic>(
+      future: data,
       builder: (context, snapshot) {
         if (snapshot.hasData) {
-          return Body(event: snapshot.data!);
+          return Body(data: snapshot.data!);
         } else if (snapshot.hasError) {
           return Text('${snapshot.error}');
         }
@@ -41,15 +42,41 @@ class _EventJoinScreenState extends State<EventJoinScreen> {
     ));
   }
 
-  Future<Event> fetchEvent() async {
-    final response = await http
+  Future<Map<String, dynamic>> fetchData() async {
+    Map<String, dynamic> fetchedData = {};
+
+    final eventResponse = await http
         .get(Uri.parse(getApi(API.GET_EVENT, parameter: widget.id)), headers: {
       "Access-Control-Allow-Origin": "*",
       "Access-Control-Allow-Methods": "POST, GET, OPTIONS, PUT, DELETE, HEAD",
     });
-    if (response.statusCode == 200) {
-      print(jsonDecode(response.body));
-      return Event.fromJson(jsonDecode(utf8.decode(response.bodyBytes)));
+
+    if (eventResponse.statusCode == 200) {
+      fetchedData['event'] =
+          Event.fromJson(jsonDecode(utf8.decode(eventResponse.bodyBytes)));
+
+      final rewardsResponse = await http.get(
+          Uri.parse(
+              'http://ec2-3-37-85-236.ap-northeast-2.compute.amazonaws.com:8080/api/v1/events/${widget.id}/rewards'),
+          headers: {
+            "Access-Control-Allow-Origin": "*",
+            "Access-Control-Allow-Methods":
+                "POST, GET, OPTIONS, PUT, DELETE, HEAD",
+          });
+      if (rewardsResponse.statusCode == 200) {
+        fetchedData['rewards'] = [];
+
+        List<dynamic> rewards =
+            jsonDecode(utf8.decode(rewardsResponse.bodyBytes));
+
+        rewards.map((reward) {
+          fetchedData['rewards'].add(Reward.fromJson(reward));
+        });
+
+        return fetchedData;
+      } else {
+        throw Exception('이벤트 보상 정보를 불러올 수 없습니다.');
+      }
     } else {
       throw Exception('존재하지 않는 이벤트입니다.');
     }

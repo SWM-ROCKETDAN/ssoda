@@ -1,5 +1,6 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
+import 'package:hashchecker_web/api.dart';
 import 'package:hashchecker_web/models/event.dart';
 import 'dart:io';
 
@@ -7,11 +8,11 @@ class HeaderWithImages extends StatelessWidget {
   const HeaderWithImages({
     Key? key,
     required this.size,
-    required this.event,
+    required this.data,
   }) : super(key: key);
 
   final Size size;
-  final Event event;
+  final Map<String, dynamic> data;
 
   @override
   Widget build(BuildContext context) {
@@ -26,10 +27,11 @@ class HeaderWithImages extends StatelessWidget {
                   height: size.height * 0.4 - 15,
                   viewportFraction: 1.0,
                   enlargeCenterPage: false),
-              items: event.images
+              items: data['event']
+                  .images
                   .map((item) => Container(
                         child: Center(
-                            child: Image.asset(item!,
+                            child: Image.network('$s3Url$item',
                                 fit: BoxFit.cover,
                                 height: size.height * 0.4 - 15)),
                       ))

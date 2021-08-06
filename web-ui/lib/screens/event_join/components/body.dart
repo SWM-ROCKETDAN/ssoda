@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:hashchecker_web/constants.dart';
 import 'package:hashchecker_web/models/event.dart';
+import 'package:hashchecker_web/models/reward.dart';
 import 'package:hashchecker_web/screens/event_join/components/event_join_with_url.dart';
 
 import 'event_description.dart';
@@ -13,8 +14,8 @@ import 'event_requirements.dart';
 import 'event_period.dart';
 
 class Body extends StatelessWidget {
-  final Event event;
-  const Body({Key? key, required this.event}) : super(key: key);
+  final Map<String, dynamic> data;
+  const Body({Key? key, required this.data}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -22,31 +23,31 @@ class Body extends StatelessWidget {
 
     SystemChrome.setApplicationSwitcherDescription(
         ApplicationSwitcherDescription(
-      label: event.title,
+      label: data['event'].title,
     ));
 
     return SingleChildScrollView(
         child: Column(
       children: [
-        HeaderWithImages(size: size, event: event),
+        HeaderWithImages(size: size, data: data),
         SizedBox(height: kDefaultPadding / 4 * 3),
-        EventTitle(event: event),
+        EventTitle(data: data),
         SizedBox(height: kDefaultPadding),
-        EventDescription(event: event),
+        EventDescription(data: data),
         Padding(
           padding: const EdgeInsets.fromLTRB(20, 0, 20, 20),
           child:
               Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
             Divider(height: kDefaultPadding * 2),
-            EventRewards(event: event),
+            EventRewards(data: data),
             Divider(height: kDefaultPadding * 2),
-            EventHashtags(event: event),
+            EventHashtags(data: data),
             Divider(height: kDefaultPadding * 2),
-            EventRequirements(event: event),
+            EventRequirements(data: data),
             Divider(height: kDefaultPadding * 2),
-            EventPeriod(event: event),
+            EventPeriod(data: data),
             Divider(height: kDefaultPadding * 2),
-            EventJoinWithUrl(event: event)
+            EventJoinWithUrl(data: data)
           ]),
         ),
       ],

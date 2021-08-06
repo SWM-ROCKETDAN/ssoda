@@ -2,10 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:hashchecker_web/constants.dart';
 import 'package:hashchecker_web/models/event.dart';
+import 'package:hashchecker_web/models/reward.dart';
 
 class EventJoinWithUrl extends StatefulWidget {
-  final Event event;
-  const EventJoinWithUrl({Key? key, required this.event}) : super(key: key);
+  final Map<String, dynamic> data;
+  const EventJoinWithUrl({Key? key, required this.data}) : super(key: key);
 
   @override
   _EventJoinWithUrlState createState() => _EventJoinWithUrlState();
