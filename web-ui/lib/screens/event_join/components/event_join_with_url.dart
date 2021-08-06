@@ -34,7 +34,7 @@ class _EventJoinWithUrlState extends State<EventJoinWithUrl> {
         TextField(
           controller: _urlController,
           textInputAction: TextInputAction.go,
-          onSubmitted: (str) {
+          onSubmitted: (_) {
             sendUrlToGetReward();
           },
           style: TextStyle(fontSize: 14),
