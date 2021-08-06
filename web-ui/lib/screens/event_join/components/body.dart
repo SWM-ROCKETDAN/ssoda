@@ -51,15 +51,15 @@ class _BodyState extends State<Body> {
             padding: const EdgeInsets.fromLTRB(20, 0, 20, 20),
             child:
                 Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-              Divider(height: kDefaultPadding * 2),
+              Divider(height: kDefaultPadding * 2, thickness: 1.5),
               EventRewards(data: widget.data),
-              Divider(height: kDefaultPadding * 2),
+              Divider(height: kDefaultPadding * 2, thickness: 1.5),
               EventHashtags(data: widget.data),
-              Divider(height: kDefaultPadding * 2),
+              Divider(height: kDefaultPadding * 2, thickness: 1.5),
               EventRequirements(data: widget.data),
-              Divider(height: kDefaultPadding * 2),
+              Divider(height: kDefaultPadding * 2, thickness: 1.5),
               EventPeriod(data: widget.data),
-              Divider(height: kDefaultPadding * 2),
+              Divider(height: kDefaultPadding * 2, thickness: 1.5),
               EventJoinWithUrl(
                   data: widget.data, id: widget.id, loading: _loading)
             ]),

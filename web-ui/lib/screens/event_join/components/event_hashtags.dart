@@ -33,7 +33,7 @@ class EventHashtags extends StatelessWidget {
             },
             style: ButtonStyle(
                 padding: MaterialStateProperty.all<EdgeInsetsGeometry>(
-                    EdgeInsets.fromLTRB(20, 10, 20, 10)),
+                    EdgeInsets.fromLTRB(17, 8, 17, 8)),
                 backgroundColor: MaterialStateProperty.all<Color>(
                     Colors.black.withOpacity(0.8)),
                 shape: MaterialStateProperty.all<OutlinedBorder>(

@@ -23,6 +23,7 @@ class EventJoinWithUrl extends StatefulWidget {
 
 class _EventJoinWithUrlState extends State<EventJoinWithUrl> {
   final _urlController = TextEditingController();
+  bool _urlTextFieldEnabled = true;
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -32,10 +33,23 @@ class _EventJoinWithUrlState extends State<EventJoinWithUrl> {
             style: TextStyle(fontWeight: FontWeight.bold, fontSize: 17)),
         SizedBox(height: kDefaultPadding),
         TextField(
+          enabled: _urlTextFieldEnabled,
           controller: _urlController,
           textInputAction: TextInputAction.go,
           onSubmitted: (_) {
-            sendUrlToGetReward();
+            if (isValidUrl())
+              sendUrlToGetReward();
+            else {
+              final snackBar = SnackBar(
+                content: Text('올바른 인스타그램 게시글 URL이 아닙니다.'),
+                behavior: SnackBarBehavior.floating,
+                duration: const Duration(milliseconds: 2500),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12.0),
+                ),
+              );
+              ScaffoldMessenger.of(context).showSnackBar(snackBar);
+            }
           },
           style: TextStyle(fontSize: 14),
           decoration: InputDecoration(
@@ -96,6 +110,9 @@ class _EventJoinWithUrlState extends State<EventJoinWithUrl> {
   }
 
   Future<void> sendUrlToGetReward() async {
+    setState(() {
+      _urlTextFieldEnabled = false;
+    });
     widget.loading(true);
 
     final response = await http.post(
