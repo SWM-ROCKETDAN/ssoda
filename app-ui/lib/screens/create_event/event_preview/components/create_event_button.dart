@@ -64,6 +64,8 @@ class CreateEventButton extends StatelessWidget {
                 'rewards[$i].price', event.rewardList[i]!.price.toString()));
             rewardsData.fields.add(MapEntry(
                 'rewards[$i].count', event.rewardList[i]!.count.toString()));
+            rewardsData.fields.add(MapEntry('rewards[$i].category',
+                event.rewardList[i]!.category.index.toString()));
             rewardsData.files.add(MapEntry('rewards[$i].image',
                 MultipartFile.fromFileSync(event.images[i]!)));
           }
