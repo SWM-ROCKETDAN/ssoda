@@ -1,6 +1,8 @@
 import 'dart:async';
 import 'dart:convert';
+import 'dart:io';
 
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:hashchecker/api.dart';
 import 'package:hashchecker/constants.dart';
@@ -14,6 +16,7 @@ import 'package:hashchecker/models/template.dart';
 import 'package:hashchecker/models/token.dart';
 import 'package:hashchecker/models/user_social_account.dart';
 import 'package:hashchecker/screens/create_event/create_event_step/create_event_step_screen.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:kakao_flutter_sdk/auth.dart';
 import 'package:kakao_flutter_sdk/user.dart';
 import 'package:kakao_flutter_sdk/common.dart';
@@ -35,22 +38,7 @@ class _SignInScreenState extends State<SignInScreen> {
   String? strstr;
   String? xAuthToken;
   String? userId;
-
-  Event myEvent = Event(
-      title: 'yjyoon2',
-      rewardList: <Reward>[
-        Reward(
-            name: 'reward1',
-            imgPath: 'img',
-            price: 1234,
-            count: 1234,
-            category: RewardCategory.DRINK),
-      ],
-      hashtagList: <String>['hash1', 'hash2'],
-      period: Period(DateTime.now(), DateTime.now()),
-      images: <String>['img1', 'img2', 'img3'],
-      requireList: <bool>[true, false, true],
-      template: Template(0));
+  List<String> imageList = [];
 
   @override
   Widget build(BuildContext context) {
@@ -71,6 +59,7 @@ class _SignInScreenState extends State<SignInScreen> {
                           Text('${userId}\n'),
                           Text('${xAuthToken}\n'),
                           Text('$strstr'),
+                          Text('${imageList.length}'),
                         ]),
                   ),
                   Column(
@@ -85,34 +74,136 @@ class _SignInScreenState extends State<SignInScreen> {
                         signIn: kakaoLoginPressed,
                       ),
                       ElevatedButton(
-                          onPressed: () async {
-                            final response = await http.get(
-                              Uri.parse(
-                                  'http://ec2-3-37-85-236.ap-northeast-2.compute.amazonaws.com:8080/api/v1/events'),
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => CreateEventStepScreen(),
+                              ),
                             );
-                            setState(() {
-                              strstr = response.body;
-                            });
                           },
-                          child: Text('api호출 1')),
+                          child: Text('이벤트 생성 Step')),
                       ElevatedButton(
                           onPressed: () async {
-                            final apiTest = await http.post(
-                                Uri.parse(
-                                    'http://ec2-3-37-85-236.ap-northeast-2.compute.amazonaws.com:8080/api/v1/events/hashtag/stores/5'),
-                                body: jsonEncode(myEvent.toJson()),
-                                headers: {
-                                  'x-auth-token': xAuthToken!,
-                                  "Accept": "application/json",
-                                  "content-type": "application/json"
-                                });
-                            print(jsonEncode(myEvent.toJson()));
-                            print(apiTest.body);
+                            final ImagePicker _imagePicker = ImagePicker();
+                            final XFile? image = await _imagePicker.pickImage(
+                                source: ImageSource.gallery);
                             setState(() {
-                              strstr = '${apiTest.body}';
+                              imageList.add(image!.path);
                             });
                           },
-                          child: Text('api호출 2'))
+                          child: Text('이미지 선택')),
+                      ElevatedButton(
+                          onPressed: () async {
+                            var dio = Dio();
+
+                            dio.options.contentType = 'multipart/form-data';
+                            dio.options.headers['x-auth-token'] =
+                                context.read<Token>().token!;
+/*
+                            var eventData = FormData.fromMap({
+                              'title': 'yjyoon',
+                              'startDate': '2021-08-05T00:00:00',
+                              'finishDate': '2021-08-05T00:00:00',
+                              'images': [
+                                await MultipartFile.fromFile(imageList[0]),
+                                await MultipartFile.fromFile(imageList[1])
+                              ],
+                              'hashtags': <String>['tag1', 'tag2', 'tag3'],
+                              'requirements': <bool>[true, false, true],
+                              'template': 0
+                            });
+
+                            var eventResponse = await dio.post(
+                                'http://ec2-3-37-85-236.ap-northeast-2.compute.amazonaws.com:8080/api/v1/events/hashtag/stores/1',
+                                data: eventData);
+
+                            print(eventResponse.data);
+
+                            */
+
+                            var rewardData = FormData.fromMap({
+                              'rewards': [
+                                FormData.fromMap({
+                                  'category': 1,
+                                  'name': '콜라',
+                                  'image': await MultipartFile.fromFile(
+                                      imageList[0]),
+                                  'price': 1000,
+                                  'count': 1000,
+                                  'level': 1,
+                                }),
+                                FormData.fromMap({
+                                  'category': 2,
+                                  'name': '사이다',
+                                  'image': await MultipartFile.fromFile(
+                                      imageList[1]),
+                                  'price': 2000,
+                                  'count': 2000,
+                                  'level': 2,
+                                })
+                              ]
+                            });
+
+                            var rewardData2 = FormData.fromMap({
+                              'rewards[0].level': 1,
+                              'rewards[0].name': 'yjyoon',
+                              'rewards[0].price': 1234,
+                              'rewards[0].count': 1234,
+                              'rewards[0].image':
+                                  await MultipartFile.fromFile(imageList[0]),
+                              'rewards[1].level': 2,
+                              'rewards[1].name': 'yjyoon2',
+                              'rewards[1].price': 4321,
+                              'rewards[1].count': 4321,
+                              'rewards[1].image':
+                                  await MultipartFile.fromFile(imageList[1]),
+                              'rewards[2].level': 3,
+                              'rewards[2].name': 'yjyoon3',
+                              'rewards[2].price': 1432,
+                              'rewards[2].count': 1432,
+                              'rewards[2].image':
+                                  await MultipartFile.fromFile(imageList[2]),
+                            });
+
+                            var rewardResponse = await dio.post(
+                                getApi(API.CREATE_REWARDS, parameter: "1"),
+                                data: rewardData2);
+
+                            print(rewardResponse.data);
+                          },
+                          child: Text('FormData 리워드 생성')),
+                      ElevatedButton(
+                          onPressed: () async {
+                            var dio = Dio();
+
+                            dio.options.contentType = 'multipart/form-data';
+                            dio.options.headers['x-auth-token'] = xAuthToken;
+
+                            var eventData = FormData.fromMap({
+                              'title': 'yjyoon-update',
+                              'startDate': '2021-08-06T00:00:00',
+                              'finishDate': '2021-08-06T00:00:00',
+                              'images': [
+                                await MultipartFile.fromFile(imageList[2]),
+                                await MultipartFile.fromFile(imageList[3])
+                              ],
+                              'hashtags': <String>[
+                                'tag1-update',
+                                'tag2-update',
+                                'tag3-update'
+                              ],
+                              'requirements': <bool>[false, true, false],
+                              'template': 1
+                            });
+
+                            var eventResponse = await dio.put(
+                                'http://ec2-3-37-85-236.ap-northeast-2.compute.amazonaws.com:8080/api/v1/events/hashtag/20',
+                                data: eventData);
+
+                            print(eventResponse.data);
+                          },
+                          child: Text('FormData 이벤트 업데이트'))
                     ],
                   ),
                 ])),
@@ -207,13 +298,6 @@ class _SignInScreenState extends State<SignInScreen> {
 
       // global accessToken with provider
       context.read<Token>().token = xAuthToken;
-
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) => CreateEventStepScreen(),
-        ),
-      );
 
       print(context.read<Token>().token);
     } else {

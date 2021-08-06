@@ -1,15 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:hashchecker_web/api.dart';
 import 'package:hashchecker_web/constants.dart';
 import 'package:hashchecker_web/models/event.dart';
-import 'dart:io';
+import 'package:hashchecker_web/models/reward.dart';
 
 class EventRewards extends StatelessWidget {
   const EventRewards({
     Key? key,
-    required this.event,
+    required this.data,
   }) : super(key: key);
 
-  final Event event;
+  final Map<String, dynamic> data;
 
   @override
   Widget build(BuildContext context) {
@@ -18,21 +19,20 @@ class EventRewards extends StatelessWidget {
           style: TextStyle(fontWeight: FontWeight.bold, fontSize: 17)),
       SizedBox(height: kDefaultPadding),
       SizedBox(
-        height: 116,
+        height: 150,
         child: ListView.separated(
           itemBuilder: (context, index) => ClipRRect(
-            borderRadius: BorderRadius.circular(8.0),
-            child: Image.asset(
-              event.rewardList[index]!.imgPath,
+            borderRadius: BorderRadius.circular(12),
+            child: Image.network(
+              '$s3Url${data['rewards'][index].imgPath}',
               fit: BoxFit.cover,
-              width: 100,
-              height: 110,
+              width: 130,
             ),
           ),
-          itemCount: event.rewardList.length,
+          itemCount: data['rewards'].length,
           scrollDirection: Axis.horizontal,
           padding: const EdgeInsets.fromLTRB(3, 6, 3, 6),
-          separatorBuilder: (context, index) => SizedBox(width: 12),
+          separatorBuilder: (context, index) => SizedBox(width: 18),
         ),
       )
     ]);

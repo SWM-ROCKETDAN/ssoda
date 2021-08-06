@@ -27,8 +27,6 @@ class MyApp extends StatelessWidget {
       title: 'HashChecker',
       theme: ThemeData(
           primarySwatch: _createMaterialColor(kThemeColor),
-          primaryColor: kThemeColor,
-          accentColor: kThemeColor,
           visualDensity: VisualDensity.adaptivePlatformDensity,
           scaffoldBackgroundColor: Colors.white),
       home: SignInScreen(),

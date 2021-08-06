@@ -11,19 +11,36 @@ class InputHelp extends StatelessWidget {
       onTap: () => showDialog<String>(
         context: context,
         builder: (BuildContext context) => AlertDialog(
-          title: Row(children: [
-            Icon(Icons.help_outline),
-            Text('  단가와 수량', style: TextStyle(fontWeight: FontWeight.bold))
-          ]),
-          content: const Text(
-              '추후 마케팅 성과 측정 및 이벤트 조기 종료를 파악하기 위해 입력하는 정보이며 이벤트에 참여하는 고객들에게는 공개되지 않습니다.'),
-          actions: <Widget>[
-            TextButton(
-              onPressed: () => Navigator.pop(context),
-              child: const Text('확인'),
+            title: Center(
+              child:
+                  Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+                Icon(
+                  Icons.help_outline,
+                  size: 22,
+                ),
+                Text(' 단가와 수량',
+                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+                    textAlign: TextAlign.center),
+                SizedBox(
+                  width: 10,
+                )
+              ]),
             ),
-          ],
-        ),
+            content: const Text(
+                '추후 마케팅 성과 측정 및 이벤트 조기 종료를 파악하기 위해 입력하는 정보이며 이벤트에 참여하는 고객들에게는 공개되지 않습니다.',
+                style: TextStyle(fontSize: 14)),
+            actions: [
+              Center(
+                child: ElevatedButton(
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                    child: Text('확인')),
+              )
+            ],
+            contentPadding: const EdgeInsets.fromLTRB(20, 15, 20, 5),
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(15))),
       ),
       child: SizedBox(
         height: 20,

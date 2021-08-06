@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:hashchecker/constants.dart';
 
 class EventTitle extends StatefulWidget {
   final TextEditingController controller;
@@ -13,11 +14,9 @@ class _EventTitleState extends State<EventTitle> {
   Widget build(BuildContext context) {
     return TextField(
         controller: widget.controller,
-        cursorColor: Colors.indigoAccent.shade700,
+        cursorColor: kThemeColor,
         style: TextStyle(
-            fontWeight: FontWeight.bold,
-            fontSize: 20,
-            color: Colors.indigoAccent.shade700),
+            fontWeight: FontWeight.bold, fontSize: 20, color: kThemeColor),
         decoration: InputDecoration(
           hintText: '우리가게 SNS 해시태그 이벤트',
         ));

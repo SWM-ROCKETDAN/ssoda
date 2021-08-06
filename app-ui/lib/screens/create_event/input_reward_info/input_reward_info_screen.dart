@@ -12,7 +12,10 @@ import 'components/price_and_count_input.dart';
 
 class InputRewardInfoScreen extends StatefulWidget {
   final Reward? reward;
-  const InputRewardInfoScreen({Key? key, this.reward}) : super(key: key);
+  final int level;
+  const InputRewardInfoScreen(
+      {Key? key, required this.reward, required this.level})
+      : super(key: key);
 
   @override
   _InputRewardInfoScreenState createState() => _InputRewardInfoScreenState();
@@ -26,8 +29,9 @@ class _InputRewardInfoScreenState extends State<InputRewardInfoScreen> {
   String? _imagePath;
 
   Future _getImageFromGallery() async {
-    var image =
-        await ImagePicker.platform.pickImage(source: ImageSource.gallery);
+    final ImagePicker _imagePicker = ImagePicker();
+    final XFile? image =
+        await _imagePicker.pickImage(source: ImageSource.gallery);
     if (image != null) {
       setState(() {
         _imagePath = image.path;
@@ -120,12 +124,12 @@ class _InputRewardInfoScreenState extends State<InputRewardInfoScreen> {
                     imgPath: _imagePath!,
                     price: int.parse(_priceController.value.text.trim()),
                     count: int.parse(_countController.value.text.trim()),
+                    level: widget.level,
                     category: _choosedCategory!));
           }
         },
         style: ButtonStyle(
-            backgroundColor:
-                MaterialStateProperty.all<Color>(Colors.indigoAccent.shade700),
+            backgroundColor: MaterialStateProperty.all<Color>(kThemeColor),
             shape: MaterialStateProperty.all<OutlinedBorder>(
                 RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(27.0)))),
@@ -170,7 +174,7 @@ class _InputRewardInfoScreenState extends State<InputRewardInfoScreen> {
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
                 color: categoryTileList[index].category == _choosedCategory
-                    ? Theme.of(context).primaryColor
+                    ? kThemeColor
                     : Colors.transparent,
               ),
             ),
@@ -236,7 +240,11 @@ class _InputRewardInfoScreenState extends State<InputRewardInfoScreen> {
   void _showValidationErrorSnackBar(BuildContext context, String message) {
     final snackBar = SnackBar(
       content: Text(message),
-      duration: Duration(seconds: 2),
+      behavior: SnackBarBehavior.floating,
+      duration: const Duration(milliseconds: 2500),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(12.0),
+      ),
     );
     ScaffoldMessenger.of(context).showSnackBar(snackBar);
   }

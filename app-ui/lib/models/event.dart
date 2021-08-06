@@ -44,16 +44,29 @@ class Event {
         'template': template.id
       };
 
-  Event.fromJson(Map<String, dynamic> json)
-      : title = json['title'],
-        rewardList = json['rewards'],
-        period = Period(
+  factory Event.fromJson(Map<String, dynamic> json) {
+    var hashtagsFromJson = json['hashtags'];
+    var imagesFromJson = json['images'];
+    var requiresFromJson = json['requirements'];
+    var rewardsFromJson = json['rewards'] as List;
+
+    List<String> hashtagList = hashtagsFromJson.cast<String>();
+    List<String?> images = imagesFromJson.cast<String?>();
+    List<bool> requireList = requiresFromJson.cast<bool>();
+    List<Reward?> rewardList =
+        rewardsFromJson.map((i) => Reward.fromJson(i)).toList();
+
+    return Event(
+        title: json['title'],
+        rewardList: rewardList,
+        hashtagList: hashtagList,
+        period: Period(
             DateFormat('yyyy-MM-ddTHH:mm:ss').parse(json['startDate']),
             json['finishDate'] == null
                 ? null
                 : DateFormat('yyyy-MM-ddTHH:mm:ss').parse(json['finishDate'])),
-        images = json['images'],
-        hashtagList = json['hashtags'],
-        requireList = json['requirements'],
-        template = Template(json['template']);
+        images: images,
+        requireList: requireList,
+        template: Template(json['template']));
+  }
 }

@@ -1,20 +1,30 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:hashchecker_web/api.dart';
 import 'package:hashchecker_web/constants.dart';
 import 'package:hashchecker_web/models/event.dart';
+import 'package:hashchecker_web/models/reward.dart';
+import 'package:hashchecker_web/screens/reward_get/reward_get_screen.dart';
+import 'package:http/http.dart' as http;
 
 class EventJoinWithUrl extends StatefulWidget {
-  final Event event;
-  const EventJoinWithUrl({Key? key, required this.event}) : super(key: key);
+  final Map<String, dynamic> data;
+  final id;
+  final loading;
+  const EventJoinWithUrl(
+      {Key? key, required this.data, required this.id, required this.loading})
+      : super(key: key);
 
   @override
   _EventJoinWithUrlState createState() => _EventJoinWithUrlState();
 }
 
 class _EventJoinWithUrlState extends State<EventJoinWithUrl> {
+  final _urlController = TextEditingController();
   @override
   Widget build(BuildContext context) {
-    final _urlController = new TextEditingController();
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -23,6 +33,10 @@ class _EventJoinWithUrlState extends State<EventJoinWithUrl> {
         SizedBox(height: kDefaultPadding),
         TextField(
           controller: _urlController,
+          textInputAction: TextInputAction.go,
+          onSubmitted: (_) {
+            sendUrlToGetReward();
+          },
           style: TextStyle(fontSize: 14),
           decoration: InputDecoration(
               border: OutlineInputBorder(),
@@ -36,7 +50,22 @@ class _EventJoinWithUrlState extends State<EventJoinWithUrl> {
             width: MediaQuery.of(context).size.width,
             height: 40,
             child: ElevatedButton(
-                onPressed: () {}, child: Text('URL 업로드하고 이벤트 참여하기'))),
+                onPressed: () {
+                  if (isValidUrl())
+                    sendUrlToGetReward();
+                  else {
+                    final snackBar = SnackBar(
+                      content: Text('올바른 인스타그램 게시글 URL이 아닙니다.'),
+                      behavior: SnackBarBehavior.floating,
+                      duration: const Duration(milliseconds: 2500),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12.0),
+                      ),
+                    );
+                    ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                  }
+                },
+                child: Text('URL 업로드하고 이벤트 참여하기'))),
         SizedBox(height: kDefaultPadding),
         Row(
           children: [
@@ -64,5 +93,44 @@ class _EventJoinWithUrlState extends State<EventJoinWithUrl> {
         ], style: TextStyle(color: Colors.black54, fontSize: 13))),
       ],
     );
+  }
+
+  Future<void> sendUrlToGetReward() async {
+    widget.loading(true);
+
+    final response = await http.post(
+        Uri.parse(getApi(API.GET_REWARD, parameter: widget.id)),
+        headers: {
+          "Access-Control-Allow-Origin": "*",
+          "Access-Control-Allow-Methods":
+              "POST, GET, OPTIONS, PUT, DELETE, HEAD",
+        },
+        body: {
+          'url': _urlController.value.text.trim()
+        });
+
+    //widget.loading(false);
+
+    if (response.statusCode == 200) {
+      Reward reward = Reward.fromJson(jsonDecode(response.body));
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => RewardGetScreen(
+              eventTitle: widget.data['event'].title,
+              rewardName: reward.name,
+              rewardImage: reward.imgPath),
+        ),
+      );
+    }
+  }
+
+  bool isValidUrl() {
+    final String url = _urlController.value.text.trim();
+    if (url == "") return false;
+    if (url.length <= instagramPostUrlPrefix.length ||
+        url.substring(0, instagramPostUrlPrefix.length) !=
+            instagramPostUrlPrefix) return false;
+    return true;
   }
 }

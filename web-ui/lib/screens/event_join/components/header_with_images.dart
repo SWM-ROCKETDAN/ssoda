@@ -1,17 +1,19 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
+import 'package:hashchecker_web/api.dart';
 import 'package:hashchecker_web/models/event.dart';
+import 'package:hashchecker_web/models/reward.dart';
 import 'dart:io';
 
 class HeaderWithImages extends StatelessWidget {
   const HeaderWithImages({
     Key? key,
     required this.size,
-    required this.event,
+    required this.data,
   }) : super(key: key);
 
   final Size size;
-  final Event event;
+  final Map<String, dynamic> data;
 
   @override
   Widget build(BuildContext context) {
@@ -19,17 +21,18 @@ class HeaderWithImages extends StatelessWidget {
       height: size.height * 0.4,
       child: Stack(children: [
         Container(
-            color: Colors.black,
+            color: Colors.black12,
             child: CarouselSlider(
               options: CarouselOptions(
                   autoPlay: true,
                   height: size.height * 0.4 - 15,
                   viewportFraction: 1.0,
                   enlargeCenterPage: false),
-              items: event.images
-                  .map((item) => Container(
+              items: data['event']
+                  .images
+                  .map<Widget>((item) => Container(
                         child: Center(
-                            child: Image.asset(item!,
+                            child: Image.network('$s3Url$item',
                                 fit: BoxFit.cover,
                                 height: size.height * 0.4 - 15)),
                       ))
@@ -40,7 +43,7 @@ class HeaderWithImages extends StatelessWidget {
             right: 0,
             left: 0,
             child: Container(
-              height: 30,
+              height: size.width * 0.14 - 15,
               decoration: BoxDecoration(
                 color: Colors.white,
                 borderRadius: BorderRadius.only(
@@ -55,12 +58,13 @@ class HeaderWithImages extends StatelessWidget {
             left: size.width * 0.36,
             child: Container(
                 height: size.width * 0.28,
+                width: size.width * 0.28,
                 decoration: BoxDecoration(
                     boxShadow: [
                       BoxShadow(
-                          blurRadius: 50,
+                          blurRadius: 25,
                           offset: Offset(0, 5),
-                          color: Colors.black.withOpacity(0.3))
+                          color: Colors.black.withOpacity(0.25))
                     ],
                     color: Colors.grey,
                     shape: BoxShape.circle,

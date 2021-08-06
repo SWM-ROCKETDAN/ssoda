@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:hashchecker/constants.dart';
 
 class EventHashtags extends StatefulWidget {
   final hashtagList;
@@ -22,26 +23,37 @@ class _EventHashtagsState extends State<EventHashtags> {
               widget.hashtagList.length + 1,
               (index) => index == widget.hashtagList.length
                   ? CircleAvatar(
-                      backgroundColor: Theme.of(context).primaryColor,
+                      backgroundColor: kThemeColor,
                       radius: 20,
                       child: IconButton(
                           highlightColor: Colors.transparent,
                           icon: Icon(Icons.add),
                           color: Colors.white,
                           onPressed: () {
-                            _showHashtagInputDialog(context);
+                            if (widget.hashtagList.length == 10) {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(
+                                  content: Text('해시태그는 최대 10개까지만 등록할 수 있습니다!'),
+                                  behavior: SnackBarBehavior.floating,
+                                  duration: const Duration(milliseconds: 2500),
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(12.0),
+                                  ),
+                                ),
+                              );
+                            } else
+                              _showHashtagInputDialog(context);
                           }),
                     )
                   : Chip(
                       avatar: CircleAvatar(
-                        radius: 14,
-                        child: Icon(
-                          Icons.tag,
-                          color: Colors.white,
-                          size: 18,
-                        ),
-                        backgroundColor: Colors.black,
-                      ),
+                          radius: 14,
+                          child: Icon(
+                            Icons.tag,
+                            color: Colors.white,
+                            size: 18,
+                          ),
+                          backgroundColor: Colors.black.withOpacity(0.8)),
                       onDeleted: () {
                         setState(() {
                           widget.hashtagList.removeAt(index);
@@ -50,7 +62,7 @@ class _EventHashtagsState extends State<EventHashtags> {
                       deleteIconColor: Colors.grey,
                       label: Text('${widget.hashtagList[index]}'),
                       labelPadding: const EdgeInsets.fromLTRB(6, 3, 0, 3),
-                      elevation: 3.0,
+                      elevation: 2.0,
                       backgroundColor: Colors.white,
                     ),
             )));
@@ -60,46 +72,82 @@ class _EventHashtagsState extends State<EventHashtags> {
     _controller = TextEditingController();
     return showDialog(
         context: context,
-        builder: (context) => AlertDialog(
-              title: Text(
-                '해시태그 추가하기',
-                style: TextStyle(fontWeight: FontWeight.bold),
-              ),
-              content: TextField(
-                  autofocus: true,
-                  controller: _controller,
-                  decoration: InputDecoration(
-                    hintText: '여기에 입력',
-                  )),
-              actions: [
-                ButtonBar(
-                  children: [
-                    TextButton(
+        builder: (context) {
+          String? errMsg;
+          return StatefulBuilder(builder: (context, setState) {
+            return AlertDialog(
+                title: Center(
+                  child: Text(
+                    '해시태그 추가하기',
+                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+                  ),
+                ),
+                content: IntrinsicHeight(
+                  child: Column(
+                    children: [
+                      TextField(
+                        autofocus: true,
+                        controller: _controller,
+                        textInputAction: TextInputAction.go,
+                        decoration: InputDecoration(
+                          hintText: '우리가게',
+                          prefixIcon: Icon(Icons.tag),
+                        ),
+                        onSubmitted: (_) {
+                          setState(() {
+                            errMsg = _checkHashtag();
+                          });
+                          if (errMsg == null) Navigator.pop(context);
+                        },
+                      ),
+                      SizedBox(height: kDefaultPadding / 5),
+                      if (errMsg != null)
+                        Text(
+                          errMsg!,
+                          style: TextStyle(color: Colors.red, fontSize: 12),
+                        )
+                    ],
+                  ),
+                ),
+                actions: [
+                  Center(
+                    child: ElevatedButton(
                         onPressed: () {
                           setState(() {
-                            Navigator.pop(context);
+                            errMsg = _checkHashtag();
                           });
+                          if (errMsg == null) Navigator.pop(context);
                         },
                         child: Text(
-                          '취소',
+                          '추가',
+                          style: TextStyle(fontWeight: FontWeight.bold),
                         )),
-                    ElevatedButton(
-                        onPressed: () {
-                          setState(() {
-                            if (_controller.value.text.trim().isNotEmpty &&
-                                widget.hashtagList.indexOf(
-                                        _controller.value.text.trim()) ==
-                                    -1) {
-                              widget.hashtagList
-                                  .add(_controller.value.text.trim());
-                              Navigator.pop(context);
-                            }
-                          });
-                        },
-                        child: Text('등록'))
-                  ],
-                )
-              ],
-            ));
+                  )
+                ],
+                contentPadding: const EdgeInsets.fromLTRB(20, 15, 20, 5),
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(15)));
+          });
+        });
+  }
+
+  String? _checkHashtag() {
+    final validChar = RegExp(r'^[a-zA-Z0-9ㄱ-ㅎ가-힣]+$');
+
+    if (_controller.value.text.trim().isEmpty) return '해시태그를 입력해주세요';
+
+    if (!validChar.hasMatch(_controller.value.text.trim()))
+      return '공백 및 특수문자는 사용할 수 없습니다';
+
+    if (widget.hashtagList.indexOf(_controller.value.text.trim()) != -1)
+      return '이미 추가한 해시태그입니다';
+
+    if (_controller.value.text.trim().length > 10)
+      return '해시태그의 길이는 최대 10글자입니다';
+
+    setState(() {
+      widget.hashtagList.add(_controller.value.text.trim());
+    });
+    return null;
   }
 }
