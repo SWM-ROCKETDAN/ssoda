@@ -3,6 +3,8 @@ const baseUrl =
 
 const s3Url = 'https://hashchecker-bucket.s3.ap-northeast-2.amazonaws.com/';
 
+const instagramPostUrlPrefix = 'https://www.instagram.com/p/';
+
 enum API { GET_EVENT, GET_REWARD }
 
 Map<API, String> apiMap = {

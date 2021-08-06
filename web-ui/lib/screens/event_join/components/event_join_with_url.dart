@@ -44,7 +44,22 @@ class _EventJoinWithUrlState extends State<EventJoinWithUrl> {
             width: MediaQuery.of(context).size.width,
             height: 40,
             child: ElevatedButton(
-                onPressed: () {}, child: Text('URL 업로드하고 이벤트 참여하기'))),
+                onPressed: () {
+                  if (isValidUrl())
+                    sendUrlToGetReward();
+                  else {
+                    final snackBar = SnackBar(
+                      content: Text('올바른 인스타그램 게시글 URL이 아닙니다.'),
+                      behavior: SnackBarBehavior.floating,
+                      duration: const Duration(milliseconds: 2500),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12.0),
+                      ),
+                    );
+                    ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                  }
+                },
+                child: Text('URL 업로드하고 이벤트 참여하기'))),
         SizedBox(height: kDefaultPadding),
         Row(
           children: [
@@ -83,7 +98,7 @@ class _EventJoinWithUrlState extends State<EventJoinWithUrl> {
               "POST, GET, OPTIONS, PUT, DELETE, HEAD",
         },
         body: {
-          'url': _urlController.value.toString().trim()
+          'url': _urlController.value.text.trim()
         });
 
     if (response.statusCode == 200) {
@@ -98,5 +113,14 @@ class _EventJoinWithUrlState extends State<EventJoinWithUrl> {
         ),
       );
     }
+  }
+
+  bool isValidUrl() {
+    final String url = _urlController.value.text.trim();
+    if (url == "") return false;
+    if (url.length <= instagramPostUrlPrefix.length ||
+        url.substring(0, instagramPostUrlPrefix.length) !=
+            instagramPostUrlPrefix) return false;
+    return true;
   }
 }

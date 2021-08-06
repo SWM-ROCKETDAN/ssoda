@@ -14,13 +14,8 @@ class Event {
   final List<String> hashtagList;
   final List<bool> requireList;
   final Template template;
-
-  String get getTitle => title;
-  List<String> get getHashtagList => hashtagList;
-  Period get getPeriod => period;
-  List<String?> get getImages => images;
-  List<bool> get getRequireList => requireList;
-  Template get getTemplate => template;
+  final EventStatus status;
+  final int storeId;
 
   Event(
       {required this.title,
@@ -28,7 +23,9 @@ class Event {
       required this.period,
       required this.images,
       required this.requireList,
-      required this.template});
+      required this.template,
+      required this.status,
+      required this.storeId});
 
   factory Event.fromJson(Map<String, dynamic> json) {
     var hashtagsFromJson = json['hashtags'];
@@ -49,6 +46,8 @@ class Event {
                 : DateFormat('yyyy-MM-ddTHH:mm:ss').parse(json['finishDate'])),
         images: images,
         requireList: requireList,
+        status: EventStatus.values[json['status']],
+        storeId: json['store_id'],
         template: Template(json['template']));
   }
 }

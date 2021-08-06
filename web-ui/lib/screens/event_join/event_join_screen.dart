@@ -55,6 +55,9 @@ class _EventJoinScreenState extends State<EventJoinScreen> {
       fetchedData['event'] =
           Event.fromJson(jsonDecode(utf8.decode(eventResponse.bodyBytes)));
 
+      if (fetchedData['event'].status != EventStatus.PROCEEDING)
+        throw Exception('현재 진행 중이지 않은 이벤트입니다.');
+
       final rewardsResponse = await http
           .get(Uri.parse('${baseUrl}events/${widget.id}/rewards'), headers: {
         "Access-Control-Allow-Origin": "*",
@@ -72,7 +75,7 @@ class _EventJoinScreenState extends State<EventJoinScreen> {
 
         return fetchedData;
       } else {
-        throw Exception('이벤트 보상 정보를 불러올 수 없습니다.');
+        throw Exception('이벤트 상품 정보를 불러올 수 없습니다.');
       }
     } else {
       throw Exception('존재하지 않는 이벤트입니다.');
