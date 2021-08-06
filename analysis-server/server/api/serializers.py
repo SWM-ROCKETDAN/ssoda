@@ -83,7 +83,7 @@ class JoinCollectionSerializer(serializers.ModelSerializer):
         return representation
 
 
-class JoinPostAndJoinUserSerializer(serializers.ModelSerializer):
+class JoinSerializer(serializers.ModelSerializer):
     reward = RewardSerializer()
 
     class Meta:
