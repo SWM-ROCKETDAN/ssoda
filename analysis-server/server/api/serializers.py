@@ -61,6 +61,11 @@ class EventSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
+class EventTestSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Event
+        fields = '__all__'
+
 class JoinCollectionSerializer(serializers.ModelSerializer):
     event = EventSerializer()
 
@@ -73,6 +78,27 @@ class JoinCollectionSerializer(serializers.ModelSerializer):
         try:
             join_user = JoinUser.objects.filter(sns_id=representation['sns_id'])
         except Reward.DoesNotExist:
+            pass
+
+        join_user_serializer = JoinUserSerializer(data=join_user, many=True)
+        join_user_serializer.is_valid()
+        if join_user_serializer.data:
+            representation['join_user'] = join_user_serializer.data.pop()
+        else:
+            representation['join_user'] = {}
+        return representation
+
+
+class JoinPostAndJoinUserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = JoinPost
+        fields = '__all__'
+
+    def to_representation(self, instance):
+        representation = super().to_representation(instance)
+        try:
+            join_user = JoinUser.objects.filter(sns_id=representation['sns_id'])
+        except JoinUser.DoesNotExist:
             pass
 
         join_user_serializer = JoinUserSerializer(data=join_user, many=True)
