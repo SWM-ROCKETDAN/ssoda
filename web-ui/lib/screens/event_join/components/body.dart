@@ -19,6 +19,7 @@ class Body extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    print(data['rewards']);
     Size size = MediaQuery.of(context).size;
 
     SystemChrome.setApplicationSwitcherDescription(

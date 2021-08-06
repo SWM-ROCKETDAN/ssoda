@@ -32,8 +32,8 @@ class EventDescription extends StatelessWidget {
   String _createRewardNameList() {
     String rewardNameList = "";
     for (int i = 0; i < data['rewards'].length; i++) {
-      rewardNameList += data['rewards'].name;
-      if (i < data['rewards'].rewardList.length - 1) rewardNameList += " / ";
+      rewardNameList += data['rewards'][i].name;
+      if (i < data['rewards'].length - 1) rewardNameList += " / ";
     }
     return rewardNameList;
   }

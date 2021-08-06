@@ -27,7 +27,7 @@ class _EventJoinScreenState extends State<EventJoinScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: FutureBuilder<dynamic>(
+        body: FutureBuilder<Map<String, dynamic>>(
       future: data,
       builder: (context, snapshot) {
         if (snapshot.hasData) {
@@ -69,9 +69,9 @@ class _EventJoinScreenState extends State<EventJoinScreen> {
         List<dynamic> rewards =
             jsonDecode(utf8.decode(rewardsResponse.bodyBytes));
 
-        rewards.map((reward) {
-          fetchedData['rewards'].add(Reward.fromJson(reward));
-        });
+        for (int i = 0; i < rewards.length; i++) {
+          fetchedData['rewards'].add(Reward.fromJson(rewards[i]));
+        }
 
         return fetchedData;
       } else {

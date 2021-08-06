@@ -2,6 +2,7 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:hashchecker_web/api.dart';
 import 'package:hashchecker_web/models/event.dart';
+import 'package:hashchecker_web/models/reward.dart';
 import 'dart:io';
 
 class HeaderWithImages extends StatelessWidget {
