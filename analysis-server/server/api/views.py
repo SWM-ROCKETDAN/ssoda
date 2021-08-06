@@ -2,8 +2,8 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from django.http import JsonResponse
 from rest_framework import status
-from .models import JoinPost, JoinUser
-from .serializers import JoinPostSerializer, JoinUserSerializer, JoinCollectionSerializer
+from .models import JoinPost, JoinUser, Event
+from .serializers import JoinPostSerializer, JoinUserSerializer, JoinCollectionSerializer, JoinPostAndJoinUserSerializer, EventTestSerializer
 from .modules.instagram.join.crawl.crawl_post import crawl_post
 from .modules.instagram.join.crawl.crawl_user import crawl_user
 from .modules.instagram.join.reward.reward import JoinReward
@@ -71,16 +71,28 @@ class JoinRewardView(APIView):
 
 class ReportEventView(APIView):
     @staticmethod
-    def get_object(pk):
+    def get_join_post(pk):
         try:
             return JoinPost.objects.filter(event_id=pk)
         except JoinPost.DoesNotExist:
             raise status.HTTP_404_NOT_FOUND
 
+    @staticmethod
+    def get_event(pk):
+        try:
+            return Event.objects.get(pk=pk)
+        except Event.DoesNotExist:
+            raise status.HTTP_404_NOT_FOUND
+
     def get(self, request, pk):
-        join_collection = self.get_object(pk)
-        join_collection_serializer = JoinCollectionSerializer(data=join_collection, many=True)
-        join_collection_serializer.is_valid()
-        event_report = EventReport(join_collection_serializer.data, pk)
+        join_post = self.get_join_post(pk)
+        join_post_and_join_user_serializer = JoinPostAndJoinUserSerializer(data=join_post, many=True)
+        join_post_and_join_user_serializer.is_valid()
+
+        event = self.get_event(pk=pk)
+        print(event)
+        event_serializer = EventTestSerializer(event)
+        print(event_serializer.data)
+        event_report = EventReport(join_post_and_join_user_serializer.data, event_serializer.data)
         event_report.test()
-        return JsonResponse(status=status.HTTP_200_OK)
+        return JsonResponse(join_post_and_join_user_serializer.data, status=status.HTTP_200_OK, safe=False)
