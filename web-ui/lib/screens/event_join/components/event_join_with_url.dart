@@ -12,7 +12,9 @@ import 'package:http/http.dart' as http;
 class EventJoinWithUrl extends StatefulWidget {
   final Map<String, dynamic> data;
   final id;
-  const EventJoinWithUrl({Key? key, required this.data, required this.id})
+  final loading;
+  const EventJoinWithUrl(
+      {Key? key, required this.data, required this.id, required this.loading})
       : super(key: key);
 
   @override
@@ -31,6 +33,10 @@ class _EventJoinWithUrlState extends State<EventJoinWithUrl> {
         SizedBox(height: kDefaultPadding),
         TextField(
           controller: _urlController,
+          textInputAction: TextInputAction.go,
+          onSubmitted: (str) {
+            sendUrlToGetReward();
+          },
           style: TextStyle(fontSize: 14),
           decoration: InputDecoration(
               border: OutlineInputBorder(),
@@ -90,6 +96,8 @@ class _EventJoinWithUrlState extends State<EventJoinWithUrl> {
   }
 
   Future<void> sendUrlToGetReward() async {
+    widget.loading(true);
+
     final response = await http.post(
         Uri.parse(getApi(API.GET_REWARD, parameter: widget.id)),
         headers: {
@@ -100,6 +108,8 @@ class _EventJoinWithUrlState extends State<EventJoinWithUrl> {
         body: {
           'url': _urlController.value.text.trim()
         });
+
+    //widget.loading(false);
 
     if (response.statusCode == 200) {
       Reward reward = Reward.fromJson(jsonDecode(response.body));

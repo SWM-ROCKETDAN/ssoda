@@ -19,7 +19,9 @@ dependencies:
   http: ^0.13.3
   intl: ^0.17.0
   url_strategy: ^0.2.0
-
+  loading_overlay: ^0.3.0
+  animated_text_kit: ^4.2.1
+  
 dev_dependencies:
   flutter_test:
     sdk: flutter

@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:hashchecker_web/constants.dart';
 import 'package:hashchecker_web/screens/reward_get/reward_get_screen.dart';
+import 'package:loading_overlay/loading_overlay.dart';
+import 'package:animated_text_kit/animated_text_kit.dart';
 
 class EventListViewScreen extends StatefulWidget {
   const EventListViewScreen({Key? key}) : super(key: key);
@@ -9,8 +12,10 @@ class EventListViewScreen extends StatefulWidget {
 }
 
 class _EventListViewScreenState extends State<EventListViewScreen> {
+  bool _isLoading = true;
   @override
   Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
     return Scaffold(
         appBar: AppBar(),
         body: Container(
