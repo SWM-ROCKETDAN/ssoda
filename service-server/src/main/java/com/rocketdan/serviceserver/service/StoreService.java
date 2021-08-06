@@ -24,18 +24,18 @@ public class StoreService {
     private final UserRepository userRepository;
 
     @Transactional
-    public Long save(Long user_id, StoreSaveRequestDto requestDto) {
+    public Long save(Long user_id, StoreSaveRequestDto requestDto, List<String> images) {
         User linkedUser = userRepository.findById(user_id).orElseThrow(() -> new IllegalArgumentException("해당 가게가 없습니다. id=" + user_id));
-        Store savedStore = requestDto.toEntity();
+        Store savedStore = requestDto.toEntity(images);
         savedStore.setUser(linkedUser);
 
         return storeRepository.save(savedStore).getId();
     }
 
     @Transactional
-    public Long update(Long id, StoreUpdateRequestDto requestDto) {
+    public Long update(Long id, StoreUpdateRequestDto requestDto, List<String> images) {
         Store store = storeRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("해당 가게가 없습니다. id=" + id));
-        store.update(requestDto.getName(), requestDto.getCategory(), requestDto.getAddress(), requestDto.getDescription(), requestDto.getImages());
+        store.update(requestDto.getName(), requestDto.getCategory(), requestDto.getAddress(), requestDto.getDescription(), images);
         return id;
     }
 

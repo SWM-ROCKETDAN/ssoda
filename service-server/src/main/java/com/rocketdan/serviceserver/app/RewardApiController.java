@@ -23,7 +23,7 @@ public class RewardApiController {
     }
 
     @PostMapping("/events/{event_id}")
-    public List<Long> save(@PathVariable Long event_id, @ModelAttribute RewardSaveRequestDto rewards) {
+    public List<Long> saveList(@PathVariable Long event_id, @ModelAttribute RewardSaveRequestDto rewards) {
         List<Long> reward_ids = new ArrayList<>();
 
         // 리워드 1개씩 저장
@@ -34,5 +34,12 @@ public class RewardApiController {
 
         return reward_ids;
     }
+/*
+    @PostMapping("/events/{event_id}")
+    public Long save(@PathVariable Long event_id, @ModelAttribute RewardSaveRequestDto reward) {
+        String imgPath = imageManagerService.upload("image/reward", reward.getImage());
 
+        return rewardService.save(event_id, reward, imgPath);
+    }
+*/
 }
