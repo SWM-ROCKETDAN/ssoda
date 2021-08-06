@@ -50,6 +50,7 @@ public class EventApiController {
     @PutMapping("/hashtag/{id}")
     public Long updateHashtagEvent(@PathVariable Long id, @ModelAttribute HashtagEventUpdateRequest requestDto) {
         List<String> imgPaths = imageManagerService.upload("image/event", requestDto.getImages());
+
         return eventService.updateHashtagEvent(id, requestDto, imgPaths);
     }
 

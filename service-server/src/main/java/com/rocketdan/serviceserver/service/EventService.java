@@ -12,6 +12,7 @@ import com.rocketdan.serviceserver.domain.event.reward.RewardRepository;
 import com.rocketdan.serviceserver.domain.event.type.Hashtag;
 import com.rocketdan.serviceserver.domain.store.Store;
 import com.rocketdan.serviceserver.domain.store.StoreRepository;
+import com.rocketdan.serviceserver.s3.service.ImageManagerService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -24,6 +25,8 @@ import java.util.stream.Collectors;
 public class EventService {
     private final EventRepository eventRepository;
     private final StoreRepository storeRepository;
+
+    private final ImageManagerService imageManagerService;
 
     @Transactional
     public Long saveHashtagEvent(Long store_id, HashtagEventSaveRequest requestDto, List<String> imgPaths) {
@@ -38,6 +41,8 @@ public class EventService {
     @Transactional
     public Long updateHashtagEvent(Long id, HashtagEventUpdateRequest requestDto, List<String> imgPaths) {
         Hashtag event = (Hashtag) eventRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("해당 이벤트가 없습니다. id=" + id));
+
+        imageManagerService.delete(event.getImages());
 
         event.update(requestDto.getTitle(), requestDto.getStatus(), requestDto.getStartDate(), requestDto.getFinishDate(), imgPaths,
                 requestDto.getHashtags(), requestDto.getRequirements(), requestDto.getTemplate());

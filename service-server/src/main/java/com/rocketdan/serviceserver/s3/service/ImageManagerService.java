@@ -42,10 +42,8 @@ public class ImageManagerService {
             uploadFile = uploadFileOpt.get();
 
             // 파일 업로드
-            String saveFilePath = s3Service.upload(uploadFile, filePath, saveFileName);
-
             // 파일명과 저장경로를 객체에 저장해 리턴
-            return File.separator + saveFilePath;
+            return s3Service.upload(uploadFile, filePath, saveFileName);
         } catch (IOException e) {
             e.printStackTrace();
             throw new FileUploadException();
@@ -82,5 +80,17 @@ public class ImageManagerService {
         String filePath = folderName + File.separator + foldDiv;
 
         return createAndUploadFile(image, filePath);
+    }
+
+    // 파일 삭제
+    public void delete(List<String> fileNames) {
+        for (String filePath : fileNames) {
+            // 파일 업로드 호출
+            s3Service.delete(filePath);
+        }
+    }
+
+    public void delete(String fileName) {
+        s3Service.delete(fileName);
     }
 }
