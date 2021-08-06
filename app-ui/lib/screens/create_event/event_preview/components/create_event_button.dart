@@ -48,10 +48,6 @@ class CreateEventButton extends StatelessWidget {
           var eventResponse = await dio
               .post(getApi(API.CREATE_EVENT, parameter: "1"), data: eventData);
 
-          if (eventResponse.statusCode != 200) {
-            print('event error');
-          }
-
           var rewardsData = FormData();
 
           for (int i = 0; i < event.rewardList.length; i++) {
@@ -74,12 +70,6 @@ class CreateEventButton extends StatelessWidget {
               getApi(API.CREATE_REWARDS,
                   parameter: eventResponse.data.toString()),
               data: rewardsData);
-
-          if (rewardsResponse.statusCode != 200) {
-            print('rewards error');
-          }
-
-          print(rewardsResponse.data);
 
           Navigator.push(
             context,
