@@ -32,7 +32,7 @@ class DoneButton extends StatelessWidget {
             height: 50,
             child: TextButton(
               child: Text(
-                '닫기',
+                '완료',
                 style: TextStyle(
                     color: Colors.white,
                     fontSize: 16,

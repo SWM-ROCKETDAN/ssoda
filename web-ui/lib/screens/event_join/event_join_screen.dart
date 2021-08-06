@@ -31,7 +31,7 @@ class _EventJoinScreenState extends State<EventJoinScreen> {
       future: data,
       builder: (context, snapshot) {
         if (snapshot.hasData) {
-          return Body(data: snapshot.data!);
+          return Body(data: snapshot.data!, id: widget.id);
         } else if (snapshot.hasError) {
           return Text('${snapshot.error}');
         }
@@ -55,14 +55,11 @@ class _EventJoinScreenState extends State<EventJoinScreen> {
       fetchedData['event'] =
           Event.fromJson(jsonDecode(utf8.decode(eventResponse.bodyBytes)));
 
-      final rewardsResponse = await http.get(
-          Uri.parse(
-              'http://ec2-3-37-85-236.ap-northeast-2.compute.amazonaws.com:8080/api/v1/events/${widget.id}/rewards'),
-          headers: {
-            "Access-Control-Allow-Origin": "*",
-            "Access-Control-Allow-Methods":
-                "POST, GET, OPTIONS, PUT, DELETE, HEAD",
-          });
+      final rewardsResponse = await http
+          .get(Uri.parse('${baseUrl}events/${widget.id}/rewards'), headers: {
+        "Access-Control-Allow-Origin": "*",
+        "Access-Control-Allow-Methods": "POST, GET, OPTIONS, PUT, DELETE, HEAD",
+      });
       if (rewardsResponse.statusCode == 200) {
         fetchedData['rewards'] = [];
 

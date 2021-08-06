@@ -1,14 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:hashchecker_web/api.dart';
 import 'package:hashchecker_web/constants.dart';
 
 class HeaderWithReward extends StatelessWidget {
   const HeaderWithReward({
     Key? key,
     required this.size,
+    required this.rewardImagePath,
   }) : super(key: key);
 
   final Size size;
-
+  final rewardImagePath;
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -19,8 +21,8 @@ class HeaderWithReward extends StatelessWidget {
           width: size.width,
           height: size.height * 0.4,
           child: ClipRRect(
-              child: Image.asset(
-                'assets/images/confetti.png',
+              child: Image.network(
+                '$s3Url$rewardImagePath',
                 fit: BoxFit.cover,
               ),
               borderRadius:

@@ -3,9 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:hashchecker_web/constants.dart';
 
 class MessageField extends StatelessWidget {
-  const MessageField({
-    Key? key,
-  }) : super(key: key);
+  final eventTitle;
+  final rewardName;
+  const MessageField(
+      {Key? key, required this.eventTitle, required this.rewardName})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -26,7 +28,7 @@ class MessageField extends StatelessWidget {
             AutoSizeText.rich(
               TextSpan(children: [
                 TextSpan(
-                    text: '우리가게 SNS 해시태그 이벤트',
+                    text: eventTitle,
                     style: TextStyle(fontWeight: FontWeight.bold)),
                 TextSpan(text: '에서')
               ]),
@@ -37,7 +39,7 @@ class MessageField extends StatelessWidget {
             AutoSizeText.rich(
               TextSpan(children: [
                 TextSpan(
-                    text: '콜라 500ml',
+                    text: rewardName,
                     style: TextStyle(
                         fontWeight: FontWeight.bold,
                         color: kThemeColor,

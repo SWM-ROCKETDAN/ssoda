@@ -1,21 +1,28 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:hashchecker_web/api.dart';
 import 'package:hashchecker_web/constants.dart';
 import 'package:hashchecker_web/models/event.dart';
 import 'package:hashchecker_web/models/reward.dart';
+import 'package:hashchecker_web/screens/reward_get/reward_get_screen.dart';
+import 'package:http/http.dart' as http;
 
 class EventJoinWithUrl extends StatefulWidget {
   final Map<String, dynamic> data;
-  const EventJoinWithUrl({Key? key, required this.data}) : super(key: key);
+  final id;
+  const EventJoinWithUrl({Key? key, required this.data, required this.id})
+      : super(key: key);
 
   @override
   _EventJoinWithUrlState createState() => _EventJoinWithUrlState();
 }
 
 class _EventJoinWithUrlState extends State<EventJoinWithUrl> {
+  final _urlController = TextEditingController();
   @override
   Widget build(BuildContext context) {
-    final _urlController = new TextEditingController();
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -65,5 +72,31 @@ class _EventJoinWithUrlState extends State<EventJoinWithUrl> {
         ], style: TextStyle(color: Colors.black54, fontSize: 13))),
       ],
     );
+  }
+
+  Future<void> sendUrlToGetReward() async {
+    final response = await http.post(
+        Uri.parse(getApi(API.GET_REWARD, parameter: widget.id)),
+        headers: {
+          "Access-Control-Allow-Origin": "*",
+          "Access-Control-Allow-Methods":
+              "POST, GET, OPTIONS, PUT, DELETE, HEAD",
+        },
+        body: {
+          'url': _urlController.value.toString().trim()
+        });
+
+    if (response.statusCode == 200) {
+      Reward reward = Reward.fromJson(jsonDecode(response.body));
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => RewardGetScreen(
+              eventTitle: widget.data['event'].name,
+              rewardName: reward.name,
+              rewardImage: reward.imgPath),
+        ),
+      );
+    }
   }
 }

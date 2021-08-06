@@ -15,7 +15,9 @@ import 'event_period.dart';
 
 class Body extends StatelessWidget {
   final Map<String, dynamic> data;
-  const Body({Key? key, required this.data}) : super(key: key);
+  final id;
+  const Body({Key? key, required this.data, required this.id})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -48,7 +50,7 @@ class Body extends StatelessWidget {
             Divider(height: kDefaultPadding * 2),
             EventPeriod(data: data),
             Divider(height: kDefaultPadding * 2),
-            EventJoinWithUrl(data: data)
+            EventJoinWithUrl(data: data, id: id)
           ]),
         ),
       ],
