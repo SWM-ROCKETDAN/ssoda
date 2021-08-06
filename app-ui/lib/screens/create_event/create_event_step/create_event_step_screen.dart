@@ -42,7 +42,7 @@ class _CreateEventStepScreenState extends State<CreateEventStepScreen> {
 
   // step 4: set event period
   Period period =
-      Period(DateTime.now(), DateTime.now().add(Duration(days: 30)), 0);
+      Period(DateTime.now(), DateTime.now().add(Duration(days: 30)));
 
   // step 5: select images
   List<String?> imageList = [null];

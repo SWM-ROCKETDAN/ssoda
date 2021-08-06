@@ -9,6 +9,7 @@ import com.rocketdan.serviceserver.domain.store.Store;
 import com.rocketdan.serviceserver.domain.store.StoreRepository;
 import com.rocketdan.serviceserver.domain.user.User;
 import com.rocketdan.serviceserver.domain.user.UserRepository;
+import com.rocketdan.serviceserver.s3.service.ImageManagerService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,22 +21,26 @@ import java.util.stream.Collectors;
 @Service
 public class StoreService {
     private final StoreRepository storeRepository;
-
     private final UserRepository userRepository;
 
+    private final ImageManagerService imageManagerService;
+
     @Transactional
-    public Long save(Long user_id, StoreSaveRequestDto requestDto) {
+    public Long save(Long user_id, StoreSaveRequestDto requestDto, List<String> images) {
         User linkedUser = userRepository.findById(user_id).orElseThrow(() -> new IllegalArgumentException("해당 가게가 없습니다. id=" + user_id));
-        Store savedStore = requestDto.toEntity();
+        Store savedStore = requestDto.toEntity(images);
         savedStore.setUser(linkedUser);
 
         return storeRepository.save(savedStore).getId();
     }
 
     @Transactional
-    public Long update(Long id, StoreUpdateRequestDto requestDto) {
+    public Long update(Long id, StoreUpdateRequestDto requestDto, List<String> images) {
         Store store = storeRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("해당 가게가 없습니다. id=" + id));
-        store.update(requestDto.getName(), requestDto.getCategory(), requestDto.getAddress(), requestDto.getDescription(), requestDto.getImages());
+
+        imageManagerService.delete(store.getImages());
+
+        store.update(requestDto.getName(), requestDto.getCategory(), requestDto.getAddress(), requestDto.getDescription(), images);
         return id;
     }
 

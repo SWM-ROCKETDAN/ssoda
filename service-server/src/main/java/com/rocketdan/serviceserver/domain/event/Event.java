@@ -5,6 +5,8 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import com.rocketdan.serviceserver.domain.event.reward.Reward;
 import com.rocketdan.serviceserver.domain.store.Store;
 import lombok.*;
+import org.joda.time.DateTime;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import java.util.*;
@@ -29,12 +31,10 @@ public abstract class Event {
     private Integer status;
 
     // 이벤트 시작 시간
-    @JsonFormat(shape=JsonFormat.Shape.STRING, pattern="yyyy-MM-dd'T'HH:mm:ss")
     @Column(nullable = false)
     private Date startDate;
 
     // 이벤트 끝 시간 (null -> 영구데이)
-    @JsonFormat(shape=JsonFormat.Shape.STRING, pattern="yyyy-MM-dd'T'HH:mm:ss")
     private Date finishDate;
 
     // 이벤트 이미지 배열
@@ -44,7 +44,6 @@ public abstract class Event {
 
     // 이벤트 보상 목록
     @OneToMany(cascade = CascadeType.ALL)
-    @Column(nullable = false)
     private List<Reward> rewards;
 
     // link된 store
@@ -98,13 +97,12 @@ public abstract class Event {
         }
     }
 
-    public void update(String title, Integer status, Date startDate, Date finishDate, List<String> images, List<Reward> rewards) {
+    public void update(String title, Integer status, Date startDate, Date finishDate, List<String> images) {
         Optional.ofNullable(title).ifPresent(none -> this.title = title);
         Optional.ofNullable(status).ifPresent(none -> this.status = status);
         Optional.ofNullable(startDate).ifPresent(none -> this.startDate = startDate);
         this.finishDate = finishDate;
         Optional.ofNullable(images).ifPresent(none -> this.images = images);
-        Optional.ofNullable(rewards).ifPresent(none -> this.rewards = rewards);
     }
 
     public String getType() {

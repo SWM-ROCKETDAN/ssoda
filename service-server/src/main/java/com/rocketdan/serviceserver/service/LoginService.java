@@ -21,7 +21,7 @@ import java.util.Optional;
 public class LoginService implements LoginUseCase {
 
     private final JwtAuthTokenProvider jwtAuthTokenProvider;
-    private final static long LOGIN_RETENTION_MINUTES = 30;
+    private final static long LOGIN_RETENTION_MINUTES = 10080;
     private final UserRepository userRepository;
 
     @Override

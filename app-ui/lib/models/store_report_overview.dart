@@ -1,5 +1,5 @@
 class StoreReportOverview {
-  final int guestPrice;
+  final double guestPrice;
   final int joinCount;
   final int likeCount;
 

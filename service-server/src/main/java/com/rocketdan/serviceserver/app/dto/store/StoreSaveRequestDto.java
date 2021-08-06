@@ -5,20 +5,23 @@ import com.rocketdan.serviceserver.domain.store.Store;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
 @NoArgsConstructor
 @Getter
+@Setter
 public class StoreSaveRequestDto {
     private String name;
     private Integer category;
     private Address address;
     private String description;
-    private List<String> images;
+    private List<MultipartFile> images;
 
     @Builder
-    public StoreSaveRequestDto(String name, Integer category, Address address, String description, List<String> images) {
+    public StoreSaveRequestDto(String name, Integer category, Address address, String description, List<MultipartFile> images) {
         this.name = name;
         this.category = category;
         this.address = address;
@@ -26,7 +29,7 @@ public class StoreSaveRequestDto {
         this.images = images;
     }
 
-    public Store toEntity() {
+    public Store toEntity(List<String> images) {
         return Store.builder()
                 .name(name)
                 .category(category)

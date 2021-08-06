@@ -5,32 +5,33 @@ import com.rocketdan.serviceserver.app.dto.event.EventResponseDto;
 import com.rocketdan.serviceserver.app.dto.event.hashtag.HashtagEventResponseDto;
 import com.rocketdan.serviceserver.app.dto.event.hashtag.HashtagEventSaveRequest;
 import com.rocketdan.serviceserver.app.dto.event.hashtag.HashtagEventUpdateRequest;
+import com.rocketdan.serviceserver.app.dto.reward.RewardResponseDto;
 import com.rocketdan.serviceserver.domain.event.Event;
 import com.rocketdan.serviceserver.domain.event.EventRepository;
 import com.rocketdan.serviceserver.domain.event.reward.RewardRepository;
 import com.rocketdan.serviceserver.domain.event.type.Hashtag;
 import com.rocketdan.serviceserver.domain.store.Store;
 import com.rocketdan.serviceserver.domain.store.StoreRepository;
+import com.rocketdan.serviceserver.s3.service.ImageManagerService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service
 public class EventService {
     private final EventRepository eventRepository;
-    private final RewardRepository rewardRepository;
-
     private final StoreRepository storeRepository;
 
+    private final ImageManagerService imageManagerService;
+
     @Transactional
-    public Long saveHashtagEvent(Long store_id, HashtagEventSaveRequest requestDto) {
+    public Long saveHashtagEvent(Long store_id, HashtagEventSaveRequest requestDto, List<String> imgPaths) {
         Store linkedStore = storeRepository.findById(store_id).orElseThrow(() -> new IllegalArgumentException("해당 가게가 없습니다. id=" + store_id));
-        Event savedEvent = requestDto.toEntity();
+        Event savedEvent = requestDto.toEntity(imgPaths);
         savedEvent.setStore(linkedStore);
         savedEvent.updateStatus();
 
@@ -38,15 +39,12 @@ public class EventService {
     }
 
     @Transactional
-    public Long updateHashtagEvent(Long id, HashtagEventUpdateRequest requestDto) {
+    public Long updateHashtagEvent(Long id, HashtagEventUpdateRequest requestDto, List<String> imgPaths) {
         Hashtag event = (Hashtag) eventRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("해당 이벤트가 없습니다. id=" + id));
 
-        Optional.ofNullable(requestDto.getRewards()).ifPresent(none -> {
-                event.getRewards().forEach(rewardRepository::delete); // 기존에 저장되었던 reward 삭제
-        });
+        imageManagerService.delete(event.getImages());
 
-        event.update(requestDto.getTitle(), requestDto.getStatus(), requestDto.getStartDate(), requestDto.getFinishDate(),
-                requestDto.getImages(), requestDto.getRewards(),
+        event.update(requestDto.getTitle(), requestDto.getStatus(), requestDto.getStartDate(), requestDto.getFinishDate(), imgPaths,
                 requestDto.getHashtags(), requestDto.getRequirements(), requestDto.getTemplate());
 
         return id;
@@ -70,6 +68,14 @@ public class EventService {
                 // 람다식 사용. 실제 코드 : .map(posts -> new PostsListResponseDto(posts))
                 // eventRepository 결과로 넘어온 Event의 Stream을 map울 통해 EventListResponseDto 변환 -> List로 반환하는 메소드
                 .map(EventListResponseDto::new)
+                .collect(Collectors.toList());
+    }
+
+    @Transactional(readOnly = true)
+    public List<RewardResponseDto> getRewardListById(Long id) {
+        Event entity = eventRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("해당 이벤트가 없습니다. id=" + id));
+        return entity.getRewards().stream()
+                .map(RewardResponseDto::new)
                 .collect(Collectors.toList());
     }
 

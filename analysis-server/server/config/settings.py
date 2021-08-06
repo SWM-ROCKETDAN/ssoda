@@ -16,7 +16,7 @@ import sys
 
 sys.path.append(os.path.dirname(os.path.abspath(os.path.dirname(os.path.abspath(os.path.dirname(__file__))))))
 
-from server.secret.key import DataBaseConfig
+from server.secret.config import DataBaseConfig
 import pymysql
 pymysql.install_as_MySQLdb()
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -81,8 +81,15 @@ WSGI_APPLICATION = 'config.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': DataBaseConfig.NAME,
+        'USER': DataBaseConfig.USER,
+        'PASSWORD': DataBaseConfig.PASSWORD,
+        'HOST': DataBaseConfig.HOST,
+        'PORT': DataBaseConfig.PORT,
+        'OPTIONS': {
+            'init_command': "SET sql_mode='STRICT_TRANS_TABLES'"
+        },
     },
 }
 

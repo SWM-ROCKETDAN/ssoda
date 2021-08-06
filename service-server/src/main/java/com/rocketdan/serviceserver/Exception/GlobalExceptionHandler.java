@@ -1,5 +1,7 @@
 package com.rocketdan.serviceserver.Exception;
 
+import com.rocketdan.serviceserver.Exception.file.FileConvertException;
+import com.rocketdan.serviceserver.Exception.file.FileUploadException;
 import com.rocketdan.serviceserver.Exception.analysis.AnalysisServerErrorException;
 import com.rocketdan.serviceserver.Exception.join.DuplicateUrlException;
 import com.rocketdan.serviceserver.Exception.join.JoinEventFailedException;
@@ -61,7 +63,37 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(response, HttpStatus.UNAUTHORIZED);
     }
 
-    // 이벤트 참여
+    // file 처리
+
+    @ExceptionHandler(FileUploadException.class)
+    protected ResponseEntity<CommonResponse> handleFileUploadException(FileUploadException e) {
+
+        log.info("handleFileUploadException", e);
+
+        CommonResponse response = CommonResponse.builder()
+                .code(ErrorCode.FILE_UPLOAD_FAILED.getCode())
+                .message(ErrorCode.FILE_UPLOAD_FAILED.getMessage())
+                .status(ErrorCode.FILE_UPLOAD_FAILED.getStatus())
+                .build();
+
+        return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    @ExceptionHandler(FileConvertException.class)
+    protected ResponseEntity<CommonResponse> handleFileConvertException(FileConvertException e) {
+
+        log.info("handleFileConvertException", e);
+
+        CommonResponse response = CommonResponse.builder()
+                .code(ErrorCode.FILE_CONVERT_FAILED.getCode())
+                .message(ErrorCode.FILE_CONVERT_FAILED.getMessage())
+                .status(ErrorCode.FILE_CONVERT_FAILED.getStatus())
+                .build();
+
+        return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    // event 참여
 
     @ExceptionHandler(DuplicateUrlException.class)
     protected ResponseEntity<CommonResponse> handleDuplicateUrlException(DuplicateUrlException e) {

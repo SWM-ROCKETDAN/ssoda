@@ -4,12 +4,22 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:hashchecker/api.dart';
 import 'package:hashchecker/constants.dart';
+import 'package:hashchecker/models/address.dart';
+import 'package:hashchecker/models/event.dart';
+import 'package:hashchecker/models/period.dart';
+import 'package:hashchecker/models/reward.dart';
+import 'package:hashchecker/models/reward_category.dart';
+import 'package:hashchecker/models/store.dart';
+import 'package:hashchecker/models/template.dart';
+import 'package:hashchecker/models/token.dart';
 import 'package:hashchecker/models/user_social_account.dart';
+import 'package:hashchecker/screens/create_event/create_event_step/create_event_step_screen.dart';
 import 'package:kakao_flutter_sdk/auth.dart';
 import 'package:kakao_flutter_sdk/user.dart';
 import 'package:kakao_flutter_sdk/common.dart';
 import 'package:flutter_naver_login/flutter_naver_login.dart';
 import 'package:http/http.dart' as http;
+import 'package:provider/provider.dart';
 
 import 'components/kakao_sign_in_button.dart';
 import 'components/naver_sign_in_button.dart';
@@ -22,6 +32,26 @@ class SignInScreen extends StatefulWidget {
 }
 
 class _SignInScreenState extends State<SignInScreen> {
+  String? strstr;
+  String? xAuthToken;
+  String? userId;
+
+  Event myEvent = Event(
+      title: 'yjyoon2',
+      rewardList: <Reward>[
+        Reward(
+            name: 'reward1',
+            imgPath: 'img',
+            price: 1234,
+            count: 1234,
+            category: RewardCategory.DRINK),
+      ],
+      hashtagList: <String>['hash1', 'hash2'],
+      period: Period(DateTime.now(), DateTime.now()),
+      images: <String>['img1', 'img2', 'img3'],
+      requireList: <bool>[true, false, true],
+      template: Template(0));
+
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -35,7 +65,13 @@ class _SignInScreenState extends State<SignInScreen> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Expanded(
-                    child: Text('ㅎㅇ'),
+                    child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text('${userId}\n'),
+                          Text('${xAuthToken}\n'),
+                          Text('$strstr'),
+                        ]),
                   ),
                   Column(
                     children: [
@@ -48,6 +84,35 @@ class _SignInScreenState extends State<SignInScreen> {
                         size: size,
                         signIn: kakaoLoginPressed,
                       ),
+                      ElevatedButton(
+                          onPressed: () async {
+                            final response = await http.get(
+                              Uri.parse(
+                                  'http://ec2-3-37-85-236.ap-northeast-2.compute.amazonaws.com:8080/api/v1/events'),
+                            );
+                            setState(() {
+                              strstr = response.body;
+                            });
+                          },
+                          child: Text('api호출 1')),
+                      ElevatedButton(
+                          onPressed: () async {
+                            final apiTest = await http.post(
+                                Uri.parse(
+                                    'http://ec2-3-37-85-236.ap-northeast-2.compute.amazonaws.com:8080/api/v1/events/hashtag/stores/5'),
+                                body: jsonEncode(myEvent.toJson()),
+                                headers: {
+                                  'x-auth-token': xAuthToken!,
+                                  "Accept": "application/json",
+                                  "content-type": "application/json"
+                                });
+                            print(jsonEncode(myEvent.toJson()));
+                            print(apiTest.body);
+                            setState(() {
+                              strstr = '${apiTest.body}';
+                            });
+                          },
+                          child: Text('api호출 2'))
                     ],
                   ),
                 ])),
@@ -127,8 +192,6 @@ class _SignInScreenState extends State<SignInScreen> {
   }
 
   Future<void> signIn(UserSocialAccount account) async {
-    late String xAuthToken;
-
     final response = await http.post(Uri.parse(getApi(API.LOGIN)),
         body: jsonEncode(account.toJson()),
         headers: {
@@ -137,14 +200,22 @@ class _SignInScreenState extends State<SignInScreen> {
         });
 
     if (response.statusCode == 200) {
-      xAuthToken = jsonDecode(response.body)['message'];
+      setState(() {
+        xAuthToken = response.headers['x-auth-token']!;
+        userId = jsonDecode(response.body)['message']!;
+      });
 
-      // apiTest
-      final apiTest = await http.get(
-        Uri.parse(getApi(API.GET_ALL_EVENTS)),
-        headers: {'x-auth-token': xAuthToken},
+      // global accessToken with provider
+      context.read<Token>().token = xAuthToken;
+
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => CreateEventStepScreen(),
+        ),
       );
-      print(apiTest.body);
+
+      print(context.read<Token>().token);
     } else {
       showLoginFailDialog();
     }
