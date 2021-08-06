@@ -98,7 +98,8 @@ class _SignInScreenState extends State<SignInScreen> {
                             var dio = Dio();
 
                             dio.options.contentType = 'multipart/form-data';
-                            dio.options.headers['x-auth-token'] = xAuthToken;
+                            dio.options.headers['x-auth-token'] =
+                                context.read<Token>().token!;
 /*
                             var eventData = FormData.fromMap({
                               'title': 'yjyoon',
@@ -166,7 +167,7 @@ class _SignInScreenState extends State<SignInScreen> {
                             });
 
                             var rewardResponse = await dio.post(
-                                'http://ec2-3-37-85-236.ap-northeast-2.compute.amazonaws.com:8080/api/v1/rewards/events/20',
+                                getApi(API.CREATE_REWARDS, parameter: "1"),
                                 data: rewardData2);
 
                             print(rewardResponse.data);
