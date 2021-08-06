@@ -29,7 +29,7 @@ class EventHashtags extends StatelessWidget {
                   fontWeight: FontWeight.bold),
             ),
             onPressed: () {
-              _copyHashtagsToClipboard(context);
+              _copyAllHashtagsToClipboard(context);
             },
             style: ButtonStyle(
                 padding: MaterialStateProperty.all<EdgeInsetsGeometry>(
@@ -49,25 +49,31 @@ class EventHashtags extends StatelessWidget {
           spacing: 8.0,
           children: List.generate(
               data['event'].hashtagList.length,
-              (index) => Chip(
-                    avatar: CircleAvatar(
-                      radius: 14,
-                      child: Icon(
-                        Icons.tag,
-                        color: Colors.white,
-                        size: 18,
+              (index) => GestureDetector(
+                    onTap: () {
+                      _copyHashtagToClipboard(
+                          context, data['event'].hashtagList[index]);
+                    },
+                    child: Chip(
+                      avatar: CircleAvatar(
+                        radius: 14,
+                        child: Icon(
+                          Icons.tag,
+                          color: Colors.white,
+                          size: 18,
+                        ),
+                        backgroundColor: Colors.black.withOpacity(0.8),
                       ),
-                      backgroundColor: Colors.black.withOpacity(0.8),
+                      label: Text(data['event'].hashtagList[index]),
+                      labelPadding: const EdgeInsets.fromLTRB(6, 2, 5, 2),
+                      elevation: 3.0,
+                      backgroundColor: Colors.white,
                     ),
-                    label: Text(data['event'].hashtagList[index]),
-                    labelPadding: const EdgeInsets.fromLTRB(6, 2, 5, 2),
-                    elevation: 3.0,
-                    backgroundColor: Colors.white,
                   )))
     ]);
   }
 
-  void _copyHashtagsToClipboard(BuildContext context) {
+  void _copyAllHashtagsToClipboard(BuildContext context) {
     String hashtags = "";
     for (int i = 0; i < data['event'].hashtagList.length; i++)
       hashtags += '#${data['event'].hashtagList[i]} ';
@@ -76,6 +82,20 @@ class EventHashtags extends StatelessWidget {
 
     final snackBar = SnackBar(
       content: Text('해시태그 목록이 전부 클립보드에 복사되었습니다.'),
+      behavior: SnackBarBehavior.floating,
+      duration: const Duration(milliseconds: 2500),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(12.0),
+      ),
+    );
+    ScaffoldMessenger.of(context).showSnackBar(snackBar);
+  }
+
+  void _copyHashtagToClipboard(BuildContext context, String hashtag) {
+    Clipboard.setData(ClipboardData(text: '#$hashtag'));
+
+    final snackBar = SnackBar(
+      content: Text('#$hashtag 해시태그가 클립보드에 복사되었습니다.'),
       behavior: SnackBarBehavior.floating,
       duration: const Duration(milliseconds: 2500),
       shape: RoundedRectangleBorder(
