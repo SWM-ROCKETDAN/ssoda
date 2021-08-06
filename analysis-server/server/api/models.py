@@ -61,49 +61,15 @@ class HashtagRequirements(models.Model):
         db_table = 'hashtag_requirements'
 
 
-class JoinUser(models.Model):
-    id = models.BigAutoField(primary_key=True)
-    sns_id = models.CharField(max_length=255)
-    url = models.CharField(max_length=255, blank=True, null=True)
-    type = models.IntegerField()
-    status = models.IntegerField(blank=True, null=True)
-    follow_count = models.IntegerField(blank=True, null=True)
-    post_count = models.IntegerField(blank=True, null=True)
-    create_date = models.DateTimeField()
-    update_date = models.DateTimeField(blank=True, null=True)
-
-    class Meta:
-        db_table = 'join_user'
-
-
-class JoinPost(models.Model):
-    id = models.BigAutoField(primary_key=True)
-    event = models.ForeignKey(Event, related_name='event', on_delete=models.CASCADE)
-    rewards_level = models.IntegerField(blank=True, null=True)
-    sns_id = models.CharField(max_length=255, blank=True, null=True)
-    url = models.CharField(max_length=255)
-    type = models.IntegerField(blank=True, null=True)
-    status = models.IntegerField(blank=True, null=True)
-    like_count = models.IntegerField(blank=True, null=True)
-    comment_count = models.IntegerField(blank=True, null=True)
-    hashtags = models.CharField(max_length=255, blank=True, null=True)
-    create_date = models.DateTimeField()
-    upload_date = models.DateTimeField(blank=True, null=True)
-    private_date = models.DateTimeField(blank=True, null=True)
-    delete_date = models.DateTimeField(blank=True, null=True)
-    update_date = models.DateTimeField(blank=True, null=True)
-
-    class Meta:
-        db_table = 'join_post'
-
-
 class Reward(models.Model):
-    id = models.BigAutoField(primary_key=True)
     category = models.IntegerField(blank=True, null=True)
     count = models.IntegerField(blank=True, null=True)
     image = models.CharField(max_length=255, blank=True, null=True)
     name = models.CharField(max_length=255)
     price = models.IntegerField(blank=True, null=True)
+    level = models.BigIntegerField(blank=True, null=True)
+    used_count = models.IntegerField(blank=True, null=True)
+    event = models.ForeignKey(Event, related_name='rewards', on_delete=models.DO_NOTHING, blank=True, null=True)
 
     class Meta:
         db_table = 'reward'
@@ -131,3 +97,39 @@ class StoreImages(models.Model):
 
     class Meta:
         db_table = 'store_images'
+
+
+class JoinPost(models.Model):
+    id = models.BigAutoField(primary_key=True)
+    event = models.ForeignKey(Event, related_name='event', on_delete=models.CASCADE)
+    reward = models.ForeignKey(Reward, related_name='reward', on_delete=models.DO_NOTHING, blank=True, null=True)
+    sns_id = models.CharField(max_length=255, blank=True, null=True)
+    url = models.CharField(max_length=255)
+    type = models.IntegerField(blank=True, null=True)
+    status = models.IntegerField(blank=True, null=True)
+    like_count = models.IntegerField(blank=True, null=True)
+    comment_count = models.IntegerField(blank=True, null=True)
+    hashtags = models.CharField(max_length=255, blank=True, null=True)
+    create_date = models.DateTimeField()
+    upload_date = models.DateTimeField(blank=True, null=True)
+    private_date = models.DateTimeField(blank=True, null=True)
+    delete_date = models.DateTimeField(blank=True, null=True)
+    update_date = models.DateTimeField(blank=True, null=True)
+
+    class Meta:
+        db_table = 'join_post'
+
+
+class JoinUser(models.Model):
+    id = models.BigAutoField(primary_key=True)
+    sns_id = models.CharField(max_length=255)
+    url = models.CharField(max_length=255, blank=True, null=True)
+    type = models.IntegerField()
+    status = models.IntegerField(blank=True, null=True)
+    follow_count = models.IntegerField(blank=True, null=True)
+    post_count = models.IntegerField(blank=True, null=True)
+    create_date = models.DateTimeField()
+    update_date = models.DateTimeField(blank=True, null=True)
+
+    class Meta:
+        db_table = 'join_user'

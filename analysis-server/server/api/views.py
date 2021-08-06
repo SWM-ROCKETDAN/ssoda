@@ -3,7 +3,7 @@ from django.http import JsonResponse
 from rest_framework import status
 from .models import JoinPost, JoinUser, Event
 from .serializers import JoinPostSerializer, JoinUserSerializer, JoinCollectionSerializer, \
-    JoinPostAndJoinUserSerializer, EventTestSerializer
+    JoinPostAndJoinUserSerializer, EventSerializer
 from .modules.instagram.join.crawl.crawl_post import crawl_post
 from .modules.instagram.join.crawl.crawl_user import crawl_user
 from .modules.instagram.join.reward.reward import JoinReward
@@ -101,7 +101,7 @@ class ReportEventView(APIView):
 
         event = self.get_event(pk=pk)
         print(event)
-        event_serializer = EventTestSerializer(event)
+        event_serializer = EventSerializer(event)
         print(event_serializer.data)
         event_report = EventReport(join_post_and_join_user_serializer.data, event_serializer.data)
         event_report.test()
