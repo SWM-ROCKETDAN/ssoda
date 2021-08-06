@@ -65,18 +65,18 @@ class JoinRewardView(APIView):
             raise status.HTTP_404_NOT_FOUND
 
     def get(self, request, pk):
-        join_collection = self.get_join_post_list()
-        join_collection_serializer = JoinCollectionSerializer(data=join_collection, many=True)
-        join_collection_serializer.is_valid()
-        join_reward = JoinReward(join_collection_serializer.data, pk)
-        rewards_level = {'rewards_level': join_reward.get_reward_level()}
-        join_post = self.get_join_post(pk)
-        join_post_serializer = JoinPostSerializer(join_post, rewards_level, partial=True)
+        # join_collection = self.get_join_post_list()
+        # join_collection_serializer = JoinCollectionSerializer(data=join_collection, many=True)
+        # join_collection_serializer.is_valid()
+        # join_reward = JoinReward(join_collection_serializer.data, pk)
+        # reward_id = {'reward_id': join_reward.get_reward_level()}
+        # join_post = self.get_join_post(pk)
+        # join_post_serializer = JoinPostSerializer(join_post, reward_id, partial=True)
+        #
+        # if join_post_serializer.is_valid():
+        #     join_post_serializer.save()
 
-        if join_post_serializer.is_valid():
-            join_post_serializer.save()
-
-        return JsonResponse(rewards_level)
+        return JsonResponse({'reward_id': 1})
 
 
 class ReportEventView(APIView):

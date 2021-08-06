@@ -61,6 +61,7 @@ class EventSerializer(serializers.ModelSerializer):
 
 class JoinCollectionSerializer(serializers.ModelSerializer):
     event = EventSerializer()
+    reward = RewardSerializer()
 
     class Meta:
         model = JoinPost
