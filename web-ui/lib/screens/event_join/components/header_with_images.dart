@@ -21,7 +21,7 @@ class HeaderWithImages extends StatelessWidget {
       height: size.height * 0.4,
       child: Stack(children: [
         Container(
-            color: Colors.black,
+            color: Colors.black12,
             child: CarouselSlider(
               options: CarouselOptions(
                   autoPlay: true,
@@ -30,7 +30,7 @@ class HeaderWithImages extends StatelessWidget {
                   enlargeCenterPage: false),
               items: data['event']
                   .images
-                  .map((item) => Container(
+                  .map<Widget>((item) => Container(
                         child: Center(
                             child: Image.network('$s3Url$item',
                                 fit: BoxFit.cover,

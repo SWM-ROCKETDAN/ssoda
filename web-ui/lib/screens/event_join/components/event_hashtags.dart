@@ -31,7 +31,7 @@ class EventHashtags extends StatelessWidget {
                         color: Colors.white,
                         size: 18,
                       ),
-                      backgroundColor: Colors.black,
+                      backgroundColor: Colors.black.withOpacity(0.8),
                     ),
                     label: Text(data['event'].hashtagList[index]),
                     labelPadding: const EdgeInsets.fromLTRB(6, 2, 5, 2),

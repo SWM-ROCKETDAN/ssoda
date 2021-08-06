@@ -22,7 +22,7 @@ class EventRewards extends StatelessWidget {
         height: 150,
         child: ListView.separated(
           itemBuilder: (context, index) => ClipRRect(
-            borderRadius: BorderRadius.circular(8.0),
+            borderRadius: BorderRadius.circular(12),
             child: Image.network(
               '$s3Url${data['rewards'][index].imgPath}',
               fit: BoxFit.cover,
@@ -32,7 +32,7 @@ class EventRewards extends StatelessWidget {
           itemCount: data['rewards'].length,
           scrollDirection: Axis.horizontal,
           padding: const EdgeInsets.fromLTRB(3, 6, 3, 6),
-          separatorBuilder: (context, index) => SizedBox(width: 12),
+          separatorBuilder: (context, index) => SizedBox(width: 18),
         ),
       )
     ]);
