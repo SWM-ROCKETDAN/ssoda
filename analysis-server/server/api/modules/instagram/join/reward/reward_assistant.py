@@ -55,23 +55,18 @@ def get_reward_point_rate(join_list: list, join: dict, event: dict) -> list:
     for key, val in reward_point_dict.items():
         reward_point_list.append(val)
 
-    print(reward_point_list)
     reward_point_list.sort()
     reward_point_rate = 0
 
     for key, val in reward_point_dict.items():
         if key == join['id']:
-            print(reward_point_list.index(val), len(reward_point_dict))
             reward_point_rate = (reward_point_list.index(val) + 1) / len(reward_point_dict)
 
-    print(reward_point_dict)
-    print(reward_point_list)
-    print(reward_point_rate)
     return reward_point_rate
 
 
 # 리워드 레벨
-def get_reward(join_list, join, event) -> int:
+def get_reward(join_list, join, event) -> tuple:
     reward_rate_list = get_reward_rate_list(event)
     reward_point_rate = get_reward_point_rate(join_list, join, event)
 
