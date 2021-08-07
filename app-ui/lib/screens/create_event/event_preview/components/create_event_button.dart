@@ -64,7 +64,7 @@ class CreateEventButton extends StatelessWidget {
             rewardsData.fields.add(MapEntry('rewards[$i].category',
                 event.rewardList[i]!.category.index.toString()));
             rewardsData.files.add(MapEntry('rewards[$i].image',
-                MultipartFile.fromFileSync(event.images[i]!)));
+                MultipartFile.fromFileSync(event.rewardList[i]!.imgPath)));
           }
 
           var rewardsResponse = await dio.post(
