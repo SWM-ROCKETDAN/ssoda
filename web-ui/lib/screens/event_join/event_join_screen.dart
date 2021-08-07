@@ -59,7 +59,7 @@ class _EventJoinScreenState extends State<EventJoinScreen> {
         throw Exception('현재 진행 중이지 않은 이벤트입니다.');
 
       final rewardsResponse = await http
-          .get(Uri.parse('${baseUrl}events/${widget.id}/rewards'), headers: {
+          .get(Uri.parse('$baseUrl/events/${widget.id}/rewards'), headers: {
         "Access-Control-Allow-Origin": "*",
         "Access-Control-Allow-Methods": "POST, GET, OPTIONS, PUT, DELETE, HEAD",
       });

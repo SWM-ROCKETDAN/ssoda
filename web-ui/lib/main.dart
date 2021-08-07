@@ -18,9 +18,10 @@ class MyApp extends StatelessWidget {
       onGenerateRoute: FRouter.router.generator,
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-          primarySwatch: Colors.indigo,
-          visualDensity: VisualDensity.adaptivePlatformDensity,
-          scaffoldBackgroundColor: Colors.white),
+        primarySwatch: Colors.indigo,
+        visualDensity: VisualDensity.adaptivePlatformDensity,
+        scaffoldBackgroundColor: Colors.white,
+      ),
       home: EventListViewScreen(),
     );
   }

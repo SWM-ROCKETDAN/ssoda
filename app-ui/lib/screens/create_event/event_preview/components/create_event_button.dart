@@ -48,6 +48,7 @@ class CreateEventButton extends StatelessWidget {
           var eventResponse = await dio
               .post(getApi(API.CREATE_EVENT, parameter: "1"), data: eventData);
 
+          if (eventResponse.statusCode != 200) print('이벤트 생성 오류');
           var rewardsData = FormData();
 
           for (int i = 0; i < event.rewardList.length; i++) {
@@ -63,13 +64,15 @@ class CreateEventButton extends StatelessWidget {
             rewardsData.fields.add(MapEntry('rewards[$i].category',
                 event.rewardList[i]!.category.index.toString()));
             rewardsData.files.add(MapEntry('rewards[$i].image',
-                MultipartFile.fromFileSync(event.images[i]!)));
+                MultipartFile.fromFileSync(event.rewardList[i]!.imgPath)));
           }
 
           var rewardsResponse = await dio.post(
               getApi(API.CREATE_REWARDS,
                   parameter: eventResponse.data.toString()),
               data: rewardsData);
+
+          if (rewardsResponse.statusCode != 200) print('보상 생성 오류');
 
           Navigator.push(
             context,

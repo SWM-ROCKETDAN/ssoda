@@ -23,6 +23,7 @@ class EventJoinWithUrl extends StatefulWidget {
 
 class _EventJoinWithUrlState extends State<EventJoinWithUrl> {
   final _urlController = TextEditingController();
+  bool _urlEnabled = true;
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -32,10 +33,23 @@ class _EventJoinWithUrlState extends State<EventJoinWithUrl> {
             style: TextStyle(fontWeight: FontWeight.bold, fontSize: 17)),
         SizedBox(height: kDefaultPadding),
         TextField(
+          enabled: _urlEnabled,
           controller: _urlController,
           textInputAction: TextInputAction.go,
           onSubmitted: (_) {
-            sendUrlToGetReward();
+            if (isValidUrl())
+              sendUrlToGetReward();
+            else {
+              final snackBar = SnackBar(
+                content: Text('올바른 인스타그램 게시글 URL이 아닙니다.'),
+                behavior: SnackBarBehavior.floating,
+                duration: const Duration(milliseconds: 2500),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12.0),
+                ),
+              );
+              ScaffoldMessenger.of(context).showSnackBar(snackBar);
+            }
           },
           style: TextStyle(fontSize: 14),
           decoration: InputDecoration(
@@ -50,21 +64,23 @@ class _EventJoinWithUrlState extends State<EventJoinWithUrl> {
             width: MediaQuery.of(context).size.width,
             height: 40,
             child: ElevatedButton(
-                onPressed: () {
-                  if (isValidUrl())
-                    sendUrlToGetReward();
-                  else {
-                    final snackBar = SnackBar(
-                      content: Text('올바른 인스타그램 게시글 URL이 아닙니다.'),
-                      behavior: SnackBarBehavior.floating,
-                      duration: const Duration(milliseconds: 2500),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(12.0),
-                      ),
-                    );
-                    ScaffoldMessenger.of(context).showSnackBar(snackBar);
-                  }
-                },
+                onPressed: _urlEnabled
+                    ? () {
+                        if (isValidUrl())
+                          sendUrlToGetReward();
+                        else {
+                          final snackBar = SnackBar(
+                            content: Text('올바른 인스타그램 게시글 URL이 아닙니다.'),
+                            behavior: SnackBarBehavior.floating,
+                            duration: const Duration(milliseconds: 2500),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(12.0),
+                            ),
+                          );
+                          ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                        }
+                      }
+                    : null,
                 child: Text('URL 업로드하고 이벤트 참여하기'))),
         SizedBox(height: kDefaultPadding),
         Row(
@@ -96,23 +112,29 @@ class _EventJoinWithUrlState extends State<EventJoinWithUrl> {
   }
 
   Future<void> sendUrlToGetReward() async {
+    setState(() {
+      //_urlEnabled = false;
+    });
+
     widget.loading(true);
+
+    Map<String, dynamic> urlJson = {'url': _urlController.value.text.trim()};
 
     final response = await http.post(
         Uri.parse(getApi(API.GET_REWARD, parameter: widget.id)),
         headers: {
-          "Access-Control-Allow-Origin": "*",
-          "Access-Control-Allow-Methods":
-              "POST, GET, OPTIONS, PUT, DELETE, HEAD",
+          "Accept": "application/json",
+          "content-type": "application/json"
         },
-        body: {
-          'url': _urlController.value.text.trim()
-        });
+        body: jsonEncode(urlJson));
 
-    //widget.loading(false);
+    print(response.body);
+
+    widget.loading(false);
 
     if (response.statusCode == 200) {
-      Reward reward = Reward.fromJson(jsonDecode(response.body));
+      Reward reward =
+          Reward.fromJson(jsonDecode(utf8.decode(response.bodyBytes)));
       Navigator.push(
         context,
         MaterialPageRoute(
@@ -122,6 +144,16 @@ class _EventJoinWithUrlState extends State<EventJoinWithUrl> {
               rewardImage: reward.imgPath),
         ),
       );
+    } else {
+      final snackBar = SnackBar(
+        content: Text('URL 제출에 실패하였습니다.'),
+        behavior: SnackBarBehavior.floating,
+        duration: const Duration(milliseconds: 2500),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(12.0),
+        ),
+      );
+      ScaffoldMessenger.of(context).showSnackBar(snackBar);
     }
   }
 
