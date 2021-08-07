@@ -29,7 +29,6 @@ public class RewardSaveRequestDto {
                 .image(image)
                 .price(price)
                 .count(count)
-                .usedCount(0)
                 .build();
     }
 }

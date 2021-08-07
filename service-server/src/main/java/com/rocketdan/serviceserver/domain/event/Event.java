@@ -4,15 +4,20 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.rocketdan.serviceserver.domain.reward.Reward;
 import com.rocketdan.serviceserver.domain.store.Store;
 import lombok.*;
+import org.hibernate.annotations.ColumnDefault;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.Where;
 
 import javax.persistence.*;
 import java.util.*;
 
 @Entity
+@Getter
 @Inheritance(strategy = InheritanceType.JOINED)
 @DiscriminatorColumn(name = "ETYPE")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Getter
+@SQLDelete(sql = "UPDATE event SET deleted = true WHERE id = ?")
+@Where(clause = "deleted = false")
 public abstract class Event {
     // 이벤트 id
     @Id
@@ -40,13 +45,17 @@ public abstract class Event {
     private List<String> images;
 
     // 이벤트 보상 목록
-    @OneToMany(cascade = CascadeType.ALL)
+    @OneToMany(cascade = CascadeType.REMOVE)
     private List<Reward> rewards;
 
     // link된 store
     @ManyToOne
     @JsonBackReference
     private Store store;
+
+    @ColumnDefault("false")
+    @Column(nullable = false)
+    private Boolean deleted = false;
 
     public Event(String title, Integer status, Date startDate, Date finishDate, List<String> images, List<Reward> rewards, Store store) {
         this.title = title;

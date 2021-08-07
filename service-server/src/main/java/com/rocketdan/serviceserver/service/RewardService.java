@@ -51,5 +51,9 @@ public class RewardService {
                 .bodyToMono(RewardLevelResponseDto.class) // body type
                 .block(); // await
     }
-    
+
+    public void softDelete(Long id) {
+        Reward reward = rewardRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("해당 리워드가 없습니다. id=" + id));
+        rewardRepository.delete(reward);
+    }
 }

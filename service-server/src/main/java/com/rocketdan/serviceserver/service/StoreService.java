@@ -44,14 +44,14 @@ public class StoreService {
         return id;
     }
 
-    @Transactional
+    @Transactional(readOnly = true)
     public StoreResponseDto findById(Long id) {
         Store entity = storeRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("해당 가게가 없습니다. id=" + id));
 
         return new StoreResponseDto(entity);
     }
 
-    @Transactional
+    @Transactional(readOnly = true)
     public List<EventListResponseDto> getEventListById(Long id) {
         Store entity = storeRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("해당 가게가 없습니다. id=" + id));
 
@@ -67,8 +67,7 @@ public class StoreService {
                 .collect(Collectors.toList());
     }
 
-    @Transactional
-    public void delete(Long id) {
+    public void softDelete(Long id) {
         Store store = storeRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("해당 가게가 없습니다. id=" + id));
         storeRepository.delete(store);
     }

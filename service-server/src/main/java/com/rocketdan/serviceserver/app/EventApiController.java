@@ -50,6 +50,6 @@ public class EventApiController {
 
     @DeleteMapping("/{id}")
     public void delete(@PathVariable Long id) {
-        eventService.delete(id);
+        eventService.softDelete(id);
     }
 }
