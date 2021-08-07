@@ -113,28 +113,28 @@ class _EventJoinWithUrlState extends State<EventJoinWithUrl> {
 
   Future<void> sendUrlToGetReward() async {
     setState(() {
-      _urlEnabled = false;
+      //_urlEnabled = false;
     });
 
     widget.loading(true);
 
+    Map<String, dynamic> urlJson = {'url': _urlController.value.text.trim()};
+
     final response = await http.post(
         Uri.parse(getApi(API.GET_REWARD, parameter: widget.id)),
         headers: {
-          "Access-Control-Allow-Origin": "*",
-          "Access-Control-Allow-Methods":
-              "POST, GET, OPTIONS, PUT, DELETE, HEAD",
+          "Accept": "application/json",
+          "content-type": "application/json"
         },
-        body: {
-          'url': _urlController.value.text.trim()
-        });
+        body: jsonEncode(urlJson));
 
     print(response.body);
 
     widget.loading(false);
 
     if (response.statusCode == 200) {
-      Reward reward = Reward.fromJson(jsonDecode(response.body));
+      Reward reward =
+          Reward.fromJson(jsonDecode(utf8.decode(response.bodyBytes)));
       Navigator.push(
         context,
         MaterialPageRoute(
