@@ -129,7 +129,9 @@ class _EventJoinWithUrlState extends State<EventJoinWithUrl> {
           'url': _urlController.value.text.trim()
         });
 
-    //widget.loading(false);
+    print(response.body);
+
+    widget.loading(false);
 
     if (response.statusCode == 200) {
       Reward reward = Reward.fromJson(jsonDecode(response.body));
@@ -142,6 +144,16 @@ class _EventJoinWithUrlState extends State<EventJoinWithUrl> {
               rewardImage: reward.imgPath),
         ),
       );
+    } else {
+      final snackBar = SnackBar(
+        content: Text('URL 제출에 실패하였습니다.'),
+        behavior: SnackBarBehavior.floating,
+        duration: const Duration(milliseconds: 2500),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(12.0),
+        ),
+      );
+      ScaffoldMessenger.of(context).showSnackBar(snackBar);
     }
   }
 

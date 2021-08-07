@@ -81,7 +81,7 @@ class EventHashtags extends StatelessWidget {
     Clipboard.setData(ClipboardData(text: hashtags));
 
     final snackBar = SnackBar(
-      content: Text('해시태그 목록이 전부 클립보드에 복사되었습니다.'),
+      content: Text('모든 해시태그를 클립보드에 복사하였습니다.'),
       behavior: SnackBarBehavior.floating,
       duration: const Duration(milliseconds: 2500),
       shape: RoundedRectangleBorder(
@@ -95,7 +95,7 @@ class EventHashtags extends StatelessWidget {
     Clipboard.setData(ClipboardData(text: '#$hashtag'));
 
     final snackBar = SnackBar(
-      content: Text('#$hashtag 해시태그가 클립보드에 복사되었습니다.'),
+      content: Text('#$hashtag 해시태그를 복사하였습니다.'),
       behavior: SnackBarBehavior.floating,
       duration: const Duration(milliseconds: 2500),
       shape: RoundedRectangleBorder(
