@@ -1,16 +1,21 @@
-package com.rocketdan.serviceserver.domain.event.reward;
+package com.rocketdan.serviceserver.domain.reward;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.rocketdan.serviceserver.domain.event.Event;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.ColumnDefault;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.Where;
 
 import javax.persistence.*;
 
 @Entity
 @Getter
 @NoArgsConstructor
+//@SQLDelete(sql = "UPDATE reward SET deleted = true WHERE id = ?")
+//@Where(clause = "deleted = false")
 public class Reward {
     @Id
     @JsonIgnore
@@ -37,10 +42,16 @@ public class Reward {
     private Integer count;
 
     // 소모된 수량
-    private Integer usedCount;
+    @ColumnDefault("0")
+    @Column(nullable = false)
+    private Integer usedCount = 0;
+
+//    @ColumnDefault("false")
+//    @Column(nullable = false)
+//    private Boolean deleted = false;
 
     @Builder
-    public Reward(Event event, Integer level, Integer category, String name, String image, Integer price, Integer count, Integer usedCount) {
+    public Reward(Event event, Integer level, Integer category, String name, String image, Integer price, Integer count) {
         this.event = event;
         this.level = level;
         this.category = category;
@@ -48,7 +59,6 @@ public class Reward {
         this.image = image;
         this.price = price;
         this.count = count;
-        this.usedCount = usedCount;
     }
 
     public void setEvent(Event event) {

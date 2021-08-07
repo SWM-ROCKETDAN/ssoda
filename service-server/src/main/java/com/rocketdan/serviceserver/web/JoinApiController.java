@@ -1,6 +1,7 @@
 package com.rocketdan.serviceserver.web;
 
 import com.rocketdan.serviceserver.Exception.join.JoinEventFailedException;
+import com.rocketdan.serviceserver.app.dto.reward.RewardResponseDto;
 import com.rocketdan.serviceserver.core.CommonResponse;
 import com.rocketdan.serviceserver.service.JoinPostService;
 import com.rocketdan.serviceserver.service.JoinUserService;
@@ -18,8 +19,8 @@ public class JoinApiController {
     private final JoinUserService joinUserService;
     private final RewardService rewardService;
 
-    @GetMapping("/events/{event_id}")
-    public RewardLevelResponseDto retrieveRewardLevel(@PathVariable Long event_id, @RequestBody RewardLevelRequestDto requestDto) {
+    @PostMapping("/events/{event_id}")
+    public RewardResponseDto joinEventAndRetrieveReward(@PathVariable Long event_id, @RequestBody RewardLevelRequestDto requestDto) {
         // (1) join_post 저장
         Long joinPostId = joinPostService.save(event_id, requestDto.getUrl());
 
@@ -38,7 +39,10 @@ public class JoinApiController {
             throw new JoinEventFailedException();
         }
 
-        // (5) analysis-server에 reward level 요청 & front에 return
-        return rewardService.getRewardLevel(joinPostId);
+        // (5) analysis-server에 reward level 요청
+        RewardLevelResponseDto rewardLevelResponseDto = rewardService.getRewardId(joinPostId);
+
+        // (6) reward 찾아 front에 return
+        return rewardService.findById(rewardLevelResponseDto.getReward_id());
     }
 }

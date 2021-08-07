@@ -88,7 +88,7 @@ public class GlobalExceptionHandler {
                 .code(ErrorCode.FILE_CONVERT_FAILED.getCode())
                 .message(ErrorCode.FILE_CONVERT_FAILED.getMessage())
                 .status(ErrorCode.FILE_CONVERT_FAILED.getStatus())
-                .build()
+                .build();
 
         return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
     }

@@ -8,12 +8,13 @@ import com.rocketdan.serviceserver.app.dto.event.hashtag.HashtagEventUpdateReque
 import com.rocketdan.serviceserver.app.dto.reward.RewardResponseDto;
 import com.rocketdan.serviceserver.domain.event.Event;
 import com.rocketdan.serviceserver.domain.event.EventRepository;
-import com.rocketdan.serviceserver.domain.event.reward.RewardRepository;
 import com.rocketdan.serviceserver.domain.event.type.Hashtag;
 import com.rocketdan.serviceserver.domain.store.Store;
 import com.rocketdan.serviceserver.domain.store.StoreRepository;
 import com.rocketdan.serviceserver.s3.service.ImageManagerService;
 import lombok.RequiredArgsConstructor;
+import org.hibernate.annotations.SQLDelete;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -40,7 +41,7 @@ public class EventService {
 
     @Transactional
     public Long updateHashtagEvent(Long id, HashtagEventUpdateRequest requestDto, List<String> imgPaths) {
-        Hashtag event = (Hashtag) eventRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("해당 이벤트가 없습니다. id=" + id));
+        Hashtag event = (Hashtag) eventRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("해당 이벤트가 없거나, 삭제되었습니다. id=" + id));
 
         imageManagerService.delete(event.getImages());
 
@@ -50,7 +51,7 @@ public class EventService {
         return id;
     }
 
-    @Transactional
+    @Transactional(readOnly = true)
     public EventResponseDto findById(Long id) {
         Event entity = eventRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("해당 이벤트가 없습니다. id=" + id));
         entity.updateStatus();
@@ -79,12 +80,8 @@ public class EventService {
                 .collect(Collectors.toList());
     }
 
-    @Transactional
-    public void delete(Long id) {
+    public void softDelete(Long id) {
         Event event = eventRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("해당 이벤트가 없습니다. id=" + id));
-        // JpaRepository에서 이미 delete 메소드를 지원하고 있으니 이를 활용.
-        // entity를 파라미터로 삭제할 수도 있고, deleteById 메소드를 이용하면 id로 삭제할 수도 있다.
-        // 존재하는 Event인지 확인을 위해 entity 조회 후 그대로 삭제.
         eventRepository.delete(event);
     }
 }

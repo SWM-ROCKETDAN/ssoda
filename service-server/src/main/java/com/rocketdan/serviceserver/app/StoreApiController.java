@@ -49,6 +49,6 @@ public class StoreApiController {
 
     @DeleteMapping("/{id}")
     public void delete(@PathVariable Long id) {
-        storeService.delete(id);
+        storeService.softDelete(id);
     }
 }

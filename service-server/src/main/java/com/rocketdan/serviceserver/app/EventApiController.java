@@ -5,17 +5,11 @@ import com.rocketdan.serviceserver.app.dto.event.EventResponseDto;
 import com.rocketdan.serviceserver.app.dto.event.hashtag.HashtagEventSaveRequest;
 import com.rocketdan.serviceserver.app.dto.event.hashtag.HashtagEventUpdateRequest;
 import com.rocketdan.serviceserver.app.dto.reward.RewardResponseDto;
-import com.rocketdan.serviceserver.domain.event.reward.Reward;
 import com.rocketdan.serviceserver.s3.service.ImageManagerService;
 import com.rocketdan.serviceserver.service.EventService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 @RestController
@@ -56,6 +50,6 @@ public class EventApiController {
 
     @DeleteMapping("/{id}")
     public void delete(@PathVariable Long id) {
-        eventService.delete(id);
+        eventService.softDelete(id);
     }
 }

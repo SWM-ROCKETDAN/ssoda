@@ -2,7 +2,6 @@ package com.rocketdan.serviceserver.app.dto.event;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.rocketdan.serviceserver.domain.event.Event;
-import com.rocketdan.serviceserver.domain.event.reward.Reward;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 

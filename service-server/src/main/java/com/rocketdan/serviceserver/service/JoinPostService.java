@@ -3,6 +3,7 @@ package com.rocketdan.serviceserver.service;
 import com.rocketdan.serviceserver.Exception.analysis.AnalysisServerErrorException;
 import com.rocketdan.serviceserver.Exception.join.DuplicateUrlException;
 import com.rocketdan.serviceserver.Exception.join.JoinEventFailedException;
+import com.rocketdan.serviceserver.config.AnalysisServerConfig;
 import com.rocketdan.serviceserver.core.CommonResponse;
 import com.rocketdan.serviceserver.domain.event.Event;
 import com.rocketdan.serviceserver.domain.event.EventRepository;
@@ -13,7 +14,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
 
 import java.util.Date;
@@ -25,9 +25,7 @@ public class JoinPostService {
     private final JoinPostRepository joinPostRepository;
     private final EventRepository eventRepository;
 
-    private WebClient webClient = WebClient.builder()
-            .baseUrl("http://54.180.141.90:8080/api/v1/join/posts")
-            .build();
+    private final AnalysisServerConfig analysisServerConfig;
 
     @Transactional
     public Long save(Long event_id, String url) {
@@ -52,8 +50,8 @@ public class JoinPostService {
     }
 
     public CommonResponse putJoinPost(Long joinPostId) {
-        return webClient.put() // PUT method
-                .uri("/" + joinPostId + "/") // baseUrl 이후 uri
+        return analysisServerConfig.webClient().put() // PUT method
+                .uri("/api/v1/join/posts/" + joinPostId + "/") // baseUrl 이후 uri
                 .retrieve() // client message 전송
                 .onStatus(HttpStatus::is4xxClientError, clientResponse -> Mono.error(JoinEventFailedException::new))
                 .onStatus(HttpStatus::is5xxServerError, clientResponse -> Mono.error(AnalysisServerErrorException::new))
