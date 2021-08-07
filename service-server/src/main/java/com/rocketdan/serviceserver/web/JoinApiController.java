@@ -19,7 +19,7 @@ public class JoinApiController {
     private final JoinUserService joinUserService;
     private final RewardService rewardService;
 
-    @GetMapping("/events/{event_id}")
+    @PostMapping("/events/{event_id}")
     public RewardResponseDto joinEventAndRetrieveReward(@PathVariable Long event_id, @RequestBody RewardLevelRequestDto requestDto) {
         // (1) join_post 저장
         Long joinPostId = joinPostService.save(event_id, requestDto.getUrl());
