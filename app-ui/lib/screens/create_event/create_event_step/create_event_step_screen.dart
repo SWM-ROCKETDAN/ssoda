@@ -257,7 +257,7 @@ class _CreateEventStepScreenState extends State<CreateEventStepScreen> {
   AppBar buildAppBar() {
     return AppBar(
         elevation: 0,
-        backgroundColor: Colors.white,
+        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
         iconTheme: IconThemeData(color: Colors.black),
         leading: IconButton(
             icon: Icon(Icons.arrow_back),
