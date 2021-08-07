@@ -36,11 +36,11 @@ public class JoinUser {
     private Date createDate;
 
     private Date updateDate;
-
+/*
     @ColumnDefault("false")
     @Column(nullable = false)
     private Boolean deleted = false;
-
+*/
     @Builder
     public JoinUser(String snsId, String url, Integer type, Integer status, Integer followCount, Integer postCount, Date createDate, Date updateDate) {
         this.snsId = snsId;

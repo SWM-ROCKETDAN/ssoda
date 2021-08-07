@@ -49,11 +49,11 @@ public class JoinPost {
     private Date updateDate;
 
     private Integer rewardsLevel;
-
+    /*
     @ColumnDefault("false")
     @Column(nullable = false)
     private Boolean deleted = false;
-
+*/
     @Builder
     public JoinPost(Event event, String snsId, String url, Integer type, Integer status, Integer likeCount, Integer commentCount, String hashtags, Date createDate, Date uploadDate, Date privateDate, Date deleteDate, Date updateDate, Integer rewardsLevel) {
         this.event = event;

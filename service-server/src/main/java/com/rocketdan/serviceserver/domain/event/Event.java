@@ -16,8 +16,8 @@ import java.util.*;
 @Inheritance(strategy = InheritanceType.JOINED)
 @DiscriminatorColumn(name = "ETYPE")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@SQLDelete(sql = "UPDATE event SET deleted = true WHERE id = ?")
-@Where(clause = "deleted = false")
+//@SQLDelete(sql = "UPDATE event SET deleted = true WHERE id = ?")
+//@Where(clause = "deleted = false")
 public abstract class Event {
     // 이벤트 id
     @Id
@@ -53,9 +53,9 @@ public abstract class Event {
     @JsonBackReference
     private Store store;
 
-    @ColumnDefault("false")
-    @Column(nullable = false)
-    private Boolean deleted = false;
+//    @ColumnDefault("false")
+//    @Column(nullable = false)
+//    private Boolean deleted = false;
 
     public Event(String title, Integer status, Date startDate, Date finishDate, List<String> images, List<Reward> rewards, Store store) {
         this.title = title;
