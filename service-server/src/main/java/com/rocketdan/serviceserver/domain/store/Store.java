@@ -6,6 +6,7 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 
@@ -51,8 +52,9 @@ public class Store {
     @OneToMany(mappedBy = "store", cascade = CascadeType.REMOVE)
     private List<Event> events;
 
+    @ColumnDefault("false")
     @Column(nullable = false)
-    private Boolean deleteFlag;
+    private Boolean deleted = false;
 
     @Builder
     public Store(String name, User user, Integer category, Address address, String description, List<String> images, List<Event> events) {
@@ -71,7 +73,6 @@ public class Store {
         this.address = address;
         this.description = description;
         this.images = images;
-        this.deleteFlag = false;
     }
 
     public void setUser(User user) {
