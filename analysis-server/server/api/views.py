@@ -75,27 +75,27 @@ class JoinUserView(APIView):
 class JoinRewardView(APIView):
     def get(self, request, pk):
         # 리워드 id 계산을 위한 Join 직렬화
-        join_serializer = JoinSerializer(data=get_join_post_list(), many=True)
-        join_serializer.is_valid()
+        join_list_serializer = JoinSerializer(data=get_join_post_list(), many=True)
+        join_list_serializer.is_valid()
 
         # 이벤트 id 값을 얻기 위한 JoinPost 직렬화
-        join_post = get_join_post(pk)
-        join_post_serializer = JoinPostSerializer(join_post)
+        join = get_join_post(pk)
+        join_serializer = JoinSerializer(join)
 
         # 리워드 id 계산을 위한 Event 직렬화
-        event_id = join_post_serializer.data.get('event')
+        event_id = join_serializer.data.get('event')
         event_serializer = EventSerializer(get_event(event_id))
 
         # 리워드 id 계산
-        join_reward = JoinReward(join_serializer.data, event_serializer.data, pk)
-        reward_id = {'reward_id': join_reward.get_reward_level()}
+        join_reward = JoinReward(join_list_serializer.data, join_serializer.data, event_serializer.data)
+        reward = join_reward.get_reward()
 
         # join_post 의 reward_id 값 업데이트를 위한 직렬화 재선언
-        join_post_serializer = JoinPostSerializer(join_post, reward_id, partial=True)
+        join_post_serializer = JoinPostSerializer(join, {'reward': reward[0]}, partial=True)
         if join_post_serializer.is_valid():
             join_post_serializer.save()
 
-        return JsonResponse(reward_id)
+        return JsonResponse({'reward_id': reward[0]})
 
 
 class ReportEventView(APIView):
@@ -107,5 +107,5 @@ class ReportEventView(APIView):
         event = get_event(pk=pk)
         event_serializer = EventSerializer(event)
         event_report = EventReport(join_serializer.data, event_serializer.data)
-        event_report.test()
-        return JsonResponse(join_serializer.data, safe=False)
+        report_dict = event_report.get_report_dict()
+        return JsonResponse(report_dict)

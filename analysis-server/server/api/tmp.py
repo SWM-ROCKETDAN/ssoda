@@ -130,6 +130,7 @@ class Event(models.Model):
     status = models.IntegerField()
     title = models.CharField(max_length=255)
     store = models.ForeignKey('Store', models.DO_NOTHING, blank=True, null=True)
+    deleted = models.TextField()  # This field type is a guess.
 
     class Meta:
         managed = False
@@ -187,7 +188,6 @@ class HashtagRequirements(models.Model):
 
 class JoinPost(models.Model):
     id = models.BigAutoField(primary_key=True)
-    rewards_level = models.IntegerField(blank=True, null=True)
     sns_id = models.CharField(max_length=255, blank=True, null=True)
     url = models.CharField(max_length=255)
     type = models.IntegerField(blank=True, null=True)
@@ -201,6 +201,9 @@ class JoinPost(models.Model):
     update_date = models.DateTimeField(blank=True, null=True)
     event = models.ForeignKey(Event, models.DO_NOTHING)
     delete_date = models.DateTimeField(blank=True, null=True)
+    reward = models.ForeignKey('Reward', models.DO_NOTHING, blank=True, null=True)
+    rewards_level = models.IntegerField(blank=True, null=True)
+    deleted = models.TextField()  # This field type is a guess.
 
     class Meta:
         managed = False
@@ -217,6 +220,7 @@ class JoinUser(models.Model):
     post_count = models.IntegerField(blank=True, null=True)
     create_date = models.DateTimeField()
     update_date = models.DateTimeField(blank=True, null=True)
+    deleted = models.TextField()  # This field type is a guess.
 
     class Meta:
         managed = False
@@ -233,6 +237,7 @@ class Reward(models.Model):
     level = models.BigIntegerField(blank=True, null=True)
     used_count = models.IntegerField(blank=True, null=True)
     event = models.ForeignKey(Event, models.DO_NOTHING, blank=True, null=True)
+    deleted = models.TextField()  # This field type is a guess.
 
     class Meta:
         managed = False
@@ -251,6 +256,7 @@ class Store(models.Model):
     description = models.TextField(blank=True, null=True)
     name = models.CharField(max_length=255)
     user = models.ForeignKey('User', models.DO_NOTHING, blank=True, null=True)
+    deleted = models.TextField()  # This field type is a guess.
 
     class Meta:
         managed = False
