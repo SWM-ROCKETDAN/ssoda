@@ -74,4 +74,3 @@ class ServerError:
         "status": 400,
         "code": "SERVERERROR006"
     }
-
