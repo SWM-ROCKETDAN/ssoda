@@ -9,8 +9,10 @@ import com.rocketdan.serviceserver.service.RewardService;
 import com.rocketdan.serviceserver.web.dto.reward.RewardLevelRequestDto;
 import com.rocketdan.serviceserver.web.dto.reward.RewardLevelResponseDto;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
+@Slf4j
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/join")
@@ -26,7 +28,8 @@ public class JoinApiController {
 
         // (2) analysis-server에 join_post update 요청
         CommonResponse putJoinPostResponse = joinPostService.putJoinPost(joinPostId);
-        if (!putJoinPostResponse.getCode().equals("SUCCESS001")) {
+        if (!putJoinPostResponse.getCode().equals("SUCCESS_001")) {
+            log.error("Analysis server return ERROR CODE : " + putJoinPostResponse.getCode());
             throw new JoinEventFailedException();
         }
 
@@ -35,7 +38,8 @@ public class JoinApiController {
 
         // (4) analysis-server에 join_user update 요청
         CommonResponse putJoinUserResponse = joinUserService.putJoinUser(joinUserId);
-        if (!putJoinUserResponse.getCode().equals("SUCCESS002")) {
+        if (!putJoinUserResponse.getCode().equals("SUCCESS_002")) {
+            log.error("Analysis server return ERROR CODE : " + putJoinPostResponse.getCode());
             throw new JoinEventFailedException();
         }
 
