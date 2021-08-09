@@ -26,7 +26,7 @@ public class WebConfig implements WebMvcConfigurer {
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**")
                 .allowedOrigins("http://ec2-13-124-246-123.ap-northeast-2.compute.amazonaws.com")
-                .allowedMethods("GET");
+                .allowedMethods("GET", "POST");
     }
 
 }
