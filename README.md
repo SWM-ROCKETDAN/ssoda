@@ -1,10 +1,10 @@
-<h3 align="center">
+<div align="center">
 
 ![intro](/readme/introduction.gif)
 
-SW 마에스트로 12기 로켓단 팀 SSODA
+### **SW 마에스트로 12기 로켓단 팀 SSODA**
 
-</h3>
+</div>
 
 <br>
 
