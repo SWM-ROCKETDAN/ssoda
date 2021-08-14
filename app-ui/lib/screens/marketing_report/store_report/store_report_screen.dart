@@ -64,92 +64,87 @@ class _StoreReportScreenState extends State<StoreReportScreen> {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return Scaffold(
-      body: NestedScrollView(
-        headerSliverBuilder: (context, ext) => [
-          CustomSliverAppBar(eventReportList: eventReportList, size: size),
-        ],
-        body: SingleChildScrollView(
-          child: Padding(
-            padding: const EdgeInsets.fromLTRB(15, 20, 15, 5),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 10),
-                  child: Text(
-                    '종합',
-                    style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 24,
-                        color: kDefaultFontColor),
-                  ),
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.fromLTRB(15, 20, 15, 65),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 10),
+                child: Text(
+                  '레포트 요약',
+                  style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 24,
+                      color: kDefaultFontColor),
                 ),
-                SizedBox(height: kDefaultPadding),
-                ReportOverview(
-                    size: size, storeReportOverview: storeReportOverview),
-                SizedBox(height: kDefaultPadding / 3 * 5),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 10),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        '이벤트 별 보고서',
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 24,
-                            color: kDefaultFontColor),
-                      ),
-                      DropdownButton(
-                          dropdownColor:
-                              kScaffoldBackgroundColor.withOpacity(0.9),
-                          value: dropdownValue,
-                          icon: const Icon(
-                            Icons.sort,
-                            color: kDefaultFontColor,
-                            size: 20,
-                          ),
-                          iconSize: 24,
-                          elevation: 0,
-                          style:
-                              TextStyle(color: kDefaultFontColor, fontSize: 13),
-                          underline: Container(
-                            height: 1.2,
-                            color: kDefaultFontColor,
-                          ),
-                          onChanged: (String? newValue) {
-                            setState(() {
-                              dropdownValue = newValue!;
-                            });
-                          },
-                          items: eventSortDropdownItemList.map((String value) {
-                            return DropdownMenuItem<String>(
-                              value: value,
-                              child: SizedBox(
-                                  width: 85,
-                                  child: Text(
-                                    value,
-                                    style: TextStyle(
-                                        fontSize: 13, color: kDefaultFontColor),
-                                    textAlign: TextAlign.center,
-                                  )),
-                            );
-                          }).toList())
-                    ],
-                  ),
+              ),
+              SizedBox(height: kDefaultPadding / 5 * 6),
+              ReportOverview(
+                  size: size, storeReportOverview: storeReportOverview),
+              SizedBox(height: kDefaultPadding / 3 * 5),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 10),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      '이벤트 별 레포트',
+                      style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 24,
+                          color: kDefaultFontColor),
+                    ),
+                    DropdownButton(
+                        dropdownColor:
+                            kScaffoldBackgroundColor.withOpacity(0.9),
+                        value: dropdownValue,
+                        icon: const Icon(
+                          Icons.sort,
+                          color: kDefaultFontColor,
+                          size: 20,
+                        ),
+                        iconSize: 24,
+                        elevation: 0,
+                        style:
+                            TextStyle(color: kDefaultFontColor, fontSize: 13),
+                        underline: Container(
+                          height: 1.2,
+                          color: kDefaultFontColor,
+                        ),
+                        onChanged: (String? newValue) {
+                          setState(() {
+                            dropdownValue = newValue!;
+                          });
+                        },
+                        items: eventSortDropdownItemList.map((String value) {
+                          return DropdownMenuItem<String>(
+                            value: value,
+                            child: SizedBox(
+                                width: 85,
+                                child: Text(
+                                  value,
+                                  style: TextStyle(
+                                      fontSize: 13, color: kDefaultFontColor),
+                                  textAlign: TextAlign.center,
+                                )),
+                          );
+                        }).toList())
+                  ],
                 ),
-                SizedBox(height: kDefaultPadding / 3 * 1),
-                Column(
-                    children: List.generate(
-                  eventReportList.length,
-                  (index) => EventReportCard(
-                      index: index,
-                      size: size,
-                      eventReportList: eventReportList,
-                      numberDisplay: numberDisplay),
-                )),
-              ],
-            ),
+              ),
+              SizedBox(height: kDefaultPadding / 3 * 1),
+              Column(
+                  children: List.generate(
+                eventReportList.length,
+                (index) => EventReportCard(
+                    index: index,
+                    size: size,
+                    eventReportList: eventReportList,
+                    numberDisplay: numberDisplay),
+              )),
+            ],
           ),
         ),
       ),

@@ -47,7 +47,8 @@ class ReportOverview extends StatelessWidget {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Icon(Icons.attach_money, size: 28, color: kDefaultFontColor),
+                  Icon(Icons.attach_money_rounded,
+                      size: 28, color: kDefaultFontColor),
                   SizedBox(height: kDefaultPadding / 5),
                   AutoSizeText(
                     '평균 객단가',
@@ -83,7 +84,7 @@ class ReportOverview extends StatelessWidget {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Icon(Icons.group, size: 28, color: kDefaultFontColor),
+                  Icon(Icons.group_rounded, size: 28, color: kDefaultFontColor),
                   SizedBox(height: kDefaultPadding / 5),
                   AutoSizeText(
                     '누적 참여자',
@@ -119,7 +120,8 @@ class ReportOverview extends StatelessWidget {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Icon(Icons.favorite, size: 28, color: kDefaultFontColor),
+                  Icon(Icons.favorite_rounded,
+                      size: 28, color: kDefaultFontColor),
                   SizedBox(height: kDefaultPadding / 5),
                   AutoSizeText(
                     '누적 좋아요',

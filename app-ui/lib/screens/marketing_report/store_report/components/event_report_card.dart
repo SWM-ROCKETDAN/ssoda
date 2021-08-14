@@ -97,7 +97,7 @@ class EventReportCard extends StatelessWidget {
                             child: Row(
                               children: [
                                 Icon(
-                                  Icons.attach_money,
+                                  Icons.attach_money_rounded,
                                   size: 16,
                                   color: kLiteFontColor,
                                 ),
@@ -112,7 +112,7 @@ class EventReportCard extends StatelessWidget {
                                   color: kLiteFontColor.withOpacity(0.5),
                                 ),
                                 Icon(
-                                  Icons.group,
+                                  Icons.group_rounded,
                                   size: 16,
                                   color: kLiteFontColor,
                                 ),
@@ -127,7 +127,7 @@ class EventReportCard extends StatelessWidget {
                                   color: kLiteFontColor.withOpacity(0.5),
                                 ),
                                 Icon(
-                                  Icons.favorite,
+                                  Icons.favorite_rounded,
                                   size: 16,
                                   color: kLiteFontColor,
                                 ),
