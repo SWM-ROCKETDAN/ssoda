@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hashchecker/constants.dart';
 import 'package:hashchecker/models/event.dart';
+import 'package:hashchecker/models/requires.dart';
 
 class EventRequirements extends StatelessWidget {
   const EventRequirements({
@@ -21,7 +22,7 @@ class EventRequirements extends StatelessWidget {
           children: List.generate(
               event.requireList.length,
               (index) => event.requireList[index]
-                  ? Text('${index}번째 요청사항\n')
+                  ? Text('- ${requireStringList[index]}\n')
                   : Container()))
     ]);
   }

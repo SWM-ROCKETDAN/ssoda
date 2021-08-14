@@ -29,7 +29,7 @@ class MyApp extends StatelessWidget {
           primarySwatch: _createMaterialColor(kThemeColor),
           visualDensity: VisualDensity.adaptivePlatformDensity,
           scaffoldBackgroundColor: Colors.white),
-      home: SignInScreen(),
+      home: StoreReportScreen(),
     );
   }
 

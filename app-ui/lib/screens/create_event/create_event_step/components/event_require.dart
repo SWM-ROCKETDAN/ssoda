@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:hashchecker/models/requires.dart';
 
 class EventRequire extends StatefulWidget {
   final requireList;
@@ -20,7 +21,7 @@ class _EventRequireState extends State<EventRequire> {
             itemCount: widget.requireList.length,
             itemBuilder: (context, index) => CheckboxListTile(
                 title: Text(
-                  widget.requireList[index],
+                  requireStringList[index],
                   style: TextStyle(
                       color: widget.selectedRequireList[index]
                           ? Colors.black87
