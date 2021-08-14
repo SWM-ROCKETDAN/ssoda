@@ -36,7 +36,8 @@ class HeaderWithQrcode extends StatelessWidget {
         ),
         Positioned(
           child: Card(
-            elevation: 5,
+            shadowColor: kShadowColor,
+            elevation: 8,
             child: SizedBox(
                 child: QrImage(
                   data: qrcodeUrl,

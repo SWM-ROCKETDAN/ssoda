@@ -27,7 +27,7 @@ class ReportOverview extends StatelessWidget {
           BoxShadow(
             color: kShadowColor,
             spreadRadius: 1,
-            blurRadius: 4,
+            blurRadius: 10,
             offset: Offset(2, 2), // changes position of shadow
           ),
         ],

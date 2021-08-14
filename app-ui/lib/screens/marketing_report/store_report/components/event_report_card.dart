@@ -26,7 +26,8 @@ class EventReportCard extends StatelessWidget {
         margin: const EdgeInsets.only(bottom: kDefaultPadding),
         child: Card(
             color: kScaffoldBackgroundColor,
-            elevation: 0.75,
+            shadowColor: kShadowColor,
+            elevation: 18,
             child: InkWell(
               onTap: () {
                 Navigator.push(

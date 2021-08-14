@@ -115,7 +115,7 @@ class _StoreReportScreenState extends State<StoreReportScreen> {
                               TextStyle(color: kDefaultFontColor, fontSize: 13),
                           underline: Container(
                             height: 1.2,
-                            color: Colors.black87,
+                            color: kDefaultFontColor,
                           ),
                           onChanged: (String? newValue) {
                             setState(() {
