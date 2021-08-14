@@ -84,7 +84,7 @@ class _ExposureReportMonthlyState extends State<ExposureReportMonthly> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Icon(
-                  Icons.person_outline,
+                  Icons.person_outline_rounded,
                   size: 48,
                   color: kDefaultFontColor,
                 ),
