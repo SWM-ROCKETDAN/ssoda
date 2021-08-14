@@ -2,19 +2,36 @@ import 'package:flutter/material.dart';
 import 'package:hashchecker/constants.dart';
 
 class EventTitle extends StatefulWidget {
-  final TextEditingController controller;
-  const EventTitle({Key? key, required this.controller}) : super(key: key);
+  final event;
+  const EventTitle({Key? key, required this.event}) : super(key: key);
 
   @override
   _EventTitleState createState() => _EventTitleState();
 }
 
 class _EventTitleState extends State<EventTitle> {
+  late TextEditingController _eventTitleController;
+
+  @override
+  void initState() {
+    super.initState();
+    _eventTitleController = TextEditingController(text: widget.event.title);
+  }
+
+  @override
+  void dispose() {
+    _eventTitleController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return TextField(
-        controller: widget.controller,
+        controller: _eventTitleController,
         cursorColor: kThemeColor,
+        onChanged: (_) {
+          widget.event.title = _eventTitleController.value.text.trim();
+        },
         style: TextStyle(
             fontWeight: FontWeight.bold, fontSize: 20, color: kThemeColor),
         decoration: InputDecoration(

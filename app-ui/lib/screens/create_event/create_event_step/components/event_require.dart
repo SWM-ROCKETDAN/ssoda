@@ -3,8 +3,8 @@ import 'package:hashchecker/constants.dart';
 import 'package:hashchecker/models/requires.dart';
 
 class EventRequire extends StatefulWidget {
-  final selectedRequireList;
-  const EventRequire({Key? key, this.selectedRequireList}) : super(key: key);
+  final event;
+  const EventRequire({Key? key, required this.event}) : super(key: key);
 
   @override
   _EventRequireState createState() => _EventRequireState();
@@ -23,14 +23,14 @@ class _EventRequireState extends State<EventRequire> {
                 title: Text(
                   requireStringList[index],
                   style: TextStyle(
-                      color: widget.selectedRequireList[index]
+                      color: widget.event.requireList[index]
                           ? kThemeColor
                           : kLiteFontColor),
                 ),
-                value: widget.selectedRequireList[index],
+                value: widget.event.requireList[index],
                 onChanged: (value) {
                   setState(() {
-                    widget.selectedRequireList[index] = value!;
+                    widget.event.requireList[index] = value!;
                   });
                 })));
   }

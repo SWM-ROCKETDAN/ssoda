@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:hashchecker/constants.dart';
 import 'package:hashchecker/models/template.dart';
-import 'dart:io';
 
 final List<String> templateList = [
   'assets/images/create_event_step_help/draft.png',
@@ -11,8 +10,8 @@ final List<String> templateList = [
 ];
 
 class EventTemplate extends StatefulWidget {
-  Template selectedTemplate;
-  EventTemplate({Key? key, required this.selectedTemplate}) : super(key: key);
+  final event;
+  EventTemplate({Key? key, required this.event}) : super(key: key);
 
   @override
   _EventTemplateState createState() => _EventTemplateState();
@@ -80,7 +79,7 @@ class _EventTemplateState extends State<EventTemplate> {
                   enlargeCenterPage: false,
                   onPageChanged: (index, reason) {
                     setState(() {
-                      widget.selectedTemplate.id = index;
+                      widget.event.template.id = index;
                     });
                   }),
             ),
@@ -100,7 +99,7 @@ class _EventTemplateState extends State<EventTemplate> {
                       color: (Theme.of(context).brightness == Brightness.dark
                               ? Colors.white
                               : kThemeColor)
-                          .withOpacity(widget.selectedTemplate.id == entry.key
+                          .withOpacity(widget.event.template.id == entry.key
                               ? 0.9
                               : 0.4)),
                 ),

@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:hashchecker/constants.dart';
 
 class EventHashtags extends StatefulWidget {
-  final hashtagList;
-  const EventHashtags({Key? key, this.hashtagList}) : super(key: key);
+  final event;
+  const EventHashtags({Key? key, required this.event}) : super(key: key);
 
   @override
   _EventHashtagsState createState() => _EventHashtagsState();
@@ -20,8 +20,8 @@ class _EventHashtagsState extends State<EventHashtags> {
             crossAxisAlignment: WrapCrossAlignment.center,
             spacing: 9.0,
             children: List.generate(
-              widget.hashtagList.length + 1,
-              (index) => index == widget.hashtagList.length
+              widget.event.hashtagList.length + 1,
+              (index) => index == widget.event.hashtagList.length
                   ? CircleAvatar(
                       backgroundColor: kThemeColor,
                       radius: 20,
@@ -30,7 +30,7 @@ class _EventHashtagsState extends State<EventHashtags> {
                           icon: Icon(Icons.add),
                           color: Colors.white,
                           onPressed: () {
-                            if (widget.hashtagList.length == 10) {
+                            if (widget.event.hashtagList.length == 10) {
                               ScaffoldMessenger.of(context).showSnackBar(
                                 SnackBar(
                                   content: Text('해시태그는 최대 10개까지만 등록할 수 있습니다!'),
@@ -56,11 +56,11 @@ class _EventHashtagsState extends State<EventHashtags> {
                           backgroundColor: kDefaultFontColor.withOpacity(0.85)),
                       onDeleted: () {
                         setState(() {
-                          widget.hashtagList.removeAt(index);
+                          widget.event.hashtagList.removeAt(index);
                         });
                       },
                       deleteIconColor: kLiteFontColor,
-                      label: Text('${widget.hashtagList[index]}'),
+                      label: Text('${widget.event.hashtagList[index]}'),
                       labelPadding: const EdgeInsets.fromLTRB(6, 3, 0, 3),
                       elevation: 7.0,
                       shadowColor: kShadowColor,
@@ -96,7 +96,7 @@ class _EventHashtagsState extends State<EventHashtags> {
                         ),
                         onSubmitted: (_) {
                           setState(() {
-                            errMsg = _checkHashtag();
+                            errMsg = _checkHashtag(context);
                           });
                           if (errMsg == null) Navigator.pop(context);
                         },
@@ -115,7 +115,7 @@ class _EventHashtagsState extends State<EventHashtags> {
                     child: ElevatedButton(
                         onPressed: () {
                           setState(() {
-                            errMsg = _checkHashtag();
+                            errMsg = _checkHashtag(context);
                           });
                           if (errMsg == null) Navigator.pop(context);
                         },
@@ -132,7 +132,7 @@ class _EventHashtagsState extends State<EventHashtags> {
         });
   }
 
-  String? _checkHashtag() {
+  String? _checkHashtag(BuildContext context) {
     final validChar = RegExp(r'^[a-zA-Z0-9ㄱ-ㅎㅏ-ㅣ가-힣]+$');
 
     if (_controller.value.text.trim().isEmpty) return '해시태그를 입력해주세요';
@@ -140,14 +140,14 @@ class _EventHashtagsState extends State<EventHashtags> {
     if (!validChar.hasMatch(_controller.value.text.trim()))
       return '공백 및 특수문자는 사용할 수 없습니다';
 
-    if (widget.hashtagList.indexOf(_controller.value.text.trim()) != -1)
+    if (widget.event.hashtagList.indexOf(_controller.value.text.trim()) != -1)
       return '이미 추가한 해시태그입니다';
 
     if (_controller.value.text.trim().length > 10)
       return '해시태그의 길이는 최대 10글자입니다';
 
     setState(() {
-      widget.hashtagList.add(_controller.value.text.trim());
+      widget.event.hashtagList.add(_controller.value.text.trim());
     });
     return null;
   }

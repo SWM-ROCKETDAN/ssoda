@@ -5,8 +5,8 @@ import 'package:hashchecker/screens/create_event/input_reward_info/input_reward_
 import 'dart:io';
 
 class EventReward extends StatefulWidget {
-  final rewardList;
-  const EventReward({Key? key, this.rewardList}) : super(key: key);
+  final event;
+  const EventReward({Key? key, required this.event}) : super(key: key);
 
   @override
   _EventRewardState createState() => _EventRewardState();
@@ -21,16 +21,17 @@ class _EventRewardState extends State<EventReward> {
             height: 116,
             child: ListView.separated(
                 scrollDirection: Axis.horizontal,
-                itemCount: widget.rewardList.length,
+                itemCount: widget.event.rewardList.length,
                 padding: const EdgeInsets.fromLTRB(3, 6, 3, 6),
                 separatorBuilder: (context, index) => SizedBox(width: 12),
-                itemBuilder: (context, index) => widget.rewardList[index] ==
+                itemBuilder: (context, index) => widget
+                            .event.rewardList[index] ==
                         null
                     ? SizedBox(
                         width: 100,
                         child: ElevatedButton(
                           onPressed: () {
-                            _navigateToNextScreen(context, index);
+                            _navigateToDetailScreen(index);
                           },
                           child: Stack(children: [
                             Center(
@@ -55,14 +56,14 @@ class _EventRewardState extends State<EventReward> {
                         ))
                     : GestureDetector(
                         onTap: () {
-                          _navigateToNextScreen(context, index);
+                          _navigateToDetailScreen(index);
                         },
                         child: Container(
                           child: Stack(children: [
                             ClipRRect(
                               borderRadius: BorderRadius.circular(8.0),
                               child: Image.file(
-                                File(widget.rewardList[index].imgPath),
+                                File(widget.event.rewardList[index]!.imgPath),
                                 fit: BoxFit.cover,
                                 width: 100,
                                 height: 110,
@@ -108,18 +109,19 @@ class _EventRewardState extends State<EventReward> {
     );
   }
 
-  _navigateToNextScreen(BuildContext context, int index) async {
+  _navigateToDetailScreen(int index) async {
     final Reward? result = await Navigator.push(
         context,
         MaterialPageRoute(
             builder: (context) => InputRewardInfoScreen(
-                reward: widget.rewardList[index], level: index + 1)));
+                reward: widget.event.rewardList[index], level: index + 1)));
 
     if (result != null) {
       setState(() {
-        widget.rewardList[index] = result;
-        if (widget.rewardList.last != null && widget.rewardList.length < 5)
-          widget.rewardList.add(null);
+        widget.event.rewardList[index] = result;
+        if (widget.event.rewardList.last != null &&
+            widget.event.rewardList.length < 5)
+          widget.event.rewardList.add(null);
       });
     }
   }

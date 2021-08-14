@@ -16,7 +16,9 @@ class StepProgressbar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return AnimatedContainer(
+      duration: Duration(milliseconds: 200),
+      curve: Curves.fastOutSlowIn,
       height: 3,
       color: kThemeColor,
       width: MediaQuery.of(context).size.width / maxStep * (_step + 1),

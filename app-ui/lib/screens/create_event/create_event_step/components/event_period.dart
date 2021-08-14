@@ -3,8 +3,8 @@ import 'package:hashchecker/constants.dart';
 import 'package:hashchecker/widgets/holo_date_picker/flutter_holo_date_picker.dart';
 
 class EventPeriod extends StatefulWidget {
-  final period;
-  EventPeriod({Key? key, this.period}) : super(key: key);
+  final event;
+  EventPeriod({Key? key, required this.event}) : super(key: key);
 
   @override
   _EventPeriodState createState() => _EventPeriodState();
@@ -18,7 +18,7 @@ class _EventPeriodState extends State<EventPeriod>
   @override
   void initState() {
     super.initState();
-    _dropdownValue = '30일 간';
+    _dropdownValue = widget.event.period.shortCut ?? '30일 간';
   }
 
   @override
@@ -32,14 +32,14 @@ class _EventPeriodState extends State<EventPeriod>
             padding: const EdgeInsets.symmetric(horizontal: 25),
             child: DatePickerWidget(
               looping: true,
-              firstDate: widget.period.startDate,
+              firstDate: widget.event.period.startDate,
               lastDate: DateTime(DateTime.now().year + 3, DateTime.now().month,
                   DateTime.now().day),
               //initialDate: DateTime.now()
               dateFormat: "yyyy-MMMM-dd",
               locale: DateTimePickerLocale.ko,
               onChange: (DateTime newDate, _) {
-                widget.period.startDate = newDate;
+                widget.event.period.startDate = newDate;
               },
               pickerTheme: DateTimePickerTheme(
                 backgroundColor: kScaffoldBackgroundColor,
@@ -62,14 +62,14 @@ class _EventPeriodState extends State<EventPeriod>
                     padding: const EdgeInsets.symmetric(horizontal: 25),
                     child: DatePickerWidget(
                       looping: true,
-                      firstDate: widget.period.startDate,
+                      firstDate: widget.event.period.startDate,
                       lastDate: DateTime(DateTime.now().year + 3,
                           DateTime.now().month, DateTime.now().day),
                       //initialDate: DateTime.now()
                       dateFormat: "yyyy-MMMM-dd",
                       locale: DateTimePickerLocale.ko,
                       onChange: (DateTime newDate, _) {
-                        widget.period.finishDate = newDate;
+                        widget.event.period.finishDate = newDate;
                       },
                       pickerTheme: DateTimePickerTheme(
                         backgroundColor: kScaffoldBackgroundColor,
@@ -105,21 +105,23 @@ class _EventPeriodState extends State<EventPeriod>
                   _dropdownValue = newValue!;
                 });
 
+                widget.event.period.shortCut = newValue;
+
                 if (_dropdownValue == _dateRangeList[0]) {
-                  widget.period.finishDate =
-                      widget.period.startDate.add(Duration(days: 30));
+                  widget.event.period.finishDate =
+                      widget.event.period.startDate.add(Duration(days: 30));
                 } else if (_dropdownValue == _dateRangeList[1]) {
-                  widget.period.finishDate = DateTime(
-                          widget.period.startDate.year,
-                          widget.period.startDate.month + 2,
+                  widget.event.period.finishDate = DateTime(
+                          widget.event.period.startDate.year,
+                          widget.event.period.startDate.month + 2,
                           1)
                       .subtract(Duration(days: 1));
                 } else if (_dropdownValue == _dateRangeList[2]) {
-                  widget.period.finishDate =
-                      DateTime(widget.period.startDate.year + 1, 1, 1)
+                  widget.event.period.finishDate =
+                      DateTime(widget.event.period.startDate.year + 1, 1, 1)
                           .subtract(Duration(days: 1));
                 } else if (_dropdownValue == _dateRangeList[3]) {
-                  widget.period.finishDate = null;
+                  widget.event.period.finishDate = null;
                 }
               },
               items: _dateRangeList
@@ -136,8 +138,8 @@ class _EventPeriodState extends State<EventPeriod>
                   .toList()),
           Visibility(
             child: Text(
-                widget.period.finishDate != null
-                    ? '${widget.period.finishDate.toString().substring(0, 10)} 까지에요!'
+                widget.event.period.finishDate != null
+                    ? '${widget.event.period.finishDate!.toString().substring(0, 10)} 까지에요!'
                     : '이벤트 상품 소진 시까지 진행해요!',
                 style: TextStyle(fontSize: 14, color: kLiteFontColor)),
             visible: _dropdownValue != _dateRangeList.last,
