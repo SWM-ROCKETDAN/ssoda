@@ -154,6 +154,7 @@ class JoinRewardView(APIView):
 # Report GET 요청
 class ReportEventView(APIView):
     def get(self, request, pk):
+
         # Join Post 가져오기
         try:
             join_post = get_join_post_event(pk)

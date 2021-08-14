@@ -71,7 +71,6 @@ class ServerError:
 
     REPORT_ERROR = {
         "message": "REPORT_ERROR",
-        "status": 400,
-        "code": "SERVERERROR006"
+        "status": 506,
+        "code": "SERVER_ERROR_006"
     }
-
