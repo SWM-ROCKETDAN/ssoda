@@ -37,17 +37,17 @@ class _EventRewardState extends State<EventReward> {
                                 child: Icon(
                               Icons.add,
                               size: 45,
-                              color: Colors.black45,
+                              color: kLiteFontColor,
                             )),
                           ]),
                           style: ButtonStyle(
                               elevation: MaterialStateProperty.all<double>(0),
                               side: MaterialStateProperty.all<BorderSide>(
-                                  BorderSide(color: Colors.black26)),
+                                  BorderSide(color: kLiteFontColor)),
                               overlayColor: MaterialStateProperty.all<Color>(
-                                  Colors.grey.shade300),
+                                  kShadowColor),
                               backgroundColor: MaterialStateProperty.all<Color>(
-                                  Colors.white),
+                                  kScaffoldBackgroundColor),
                               shape: MaterialStateProperty.all<OutlinedBorder>(
                                   RoundedRectangleBorder(
                                       borderRadius:
@@ -97,10 +97,10 @@ class _EventRewardState extends State<EventReward> {
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(Icons.info_outline, size: 16, color: Colors.black45),
+            Icon(Icons.info_outline, size: 16, color: kLiteFontColor),
             Text(
               ' 최대 5단계까지 상품을 등록할 수 있어요!',
-              style: TextStyle(color: Colors.black45, fontSize: 12),
+              style: TextStyle(color: kLiteFontColor, fontSize: 12),
             )
           ],
         )

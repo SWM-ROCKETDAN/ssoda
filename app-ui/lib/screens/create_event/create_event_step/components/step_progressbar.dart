@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:hashchecker/constants.dart';
 
 class StepProgressbar extends StatelessWidget {
   const StepProgressbar({
@@ -17,7 +18,7 @@ class StepProgressbar extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       height: 3,
-      color: Theme.of(context).primaryColor,
+      color: kThemeColor,
       width: MediaQuery.of(context).size.width / maxStep * (_step + 1),
     );
   }

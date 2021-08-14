@@ -28,6 +28,7 @@ class _EventPeriodState extends State<EventPeriod>
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Container(
+            color: kScaffoldBackgroundColor,
             padding: const EdgeInsets.symmetric(horizontal: 25),
             child: DatePickerWidget(
               looping: true,
@@ -41,12 +42,14 @@ class _EventPeriodState extends State<EventPeriod>
                 widget.period.startDate = newDate;
               },
               pickerTheme: DateTimePickerTheme(
-                itemTextStyle: TextStyle(color: Colors.black, fontSize: 19),
-                dividerColor: Theme.of(context).primaryColor,
+                backgroundColor: kScaffoldBackgroundColor,
+                itemTextStyle:
+                    TextStyle(color: kDefaultFontColor, fontSize: 19),
+                dividerColor: kThemeColor,
               ),
             ),
           ),
-          Text('부터', style: TextStyle(fontSize: 18)),
+          Text('부터', style: TextStyle(fontSize: 18, color: kDefaultFontColor)),
           AnimatedSize(
             duration: const Duration(milliseconds: 500),
             curve: Curves.fastOutSlowIn,
@@ -69,19 +72,22 @@ class _EventPeriodState extends State<EventPeriod>
                         widget.period.finishDate = newDate;
                       },
                       pickerTheme: DateTimePickerTheme(
+                        backgroundColor: kScaffoldBackgroundColor,
                         itemTextStyle:
-                            TextStyle(color: Colors.black, fontSize: 19),
-                        dividerColor: Theme.of(context).primaryColor,
+                            TextStyle(color: kDefaultFontColor, fontSize: 19),
+                        dividerColor: kThemeColor,
                       ),
                     ),
                   ),
-                  Text('까지', style: TextStyle(fontSize: 18)),
+                  Text('까지',
+                      style: TextStyle(fontSize: 18, color: kDefaultFontColor)),
                 ],
               ),
             ),
           ),
           SizedBox(height: kDefaultPadding),
           DropdownButton(
+              dropdownColor: kScaffoldBackgroundColor.withOpacity(0.9),
               value: _dropdownValue,
               icon: const Icon(
                 Icons.date_range_outlined,
@@ -89,10 +95,10 @@ class _EventPeriodState extends State<EventPeriod>
               ),
               iconSize: 24,
               elevation: 16,
-              style: TextStyle(fontSize: 18, color: Colors.black87),
+              style: TextStyle(fontSize: 18, color: kDefaultFontColor),
               underline: Container(
                 height: 2,
-                color: Theme.of(context).primaryColor,
+                color: kThemeColor,
               ),
               onChanged: (String? newValue) {
                 setState(() {
@@ -123,6 +129,7 @@ class _EventPeriodState extends State<EventPeriod>
                         child: Text(
                           e,
                           textAlign: TextAlign.center,
+                          style: TextStyle(color: kDefaultFontColor),
                         ),
                       ),
                       value: e))
@@ -132,7 +139,7 @@ class _EventPeriodState extends State<EventPeriod>
                 widget.period.finishDate != null
                     ? '${widget.period.finishDate.toString().substring(0, 10)} 까지에요!'
                     : '이벤트 상품 소진 시까지 진행해요!',
-                style: TextStyle(fontSize: 14, color: Colors.grey)),
+                style: TextStyle(fontSize: 14, color: kLiteFontColor)),
             visible: _dropdownValue != _dateRangeList.last,
           ),
         ],
