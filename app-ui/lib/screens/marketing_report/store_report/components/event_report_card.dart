@@ -109,6 +109,7 @@ class EventReportCard extends StatelessWidget {
                                 VerticalDivider(
                                   width: kDefaultPadding,
                                   thickness: 1,
+                                  color: kLiteFontColor.withOpacity(0.5),
                                 ),
                                 Icon(
                                   Icons.group,
@@ -123,6 +124,7 @@ class EventReportCard extends StatelessWidget {
                                 VerticalDivider(
                                   width: kDefaultPadding,
                                   thickness: 1,
+                                  color: kLiteFontColor.withOpacity(0.5),
                                 ),
                                 Icon(
                                   Icons.favorite,

@@ -111,6 +111,7 @@ class _ExpenditureReportWeeklyState extends State<ExpenditureReportWeekly> {
         BarChartRodData(
           y: isTouched ? y * 1.1 : y,
           width: width,
+          colors: [kThemeColor],
           backDrawRodData: BackgroundBarChartRodData(
             show: true,
             y: widget.eventReport.costPerReward.reduce(max).toDouble() * 1.1,

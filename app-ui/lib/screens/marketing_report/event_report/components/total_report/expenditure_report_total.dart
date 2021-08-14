@@ -99,6 +99,7 @@ class _ExpenditureReportTotalState extends State<ExpenditureReportTotal> {
       barRods: [
         BarChartRodData(
           y: isTouched ? y * 1.1 : y,
+          colors: [kThemeColor],
           width: width,
           backDrawRodData: BackgroundBarChartRodData(
             show: true,
