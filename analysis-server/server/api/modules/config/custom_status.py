@@ -74,4 +74,3 @@ class ServerError:
         "status": 506,
         "code": "SERVER_ERROR_006"
     }
-

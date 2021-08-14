@@ -46,7 +46,7 @@ class JoinSerializer(serializers.ModelSerializer):
     def to_representation(self, instance):
         representation = super().to_representation(instance)
         try:
-            join_user = JoinUser.objects.get(sns_id=representation['sns_id'])
+            join_user = JoinUser.objects.get(sns_id=representation['sns_id'], type=representation['type'])
         except Exception as e:
             print(e)
             join_user = {
