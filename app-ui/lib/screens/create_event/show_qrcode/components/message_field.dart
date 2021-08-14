@@ -19,17 +19,20 @@ class MessageField extends StatelessWidget {
               SizedBox(width: kDefaultPadding / 3),
               Text(
                 '이벤트가 등록되었습니다 ',
-                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                style: TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                    color: kDefaultFontColor),
               ),
             ]),
             SizedBox(height: kDefaultPadding),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Icon(Icons.help_outline, size: 16, color: Colors.black45),
+                Icon(Icons.help_outline, size: 16, color: kLiteFontColor),
                 Text(
                   ' QR 코드는 어떻게 사용하나요?',
-                  style: TextStyle(color: Colors.black45, fontSize: 12),
+                  style: TextStyle(color: kLiteFontColor, fontSize: 12),
                 )
               ],
             )
