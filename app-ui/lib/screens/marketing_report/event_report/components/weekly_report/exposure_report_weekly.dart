@@ -126,7 +126,7 @@ class _ExposureReportWeeklyState extends State<ExposureReportWeekly> {
                   child: LineChart(LineChartData(
                     gridData: FlGridData(
                       show: true,
-                      drawVerticalLine: true,
+                      drawVerticalLine: false,
                       getDrawingHorizontalLine: (value) {
                         return FlLine(
                           color: Colors.black12,
