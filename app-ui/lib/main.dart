@@ -28,7 +28,8 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
           primarySwatch: _createMaterialColor(kThemeColor),
           visualDensity: VisualDensity.adaptivePlatformDensity,
-          scaffoldBackgroundColor: kScaffoldBackgroundColor),
+          scaffoldBackgroundColor: kScaffoldBackgroundColor,
+          accentColor: kShadowColor),
       home: StoreReportScreen(),
     );
   }
