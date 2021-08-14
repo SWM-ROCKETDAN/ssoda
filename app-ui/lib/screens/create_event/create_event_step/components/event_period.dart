@@ -21,6 +21,8 @@ class _EventPeriodState extends State<EventPeriod>
   void initState() {
     super.initState();
     _dropdownValue = widget.event.period.shortCut ?? '30일 간';
+    widget.event.period.finishDate =
+        widget.event.period.startDate.add(Duration(days: 30));
   }
 
   @override
@@ -45,14 +47,33 @@ class _EventPeriodState extends State<EventPeriod>
                   padding: const EdgeInsets.symmetric(horizontal: 25),
                   child: DatePickerWidget(
                     looping: true,
-                    firstDate: widget.event.period.startDate,
+                    firstDate: DateTime.now(),
                     lastDate: DateTime(DateTime.now().year + 3,
                         DateTime.now().month, DateTime.now().day),
-                    //initialDate: DateTime.now()
+                    initialDate: widget.event.period.startDate,
                     dateFormat: "yyyy-MMMM-dd",
                     locale: DateTimePickerLocale.ko,
                     onChange: (DateTime newDate, _) {
-                      widget.event.period.startDate = newDate;
+                      setState(() {
+                        widget.event.period.startDate = newDate;
+                        if (_dropdownValue == _dateRangeList[0]) {
+                          widget.event.period.finishDate = widget
+                              .event.period.startDate
+                              .add(Duration(days: 30));
+                        } else if (_dropdownValue == _dateRangeList[1]) {
+                          widget.event.period.finishDate = DateTime(
+                                  widget.event.period.startDate.year,
+                                  widget.event.period.startDate.month + 2,
+                                  1)
+                              .subtract(Duration(days: 1));
+                        } else if (_dropdownValue == _dateRangeList[2]) {
+                          widget.event.period.finishDate = DateTime(
+                                  widget.event.period.startDate.year + 1, 1, 1)
+                              .subtract(Duration(days: 1));
+                        } else if (_dropdownValue == _dateRangeList[3]) {
+                          widget.event.period.finishDate = null;
+                        }
+                      });
                     },
                     pickerTheme: DateTimePickerTheme(
                       backgroundColor: kScaffoldBackgroundColor,
@@ -79,7 +100,8 @@ class _EventPeriodState extends State<EventPeriod>
                             firstDate: widget.event.period.startDate,
                             lastDate: DateTime(DateTime.now().year + 3,
                                 DateTime.now().month, DateTime.now().day),
-                            //initialDate: DateTime.now()
+                            initialDate: widget.event.period.finishDate ??
+                                widget.event.period.startDate,
                             dateFormat: "yyyy-MMMM-dd",
                             locale: DateTimePickerLocale.ko,
                             onChange: (DateTime newDate, _) {
@@ -118,27 +140,26 @@ class _EventPeriodState extends State<EventPeriod>
                     onChanged: (String? newValue) {
                       setState(() {
                         _dropdownValue = newValue!;
+                        widget.event.period.shortCut = newValue;
+
+                        if (_dropdownValue == _dateRangeList[0]) {
+                          widget.event.period.finishDate = widget
+                              .event.period.startDate
+                              .add(Duration(days: 30));
+                        } else if (_dropdownValue == _dateRangeList[1]) {
+                          widget.event.period.finishDate = DateTime(
+                                  widget.event.period.startDate.year,
+                                  widget.event.period.startDate.month + 2,
+                                  1)
+                              .subtract(Duration(days: 1));
+                        } else if (_dropdownValue == _dateRangeList[2]) {
+                          widget.event.period.finishDate = DateTime(
+                                  widget.event.period.startDate.year + 1, 1, 1)
+                              .subtract(Duration(days: 1));
+                        } else if (_dropdownValue == _dateRangeList[3]) {
+                          widget.event.period.finishDate = null;
+                        }
                       });
-
-                      widget.event.period.shortCut = newValue;
-
-                      if (_dropdownValue == _dateRangeList[0]) {
-                        widget.event.period.finishDate = widget
-                            .event.period.startDate
-                            .add(Duration(days: 30));
-                      } else if (_dropdownValue == _dateRangeList[1]) {
-                        widget.event.period.finishDate = DateTime(
-                                widget.event.period.startDate.year,
-                                widget.event.period.startDate.month + 2,
-                                1)
-                            .subtract(Duration(days: 1));
-                      } else if (_dropdownValue == _dateRangeList[2]) {
-                        widget.event.period.finishDate = DateTime(
-                                widget.event.period.startDate.year + 1, 1, 1)
-                            .subtract(Duration(days: 1));
-                      } else if (_dropdownValue == _dateRangeList[3]) {
-                        widget.event.period.finishDate = null;
-                      }
                     },
                     items: _dateRangeList
                         .map((e) => DropdownMenuItem(
