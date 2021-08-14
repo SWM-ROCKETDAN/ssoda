@@ -101,7 +101,7 @@ class CustomSliverAppBar extends StatelessWidget {
             ]),
           ),
           borderRadius: BorderRadius.vertical(bottom: Radius.circular(0))),
-      backgroundColor: Colors.black87,
+      backgroundColor: kDefaultFontColor.withOpacity(0.87),
       shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.vertical(bottom: Radius.circular(0))),
       expandedHeight: size.height * 0.3,

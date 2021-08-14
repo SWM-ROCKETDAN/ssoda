@@ -25,10 +25,10 @@ class ReportOverview extends StatelessWidget {
     final _overviewBoxDecoration = BoxDecoration(
         boxShadow: [
           BoxShadow(
-            color: kShadowColor,
+            color: kShadowColor.withOpacity(0.25),
             spreadRadius: 1,
-            blurRadius: 10,
-            offset: Offset(2, 2), // changes position of shadow
+            blurRadius: 6,
+            offset: Offset(1, 5), // changes position of shadow
           ),
         ],
         color: kScaffoldBackgroundColor,
@@ -48,13 +48,17 @@ class ReportOverview extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Icon(Icons.attach_money, size: 28, color: kDefaultFontColor),
+                  SizedBox(height: kDefaultPadding / 5),
                   AutoSizeText(
                     '평균 객단가',
                     minFontSize: 10,
                     maxLines: 1,
                     style: TextStyle(color: kDefaultFontColor),
                   ),
-                  Divider(height: 7),
+                  Divider(
+                    height: 7,
+                    color: kShadowColor.withOpacity(0.5),
+                  ),
                   AutoSizeText.rich(
                     TextSpan(children: [
                       TextSpan(
@@ -80,13 +84,17 @@ class ReportOverview extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Icon(Icons.group, size: 28, color: kDefaultFontColor),
+                  SizedBox(height: kDefaultPadding / 5),
                   AutoSizeText(
                     '누적 참여자',
                     minFontSize: 10,
                     maxLines: 1,
                     style: TextStyle(color: kDefaultFontColor),
                   ),
-                  Divider(height: 7),
+                  Divider(
+                    height: 7,
+                    color: kShadowColor.withOpacity(0.5),
+                  ),
                   AutoSizeText.rich(
                     TextSpan(children: [
                       TextSpan(
@@ -112,13 +120,17 @@ class ReportOverview extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Icon(Icons.favorite, size: 28, color: kDefaultFontColor),
+                  SizedBox(height: kDefaultPadding / 5),
                   AutoSizeText(
                     '누적 좋아요',
                     minFontSize: 10,
                     maxLines: 1,
                     style: TextStyle(color: kDefaultFontColor),
                   ),
-                  Divider(height: 7),
+                  Divider(
+                    height: 7,
+                    color: kShadowColor.withOpacity(0.5),
+                  ),
                   AutoSizeText.rich(
                     TextSpan(children: [
                       TextSpan(
