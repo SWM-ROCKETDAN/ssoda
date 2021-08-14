@@ -1,3 +1,5 @@
+import 'package:hashchecker/models/requires.dart';
+
 import 'reward.dart';
 import 'period.dart';
 import 'template.dart';
@@ -6,21 +8,13 @@ import 'package:intl/intl.dart';
 enum EventStatus { WAITING, PROCEEDING, ENDED }
 
 class Event {
-  final String title;
-  final List<Reward?> rewardList;
-  final Period period;
-  final List<String?> images;
-  final List<String> hashtagList;
-  final List<bool> requireList;
-  final Template template;
-
-  String get getTitle => title;
-  List<Reward?> get getRewardList => rewardList;
-  List<String> get getHashtagList => hashtagList;
-  Period get getPeriod => period;
-  List<String?> get getImages => images;
-  List<bool> get getRequireList => requireList;
-  Template get getTemplate => template;
+  String title;
+  List<Reward?> rewardList;
+  Period period;
+  List<String?> images;
+  List<String> hashtagList;
+  List<bool> requireList;
+  Template template;
 
   Event(
       {required this.title,
@@ -64,7 +58,8 @@ class Event {
             DateFormat('yyyy-MM-ddTHH:mm:ss').parse(json['startDate']),
             json['finishDate'] == null
                 ? null
-                : DateFormat('yyyy-MM-ddTHH:mm:ss').parse(json['finishDate'])),
+                : DateFormat('yyyy-MM-ddTHH:mm:ss').parse(json['finishDate']),
+            null),
         images: images,
         requireList: requireList,
         template: Template(json['template']));
