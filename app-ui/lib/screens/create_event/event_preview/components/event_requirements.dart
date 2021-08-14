@@ -15,14 +15,20 @@ class EventRequirements extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
       Text('추가 조건',
-          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 17)),
+          style: TextStyle(
+              fontWeight: FontWeight.bold,
+              fontSize: 17,
+              color: kDefaultFontColor)),
       SizedBox(height: kDefaultPadding),
       Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: List.generate(
               event.requireList.length,
               (index) => event.requireList[index]
-                  ? Text('- ${requireStringList[index]}\n')
+                  ? Text(
+                      '• ${requireStringList[index]}\n',
+                      style: TextStyle(color: kDefaultFontColor),
+                    )
                   : Container()))
     ]);
   }

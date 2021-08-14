@@ -32,15 +32,15 @@ class Body extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Divider(height: kDefaultPadding * 2),
+              Divider(height: kDefaultPadding * 2, color: kShadowColor),
               EventRewards(event: event),
-              Divider(height: kDefaultPadding * 2),
+              Divider(height: kDefaultPadding * 2, color: kShadowColor),
               EventHashtags(event: event),
-              Divider(height: kDefaultPadding * 2),
+              Divider(height: kDefaultPadding * 2, color: kShadowColor),
               EventRequirements(event: event),
-              Divider(height: kDefaultPadding * 2),
+              Divider(height: kDefaultPadding * 2, color: kShadowColor),
               EventPeriod(event: event),
-              Divider(height: kDefaultPadding * 2),
+              Divider(height: kDefaultPadding * 2, color: kShadowColor),
               CreateEventButton(
                 event: event,
               )
