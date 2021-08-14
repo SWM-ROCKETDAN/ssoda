@@ -129,13 +129,13 @@ class _ExposureReportWeeklyState extends State<ExposureReportWeekly> {
                       drawVerticalLine: false,
                       getDrawingHorizontalLine: (value) {
                         return FlLine(
-                          color: Colors.black12,
+                          color: kShadowColor,
                           strokeWidth: 1,
                         );
                       },
                       getDrawingVerticalLine: (value) {
                         return FlLine(
-                          color: Colors.black12,
+                          color: kShadowColor,
                           strokeWidth: 1,
                         );
                       },
@@ -146,7 +146,7 @@ class _ExposureReportWeeklyState extends State<ExposureReportWeekly> {
                         showTitles: true,
                         reservedSize: 14,
                         getTextStyles: (value) => const TextStyle(
-                            color: Color(0xff68737d),
+                            color: kLiteFontColor,
                             fontWeight: FontWeight.bold,
                             fontSize: 12),
                         getTitles: (value) {
@@ -167,7 +167,7 @@ class _ExposureReportWeeklyState extends State<ExposureReportWeekly> {
                       leftTitles: SideTitles(
                         showTitles: true,
                         getTextStyles: (value) => const TextStyle(
-                          color: Color(0xff67727d),
+                          color: kLiteFontColor,
                           fontWeight: FontWeight.bold,
                           fontSize: 12,
                         ),
