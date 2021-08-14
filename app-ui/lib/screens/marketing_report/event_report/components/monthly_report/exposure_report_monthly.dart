@@ -24,10 +24,7 @@ class ExposureReportMonthly extends StatefulWidget {
 class _ExposureReportMonthlyState extends State<ExposureReportMonthly> {
   @override
   Widget build(BuildContext context) {
-    List<Color> gradientColors = [
-      const Color(0xff23b6e6),
-      const Color(0xff02d39a),
-    ];
+    List<Color> gradientColors = [kThemeColor];
 
     return Container(
       padding: const EdgeInsets.all(20),
@@ -130,16 +127,16 @@ class _ExposureReportMonthlyState extends State<ExposureReportMonthly> {
                   child: LineChart(LineChartData(
                     gridData: FlGridData(
                       show: true,
-                      drawVerticalLine: true,
+                      drawVerticalLine: false,
                       getDrawingHorizontalLine: (value) {
                         return FlLine(
-                          color: Colors.black12,
+                          color: kShadowColor,
                           strokeWidth: 1,
                         );
                       },
                       getDrawingVerticalLine: (value) {
                         return FlLine(
-                          color: Colors.black12,
+                          color: kShadowColor,
                           strokeWidth: 1,
                         );
                       },
@@ -150,7 +147,7 @@ class _ExposureReportMonthlyState extends State<ExposureReportMonthly> {
                         showTitles: true,
                         reservedSize: 14,
                         getTextStyles: (value) => const TextStyle(
-                            color: Color(0xff68737d),
+                            color: kLiteFontColor,
                             fontWeight: FontWeight.bold,
                             fontSize: 12),
                         getTitles: (value) {
@@ -179,7 +176,7 @@ class _ExposureReportMonthlyState extends State<ExposureReportMonthly> {
                       leftTitles: SideTitles(
                         showTitles: true,
                         getTextStyles: (value) => const TextStyle(
-                          color: Color(0xff67727d),
+                          color: kLiteFontColor,
                           fontWeight: FontWeight.bold,
                           fontSize: 12,
                         ),
@@ -225,7 +222,7 @@ class _ExposureReportMonthlyState extends State<ExposureReportMonthly> {
                           show: true,
                         ),
                         belowBarData: BarAreaData(
-                          show: true,
+                          show: false,
                           colors: gradientColors
                               .map((color) => color.withOpacity(0.3))
                               .toList(),

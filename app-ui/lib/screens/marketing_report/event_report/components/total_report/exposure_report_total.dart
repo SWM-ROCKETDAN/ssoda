@@ -72,6 +72,7 @@ class _ExposureReportTotalState extends State<ExposureReportTotal> {
                 Icon(
                   Icons.person_outline,
                   size: 48,
+                  color: kDefaultFontColor,
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,

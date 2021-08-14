@@ -23,10 +23,7 @@ class ExposureReportWeekly extends StatefulWidget {
 class _ExposureReportWeeklyState extends State<ExposureReportWeekly> {
   @override
   Widget build(BuildContext context) {
-    List<Color> gradientColors = [
-      const Color(0xff23b6e6),
-      const Color(0xff02d39a),
-    ];
+    List<Color> gradientColors = [kThemeColor];
 
     return Container(
       padding: const EdgeInsets.all(20),
@@ -216,7 +213,7 @@ class _ExposureReportWeeklyState extends State<ExposureReportWeekly> {
                           show: true,
                         ),
                         belowBarData: BarAreaData(
-                          show: true,
+                          show: false,
                           colors: gradientColors
                               .map((color) => color.withOpacity(0.3))
                               .toList(),
