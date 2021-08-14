@@ -18,7 +18,7 @@ class _EventTitleState extends State<EventTitle> {
         style: TextStyle(
             fontWeight: FontWeight.bold, fontSize: 20, color: kThemeColor),
         decoration: InputDecoration(
-          hintText: '우리가게 SNS 해시태그 이벤트',
-        ));
+            hintText: '우리가게 SNS 해시태그 이벤트',
+            hintStyle: TextStyle(color: kLiteFontColor)));
   }
 }

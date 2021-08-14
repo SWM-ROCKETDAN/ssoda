@@ -53,17 +53,18 @@ class _EventHashtagsState extends State<EventHashtags> {
                             color: Colors.white,
                             size: 18,
                           ),
-                          backgroundColor: Colors.black.withOpacity(0.8)),
+                          backgroundColor: kDefaultFontColor.withOpacity(0.85)),
                       onDeleted: () {
                         setState(() {
                           widget.hashtagList.removeAt(index);
                         });
                       },
-                      deleteIconColor: Colors.grey,
+                      deleteIconColor: kLiteFontColor,
                       label: Text('${widget.hashtagList[index]}'),
                       labelPadding: const EdgeInsets.fromLTRB(6, 3, 0, 3),
-                      elevation: 2.0,
-                      backgroundColor: Colors.white,
+                      elevation: 7.0,
+                      shadowColor: kShadowColor,
+                      backgroundColor: kScaffoldBackgroundColor,
                     ),
             )));
   }
@@ -132,7 +133,7 @@ class _EventHashtagsState extends State<EventHashtags> {
   }
 
   String? _checkHashtag() {
-    final validChar = RegExp(r'^[a-zA-Z0-9ㄱ-ㅎ가-힣]+$');
+    final validChar = RegExp(r'^[a-zA-Z0-9ㄱ-ㅎㅏ-ㅣ가-힣]+$');
 
     if (_controller.value.text.trim().isEmpty) return '해시태그를 입력해주세요';
 

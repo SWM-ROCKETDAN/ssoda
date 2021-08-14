@@ -55,7 +55,7 @@ class _EventImageState extends State<EventImage> {
                               child: Center(
                                   child: Icon(
                                 Icons.add,
-                                color: Colors.black45,
+                                color: kLiteFontColor,
                                 size: 50,
                               )),
                               style: ButtonStyle(
@@ -66,12 +66,12 @@ class _EventImageState extends State<EventImage> {
                                                   BorderRadius.circular(16.0))),
                                   backgroundColor:
                                       MaterialStateProperty.all<Color>(
-                                          Colors.white),
+                                          kScaffoldBackgroundColor),
                                   overlayColor:
                                       MaterialStateProperty.all<Color>(
-                                          Colors.black12),
+                                          kShadowColor),
                                   side: MaterialStateProperty.all<BorderSide>(
-                                      BorderSide(color: Colors.black26))),
+                                      BorderSide(color: kLiteFontColor))),
                             )
                           : Image.file(File(widget.imageList[index]),
                               fit: BoxFit.cover)))).cast<Widget>().toList(),
@@ -80,10 +80,10 @@ class _EventImageState extends State<EventImage> {
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(Icons.info_outline, size: 16, color: Colors.black45),
+            Icon(Icons.info_outline, size: 16, color: kLiteFontColor),
             Text(
               ' 좌우 슬라이드로 최대 3장까지 등록할 수 있어요!',
-              style: TextStyle(color: Colors.black45, fontSize: 12),
+              style: TextStyle(color: kLiteFontColor, fontSize: 12),
             )
           ],
         )

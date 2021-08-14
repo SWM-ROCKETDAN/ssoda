@@ -1,5 +1,6 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
+import 'package:hashchecker/constants.dart';
 import 'package:hashchecker/models/event.dart';
 import 'dart:io';
 
@@ -19,7 +20,7 @@ class HeaderWithImages extends StatelessWidget {
       height: size.height * 0.4,
       child: Stack(children: [
         Container(
-            color: Colors.grey,
+            color: kLiteFontColor,
             child: CarouselSlider(
               options: CarouselOptions(
                   autoPlay: true,
@@ -42,7 +43,7 @@ class HeaderWithImages extends StatelessWidget {
             child: Container(
               height: size.width * 0.14 - 15,
               decoration: BoxDecoration(
-                color: Colors.white,
+                color: kScaffoldBackgroundColor,
                 borderRadius: BorderRadius.only(
                   topLeft: Radius.circular(30),
                   topRight: Radius.circular(30),
@@ -61,9 +62,9 @@ class HeaderWithImages extends StatelessWidget {
                       BoxShadow(
                           blurRadius: 25,
                           offset: Offset(0, 5),
-                          color: Colors.black.withOpacity(0.25))
+                          color: kDefaultFontColor.withOpacity(0.2))
                     ],
-                    color: Colors.grey,
+                    color: kShadowColor,
                     shape: BoxShape.circle,
                     image: DecorationImage(
                         image:

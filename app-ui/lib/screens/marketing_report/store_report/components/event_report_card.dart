@@ -25,8 +25,9 @@ class EventReportCard extends StatelessWidget {
         width: size.width,
         margin: const EdgeInsets.only(bottom: kDefaultPadding),
         child: Card(
-            color: Colors.white,
-            elevation: 0.75,
+            color: kScaffoldBackgroundColor,
+            shadowColor: kShadowColor,
+            elevation: 18,
             child: InkWell(
               onTap: () {
                 Navigator.push(
@@ -88,7 +89,9 @@ class EventReportCard extends StatelessWidget {
                         children: [
                           Text(eventReportList[index].eventName,
                               style: TextStyle(
-                                  fontWeight: FontWeight.bold, fontSize: 18)),
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 18,
+                                  color: kDefaultFontColor)),
                           SizedBox(height: kDefaultPadding / 2),
                           IntrinsicHeight(
                             child: Row(
@@ -96,41 +99,43 @@ class EventReportCard extends StatelessWidget {
                                 Icon(
                                   Icons.attach_money,
                                   size: 16,
-                                  color: Colors.black54,
+                                  color: kLiteFontColor,
                                 ),
                                 Text(
                                   '${numberDisplay(eventReportList[index].guestPrice)}원',
                                   style: TextStyle(
-                                      color: Colors.black54, fontSize: 14),
+                                      color: kLiteFontColor, fontSize: 14),
                                 ),
                                 VerticalDivider(
                                   width: kDefaultPadding,
                                   thickness: 1,
+                                  color: kLiteFontColor.withOpacity(0.5),
                                 ),
                                 Icon(
                                   Icons.group,
                                   size: 16,
-                                  color: Colors.black54,
+                                  color: kLiteFontColor,
                                 ),
                                 SizedBox(width: kDefaultPadding / 3),
                                 Text(
                                     '${numberDisplay(eventReportList[index].joinCount)}명',
                                     style: TextStyle(
-                                        color: Colors.black54, fontSize: 14)),
+                                        color: kLiteFontColor, fontSize: 14)),
                                 VerticalDivider(
                                   width: kDefaultPadding,
                                   thickness: 1,
+                                  color: kLiteFontColor.withOpacity(0.5),
                                 ),
                                 Icon(
                                   Icons.favorite,
                                   size: 16,
-                                  color: Colors.black54,
+                                  color: kLiteFontColor,
                                 ),
                                 SizedBox(width: kDefaultPadding / 3),
                                 Text(
                                     '${numberDisplay(eventReportList[index].likeCount)}개',
                                     style: TextStyle(
-                                        color: Colors.black54, fontSize: 14)),
+                                        color: kLiteFontColor, fontSize: 14)),
                               ],
                             ),
                           ),
@@ -144,7 +149,8 @@ class EventReportCard extends StatelessWidget {
                                   label: Text(
                                     eventReportList[index]
                                         .rewardNameList[rewardIndex],
-                                    style: TextStyle(fontSize: 12),
+                                    style: TextStyle(
+                                        fontSize: 12, color: kDefaultFontColor),
                                   ),
                                   padding: const EdgeInsets.all(3),
                                   backgroundColor: kThemeColor.withOpacity(0.2),

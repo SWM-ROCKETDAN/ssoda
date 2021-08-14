@@ -1,5 +1,6 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
+import 'package:hashchecker/constants.dart';
 import 'package:hashchecker/models/event_report.dart';
 
 import 'components/daily_report.dart';
@@ -112,7 +113,7 @@ class _EventReportScreenState extends State<EventReportScreen> {
                       )
                     ]),
                   ),
-                  backgroundColor: Colors.black87,
+                  backgroundColor: kDefaultFontColor.withOpacity(0.87),
                   foregroundColor: Colors.green,
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.only(
@@ -124,9 +125,9 @@ class _EventReportScreenState extends State<EventReportScreen> {
                 SliverPersistentHeader(
                   delegate: _SliverAppBarDelegate(
                     TabBar(
-                      indicatorColor: Colors.black87,
-                      labelColor: Colors.black87,
-                      unselectedLabelColor: Colors.grey,
+                      indicatorColor: kDefaultFontColor,
+                      labelColor: kDefaultFontColor,
+                      unselectedLabelColor: kLiteFontColor.withOpacity(0.8),
                       tabs: [
                         Tab(text: "일 별"),
                         Tab(text: "주 별"),
@@ -165,12 +166,12 @@ class _SliverAppBarDelegate extends SliverPersistentHeaderDelegate {
       BuildContext context, double shrinkOffset, bool overlapsContent) {
     return Container(
       child: _tabBar,
-      decoration: BoxDecoration(color: Colors.white, boxShadow: [
+      decoration: BoxDecoration(color: kScaffoldBackgroundColor, boxShadow: [
         BoxShadow(
-          color: Colors.black12,
-          offset: Offset(0.0, 1.0),
-          blurRadius: 1.0,
-        ),
+            color: kShadowColor,
+            offset: Offset(0.0, 1.0),
+            blurRadius: 1.0,
+            spreadRadius: 0.7),
       ]),
     );
   }

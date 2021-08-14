@@ -8,6 +8,8 @@ import 'dart:math';
 
 import 'package:hashchecker/widgets/number_slider/number_slide_animation_widget.dart';
 
+import '../report_design.dart';
+
 class ExpenditureReportTotal extends StatefulWidget {
   const ExpenditureReportTotal(
       {Key? key, required this.size, required this.eventReport})
@@ -34,14 +36,7 @@ class _ExpenditureReportTotalState extends State<ExpenditureReportTotal> {
       padding: const EdgeInsets.all(20),
       width: widget.size.width,
       margin: const EdgeInsets.fromLTRB(5, 5, 5, 15),
-      decoration: BoxDecoration(boxShadow: [
-        BoxShadow(
-          color: Colors.grey.withOpacity(0.2),
-          spreadRadius: 5,
-          blurRadius: 20,
-          offset: Offset(0, 0), // changes position of shadow
-        ),
-      ], color: Colors.white, borderRadius: BorderRadius.circular(20)),
+      decoration: reportBoxDecoration,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -51,7 +46,7 @@ class _ExpenditureReportTotalState extends State<ExpenditureReportTotal> {
             children: [
               Text('총 ',
                   style: TextStyle(
-                      color: Colors.black87,
+                      color: kDefaultFontColor,
                       fontWeight: FontWeight.bold,
                       fontSize: 18)),
               NumberSlideAnimation(
@@ -67,14 +62,14 @@ class _ExpenditureReportTotalState extends State<ExpenditureReportTotal> {
               Text(
                 ' 원 ',
                 style: TextStyle(
-                    color: Colors.black87,
+                    color: kDefaultFontColor,
                     fontWeight: FontWeight.bold,
                     fontSize: 18),
               ),
               Text(
                 '사용하였습니다',
                 style: TextStyle(
-                    color: Colors.black87,
+                    color: kDefaultFontColor,
                     fontWeight: FontWeight.bold,
                     fontSize: 18),
               )
@@ -104,7 +99,7 @@ class _ExpenditureReportTotalState extends State<ExpenditureReportTotal> {
       barRods: [
         BarChartRodData(
           y: isTouched ? y * 1.1 : y,
-          colors: isTouched ? [Colors.indigoAccent.shade200] : [kThemeColor],
+          colors: [kThemeColor],
           width: width,
           backDrawRodData: BackgroundBarChartRodData(
             show: true,
@@ -126,7 +121,7 @@ class _ExpenditureReportTotalState extends State<ExpenditureReportTotal> {
     return BarChartData(
       barTouchData: BarTouchData(
         touchTooltipData: BarTouchTooltipData(
-            tooltipBgColor: Colors.white.withOpacity(0.8),
+            tooltipBgColor: kScaffoldBackgroundColor.withOpacity(0.8),
             getTooltipItem: (group, groupIndex, rod, rodIndex) {
               String rewardName;
               switch (group.x.toInt()) {
@@ -164,7 +159,7 @@ class _ExpenditureReportTotalState extends State<ExpenditureReportTotal> {
                   TextSpan(
                     text: '${numberDisplay(rod.y.toInt())}원',
                     style: TextStyle(
-                      color: Colors.black87,
+                      color: kDefaultFontColor,
                       fontSize: 16,
                       fontWeight: FontWeight.w500,
                     ),
@@ -189,7 +184,9 @@ class _ExpenditureReportTotalState extends State<ExpenditureReportTotal> {
         bottomTitles: SideTitles(
           showTitles: true,
           getTextStyles: (value) => const TextStyle(
-              color: Colors.black87, fontWeight: FontWeight.bold, fontSize: 14),
+              color: kDefaultFontColor,
+              fontWeight: FontWeight.bold,
+              fontSize: 14),
           margin: 16,
           getTitles: (double value) {
             switch (value.toInt()) {

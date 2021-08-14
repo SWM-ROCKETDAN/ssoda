@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:hashchecker/constants.dart';
 
 const List<String> stepTextList = [
   '이벤트 제목을 입력해주세요',
@@ -23,7 +24,8 @@ class StepText extends StatelessWidget {
   Widget build(BuildContext context) {
     return Text(
       stepTextList[_step],
-      style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+      style: TextStyle(
+          fontSize: 24, fontWeight: FontWeight.bold, color: kDefaultFontColor),
     );
   }
 }

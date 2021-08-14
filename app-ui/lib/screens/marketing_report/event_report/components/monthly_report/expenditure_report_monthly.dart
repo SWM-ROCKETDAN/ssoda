@@ -9,6 +9,7 @@ import 'dart:math';
 import 'package:hashchecker/widgets/number_slider/number_slide_animation_widget.dart';
 
 import '../delta_data.dart';
+import '../report_design.dart';
 
 class ExpenditureReportMonthly extends StatefulWidget {
   const ExpenditureReportMonthly(
@@ -37,21 +38,14 @@ class _ExpenditureReportMonthlyState extends State<ExpenditureReportMonthly> {
       padding: const EdgeInsets.all(20),
       width: widget.size.width,
       margin: const EdgeInsets.fromLTRB(5, 5, 5, 15),
-      decoration: BoxDecoration(boxShadow: [
-        BoxShadow(
-          color: Colors.grey.withOpacity(0.2),
-          spreadRadius: 5,
-          blurRadius: 20,
-          offset: Offset(0, 0), // changes position of shadow
-        ),
-      ], color: Colors.white, borderRadius: BorderRadius.circular(20)),
+      decoration: reportBoxDecoration,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
             Text('이번 달에',
                 style: TextStyle(
-                    color: Colors.black87,
+                    color: kDefaultFontColor,
                     fontWeight: FontWeight.bold,
                     fontSize: 14)),
             DeltaData(
@@ -63,7 +57,7 @@ class _ExpenditureReportMonthlyState extends State<ExpenditureReportMonthly> {
             children: [
               Text('총 ',
                   style: TextStyle(
-                      color: Colors.black87,
+                      color: kDefaultFontColor,
                       fontWeight: FontWeight.bold,
                       fontSize: 18)),
               NumberSlideAnimation(
@@ -79,14 +73,14 @@ class _ExpenditureReportMonthlyState extends State<ExpenditureReportMonthly> {
               Text(
                 ' 원 ',
                 style: TextStyle(
-                    color: Colors.black87,
+                    color: kDefaultFontColor,
                     fontWeight: FontWeight.bold,
                     fontSize: 18),
               ),
               Text(
                 '사용하였습니다',
                 style: TextStyle(
-                    color: Colors.black87,
+                    color: kDefaultFontColor,
                     fontWeight: FontWeight.bold,
                     fontSize: 18),
               ),
@@ -116,7 +110,7 @@ class _ExpenditureReportMonthlyState extends State<ExpenditureReportMonthly> {
       barRods: [
         BarChartRodData(
           y: isTouched ? y * 1.1 : y,
-          colors: isTouched ? [Colors.indigoAccent.shade200] : [kThemeColor],
+          colors: [kThemeColor],
           width: width,
           backDrawRodData: BackgroundBarChartRodData(
             show: true,
@@ -138,7 +132,7 @@ class _ExpenditureReportMonthlyState extends State<ExpenditureReportMonthly> {
     return BarChartData(
       barTouchData: BarTouchData(
         touchTooltipData: BarTouchTooltipData(
-            tooltipBgColor: Colors.white.withOpacity(0.8),
+            tooltipBgColor: kScaffoldBackgroundColor.withOpacity(0.8),
             getTooltipItem: (group, groupIndex, rod, rodIndex) {
               String rewardName;
               switch (group.x.toInt()) {
@@ -176,7 +170,7 @@ class _ExpenditureReportMonthlyState extends State<ExpenditureReportMonthly> {
                   TextSpan(
                     text: '${numberDisplay(rod.y.toInt() ~/ 3)}원',
                     style: TextStyle(
-                      color: Colors.black87,
+                      color: kDefaultFontColor,
                       fontSize: 16,
                       fontWeight: FontWeight.w500,
                     ),
@@ -201,7 +195,9 @@ class _ExpenditureReportMonthlyState extends State<ExpenditureReportMonthly> {
         bottomTitles: SideTitles(
           showTitles: true,
           getTextStyles: (value) => const TextStyle(
-              color: Colors.black87, fontWeight: FontWeight.bold, fontSize: 14),
+              color: kDefaultFontColor,
+              fontWeight: FontWeight.bold,
+              fontSize: 14),
           margin: 16,
           getTitles: (double value) {
             switch (value.toInt()) {

@@ -157,7 +157,7 @@ class _InputRewardInfoScreenState extends State<InputRewardInfoScreen> {
                     categoryTileList[index].icon,
                     color: categoryTileList[index].category == _choosedCategory
                         ? Colors.white
-                        : Colors.black87,
+                        : kDefaultFontColor,
                   ),
                   SizedBox(height: 8),
                   Text(
@@ -166,7 +166,7 @@ class _InputRewardInfoScreenState extends State<InputRewardInfoScreen> {
                       color:
                           categoryTileList[index].category == _choosedCategory
                               ? Colors.white
-                              : Colors.black87,
+                              : kDefaultFontColor,
                     ),
                   )
                 ],
@@ -213,7 +213,7 @@ class _InputRewardInfoScreenState extends State<InputRewardInfoScreen> {
             Center(
               child: Icon(
                 Icons.add,
-                color: Colors.black45,
+                color: kLiteFontColor,
                 size: 50,
               ),
             ),
@@ -223,16 +223,17 @@ class _InputRewardInfoScreenState extends State<InputRewardInfoScreen> {
                 right: 0,
                 child: Text('상품 이미지 등록하기',
                     textAlign: TextAlign.center,
-                    style: TextStyle(color: Colors.black45, fontSize: 10)))
+                    style: TextStyle(color: kLiteFontColor, fontSize: 10)))
           ]),
           style: ButtonStyle(
               side: MaterialStateProperty.all<BorderSide>(
-                  BorderSide(color: Colors.black26)),
+                  BorderSide(color: kLiteFontColor)),
               shape: MaterialStateProperty.all<OutlinedBorder>(
                   RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(16))),
-              backgroundColor: MaterialStateProperty.all<Color>(Colors.white),
-              overlayColor: MaterialStateProperty.all<Color>(Colors.black12),
+              backgroundColor:
+                  MaterialStateProperty.all<Color>(kScaffoldBackgroundColor),
+              overlayColor: MaterialStateProperty.all<Color>(kShadowColor),
               elevation: MaterialStateProperty.all<double>(0)),
         ));
   }
@@ -266,11 +267,12 @@ class _InputRewardInfoScreenState extends State<InputRewardInfoScreen> {
   AppBar buildAppBar() {
     return AppBar(
         elevation: 0,
-        backgroundColor: Colors.white,
-        iconTheme: IconThemeData(color: Colors.black),
+        backgroundColor: kScaffoldBackgroundColor,
+        iconTheme: IconThemeData(color: kDefaultFontColor),
         title: Text(
           '보상 상세정보 등록',
-          style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
+          style:
+              TextStyle(color: kDefaultFontColor, fontWeight: FontWeight.bold),
         ),
         centerTitle: true);
   }

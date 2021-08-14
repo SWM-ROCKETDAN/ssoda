@@ -21,6 +21,19 @@ class ReportOverview extends StatelessWidget {
         length: 4,
         roundingType: RoundingType.ceil,
         units: ['K', 'M', 'G', 'T', 'P']);
+
+    final _overviewBoxDecoration = BoxDecoration(
+        boxShadow: [
+          BoxShadow(
+            color: kShadowColor.withOpacity(0.25),
+            spreadRadius: 1,
+            blurRadius: 6,
+            offset: Offset(1, 5), // changes position of shadow
+          ),
+        ],
+        color: kScaffoldBackgroundColor,
+        borderRadius: BorderRadius.circular(20));
+
     return SizedBox(
       height: 150,
       child: Row(
@@ -30,24 +43,22 @@ class ReportOverview extends StatelessWidget {
             child: Container(
               padding: const EdgeInsets.all(20),
               margin: const EdgeInsets.symmetric(horizontal: 6),
-              decoration: BoxDecoration(boxShadow: [
-                BoxShadow(
-                  color: Colors.grey.withOpacity(0.2),
-                  spreadRadius: 1,
-                  blurRadius: 3,
-                  offset: Offset(2, 2), // changes position of shadow
-                ),
-              ], color: Colors.white, borderRadius: BorderRadius.circular(20)),
+              decoration: _overviewBoxDecoration,
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Icon(Icons.attach_money, size: 28),
+                  Icon(Icons.attach_money, size: 28, color: kDefaultFontColor),
+                  SizedBox(height: kDefaultPadding / 5),
                   AutoSizeText(
                     '평균 객단가',
                     minFontSize: 10,
                     maxLines: 1,
+                    style: TextStyle(color: kDefaultFontColor),
                   ),
-                  Divider(height: 7),
+                  Divider(
+                    height: 7,
+                    color: kShadowColor.withOpacity(0.5),
+                  ),
                   AutoSizeText.rich(
                     TextSpan(children: [
                       TextSpan(
@@ -68,24 +79,22 @@ class ReportOverview extends StatelessWidget {
             child: Container(
               padding: const EdgeInsets.all(20),
               margin: const EdgeInsets.symmetric(horizontal: 6),
-              decoration: BoxDecoration(boxShadow: [
-                BoxShadow(
-                  color: Colors.grey.withOpacity(0.2),
-                  spreadRadius: 1,
-                  blurRadius: 3,
-                  offset: Offset(2, 2), // changes position of shadow
-                ),
-              ], color: Colors.white, borderRadius: BorderRadius.circular(20)),
+              decoration: _overviewBoxDecoration,
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Icon(Icons.group, size: 28),
+                  Icon(Icons.group, size: 28, color: kDefaultFontColor),
+                  SizedBox(height: kDefaultPadding / 5),
                   AutoSizeText(
                     '누적 참여자',
                     minFontSize: 10,
                     maxLines: 1,
+                    style: TextStyle(color: kDefaultFontColor),
                   ),
-                  Divider(height: 7),
+                  Divider(
+                    height: 7,
+                    color: kShadowColor.withOpacity(0.5),
+                  ),
                   AutoSizeText.rich(
                     TextSpan(children: [
                       TextSpan(
@@ -106,24 +115,22 @@ class ReportOverview extends StatelessWidget {
             child: Container(
               padding: const EdgeInsets.all(20),
               margin: const EdgeInsets.symmetric(horizontal: 6),
-              decoration: BoxDecoration(boxShadow: [
-                BoxShadow(
-                  color: Colors.grey.withOpacity(0.2),
-                  spreadRadius: 1,
-                  blurRadius: 3,
-                  offset: Offset(2, 2), // changes position of shadow
-                ),
-              ], color: Colors.white, borderRadius: BorderRadius.circular(20)),
+              decoration: _overviewBoxDecoration,
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Icon(Icons.favorite, size: 28),
+                  Icon(Icons.favorite, size: 28, color: kDefaultFontColor),
+                  SizedBox(height: kDefaultPadding / 5),
                   AutoSizeText(
                     '누적 좋아요',
                     minFontSize: 10,
                     maxLines: 1,
+                    style: TextStyle(color: kDefaultFontColor),
                   ),
-                  Divider(height: 7),
+                  Divider(
+                    height: 7,
+                    color: kShadowColor.withOpacity(0.5),
+                  ),
                   AutoSizeText.rich(
                     TextSpan(children: [
                       TextSpan(

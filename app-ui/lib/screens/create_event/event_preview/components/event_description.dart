@@ -1,5 +1,6 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
+import 'package:hashchecker/constants.dart';
 import 'package:hashchecker/models/event.dart';
 
 class EventDescription extends StatelessWidget {
@@ -19,11 +20,13 @@ class EventDescription extends StatelessWidget {
           TextSpan(text: '인스타그램에 #해시태그와 함께 글 남기고\n'),
           TextSpan(
               text: _createRewardNameList(),
-              style: TextStyle(fontWeight: FontWeight.bold)),
+              style: TextStyle(
+                  fontWeight: FontWeight.bold, color: kDefaultFontColor)),
           TextSpan(text: ' 받아가세요!')
         ]),
         textAlign: TextAlign.center,
         maxLines: 2,
+        style: TextStyle(color: kDefaultFontColor),
       ),
     );
   }

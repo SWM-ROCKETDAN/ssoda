@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:hashchecker/constants.dart';
 
 class InputHelp extends StatelessWidget {
   const InputHelp({
@@ -17,9 +18,13 @@ class InputHelp extends StatelessWidget {
                 Icon(
                   Icons.help_outline,
                   size: 22,
+                  color: kDefaultFontColor,
                 ),
                 Text(' 단가와 수량',
-                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+                    style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 18,
+                        color: kDefaultFontColor),
                     textAlign: TextAlign.center),
                 SizedBox(
                   width: 10,
@@ -28,7 +33,7 @@ class InputHelp extends StatelessWidget {
             ),
             content: const Text(
                 '추후 마케팅 성과 측정 및 이벤트 조기 종료를 파악하기 위해 입력하는 정보이며 이벤트에 참여하는 고객들에게는 공개되지 않습니다.',
-                style: TextStyle(fontSize: 14)),
+                style: TextStyle(fontSize: 14, color: kDefaultFontColor)),
             actions: [
               Center(
                 child: ElevatedButton(
@@ -50,11 +55,11 @@ class InputHelp extends StatelessWidget {
             Icon(
               Icons.help_outline,
               size: 12,
-              color: Colors.black54,
+              color: kLiteFontColor,
             ),
             Text(
               ' 단가와 수량은 왜 입력하나요?',
-              style: TextStyle(fontSize: 12, color: Colors.black54),
+              style: TextStyle(fontSize: 12, color: kLiteFontColor),
             ),
           ],
         ),

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:hashchecker/constants.dart';
 
 class StepHelp extends StatelessWidget {
   const StepHelp({Key? key, required int step})
@@ -14,7 +15,10 @@ class StepHelp extends StatelessWidget {
         await showDialog(
             context: context, builder: (context) => HelpDialog(step: _step));
       },
-      child: Icon(Icons.help_outline),
+      child: Icon(
+        Icons.help_outline,
+        color: kDefaultFontColor.withOpacity(0.8),
+      ),
     );
   }
 }
@@ -23,7 +27,7 @@ class HelpDialog extends StatefulWidget {
   const HelpDialog({
     Key? key,
     required int step,
-  })   : _step = step,
+  })  : _step = step,
         super(key: key);
 
   final int _step;

@@ -14,7 +14,10 @@ class EventHashtags extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
       Text('필수 해시태그',
-          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 17)),
+          style: TextStyle(
+              fontWeight: FontWeight.bold,
+              fontSize: 17,
+              color: kDefaultFontColor)),
       SizedBox(height: kDefaultPadding),
       Wrap(
           alignment: WrapAlignment.start,
@@ -30,12 +33,13 @@ class EventHashtags extends StatelessWidget {
                         color: Colors.white,
                         size: 18,
                       ),
-                      backgroundColor: Colors.black.withOpacity(0.8),
+                      backgroundColor: kDefaultFontColor.withOpacity(0.85),
                     ),
                     label: Text(event.hashtagList[index]),
                     labelPadding: const EdgeInsets.fromLTRB(6, 2, 5, 2),
-                    elevation: 3.0,
-                    backgroundColor: Colors.white,
+                    elevation: 9.0,
+                    shadowColor: kShadowColor,
+                    backgroundColor: kScaffoldBackgroundColor,
                   )))
     ]);
   }

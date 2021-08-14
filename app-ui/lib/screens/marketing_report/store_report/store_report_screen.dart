@@ -78,7 +78,10 @@ class _StoreReportScreenState extends State<StoreReportScreen> {
                   padding: const EdgeInsets.symmetric(horizontal: 10),
                   child: Text(
                     '종합',
-                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 24),
+                    style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 24,
+                        color: kDefaultFontColor),
                   ),
                 ),
                 SizedBox(height: kDefaultPadding),
@@ -93,22 +96,26 @@ class _StoreReportScreenState extends State<StoreReportScreen> {
                       Text(
                         '이벤트 별 보고서',
                         style: TextStyle(
-                            fontWeight: FontWeight.bold, fontSize: 24),
+                            fontWeight: FontWeight.bold,
+                            fontSize: 24,
+                            color: kDefaultFontColor),
                       ),
                       DropdownButton(
-                          dropdownColor: Colors.white.withOpacity(0.9),
+                          dropdownColor:
+                              kScaffoldBackgroundColor.withOpacity(0.9),
                           value: dropdownValue,
                           icon: const Icon(
                             Icons.sort,
-                            color: Colors.black87,
+                            color: kDefaultFontColor,
                             size: 20,
                           ),
                           iconSize: 24,
                           elevation: 0,
-                          style: TextStyle(color: Colors.black87, fontSize: 13),
+                          style:
+                              TextStyle(color: kDefaultFontColor, fontSize: 13),
                           underline: Container(
                             height: 1.2,
-                            color: Colors.black87,
+                            color: kDefaultFontColor,
                           ),
                           onChanged: (String? newValue) {
                             setState(() {
@@ -123,7 +130,7 @@ class _StoreReportScreenState extends State<StoreReportScreen> {
                                   child: Text(
                                     value,
                                     style: TextStyle(
-                                        fontSize: 13, color: Colors.black87),
+                                        fontSize: 13, color: kDefaultFontColor),
                                     textAlign: TextAlign.center,
                                   )),
                             );

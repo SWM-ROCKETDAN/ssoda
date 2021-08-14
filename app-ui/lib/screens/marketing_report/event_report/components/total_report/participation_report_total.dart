@@ -8,6 +8,8 @@ import 'package:hashchecker/models/event_report.dart';
 import 'package:number_display/number_display.dart';
 import 'package:hashchecker/widgets/number_slider/number_slide_animation_widget.dart';
 
+import '../report_design.dart';
+
 class ParticipationReportTotal extends StatefulWidget {
   ParticipationReportTotal(
       {Key? key, required this.size, required this.eventReport})
@@ -47,14 +49,7 @@ class _ParticipationReportTotalState extends State<ParticipationReportTotal> {
       padding: const EdgeInsets.all(20),
       width: widget.size.width,
       margin: const EdgeInsets.fromLTRB(5, 5, 5, 15),
-      decoration: BoxDecoration(boxShadow: [
-        BoxShadow(
-          color: Colors.grey.withOpacity(0.2),
-          spreadRadius: 5,
-          blurRadius: 20,
-          offset: Offset(0, 0), // changes position of shadow
-        ),
-      ], color: Colors.white, borderRadius: BorderRadius.circular(20)),
+      decoration: reportBoxDecoration,
       child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -65,7 +60,7 @@ class _ParticipationReportTotalState extends State<ParticipationReportTotal> {
               children: [
                 Text('총 ',
                     style: TextStyle(
-                        color: Colors.black87,
+                        color: kDefaultFontColor,
                         fontWeight: FontWeight.bold,
                         fontSize: 18)),
                 NumberSlideAnimation(
@@ -80,14 +75,14 @@ class _ParticipationReportTotalState extends State<ParticipationReportTotal> {
                 Text(
                   ' 명이 ',
                   style: TextStyle(
-                      color: Colors.black87,
+                      color: kDefaultFontColor,
                       fontWeight: FontWeight.bold,
                       fontSize: 18),
                 ),
                 Text(
                   '참여했습니다',
                   style: TextStyle(
-                      color: Colors.black87,
+                      color: kDefaultFontColor,
                       fontWeight: FontWeight.bold,
                       fontSize: 18),
                 )
@@ -164,7 +159,9 @@ class _ParticipationReportTotalState extends State<ParticipationReportTotal> {
                           ]),
                         ),
                         Text('게시글 유지 비율',
-                            style: TextStyle(fontWeight: FontWeight.bold)),
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                color: kDefaultFontColor)),
                       ],
                     ),
                     Column(
@@ -228,7 +225,9 @@ class _ParticipationReportTotalState extends State<ParticipationReportTotal> {
                         ),
                         SizedBox(height: kDefaultPadding),
                         Text('누적 좋아요&덧글',
-                            style: TextStyle(fontWeight: FontWeight.bold)),
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                color: kDefaultFontColor)),
                       ],
                     ),
                   ]),

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hashchecker/constants.dart';
+import 'package:hashchecker/models/requires.dart';
 
 import 'components/event_title.dart';
 import 'components/event_reward.dart';
@@ -48,8 +49,6 @@ class _CreateEventStepScreenState extends State<CreateEventStepScreen> {
   List<String?> imageList = [null];
 
   // step 6: select requirements
-  int requireCnt = 10;
-  List<String> requireList = [];
   List<bool> selectedRequireList = [];
 
   // step 7: select template
@@ -60,10 +59,8 @@ class _CreateEventStepScreenState extends State<CreateEventStepScreen> {
     super.initState();
     titleTextController = TextEditingController();
 
-    for (int i = 0; i < requireCnt; i++) {
-      requireList.add('#$i 세부 요청사항');
+    for (int i = 0; i < requireStringList.length; i++)
       selectedRequireList.add(false);
-    }
   }
 
   @override
@@ -145,8 +142,7 @@ class _CreateEventStepScreenState extends State<CreateEventStepScreen> {
       case 4:
         return EventImage(imageList: imageList);
       case 5:
-        return EventRequire(
-            requireList: requireList, selectedRequireList: selectedRequireList);
+        return EventRequire(selectedRequireList: selectedRequireList);
       case 6:
         return EventTemplate(selectedTemplate: template);
       default:
@@ -258,9 +254,9 @@ class _CreateEventStepScreenState extends State<CreateEventStepScreen> {
     return AppBar(
         elevation: 0,
         backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-        iconTheme: IconThemeData(color: Colors.black),
+        iconTheme: IconThemeData(color: kDefaultFontColor),
         leading: IconButton(
-            icon: Icon(Icons.arrow_back),
+            icon: Icon(Icons.arrow_back_ios_new),
             onPressed: () {
               if (_step > 0) {
                 setState(() {
