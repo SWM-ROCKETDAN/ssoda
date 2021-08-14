@@ -4,6 +4,9 @@ import 'package:hashchecker/constants.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
 
+import 'step_help.dart';
+import 'step_text.dart';
+
 class EventImage extends StatefulWidget {
   final event;
   EventImage({Key? key, required this.event}) : super(key: key);
@@ -16,6 +19,17 @@ class _EventImageState extends State<EventImage> {
   @override
   Widget build(BuildContext context) {
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              StepText(step: 4),
+              StepHelp(step: 4)
+            ]),
+        SizedBox(height: kDefaultPadding),Column(
       children: [
         Container(
             child: CarouselSlider(
@@ -76,7 +90,7 @@ class _EventImageState extends State<EventImage> {
           ],
         )
       ],
-    );
+    )]);
   }
 
   Future _getImageFromGallery(BuildContext context, int index) async {

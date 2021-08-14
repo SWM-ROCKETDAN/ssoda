@@ -41,7 +41,7 @@ class NextStepButton extends StatelessWidget {
   }
 
   void _onNextStepButtonPressed(BuildContext context) {
-    if (!_checkStepValidation(context)) return;
+    //if (!_checkStepValidation(context)) return;
     if (step == maxStep - 1) {
       _createPreview(context);
     } else {

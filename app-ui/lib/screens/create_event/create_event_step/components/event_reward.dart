@@ -4,6 +4,9 @@ import 'package:hashchecker/models/reward.dart';
 import 'package:hashchecker/screens/create_event/input_reward_info/input_reward_info_screen.dart';
 import 'dart:io';
 
+import 'step_help.dart';
+import 'step_text.dart';
+
 class EventReward extends StatefulWidget {
   final event;
   const EventReward({Key? key, required this.event}) : super(key: key);
@@ -16,6 +19,17 @@ class _EventRewardState extends State<EventReward> {
   @override
   Widget build(BuildContext context) {
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              StepText(step: 1),
+              StepHelp(step: 1)
+            ]),
+        SizedBox(height: kDefaultPadding),Column(
       children: [
         Container(
             height: 116,
@@ -106,7 +120,7 @@ class _EventRewardState extends State<EventReward> {
           ],
         )
       ],
-    );
+    )]);
   }
 
   _navigateToDetailScreen(int index) async {

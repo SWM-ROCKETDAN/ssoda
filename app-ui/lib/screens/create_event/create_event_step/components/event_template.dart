@@ -3,6 +3,8 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:hashchecker/constants.dart';
 import 'package:hashchecker/models/template.dart';
 
+import 'step_text.dart';
+
 final List<String> templateList = [
   'assets/images/create_event_step_help/draft.png',
   'assets/images/create_event_step_help/draft.png',
@@ -65,49 +67,62 @@ class _EventTemplateState extends State<EventTemplate> {
 
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      child: Column(
+    return Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Container(
-            height: MediaQuery.of(context).size.height * 0.45,
-            child: CarouselSlider(
-              items: imageSliders,
-              carouselController: _carouselController,
-              options: CarouselOptions(
-                  height: 1000,
-                  viewportFraction: 1.0,
-                  enlargeCenterPage: false,
-                  onPageChanged: (index, reason) {
-                    setState(() {
-                      widget.event.template.id = index;
-                    });
-                  }),
-            ),
-          ),
-          SizedBox(height: kDefaultPadding),
           Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: templateList.asMap().entries.map((entry) {
-              return GestureDetector(
-                onTap: () => _carouselController.animateToPage(entry.key),
-                child: Container(
-                  width: 12.0,
-                  height: 12.0,
-                  margin: EdgeInsets.symmetric(vertical: 8.0, horizontal: 4.0),
-                  decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      color: (Theme.of(context).brightness == Brightness.dark
-                              ? Colors.white
-                              : kThemeColor)
-                          .withOpacity(widget.event.template.id == entry.key
-                              ? 0.9
-                              : 0.4)),
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [StepText(step: 6)]),
+          SizedBox(height: kDefaultPadding),
+          SingleChildScrollView(
+            child: Column(
+              children: [
+                Container(
+                  height: MediaQuery.of(context).size.height * 0.45,
+                  child: CarouselSlider(
+                    items: imageSliders,
+                    carouselController: _carouselController,
+                    options: CarouselOptions(
+                        height: 1000,
+                        viewportFraction: 1.0,
+                        enlargeCenterPage: false,
+                        onPageChanged: (index, reason) {
+                          setState(() {
+                            widget.event.template.id = index;
+                          });
+                        }),
+                  ),
                 ),
-              );
-            }).toList(),
-          ),
-        ],
-      ),
-    );
+                SizedBox(height: kDefaultPadding),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: templateList.asMap().entries.map((entry) {
+                    return GestureDetector(
+                      onTap: () => _carouselController.animateToPage(entry.key),
+                      child: Container(
+                        width: 12.0,
+                        height: 12.0,
+                        margin: EdgeInsets.symmetric(
+                            vertical: 8.0, horizontal: 4.0),
+                        decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            color:
+                                (Theme.of(context).brightness == Brightness.dark
+                                        ? Colors.white
+                                        : kThemeColor)
+                                    .withOpacity(
+                                        widget.event.template.id == entry.key
+                                            ? 0.9
+                                            : 0.4)),
+                      ),
+                    );
+                  }).toList(),
+                ),
+              ],
+            ),
+          )
+        ]);
   }
 }
