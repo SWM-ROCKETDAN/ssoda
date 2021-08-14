@@ -6,6 +6,7 @@ import 'package:number_display/number_display.dart';
 import 'package:hashchecker/widgets/number_slider/number_slide_animation_widget.dart';
 
 import '../delta_data.dart';
+import '../report_design.dart';
 
 class ExposureReportMonthly extends StatefulWidget {
   ExposureReportMonthly(
@@ -32,21 +33,14 @@ class _ExposureReportMonthlyState extends State<ExposureReportMonthly> {
       padding: const EdgeInsets.all(20),
       width: widget.size.width,
       margin: const EdgeInsets.fromLTRB(5, 5, 5, 15),
-      decoration: BoxDecoration(boxShadow: [
-        BoxShadow(
-          color: Colors.grey.withOpacity(0.2),
-          spreadRadius: 5,
-          blurRadius: 20,
-          offset: Offset(0, 0), // changes position of shadow
-        ),
-      ], color: Colors.white, borderRadius: BorderRadius.circular(20)),
+      decoration: reportBoxDecoration,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
             Text('이번 달에',
                 style: TextStyle(
-                    color: Colors.black87,
+                    color: kDefaultFontColor,
                     fontWeight: FontWeight.bold,
                     fontSize: 14)),
             DeltaData(
@@ -58,7 +52,7 @@ class _ExposureReportMonthlyState extends State<ExposureReportMonthly> {
             children: [
               Text('총 ',
                   style: TextStyle(
-                      color: Colors.black87,
+                      color: kDefaultFontColor,
                       fontWeight: FontWeight.bold,
                       fontSize: 18)),
               NumberSlideAnimation(
@@ -73,14 +67,14 @@ class _ExposureReportMonthlyState extends State<ExposureReportMonthly> {
               Text(
                 ' 명에게 ',
                 style: TextStyle(
-                    color: Colors.black87,
+                    color: kDefaultFontColor,
                     fontWeight: FontWeight.bold,
                     fontSize: 18),
               ),
               Text(
                 '노출되었습니다',
                 style: TextStyle(
-                    color: Colors.black87,
+                    color: kDefaultFontColor,
                     fontWeight: FontWeight.bold,
                     fontSize: 18),
               ),
@@ -95,6 +89,7 @@ class _ExposureReportMonthlyState extends State<ExposureReportMonthly> {
                 Icon(
                   Icons.person_outline,
                   size: 48,
+                  color: kDefaultFontColor,
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -107,7 +102,9 @@ class _ExposureReportMonthlyState extends State<ExposureReportMonthly> {
                         )),
                     Text('인 노출 당 ',
                         style: TextStyle(
-                            fontWeight: FontWeight.bold, fontSize: 14)),
+                            fontWeight: FontWeight.bold,
+                            fontSize: 14,
+                            color: kDefaultFontColor)),
                     NumberSlideAnimation(
                         number: '12',
                         duration: kDefaultNumberSliderDuration,
@@ -119,7 +116,9 @@ class _ExposureReportMonthlyState extends State<ExposureReportMonthly> {
                         format: NumberFormatMode.comma),
                     Text('원 사용',
                         style: TextStyle(
-                            fontWeight: FontWeight.bold, fontSize: 14))
+                            fontWeight: FontWeight.bold,
+                            fontSize: 14,
+                            color: kDefaultFontColor))
                   ],
                 ),
                 SizedBox(
@@ -242,16 +241,4 @@ class _ExposureReportMonthlyState extends State<ExposureReportMonthly> {
       ),
     );
   }
-}
-
-TValue case2<TOptionType, TValue>(
-  TOptionType selectedOption,
-  Map<TOptionType, TValue> branches, [
-  TValue? defaultValue,
-]) {
-  if (!branches.containsKey(selectedOption)) {
-    return defaultValue!;
-  }
-
-  return branches[selectedOption]!;
 }

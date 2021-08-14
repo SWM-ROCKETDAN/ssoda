@@ -9,6 +9,8 @@ import 'dart:math';
 
 import 'package:hashchecker/widgets/number_slider/number_slide_animation_widget.dart';
 
+import '../report_design.dart';
+
 class ExpenditureReportDaily extends StatefulWidget {
   const ExpenditureReportDaily(
       {Key? key, required this.size, required this.eventReport})
@@ -35,21 +37,14 @@ class _ExpenditureReportDailyState extends State<ExpenditureReportDaily> {
       padding: const EdgeInsets.all(20),
       width: widget.size.width,
       margin: const EdgeInsets.fromLTRB(5, 5, 5, 15),
-      decoration: BoxDecoration(boxShadow: [
-        BoxShadow(
-          color: Colors.grey.withOpacity(0.2),
-          spreadRadius: 5,
-          blurRadius: 20,
-          offset: Offset(0, 0), // changes position of shadow
-        ),
-      ], color: Colors.white, borderRadius: BorderRadius.circular(20)),
+      decoration: reportBoxDecoration,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
             Text('오늘',
                 style: TextStyle(
-                    color: Colors.black87,
+                    color: kDefaultFontColor,
                     fontWeight: FontWeight.bold,
                     fontSize: 14)),
             DeltaData(
@@ -61,7 +56,7 @@ class _ExpenditureReportDailyState extends State<ExpenditureReportDaily> {
             children: [
               Text('총 ',
                   style: TextStyle(
-                      color: Colors.black87,
+                      color: kDefaultFontColor,
                       fontWeight: FontWeight.bold,
                       fontSize: 18)),
               NumberSlideAnimation(
@@ -77,14 +72,14 @@ class _ExpenditureReportDailyState extends State<ExpenditureReportDaily> {
               Text(
                 ' 원 ',
                 style: TextStyle(
-                    color: Colors.black87,
+                    color: kDefaultFontColor,
                     fontWeight: FontWeight.bold,
                     fontSize: 18),
               ),
               Text(
                 '사용하였습니다',
                 style: TextStyle(
-                    color: Colors.black87,
+                    color: kDefaultFontColor,
                     fontWeight: FontWeight.bold,
                     fontSize: 18),
               )
@@ -114,7 +109,6 @@ class _ExpenditureReportDailyState extends State<ExpenditureReportDaily> {
       barRods: [
         BarChartRodData(
           y: isTouched ? y * 1.1 : y,
-          colors: isTouched ? [Colors.indigoAccent.shade200] : [kThemeColor],
           width: width,
           backDrawRodData: BackgroundBarChartRodData(
             show: true,
@@ -136,7 +130,7 @@ class _ExpenditureReportDailyState extends State<ExpenditureReportDaily> {
     return BarChartData(
       barTouchData: BarTouchData(
         touchTooltipData: BarTouchTooltipData(
-            tooltipBgColor: Colors.white.withOpacity(0.8),
+            tooltipBgColor: kScaffoldBackgroundColor.withOpacity(0.8),
             getTooltipItem: (group, groupIndex, rod, rodIndex) {
               String rewardName;
               switch (group.x.toInt()) {
@@ -174,7 +168,7 @@ class _ExpenditureReportDailyState extends State<ExpenditureReportDaily> {
                   TextSpan(
                     text: '${numberDisplay(rod.y.toInt() ~/ 85)}원',
                     style: TextStyle(
-                      color: Colors.black87,
+                      color: kDefaultFontColor,
                       fontSize: 16,
                       fontWeight: FontWeight.w500,
                     ),
@@ -199,7 +193,9 @@ class _ExpenditureReportDailyState extends State<ExpenditureReportDaily> {
         bottomTitles: SideTitles(
           showTitles: true,
           getTextStyles: (value) => const TextStyle(
-              color: Colors.black87, fontWeight: FontWeight.bold, fontSize: 14),
+              color: kDefaultFontColor,
+              fontWeight: FontWeight.bold,
+              fontSize: 14),
           margin: 16,
           getTitles: (double value) {
             switch (value.toInt()) {
