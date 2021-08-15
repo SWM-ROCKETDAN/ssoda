@@ -29,6 +29,7 @@ dependencies:
   gallery_saver: ^2.1.2
   dio: ^4.0.0
   animations: ^2.0.1
+  ms_undraw: ^3.0.0+0
     
 dev_dependencies:
   flutter_test:
