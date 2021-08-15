@@ -18,10 +18,13 @@ class _HallScreenState extends State<HallScreen> {
   TabPage currentPage = TabPage.EVENT;
 
   final pageMap = {
-    TabPage.EVENT: Container(child: Center(child: Text('이벤트'))),
-    TabPage.STORE: Container(child: Center(child: Text('스토어'))),
+    TabPage.EVENT: Container(
+        color: kScaffoldBackgroundColor, child: Center(child: Text('이벤트'))),
+    TabPage.STORE: Container(
+        color: kScaffoldBackgroundColor, child: Center(child: Text('스토어'))),
     TabPage.REPORT: StoreReportScreen(),
-    TabPage.MORE: Container(child: Center(child: Text('더보기'))),
+    TabPage.MORE: Container(
+        color: kScaffoldBackgroundColor, child: Center(child: Text('더보기'))),
   };
   @override
   Widget build(BuildContext context) {
