@@ -5,10 +5,10 @@ from rest_framework import status
 from .models import JoinPost
 from .models import JoinUser
 from .models import Event
-from .serializers import JoinPostSerializer
-from .serializers import JoinUserSerializer
-from .serializers import JoinSerializer
-from .serializers import EventSerializer
+from .serializers.join_serializers import JoinPostSerializer
+from .serializers.join_serializers import JoinUserSerializer
+from .serializers.join_serializers import JoinSerializer
+from .serializers.event_serializers import EventSerializer
 from .modules.instagram.join.crawl.crawl_post import crawl_post
 from .modules.instagram.join.crawl.crawl_user import crawl_user
 from .modules.instagram.join.reward.reward import JoinReward
@@ -147,7 +147,7 @@ class JoinRewardView(APIView):
         join_post_serializer = JoinPostSerializer(join_post, {'reward': reward[0]}, partial=True)
         if join_post_serializer.is_valid():
             join_post_serializer.save()
-
+        # test
         return JsonResponse({'reward_id': reward[0]})
 
 
