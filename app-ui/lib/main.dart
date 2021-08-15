@@ -5,6 +5,7 @@ import 'package:hashchecker/env.dart';
 import 'package:hashchecker/models/token.dart';
 import 'package:hashchecker/screens/create_event/create_event_step/create_event_step_screen.dart';
 import 'package:hashchecker/screens/create_event/show_qrcode/show_qrcode_screen.dart';
+import 'package:hashchecker/screens/hall/hall_screen.dart';
 import 'package:hashchecker/screens/marketing_report/event_report/event_report_screen.dart';
 import 'package:hashchecker/screens/marketing_report/store_report/store_report_screen.dart';
 import 'package:hashchecker/screens/sign_in/sign_in_screen.dart';
@@ -30,7 +31,7 @@ class MyApp extends StatelessWidget {
           visualDensity: VisualDensity.adaptivePlatformDensity,
           scaffoldBackgroundColor: kScaffoldBackgroundColor,
           accentColor: kShadowColor),
-      home: StoreReportScreen(),
+      home: HallScreen(),
     );
   }
 

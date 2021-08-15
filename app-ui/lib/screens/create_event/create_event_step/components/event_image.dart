@@ -4,30 +4,32 @@ import 'package:hashchecker/constants.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
 
-class EventImage extends StatefulWidget {
-  final imageList;
+import 'step_help.dart';
+import 'step_text.dart';
 
-  EventImage({Key? key, required this.imageList}) : super(key: key);
+class EventImage extends StatefulWidget {
+  final event;
+  EventImage({Key? key, required this.event}) : super(key: key);
 
   @override
   _EventImageState createState() => _EventImageState();
 }
 
 class _EventImageState extends State<EventImage> {
-  Future _getImageFromGallery(int index) async {
-    final ImagePicker _imagePicker = ImagePicker();
-    final XFile? image =
-        await _imagePicker.pickImage(source: ImageSource.gallery);
-    setState(() {
-      if (widget.imageList[index] == null && widget.imageList.length < 3)
-        widget.imageList.add(null);
-      widget.imageList[index] = image!.path;
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              StepText(step: 4),
+              StepHelp(step: 4)
+            ]),
+        SizedBox(height: kDefaultPadding),Column(
       children: [
         Container(
             child: CarouselSlider(
@@ -40,17 +42,17 @@ class _EventImageState extends State<EventImage> {
             autoPlay: false,
           ),
           items: List.generate(
-              widget.imageList.length,
+              widget.event.images.length,
               (index) => ClipRRect(
                   borderRadius: BorderRadius.all(Radius.circular(16.0)),
                   child: GestureDetector(
                       onTap: () {
-                        _getImageFromGallery(index);
+                        _getImageFromGallery(context, index);
                       },
-                      child: widget.imageList[index] == null
+                      child: widget.event.images[index] == null
                           ? ElevatedButton(
                               onPressed: () {
-                                _getImageFromGallery(index);
+                                _getImageFromGallery(context, index);
                               },
                               child: Center(
                                   child: Icon(
@@ -73,7 +75,7 @@ class _EventImageState extends State<EventImage> {
                                   side: MaterialStateProperty.all<BorderSide>(
                                       BorderSide(color: kLiteFontColor))),
                             )
-                          : Image.file(File(widget.imageList[index]),
+                          : Image.file(File(widget.event.images[index]!),
                               fit: BoxFit.cover)))).cast<Widget>().toList(),
         )),
         SizedBox(height: kDefaultPadding),
@@ -88,6 +90,17 @@ class _EventImageState extends State<EventImage> {
           ],
         )
       ],
-    );
+    )]);
+  }
+
+  Future _getImageFromGallery(BuildContext context, int index) async {
+    final ImagePicker _imagePicker = ImagePicker();
+    final XFile? image =
+        await _imagePicker.pickImage(source: ImageSource.gallery);
+    setState(() {
+      if (widget.event.images[index] == null && widget.event.images.length < 3)
+        widget.event.images.add(null);
+      widget.event.images[index] = image!.path;
+    });
   }
 }

@@ -82,7 +82,7 @@ class _ExposureReportDailyState extends State<ExposureReportDaily> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Icon(
-                  Icons.person_outline,
+                  Icons.person_outline_rounded,
                   size: 48,
                   color: kDefaultFontColor,
                 ),
@@ -125,16 +125,16 @@ class _ExposureReportDailyState extends State<ExposureReportDaily> {
                   child: LineChart(LineChartData(
                     gridData: FlGridData(
                       show: true,
-                      drawVerticalLine: true,
+                      drawVerticalLine: false,
                       getDrawingHorizontalLine: (value) {
                         return FlLine(
-                          color: Colors.black12,
+                          color: kShadowColor,
                           strokeWidth: 1,
                         );
                       },
                       getDrawingVerticalLine: (value) {
                         return FlLine(
-                          color: Colors.black12,
+                          color: kShadowColor,
                           strokeWidth: 1,
                         );
                       },
@@ -145,7 +145,7 @@ class _ExposureReportDailyState extends State<ExposureReportDaily> {
                         showTitles: true,
                         reservedSize: 14,
                         getTextStyles: (value) => const TextStyle(
-                            color: Color(0xff68737d),
+                            color: kLiteFontColor,
                             fontWeight: FontWeight.bold,
                             fontSize: 12),
                         getTitles: (value) {
@@ -172,7 +172,7 @@ class _ExposureReportDailyState extends State<ExposureReportDaily> {
                       leftTitles: SideTitles(
                         showTitles: true,
                         getTextStyles: (value) => const TextStyle(
-                          color: Color(0xff67727d),
+                          color: kLiteFontColor,
                           fontWeight: FontWeight.bold,
                           fontSize: 12,
                         ),

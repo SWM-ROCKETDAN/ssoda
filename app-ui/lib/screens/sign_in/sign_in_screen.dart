@@ -186,8 +186,6 @@ class _SignInScreenState extends State<SignInScreen> {
 
       // global accessToken with provider
       context.read<Token>().token = xAuthToken;
-
-      print(context.read<Token>().token);
     } else {
       showLoginFailDialog();
     }
