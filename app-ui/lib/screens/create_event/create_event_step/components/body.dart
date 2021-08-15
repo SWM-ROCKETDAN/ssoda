@@ -15,12 +15,14 @@ import 'step_progressbar.dart';
 
 class Body extends StatelessWidget {
   final step;
+  final prevStep;
   final maxStep;
   final plusStep;
   final event;
   const Body(
       {Key? key,
       required this.step,
+      required this.prevStep,
       required this.maxStep,
       required this.plusStep,
       required this.event})
@@ -40,6 +42,7 @@ class Body extends StatelessWidget {
             Expanded(
                 child: PageTransitionSwitcher(
                     duration: const Duration(milliseconds: 300),
+                    reverse: prevStep > step,
                     transitionBuilder: (
                       Widget child,
                       Animation<double> animation,

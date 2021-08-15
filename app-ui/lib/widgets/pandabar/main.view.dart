@@ -113,12 +113,25 @@ class _PandaBarState extends State<PandaBar> {
             ),
           ),
         ),
-        PandaBarFabButton(
-          size: fabSize,
-          icon: widget.fabIcon,
-          onTap: widget.onFabButtonPressed,
-          colors: widget.fabColors,
-        ),
+        OpenContainer<bool>(
+          transitionType: ContainerTransitionType.fade,
+          openBuilder: (BuildContext context, VoidCallback _) {
+            return const CreateEventStepScreen();
+          },
+          tappable: false,
+          closedElevation: 0,
+          closedColor: kScaffoldBackgroundColor,
+          closedShape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.all(Radius.circular(360))),
+          closedBuilder: (BuildContext _, VoidCallback openContainer) {
+            return PandaBarFabButton(
+              size: fabSize,
+              icon: widget.fabIcon,
+              onTap: openContainer,
+              colors: widget.fabColors,
+            );
+          },
+        )
       ],
     );
   }

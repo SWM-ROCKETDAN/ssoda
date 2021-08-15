@@ -32,6 +32,7 @@ class CreateEventStepScreen extends StatefulWidget {
 
 class _CreateEventStepScreenState extends State<CreateEventStepScreen> {
   int step = 0;
+  int prevStep = -1;
   final maxStep = 7;
 
   late Event savingEvent;
@@ -58,6 +59,7 @@ class _CreateEventStepScreenState extends State<CreateEventStepScreen> {
           appBar: buildAppBar(),
           body: Body(
               step: step,
+              prevStep: prevStep,
               maxStep: maxStep,
               plusStep: plusStep,
               event: savingEvent)),
@@ -71,6 +73,7 @@ class _CreateEventStepScreenState extends State<CreateEventStepScreen> {
   bool _onBackPressed() {
     if (step > 0) {
       setState(() {
+        prevStep = step;
         step--;
       });
     } else {
@@ -82,6 +85,7 @@ class _CreateEventStepScreenState extends State<CreateEventStepScreen> {
 
   void plusStep() {
     setState(() {
+      prevStep = step;
       step++;
     });
   }

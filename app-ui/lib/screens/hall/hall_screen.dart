@@ -44,14 +44,6 @@ class _HallScreenState extends State<HallScreen> {
             page = id;
           });
         },
-        onFabButtonPressed: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => CreateEventStepScreen(),
-            ),
-          );
-        },
       ),
       body: Builder(
         builder: (context) {
