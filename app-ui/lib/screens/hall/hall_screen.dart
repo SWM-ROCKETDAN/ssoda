@@ -2,8 +2,10 @@ import 'package:animations/animations.dart';
 import 'package:flutter/material.dart';
 import 'package:hashchecker/constants.dart';
 import 'package:hashchecker/screens/create_event/create_event_step/create_event_step_screen.dart';
+import 'package:hashchecker/screens/event_list/event_list_screen.dart';
 import 'package:hashchecker/screens/marketing_report/store_report/store_report_screen.dart';
 import 'package:hashchecker/widgets/pandabar/pandabar.dart';
+import 'package:ms_undraw/ms_undraw.dart';
 
 enum TabPage { EVENT, STORE, REPORT, MORE }
 
@@ -18,8 +20,7 @@ class _HallScreenState extends State<HallScreen> {
   TabPage currentPage = TabPage.EVENT;
 
   final pageMap = {
-    TabPage.EVENT: Container(
-        color: kScaffoldBackgroundColor, child: Center(child: Text('이벤트'))),
+    TabPage.EVENT: EventListScreen(),
     TabPage.STORE: Container(
         color: kScaffoldBackgroundColor, child: Center(child: Text('스토어'))),
     TabPage.REPORT: StoreReportScreen(),
@@ -31,12 +32,14 @@ class _HallScreenState extends State<HallScreen> {
     return Scaffold(
       extendBody: true,
       appBar: AppBar(
-        backgroundColor: kScaffoldBackgroundColor,
-        shadowColor: kShadowColor,
-        elevation: 1,
-        title: Text('SSODA',
-            style: TextStyle(color: kThemeColor, fontWeight: FontWeight.bold)),
-      ),
+          backgroundColor: kScaffoldBackgroundColor,
+          shadowColor: kShadowColor,
+          elevation: 1,
+          title: Container(
+            padding: const EdgeInsets.only(left: 5),
+            child: Image.asset('assets/images/appbar_logo.png'),
+            height: kToolbarHeight * 0.75,
+          )),
       bottomNavigationBar: PandaBar(
         backgroundColor: Colors.white,
         buttonData: [
