@@ -2,6 +2,7 @@ from server.secret.config import Key
 from urllib.parse import urlencode
 
 API_KEY = Key.PROXY_API_KEY
+API_KEY = 'ae226896-a37e-413f-a1d6-a75ba0d2f8a0'
 
 
 def get_url(url):
