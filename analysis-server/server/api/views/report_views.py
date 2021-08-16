@@ -1,17 +1,18 @@
 from rest_framework.views import APIView
 from django.http import JsonResponse
+from rest_framework.response import Response
 from ..serializers.join_serializers import JoinSerializer
 from ..serializers.event_serializers import EventSerializer
 from ..modules.instagram.report.report import EventReport
 from ..modules.config import custom_status
 from .get_objects import get_event
 from .get_objects import get_join_post_by_event
-
+from server.core.error import client_error
+from rest_framework import exceptions
 
 # Report GET 요청
 class ReportEventView(APIView):
     def get(self, request, pk):
-
         # Join Post 가져오기
         try:
             join_post = get_join_post_by_event(pk)
