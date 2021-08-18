@@ -1,7 +1,7 @@
 from rest_framework import serializers
-from ..models import JoinUser
-from ..models import JoinPost
-from .event_serializers import RewardSerializer
+from ..core.models import JoinUser
+from ..core.models import JoinPost
+from server.api.event_serializers import RewardSerializer
 
 
 class JoinSerializer(serializers.ModelSerializer):

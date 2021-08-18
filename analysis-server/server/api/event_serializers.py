@@ -1,8 +1,8 @@
 from rest_framework import serializers
-from ..models import Reward
-from ..models import Event
-from ..models import HashtagHashtags
-from ..models import Hashtag
+from ..core.models import Reward
+from ..core.models import Event
+from ..core.models import HashtagHashtags
+from ..core.models import Hashtag
 
 
 class HashtagHashtagsSerializer(serializers.ModelSerializer):
