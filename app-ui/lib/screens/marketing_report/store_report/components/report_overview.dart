@@ -1,5 +1,6 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:hashchecker/constants.dart';
 import 'package:hashchecker/models/store_report_overview.dart';
 import 'package:hashchecker/widgets/number_slider/number_slide_animation_widget.dart';
@@ -37,7 +38,6 @@ class ReportOverview extends StatelessWidget {
     return SizedBox(
       height: 150,
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Expanded(
             child: Container(
