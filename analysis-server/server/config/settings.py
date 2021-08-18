@@ -36,6 +36,7 @@ ALLOWED_HOSTS = ['*']
 
 # Application definition
 
+
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -48,7 +49,9 @@ INSTALLED_APPS = [
 ]
 
 REST_FRAMEWORK = {
-    'EXCEPTION_HANDLER': 'config.utils.exception_handler'
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
+    'PAGE_SIZE': 10,
+    'EXCEPTION_HANDLER': 'core.exceptions.exception_handler.custom_exception_handler'
 }
 
 MIDDLEWARE = [
@@ -98,9 +101,6 @@ DATABASES = {
     },
 }
 
-REST_FRAMEWORK = {
-    'EXCEPTION_HANDLER': 'rest_framework.views.exception_handler'
-}
 # Password validation
 # https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators
 
