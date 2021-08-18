@@ -1,11 +1,9 @@
 import 'package:animations/animations.dart';
 import 'package:flutter/material.dart';
 import 'package:hashchecker/constants.dart';
-import 'package:hashchecker/screens/create_event/create_event_step/create_event_step_screen.dart';
 import 'package:hashchecker/screens/event_list/event_list_screen.dart';
 import 'package:hashchecker/screens/marketing_report/store_report/store_report_screen.dart';
 import 'package:hashchecker/widgets/pandabar/pandabar.dart';
-import 'package:ms_undraw/ms_undraw.dart';
 
 enum TabPage { EVENT, STORE, REPORT, MORE }
 
@@ -32,14 +30,31 @@ class _HallScreenState extends State<HallScreen> {
     return Scaffold(
       extendBody: true,
       appBar: AppBar(
-          backgroundColor: kScaffoldBackgroundColor,
-          shadowColor: kShadowColor,
-          elevation: 1,
-          title: Container(
-            padding: const EdgeInsets.only(left: 5),
-            child: Image.asset('assets/images/appbar_logo.png'),
+        automaticallyImplyLeading: false,
+        backgroundColor: kScaffoldBackgroundColor,
+        shadowColor: kShadowColor,
+        elevation: 1,
+        title: Container(
+          padding: const EdgeInsets.only(left: 5),
+          child: Image.asset('assets/images/appbar_logo.png'),
+          height: kToolbarHeight * 0.75,
+        ),
+        /* 
+        // STORE LOGO ON TOPRIGHT APPBAR
+        actions: [
+          Container(
+            margin: const EdgeInsets.only(right: 15),
             height: kToolbarHeight * 0.75,
-          )),
+            width: kToolbarHeight * 0.75,
+            decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                image: DecorationImage(
+                    image: AssetImage('assets/images/store_logo_sample.jpg'),
+                    fit: BoxFit.cover)),
+          )
+        ],
+        */
+      ),
       bottomNavigationBar: PandaBar(
         backgroundColor: Colors.white,
         buttonData: [
