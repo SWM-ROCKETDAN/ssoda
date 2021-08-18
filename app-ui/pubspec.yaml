@@ -30,6 +30,7 @@ dependencies:
   dio: ^4.0.0
   animations: ^2.0.1
   ms_undraw: ^3.0.0+0
+  flutter_staggered_animations: ^1.0.0
     
 dev_dependencies:
   flutter_test:
