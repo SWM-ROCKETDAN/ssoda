@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:hashchecker/constants.dart';
 import 'package:hashchecker/models/event.dart';
@@ -85,59 +86,76 @@ class EventReportCard extends StatelessWidget {
                   Padding(
                       padding: const EdgeInsets.fromLTRB(15, 10, 15, 10),
                       child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
-                          Text(eventReportList[index].eventName,
+                          AutoSizeText(eventReportList[index].eventName,
                               style: TextStyle(
                                   fontWeight: FontWeight.bold,
-                                  fontSize: 18,
-                                  color: kDefaultFontColor)),
-                          SizedBox(height: kDefaultPadding / 2),
+                                  fontSize: 20,
+                                  color: kDefaultFontColor),
+                              maxLines: 1,
+                              minFontSize: 12),
+                          SizedBox(height: kDefaultPadding),
                           IntrinsicHeight(
                             child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                Icon(
-                                  Icons.attach_money_rounded,
-                                  size: 16,
-                                  color: kLiteFontColor,
-                                ),
-                                Text(
-                                  '${numberDisplay(eventReportList[index].guestPrice)}원',
-                                  style: TextStyle(
-                                      color: kLiteFontColor, fontSize: 14),
+                                Expanded(
+                                  child: Column(children: [
+                                    Icon(
+                                      Icons.attach_money_rounded,
+                                      size: 22,
+                                      color: Colors.blueGrey,
+                                    ),
+                                    Text(
+                                      '${numberDisplay(eventReportList[index].guestPrice)}원',
+                                      style: TextStyle(
+                                          color: kLiteFontColor, fontSize: 14),
+                                    ),
+                                  ]),
                                 ),
                                 VerticalDivider(
                                   width: kDefaultPadding,
                                   color: kShadowColor.withOpacity(0.6),
                                 ),
-                                Icon(
-                                  Icons.group_rounded,
-                                  size: 16,
-                                  color: kLiteFontColor,
+                                Expanded(
+                                  child: Column(children: [
+                                    Icon(
+                                      Icons.group_rounded,
+                                      size: 22,
+                                      color: Colors.blueGrey,
+                                    ),
+                                    SizedBox(width: kDefaultPadding / 3),
+                                    Text(
+                                        '${numberDisplay(eventReportList[index].joinCount)}명',
+                                        style: TextStyle(
+                                            color: kLiteFontColor,
+                                            fontSize: 14)),
+                                  ]),
                                 ),
-                                SizedBox(width: kDefaultPadding / 3),
-                                Text(
-                                    '${numberDisplay(eventReportList[index].joinCount)}명',
-                                    style: TextStyle(
-                                        color: kLiteFontColor, fontSize: 14)),
                                 VerticalDivider(
                                   width: kDefaultPadding,
                                   color: kShadowColor.withOpacity(0.6),
                                 ),
-                                Icon(
-                                  Icons.favorite_rounded,
-                                  size: 16,
-                                  color: kLiteFontColor,
+                                Expanded(
+                                  child: Column(children: [
+                                    Icon(
+                                      Icons.favorite_rounded,
+                                      size: 22,
+                                      color: Colors.blueGrey,
+                                    ),
+                                    SizedBox(width: kDefaultPadding / 3),
+                                    Text(
+                                        '${numberDisplay(eventReportList[index].likeCount)}개',
+                                        style: TextStyle(
+                                            color: kLiteFontColor,
+                                            fontSize: 14)),
+                                  ]),
                                 ),
-                                SizedBox(width: kDefaultPadding / 3),
-                                Text(
-                                    '${numberDisplay(eventReportList[index].likeCount)}개',
-                                    style: TextStyle(
-                                        color: kLiteFontColor, fontSize: 14)),
                               ],
                             ),
                           ),
-                          SizedBox(height: kDefaultPadding / 3),
+                          SizedBox(height: kDefaultPadding),
                           Wrap(
                               direction: Axis.horizontal,
                               spacing: 5.0,
@@ -148,9 +166,9 @@ class EventReportCard extends StatelessWidget {
                                     eventReportList[index]
                                         .rewardNameList[rewardIndex],
                                     style: TextStyle(
-                                        fontSize: 12, color: kDefaultFontColor),
+                                        fontSize: 11, color: kDefaultFontColor),
                                   ),
-                                  padding: const EdgeInsets.all(3),
+                                  padding: const EdgeInsets.all(2),
                                   backgroundColor: kThemeColor.withOpacity(0.2),
                                 ),
                               )),
