@@ -81,22 +81,19 @@ class EventListTile extends StatelessWidget {
                                             color:
                                                 kShadowColor.withOpacity(0.6)),
                                         Icon(Icons.share,
-                                            color: kThemeColor.withOpacity(0.7),
-                                            size: 18),
+                                            color: Colors.blueGrey, size: 18),
                                         VerticalDivider(
                                             width: kDefaultPadding * 1.5,
                                             color:
                                                 kShadowColor.withOpacity(0.6)),
                                         Icon(Icons.edit,
-                                            color: kThemeColor.withOpacity(0.7),
-                                            size: 18),
+                                            color: Colors.blueGrey, size: 18),
                                         VerticalDivider(
                                             width: kDefaultPadding * 1.5,
                                             color:
                                                 kShadowColor.withOpacity(0.6)),
                                         Icon(Icons.delete,
-                                            color: kThemeColor.withOpacity(0.7),
-                                            size: 18)
+                                            color: Colors.blueGrey, size: 18)
                                       ],
                                     ),
                                   )
