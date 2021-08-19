@@ -67,7 +67,7 @@ class _StoreReportScreenState extends State<StoreReportScreen> {
     return Scaffold(
       body: SingleChildScrollView(
         child: Padding(
-          padding: const EdgeInsets.fromLTRB(20, 20, 20, 65),
+          padding: const EdgeInsets.fromLTRB(20, 20, 20, 70),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [

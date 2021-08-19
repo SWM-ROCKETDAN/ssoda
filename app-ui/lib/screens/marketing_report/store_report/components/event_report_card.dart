@@ -91,7 +91,7 @@ class EventReportCard extends StatelessWidget {
                           AutoSizeText(eventReportList[index].eventName,
                               style: TextStyle(
                                   fontWeight: FontWeight.bold,
-                                  fontSize: 20,
+                                  fontSize: 18,
                                   color: kDefaultFontColor),
                               maxLines: 1,
                               minFontSize: 12),

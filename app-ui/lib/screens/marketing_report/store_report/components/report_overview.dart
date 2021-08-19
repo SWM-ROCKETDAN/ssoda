@@ -35,122 +35,132 @@ class ReportOverview extends StatelessWidget {
         color: kScaffoldBackgroundColor,
         borderRadius: BorderRadius.circular(20));
 
-    return SizedBox(
-      height: 150,
+    return AnimationLimiter(
       child: Row(
-        children: [
-          Expanded(
-            child: Container(
-              padding: const EdgeInsets.all(20),
-              margin: const EdgeInsets.symmetric(horizontal: 6),
-              decoration: _overviewBoxDecoration,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Icon(Icons.attach_money_rounded,
-                      size: 28, color: kDefaultFontColor),
-                  SizedBox(height: kDefaultPadding / 5),
-                  AutoSizeText(
-                    '평균 객단가',
-                    minFontSize: 10,
-                    maxLines: 1,
-                    style: TextStyle(color: kDefaultFontColor),
-                  ),
-                  Divider(
-                    height: 7,
-                    color: kShadowColor.withOpacity(0.5),
-                  ),
-                  AutoSizeText.rich(
-                    TextSpan(children: [
-                      TextSpan(
-                          text: numberDisplay(storeReportOverview.guestPrice),
-                          style: TextStyle(
-                              color: kThemeColor,
-                              fontWeight: FontWeight.bold,
-                              fontSize: 16)),
-                      TextSpan(text: ' 원')
-                    ]),
-                    maxLines: 1,
-                  )
-                ],
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: AnimationConfiguration.toStaggeredList(
+            duration: const Duration(milliseconds: 500),
+            childAnimationBuilder: (widget) => SlideAnimation(
+              horizontalOffset: null,
+              verticalOffset: -50,
+              child: FadeInAnimation(
+                child: widget,
               ),
             ),
-          ),
-          Expanded(
-            child: Container(
-              padding: const EdgeInsets.all(20),
-              margin: const EdgeInsets.symmetric(horizontal: 6),
-              decoration: _overviewBoxDecoration,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Icon(Icons.group_rounded, size: 28, color: kDefaultFontColor),
-                  SizedBox(height: kDefaultPadding / 5),
-                  AutoSizeText(
-                    '누적 참여자',
-                    minFontSize: 10,
-                    maxLines: 1,
-                    style: TextStyle(color: kDefaultFontColor),
-                  ),
-                  Divider(
-                    height: 7,
-                    color: kShadowColor.withOpacity(0.5),
-                  ),
-                  AutoSizeText.rich(
-                    TextSpan(children: [
-                      TextSpan(
-                          text: numberDisplay(storeReportOverview.joinCount),
-                          style: TextStyle(
-                              color: kThemeColor,
-                              fontWeight: FontWeight.bold,
-                              fontSize: 16)),
-                      TextSpan(text: ' 명')
-                    ]),
-                    maxLines: 1,
-                  )
-                ],
+            children: [
+              Container(
+                padding: const EdgeInsets.all(20),
+                margin: const EdgeInsets.symmetric(horizontal: 6),
+                height: 150,
+                width: size.width * 0.26,
+                decoration: _overviewBoxDecoration,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Icon(Icons.attach_money_rounded,
+                        size: 28, color: kDefaultFontColor),
+                    SizedBox(height: kDefaultPadding / 5),
+                    AutoSizeText(
+                      '평균 객단가',
+                      minFontSize: 10,
+                      maxLines: 1,
+                      style: TextStyle(color: kDefaultFontColor),
+                    ),
+                    Divider(
+                      height: 7,
+                      color: kShadowColor.withOpacity(0.5),
+                    ),
+                    AutoSizeText.rich(
+                      TextSpan(children: [
+                        TextSpan(
+                            text: numberDisplay(storeReportOverview.guestPrice),
+                            style: TextStyle(
+                                color: kThemeColor,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 16)),
+                        TextSpan(text: ' 원')
+                      ]),
+                      maxLines: 1,
+                    )
+                  ],
+                ),
               ),
-            ),
-          ),
-          Expanded(
-            child: Container(
-              padding: const EdgeInsets.all(20),
-              margin: const EdgeInsets.symmetric(horizontal: 6),
-              decoration: _overviewBoxDecoration,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Icon(Icons.favorite_rounded,
-                      size: 28, color: kDefaultFontColor),
-                  SizedBox(height: kDefaultPadding / 5),
-                  AutoSizeText(
-                    '누적 좋아요',
-                    minFontSize: 10,
-                    maxLines: 1,
-                    style: TextStyle(color: kDefaultFontColor),
-                  ),
-                  Divider(
-                    height: 7,
-                    color: kShadowColor.withOpacity(0.5),
-                  ),
-                  AutoSizeText.rich(
-                    TextSpan(children: [
-                      TextSpan(
-                          text: numberDisplay(storeReportOverview.likeCount),
-                          style: TextStyle(
-                              color: kThemeColor,
-                              fontWeight: FontWeight.bold,
-                              fontSize: 16)),
-                      TextSpan(text: ' 개')
-                    ]),
-                    maxLines: 1,
-                  )
-                ],
+              Container(
+                padding: const EdgeInsets.all(20),
+                margin: const EdgeInsets.symmetric(horizontal: 6),
+                height: 150,
+                width: size.width * 0.26,
+                decoration: _overviewBoxDecoration,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Icon(Icons.group_rounded,
+                        size: 28, color: kDefaultFontColor),
+                    SizedBox(height: kDefaultPadding / 5),
+                    AutoSizeText(
+                      '누적 참여자',
+                      minFontSize: 10,
+                      maxLines: 1,
+                      style: TextStyle(color: kDefaultFontColor),
+                    ),
+                    Divider(
+                      height: 7,
+                      color: kShadowColor.withOpacity(0.5),
+                    ),
+                    AutoSizeText.rich(
+                      TextSpan(children: [
+                        TextSpan(
+                            text: numberDisplay(storeReportOverview.joinCount),
+                            style: TextStyle(
+                                color: kThemeColor,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 16)),
+                        TextSpan(text: ' 명')
+                      ]),
+                      maxLines: 1,
+                    )
+                  ],
+                ),
               ),
-            ),
-          ),
-        ],
-      ),
+              Container(
+                padding: const EdgeInsets.all(20),
+                margin: const EdgeInsets.symmetric(horizontal: 6),
+                height: 150,
+                width: size.width * 0.26,
+                decoration: _overviewBoxDecoration,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Icon(Icons.favorite_rounded,
+                        size: 28, color: kDefaultFontColor),
+                    SizedBox(height: kDefaultPadding / 5),
+                    AutoSizeText(
+                      '누적 좋아요',
+                      minFontSize: 10,
+                      maxLines: 1,
+                      style: TextStyle(color: kDefaultFontColor),
+                    ),
+                    Divider(
+                      height: 7,
+                      color: kShadowColor.withOpacity(0.5),
+                    ),
+                    AutoSizeText.rich(
+                      TextSpan(children: [
+                        TextSpan(
+                            text: numberDisplay(storeReportOverview.likeCount),
+                            style: TextStyle(
+                                color: kThemeColor,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 16)),
+                        TextSpan(text: ' 개')
+                      ]),
+                      maxLines: 1,
+                    )
+                  ],
+                ),
+              ),
+            ],
+          )),
     );
   }
 }
