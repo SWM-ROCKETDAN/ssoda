@@ -80,20 +80,19 @@ class EventListTile extends StatelessWidget {
                                             width: kDefaultPadding * 1.5,
                                             color:
                                                 kShadowColor.withOpacity(0.6)),
-                                        Icon(Icons.share,
+                                        Icon(Icons.edit_rounded,
                                             color: Colors.blueGrey, size: 18),
                                         VerticalDivider(
                                             width: kDefaultPadding * 1.5,
                                             color:
                                                 kShadowColor.withOpacity(0.6)),
-                                        Icon(Icons.edit,
-                                            color: Colors.blueGrey, size: 18),
-                                        VerticalDivider(
-                                            width: kDefaultPadding * 1.5,
-                                            color:
-                                                kShadowColor.withOpacity(0.6)),
-                                        Icon(Icons.delete,
-                                            color: Colors.blueGrey, size: 18)
+                                        InkWell(
+                                          onTap: () {
+                                            showEventDeleteDialog(context);
+                                          },
+                                          child: Icon(Icons.delete_rounded,
+                                              color: Colors.blueGrey, size: 18),
+                                        )
                                       ],
                                     ),
                                   )
@@ -145,5 +144,62 @@ class EventListTile extends StatelessWidget {
         SizedBox(height: kDefaultPadding)
       ],
     );
+  }
+
+  void showEventDeleteDialog(BuildContext context) {
+    showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+            title: Center(
+              child: Text(' 이벤트 삭제',
+                  style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 18,
+                      color: kDefaultFontColor),
+                  textAlign: TextAlign.center),
+            ),
+            content: IntrinsicHeight(
+              child: Column(children: [
+                Text("이벤트 삭제 시 이벤트가",
+                    style: TextStyle(fontSize: 14, color: kDefaultFontColor)),
+                // SizedBox(height: kDefaultPadding / 3),
+                Text("즉시 종료되며 복구할 수 없습니다.",
+                    style: TextStyle(fontSize: 14, color: kDefaultFontColor)),
+                //SizedBox(height: kDefaultPadding / 3),
+                Text("그래도 삭제하시겠습니까?",
+                    style: TextStyle(fontSize: 14, color: kDefaultFontColor)),
+              ]),
+            ),
+            contentPadding: const EdgeInsets.fromLTRB(15, 15, 15, 5),
+            actions: [
+              Center(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    TextButton(
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                      },
+                      child: Text('삭제',
+                          style: TextStyle(color: Colors.redAccent.shade400)),
+                      style: ButtonStyle(
+                          overlayColor: MaterialStateProperty.all<Color>(
+                              Colors.redAccent.shade400.withOpacity(0.1))),
+                    ),
+                    ElevatedButton(
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                      },
+                      child: Text('취소'),
+                      style: ButtonStyle(
+                          backgroundColor: MaterialStateProperty.all<Color>(
+                              Colors.redAccent.shade400)),
+                    ),
+                  ],
+                ),
+              )
+            ],
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(15))));
   }
 }
