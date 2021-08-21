@@ -5,12 +5,6 @@ import 'package:hashchecker/models/template.dart';
 
 import 'step_text.dart';
 
-final List<String> templateList = [
-  'assets/images/create_event_step_help/draft.png',
-  'assets/images/create_event_step_help/draft.png',
-  'assets/images/create_event_step_help/draft.png'
-];
-
 class EventTemplate extends StatefulWidget {
   final event;
   EventTemplate({Key? key, required this.event}) : super(key: key);
@@ -20,7 +14,7 @@ class EventTemplate extends StatefulWidget {
 }
 
 class _EventTemplateState extends State<EventTemplate> {
-  final List<Widget> imageSliders = templateList
+  final List<Widget> imageSliders = templateThumbnailList
       .map((item) => Container(
             child: Container(
               margin: EdgeInsets.all(5.0),
@@ -47,7 +41,7 @@ class _EventTemplateState extends State<EventTemplate> {
                           padding: EdgeInsets.symmetric(
                               vertical: 10.0, horizontal: 20.0),
                           child: Text(
-                            '${templateName[templateList.indexOf(item)]}',
+                            '${templateNameList[templateThumbnailList.indexOf(item)]}',
                             textAlign: TextAlign.center,
                             style: TextStyle(
                               color: Colors.white,
@@ -98,7 +92,7 @@ class _EventTemplateState extends State<EventTemplate> {
                 SizedBox(height: kDefaultPadding),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
-                  children: templateList.asMap().entries.map((entry) {
+                  children: templateThumbnailList.asMap().entries.map((entry) {
                     return GestureDetector(
                       onTap: () => _carouselController.animateToPage(entry.key),
                       child: Container(
