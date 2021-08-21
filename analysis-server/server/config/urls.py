@@ -20,6 +20,5 @@ from django.views.generic import TemplateView
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
-    # url(r'^api/v1/', include('api.urls'), name='api'),
-    url(r'^api/v1/test/', include('join.urls'), name='join'),
+    url(r'^api/v1/join/', include('join.urls'), name='join'),
 ]

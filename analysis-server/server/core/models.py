@@ -132,100 +132,50 @@ class Event(models.Model):
     store = models.ForeignKey('Store', models.DO_NOTHING, blank=True, null=True)
 
     class Meta:
-        managed = False
         db_table = 'event'
 
 
 class EventImages(models.Model):
-    id = models.BigAutoField(primary_key=True)
+    event = models.ForeignKey(Event, related_name='event_images', on_delete=models.CASCADE)
     images = models.CharField(max_length=255)
-    event = models.ForeignKey(Event, models.DO_NOTHING)
 
     class Meta:
-        managed = False
         db_table = 'event_images'
 
 
 class EventRewards(models.Model):
-    id = models.BigAutoField(primary_key=True)
-    event = models.ForeignKey(Event, models.DO_NOTHING)
-    rewards = models.OneToOneField('Reward', models.DO_NOTHING)
+    event = models.ForeignKey(Event, related_name='event_rewards', on_delete=models.CASCADE)
+    rewards = models.OneToOneField('Reward', related_name='event_reward_set', on_delete=models.CASCADE)
 
     class Meta:
-        managed = False
         db_table = 'event_rewards'
 
 
 class Hashtag(models.Model):
     template = models.IntegerField()
-    id = models.OneToOneField(Event, models.DO_NOTHING, db_column='id', primary_key=True)
+    id = models.OneToOneField(Event, related_name='hashtag', on_delete=models.CASCADE, db_column='id', primary_key=True)
 
     class Meta:
-        managed = False
         db_table = 'hashtag'
 
 
 class HashtagHashtags(models.Model):
-    id = models.BigAutoField(primary_key=True)
+    hashtag = models.ForeignKey(Hashtag, related_name='hashtag_hashtags', on_delete=models.CASCADE)
     hashtags = models.CharField(max_length=255, blank=True, null=True)
-    hashtag = models.ForeignKey(Hashtag, models.DO_NOTHING)
 
     class Meta:
-        managed = False
         db_table = 'hashtag_hashtags'
 
 
 class HashtagRequirements(models.Model):
-    id = models.BigAutoField(primary_key=True)
-    requirements = models.TextField()
     hashtag = models.ForeignKey(Hashtag, models.DO_NOTHING)
+    requirements = models.TextField()  # This field type is a guess.
 
     class Meta:
-        managed = False
         db_table = 'hashtag_requirements'
 
 
-class JoinPost(models.Model):
-    id = models.BigAutoField(primary_key=True)
-    sns_id = models.CharField(max_length=255, blank=True, null=True)
-    url = models.CharField(max_length=255)
-    type = models.IntegerField(blank=True, null=True)
-    status = models.IntegerField(blank=True, null=True)
-    like_count = models.IntegerField(blank=True, null=True)
-    comment_count = models.IntegerField(blank=True, null=True)
-    hashtags = models.CharField(max_length=255, blank=True, null=True)
-    create_date = models.DateTimeField()
-    upload_date = models.DateTimeField(blank=True, null=True)
-    private_date = models.DateTimeField(blank=True, null=True)
-    update_date = models.DateTimeField(blank=True, null=True)
-    event = models.ForeignKey(Event, models.DO_NOTHING)
-    delete_date = models.DateTimeField(blank=True, null=True)
-    reward = models.ForeignKey('Reward', models.DO_NOTHING, blank=True, null=True)
-    rewards_level = models.IntegerField(blank=True, null=True)
-
-    class Meta:
-        managed = False
-        db_table = 'join_post'
-
-
-class JoinUser(models.Model):
-    id = models.BigAutoField(primary_key=True)
-    sns_id = models.CharField(max_length=255)
-    url = models.CharField(max_length=255, blank=True, null=True)
-    type = models.IntegerField()
-    status = models.IntegerField(blank=True, null=True)
-    follow_count = models.IntegerField(blank=True, null=True)
-    post_count = models.IntegerField(blank=True, null=True)
-    create_date = models.DateTimeField()
-    update_date = models.DateTimeField(blank=True, null=True)
-
-    class Meta:
-        managed = False
-        db_table = 'join_user'
-
-
 class Reward(models.Model):
-    id = models.BigAutoField(primary_key=True)
     category = models.IntegerField(blank=True, null=True)
     count = models.IntegerField(blank=True, null=True)
     image = models.CharField(max_length=255, blank=True, null=True)
@@ -233,10 +183,9 @@ class Reward(models.Model):
     price = models.IntegerField(blank=True, null=True)
     level = models.BigIntegerField(blank=True, null=True)
     used_count = models.IntegerField(blank=True, null=True)
-    event = models.ForeignKey(Event, models.DO_NOTHING, blank=True, null=True)
+    event = models.ForeignKey(Event, related_name='rewards', on_delete=models.DO_NOTHING, blank=True, null=True)
 
     class Meta:
-        managed = False
         db_table = 'reward'
 
 
@@ -251,30 +200,50 @@ class Store(models.Model):
     category = models.IntegerField()
     description = models.TextField(blank=True, null=True)
     name = models.CharField(max_length=255)
-    user = models.ForeignKey('User', models.DO_NOTHING, blank=True, null=True)
 
     class Meta:
-        managed = False
         db_table = 'store'
 
 
 class StoreImages(models.Model):
-    id = models.BigAutoField(primary_key=True)
-    images = models.CharField(max_length=255, blank=True, null=True)
     store = models.ForeignKey(Store, models.DO_NOTHING)
+    images = models.CharField(max_length=255, blank=True, null=True)
 
     class Meta:
-        managed = False
         db_table = 'store_images'
 
 
-class User(models.Model):
+class JoinPost(models.Model):
     id = models.BigAutoField(primary_key=True)
-    email = models.CharField(max_length=255)
-    name = models.CharField(max_length=255)
-    picture = models.CharField(max_length=255, blank=True, null=True)
-    role = models.CharField(max_length=255)
+    event = models.ForeignKey(Event, related_name='event', on_delete=models.CASCADE)
+    reward = models.ForeignKey(Reward, related_name='reward', on_delete=models.DO_NOTHING, blank=True, null=True)
+    sns_id = models.CharField(max_length=255, blank=True, null=True)
+    url = models.CharField(max_length=255)
+    type = models.IntegerField(blank=True, null=True)
+    status = models.IntegerField(blank=True, null=True)
+    like_count = models.IntegerField(blank=True, null=True, default=0)
+    comment_count = models.IntegerField(blank=True, null=True, default=0)
+    hashtags = models.CharField(max_length=255, blank=True, null=True, default='')
+    create_date = models.DateTimeField()
+    upload_date = models.DateTimeField(blank=True, null=True)
+    private_date = models.DateTimeField(blank=True, null=True)
+    delete_date = models.DateTimeField(blank=True, null=True)
+    update_date = models.DateTimeField(blank=True, null=True)
 
     class Meta:
-        managed = False
-        db_table = 'user'
+        db_table = 'join_post'
+
+
+class JoinUser(models.Model):
+    id = models.BigAutoField(primary_key=True)
+    sns_id = models.CharField(max_length=255)
+    url = models.CharField(max_length=255, blank=True, null=True)
+    type = models.IntegerField()
+    status = models.IntegerField(blank=True, null=True)
+    follow_count = models.IntegerField(blank=True, null=True, default=0)
+    post_count = models.IntegerField(blank=True, null=True, default=0)
+    create_date = models.DateTimeField()
+    update_date = models.DateTimeField(blank=True, null=True)
+
+    class Meta:
+        db_table = 'join_user'

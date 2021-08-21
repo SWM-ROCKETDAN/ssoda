@@ -1,6 +1,18 @@
 from rest_framework.exceptions import APIException
 
 
+class PostUpdateOk(APIException):
+    default_detail = 'Post update ok'
+    status_code = 200
+    default_code = 'OK_001'
+
+
+class UserUpdateOk(APIException):
+    default_detail = 'User update ok'
+    status_code = 200
+    default_code = 'OK_002'
+
+
 # 클라이언트 에러
 class PostIsPrivate(APIException):
     default_detail = 'Post is private'
