@@ -1,15 +1,19 @@
 from bs4 import BeautifulSoup
 from urllib.request import urlopen
-from server.api.modules.assist import proxy
-from server.api.modules.assist import cal_time
-from server.api.modules.assist import convert_url
+from ..proxy import get_proxy_url
+from ..time import get_now_time
+from server.core.modules.static.common import Type
+from server.core.modules.static.common import Status
 import re
-import server.secret.config as config
 
 
-def crawl_user(sns_id):
-    user_url = convert_url.get_instagram_user_url(sns_id)
-    proxy_url = proxy.get_url(user_url)
+def get_url(sns_id):
+    return 'https://www.instagram.com/' + sns_id
+
+
+def scrap_user(sns_id):
+    user_url = get_url(sns_id)
+    proxy_url = get_proxy_url(user_url)
     response = urlopen(proxy_url)
     soup = BeautifulSoup(response, "html.parser")
     user_meta = str(soup.find('meta', property="og:description"))
@@ -23,11 +27,11 @@ def crawl_user(sns_id):
     user = {
         'sns_id': sns_id,
         'url': user_url,
-        'type': config.Type.INSTAGRAM,
-        'status': config.Status.PUBLIC,
+        'type': Type.INSTAGRAM,
+        'status': Status.PUBLIC,
         'follow_count': user_nums[0],
         'post_count': user_nums[2],
-        'update_date': cal_time.get_now_time()
+        'update_date': get_now_time()
     }
 
     return user

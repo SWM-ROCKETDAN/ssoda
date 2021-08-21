@@ -1,0 +1,7 @@
+class InstagramReward:
+    FOLLOWER_NUMBER = 1000
+    MAINTAIN_DAY = 1
+    ER_NUMBER = 500
+    CONSTANT_USER = 0.8
+    CONSTANT_POST = 0.8
+    CONSTANT_PREV = 0.8

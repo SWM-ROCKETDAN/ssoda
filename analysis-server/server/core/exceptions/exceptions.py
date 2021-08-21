@@ -1,6 +1,7 @@
 from rest_framework.exceptions import APIException
 
 
+# 성공
 class PostUpdateOk(APIException):
     default_detail = 'Post update ok'
     status_code = 200
@@ -20,20 +21,38 @@ class PostIsPrivate(APIException):
     default_code = 'CLIENT_ERROR_001'
 
 
-class PostIsDiffHashtag(APIException):
-    default_detail = 'Post is different hashtag'
+class PostIsDeleted(APIException):
+    default_detail = 'Post is deleted'
     status_code = 406
     default_code = 'CLIENT_ERROR_002'
 
 
+class PostIsDiffHashtag(APIException):
+    default_detail = 'Post is different hashtag'
+    status_code = 406
+    default_code = 'CLIENT_ERROR_003'
+
+
 # 서버 에러
-class ProxyDenied(APIException):
-    default_detail = 'Proxy is denied'
+class PostUpdateFailed(APIException):
+    default_detail = 'Post update failed'
     status_code = 500
     default_code = 'SERVER_ERROR_001'
 
 
-class CrawlDenied(APIException):
-    default_detail = 'Crawl is denied'
+class UserUpdateFailed(APIException):
+    default_detail = 'User update failed'
     status_code = 500
     default_code = 'SERVER_ERROR_002'
+
+
+class ProxyFailed(APIException):
+    default_detail = 'Proxy is failed'
+    status_code = 500
+    default_code = 'SERVER_ERROR_003'
+
+
+class ScrapFailed(APIException):
+    default_detail = 'Scrap is failed'
+    status_code = 500
+    default_code = 'SERVER_ERROR_004'

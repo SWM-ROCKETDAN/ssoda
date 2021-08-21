@@ -1,15 +1,24 @@
 from bs4 import BeautifulSoup
 from urllib.request import urlopen
-from server.api.modules.assist import proxy
-from server.api.modules.assist import cal_time
-import server.secret.config as config
-
+from ..proxy import get_proxy_url
+from ..time import get_now_time
+from ..time import get_datetime
+from server.core.modules.static.common import Type
+from server.core.modules.static.common import Status
+from ._post import get_default_post
 import json
 
 
-def crawl_post(url):
-    proxy_url = proxy.get_url(url)
+def scrap_post(url):
+    proxy_url = get_proxy_url(url)
     response = urlopen(proxy_url)
+    scraped_post = get_default_post()
+
+    # 상태 이상일 시 삭제됨 처리
+    if response.getcode() != 200:
+        scraped_post['status'] = Status.DELETED
+        return scraped_post
+
     soup = BeautifulSoup(response, "html.parser")
 
     # find data
@@ -41,18 +50,15 @@ def crawl_post(url):
 
     # status
     if post_data['@type'] == 'Person':
-        status = config.Status.PRIVATE
+        status = Status.PRIVATE
     else:
-        status = config.Status.PUBLIC
+        status = Status.PUBLIC
 
     # uploadDate
     if 'uploadDate' in post_data:
-        upload = cal_time.get_datetime(post_data['uploadDate'])
+        upload = get_datetime(post_data['uploadDate'])
     else:
         upload = ''
-
-    # update
-    update = cal_time.get_now_time()
 
     # maintain
     hashtags = ','.join(hashtags)
@@ -60,7 +66,7 @@ def crawl_post(url):
     post = {
         'sns_id': sns_id,
         'url': url,
-        'type': config.Type.INSTAGRAM,
+        'type': Type.INSTAGRAM,
         'status': status,
         'like_count': likes,
         'comment_count': comments,
@@ -68,7 +74,7 @@ def crawl_post(url):
         'upload_date': upload,
         'private_date': None,
         'delete_data': None,
-        'update_date': update,
+        'update_date': get_now_time(),
     }
 
     return post
