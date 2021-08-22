@@ -8,7 +8,7 @@ urlpatterns = [
     path('join/posts/<int:pk>/', join_crawl_views.JoinPostView.as_view()),
     path('join/users/<int:pk>/', join_crawl_views.JoinUserView.as_view()),
     path('join/rewards/<int:pk>/', join_reward_view.JoinRewardView.as_view()),
-    path('report/events/<int:pk>/', report_views.ReportEventView.as_view()),
+    path('reward/events/<int:pk>/', report_views.ReportEventView.as_view()),
 ]
 
 urlpatterns = format_suffix_patterns(urlpatterns)
