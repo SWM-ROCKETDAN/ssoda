@@ -2,7 +2,7 @@ from server.core.modules.static.common import Type
 from server.core.modules.static.common import Status
 from .reward_calculator_instagram import get_reward_point as get_reward_point_instagram
 from .reward_calculator_facebook import get_reward_point as get_reward_point_facebook
-import pprint
+from server.core.exceptions import exceptions
 
 get_reward_point_handlers = {
     Type.INSTAGRAM: get_reward_point_instagram,
@@ -70,22 +70,25 @@ class RewardCalculator:
         return reward_ranks
 
     def get_this_reward_id(self):
-        # 리워드 점수 계산 후 저장
-        self.save_reward_point()
+        try:
+            # 리워드 점수 계산 후 저장
+            self.save_reward_point()
 
-        # 리워드 점수 랭킹과 리워드 랭킹 리스트 얻기
-        this_reward_point_rank = self.get_this_reward_point_rank()
-        reward_ranks = self.get_reward_ranks()
-        # pprint.pprint(self.this_reward_point)
-        # pprint.pprint(self.other_reward_points)
-        # pprint.pprint(this_reward_point_rank)
-        # pprint.pprint(reward_ranks)
-        # 랭킹 계산 후 리워드 아이디 추출
-        this_reward_id = None
-        for reward_id, reward_level, reward_rank in reward_ranks:
-            this_reward_point_rank -= reward_rank
-            this_reward_id = reward_id
-            if this_reward_point_rank < 0:
-                break
+            # 리워드 점수 랭킹과 리워드 랭킹 리스트 얻기
+            this_reward_point_rank = self.get_this_reward_point_rank()
+            reward_ranks = self.get_reward_ranks()
+            # pprint.pprint(self.this_reward_point)
+            # pprint.pprint(self.other_reward_points)
+            # pprint.pprint(this_reward_point_rank)
+            # pprint.pprint(reward_ranks)
+            # 랭킹 계산 후 리워드 아이디 추출
+            this_reward_id = None
+            for reward_id, reward_level, reward_rank in reward_ranks:
+                this_reward_point_rank -= reward_rank
+                this_reward_id = reward_id
+                if this_reward_point_rank < 0:
+                    break
+        except Exception as e:
+            raise exceptions.RewardCalculateFailed
 
         return this_reward_id

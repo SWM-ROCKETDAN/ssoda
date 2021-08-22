@@ -11,6 +11,7 @@ def custom_exception_handler(exc, context):
         exceptions.PostIsDiffHashtag.__name__: exceptions.PostIsDiffHashtag,
         exceptions.ProxyFailed.__name__: exceptions.ProxyFailed,
         exceptions.ScrapFailed.__name__: exceptions.ScrapFailed,
+        exceptions.RewardCalculateFailed.__name__: exceptions.RewardCalculateFailed,
     }
 
     response = exception_handler(exc, context)

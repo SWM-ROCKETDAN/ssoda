@@ -50,8 +50,7 @@ class JoinRewardView(APIView):
         join_posts = get_list_or_404(JoinPost)
         other_join_serializer = OtherJoinSerializer(data=join_posts, many=True)
         other_join_serializer.is_valid()
-        reward_calculator = RewardCalculator(this_join=this_join_serializer.data,
-                                             other_joins=other_join_serializer.data)
+        reward_calculator = RewardCalculator(this_join_serializer.data, other_join_serializer.data)
         this_reward_id = reward_calculator.get_this_reward_id()
 
         return JsonResponse({'reward_id': this_reward_id})
