@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:hashchecker/constants.dart';
@@ -33,75 +35,74 @@ class _EventImageState extends State<EventImage> {
                   child: CarouselSlider(
                 options: CarouselOptions(
                   height: MediaQuery.of(context).size.height * 0.25,
-                  aspectRatio: 2.0,
                   enlargeCenterPage: true,
                   enableInfiniteScroll: false,
-                  initialPage: 2,
+                  initialPage: max(widget.event.images.length - 2, 0),
                   autoPlay: false,
+                  viewportFraction: 0.75,
                 ),
                 items: List.generate(
                     widget.event.images.length,
-                    (index) => ClipRRect(
-                        borderRadius: BorderRadius.all(Radius.circular(16.0)),
-                        child: GestureDetector(
+                    (index) => widget.event.images[index] == null
+                        ? SizedBox(
+                            width: MediaQuery.of(context).size.width * 0.75,
+                            child: TextButton(
+                              onPressed: () {
+                                _getImageFromGallery(context, index);
+                              },
+                              child: Center(
+                                  child: Icon(
+                                Icons.add,
+                                color: kLiteFontColor,
+                                size: 50,
+                              )),
+                              style: ButtonStyle(
+                                  shape:
+                                      MaterialStateProperty.all<OutlinedBorder>(
+                                          RoundedRectangleBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(16.0))),
+                                  backgroundColor:
+                                      MaterialStateProperty.all<Color>(
+                                          kScaffoldBackgroundColor),
+                                  overlayColor:
+                                      MaterialStateProperty.all<Color>(
+                                          kShadowColor),
+                                  side: MaterialStateProperty.all<BorderSide>(
+                                      BorderSide(color: kLiteFontColor))),
+                            ),
+                          )
+                        : GestureDetector(
                             onTap: () {
                               _getImageFromGallery(context, index);
                             },
-                            child: widget.event.images[index] == null
-                                ? ElevatedButton(
-                                    onPressed: () {
-                                      _getImageFromGallery(context, index);
-                                    },
-                                    child: Center(
-                                        child: Icon(
-                                      Icons.add,
-                                      color: kLiteFontColor,
-                                      size: 50,
-                                    )),
-                                    style: ButtonStyle(
-                                        shape: MaterialStateProperty.all<
-                                                OutlinedBorder>(
-                                            RoundedRectangleBorder(
-                                                borderRadius:
-                                                    BorderRadius.circular(
-                                                        16.0))),
-                                        backgroundColor:
-                                            MaterialStateProperty.all<Color>(
-                                                kScaffoldBackgroundColor),
-                                        overlayColor:
-                                            MaterialStateProperty.all<Color>(
-                                                kShadowColor),
-                                        side: MaterialStateProperty.all<BorderSide>(
-                                            BorderSide(color: kLiteFontColor))),
-                                  )
-                                : Stack(children: [
-                                    Image.file(
-                                        File(widget.event.images[index]!),
-                                        fit: BoxFit.cover),
-                                    if (widget.event.images.last == null &&
-                                            widget.event.images.length ==
-                                                index + 2 ||
-                                        widget.event.images.length == index + 1)
-                                      Positioned(
-                                          right: 10,
-                                          top: 10,
-                                          child: GestureDetector(
-                                            onTap: () {
-                                              setState(() {
-                                                if (widget.event.images.last ==
-                                                    null)
-                                                  widget.event.images
-                                                      .removeLast();
-                                                widget.event.images[index] =
-                                                    null;
-                                              });
-                                            },
-                                            child: Icon(Icons.cancel_rounded,
-                                                size: 32,
-                                                color: Colors.white
-                                                    .withOpacity(0.9)),
-                                          ))
-                                  ])))).cast<Widget>().toList(),
+                            child: Stack(children: [
+                              ClipRRect(
+                                child: Image.file(
+                                    File(widget.event.images[index]!),
+                                    fit: BoxFit.cover),
+                                borderRadius: BorderRadius.circular(16),
+                              ),
+                              if (widget.event.images.last == null &&
+                                      widget.event.images.length == index + 2 ||
+                                  widget.event.images.length == index + 1)
+                                Positioned(
+                                    right: 10,
+                                    top: 10,
+                                    child: GestureDetector(
+                                      onTap: () {
+                                        setState(() {
+                                          if (widget.event.images.last == null)
+                                            widget.event.images.removeLast();
+                                          widget.event.images[index] = null;
+                                        });
+                                      },
+                                      child: Icon(Icons.cancel_rounded,
+                                          size: 32,
+                                          color: Colors.white.withOpacity(0.9)),
+                                    ))
+                            ]),
+                          )).cast<Widget>().toList(),
               )),
               SizedBox(height: kDefaultPadding),
               Row(
