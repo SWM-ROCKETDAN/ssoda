@@ -36,8 +36,17 @@ class EventSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
+class EventHashtagSerializer(serializers.ModelSerializer):
+    hashtag = HashtagSerializer()
+
+    class Meta:
+        model = Event
+        fields = '__all__'
+
+
 class JoinSerializer(serializers.ModelSerializer):
     reward = RewardSerializer()
+    event = EventHashtagSerializer()
 
     class Meta:
         model = JoinPost
