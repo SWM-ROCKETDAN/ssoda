@@ -51,7 +51,7 @@ class ReportOverview extends StatelessWidget {
               Container(
                 padding: const EdgeInsets.all(20),
                 margin: const EdgeInsets.symmetric(horizontal: 6),
-                height: 150,
+                height: 135,
                 width: size.width * 0.26,
                 decoration: _overviewBoxDecoration,
                 child: Column(
@@ -88,7 +88,7 @@ class ReportOverview extends StatelessWidget {
               Container(
                 padding: const EdgeInsets.all(20),
                 margin: const EdgeInsets.symmetric(horizontal: 6),
-                height: 150,
+                height: 135,
                 width: size.width * 0.26,
                 decoration: _overviewBoxDecoration,
                 child: Column(
@@ -125,7 +125,7 @@ class ReportOverview extends StatelessWidget {
               Container(
                 padding: const EdgeInsets.all(20),
                 margin: const EdgeInsets.symmetric(horizontal: 6),
-                height: 150,
+                height: 135,
                 width: size.width * 0.26,
                 decoration: _overviewBoxDecoration,
                 child: Column(
