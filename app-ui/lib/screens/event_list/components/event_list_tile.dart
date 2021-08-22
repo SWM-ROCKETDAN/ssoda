@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:hashchecker/constants.dart';
 import 'package:hashchecker/models/event.dart';
 import 'package:hashchecker/models/event_list_item.dart';
+import 'package:hashchecker/screens/event_list/components/event_edit_modal.dart';
+import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 
 class EventListTile extends StatelessWidget {
   const EventListTile({
@@ -75,13 +77,26 @@ class EventListTile extends StatelessWidget {
                                             style: TextStyle(
                                                 fontSize: 12,
                                                 color: _statusColorMap[
-                                                    eventList[index].status])),
+                                                    eventList[index].status],
+                                                fontWeight: eventList[index]
+                                                            .status ==
+                                                        EventStatus.PROCEEDING
+                                                    ? FontWeight.bold
+                                                    : FontWeight.normal)),
                                         VerticalDivider(
                                             width: kDefaultPadding * 1.5,
                                             color:
                                                 kShadowColor.withOpacity(0.6)),
-                                        Icon(Icons.edit_rounded,
-                                            color: Colors.blueGrey, size: 18),
+                                        InkWell(
+                                          onTap: () => showBarModalBottomSheet(
+                                            expand: true,
+                                            context: context,
+                                            builder: (context) =>
+                                                EventEditModal(),
+                                          ),
+                                          child: Icon(Icons.edit_rounded,
+                                              color: Colors.blueGrey, size: 18),
+                                        ),
                                         VerticalDivider(
                                             width: kDefaultPadding * 1.5,
                                             color:
@@ -151,7 +166,7 @@ class EventListTile extends StatelessWidget {
         context: context,
         builder: (context) => AlertDialog(
             title: Center(
-              child: Text(' 이벤트 삭제',
+              child: Text('이벤트 삭제',
                   style: TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: 18,
@@ -162,10 +177,10 @@ class EventListTile extends StatelessWidget {
               child: Column(children: [
                 Text("이벤트 삭제 시 이벤트가",
                     style: TextStyle(fontSize: 14, color: kDefaultFontColor)),
-                // SizedBox(height: kDefaultPadding / 3),
+                SizedBox(height: kDefaultPadding / 5),
                 Text("즉시 종료되며 복구할 수 없습니다.",
                     style: TextStyle(fontSize: 14, color: kDefaultFontColor)),
-                //SizedBox(height: kDefaultPadding / 3),
+                SizedBox(height: kDefaultPadding / 5),
                 Text("그래도 삭제하시겠습니까?",
                     style: TextStyle(fontSize: 14, color: kDefaultFontColor)),
               ]),
