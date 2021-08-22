@@ -1,7 +1,7 @@
-from .post_calculator import calculate_post_hashtags
-from .user_calculator import calculate_user_follow
-from .prev_calculator import calculate_prev_maintain
-from .prev_calculator import calculate_prev_engagement
+from .calculator_post import calculate_post_hashtags
+from .calculator_user import calculate_user_follow
+from .calculator_prev import calculate_prev_maintain
+from .calculator_prev import calculate_prev_engagement
 from server.core.modules.static.reward import InstagramReward
 from ..time import get_now_time
 
@@ -17,10 +17,7 @@ def get_reward_point(join):
 
 
 def get_post_hashtag_point(join):
-    event_hashtags = []
-    for hashtag in join['event']['hashtag']['hashtag_hashtags']:
-        event_hashtags.append(hashtag['hashtags'])
-
+    event_hashtags = join['event']['hashtag']
     post_hashtags = join['hashtags'].split(',')
 
     post_hashtag_point = calculate_post_hashtags(post_hashtags, event_hashtags)
