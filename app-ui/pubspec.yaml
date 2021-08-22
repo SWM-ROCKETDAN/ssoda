@@ -31,6 +31,7 @@ dependencies:
   animations: ^2.0.1
   ms_undraw: ^3.0.0+0
   flutter_staggered_animations: ^1.0.0
+  modal_bottom_sheet: ^2.0.0
     
 dev_dependencies:
   flutter_test:
