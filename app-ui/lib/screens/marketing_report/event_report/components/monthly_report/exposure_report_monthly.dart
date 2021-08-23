@@ -146,7 +146,7 @@ class _ExposureReportMonthlyState extends State<ExposureReportMonthly> {
                       bottomTitles: SideTitles(
                         showTitles: true,
                         reservedSize: 14,
-                        getTextStyles: (value) => const TextStyle(
+                        getTextStyles: (context, value) => const TextStyle(
                             color: kLiteFontColor,
                             fontWeight: FontWeight.bold,
                             fontSize: 12),
@@ -175,7 +175,7 @@ class _ExposureReportMonthlyState extends State<ExposureReportMonthly> {
                       ),
                       leftTitles: SideTitles(
                         showTitles: true,
-                        getTextStyles: (value) => const TextStyle(
+                        getTextStyles: (context, value) => const TextStyle(
                           color: kLiteFontColor,
                           fontWeight: FontWeight.bold,
                           fontSize: 12,

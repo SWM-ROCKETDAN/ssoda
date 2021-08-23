@@ -194,7 +194,7 @@ class _ExpenditureReportWeeklyState extends State<ExpenditureReportWeekly> {
         show: true,
         bottomTitles: SideTitles(
           showTitles: true,
-          getTextStyles: (value) => const TextStyle(
+          getTextStyles: (contextx, value) => const TextStyle(
               color: kDefaultFontColor,
               fontWeight: FontWeight.bold,
               fontSize: 14),

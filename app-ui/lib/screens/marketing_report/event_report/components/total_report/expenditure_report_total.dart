@@ -183,7 +183,7 @@ class _ExpenditureReportTotalState extends State<ExpenditureReportTotal> {
         show: true,
         bottomTitles: SideTitles(
           showTitles: true,
-          getTextStyles: (value) => const TextStyle(
+          getTextStyles: (context, value) => const TextStyle(
               color: kDefaultFontColor,
               fontWeight: FontWeight.bold,
               fontSize: 14),

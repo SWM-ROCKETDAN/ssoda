@@ -194,7 +194,7 @@ class _ExpenditureReportMonthlyState extends State<ExpenditureReportMonthly> {
         show: true,
         bottomTitles: SideTitles(
           showTitles: true,
-          getTextStyles: (value) => const TextStyle(
+          getTextStyles: (context, value) => const TextStyle(
               color: kDefaultFontColor,
               fontWeight: FontWeight.bold,
               fontSize: 14),
