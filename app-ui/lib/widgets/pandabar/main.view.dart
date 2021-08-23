@@ -120,7 +120,7 @@ class _PandaBarState extends State<PandaBar> {
           },
           tappable: false,
           closedElevation: 0,
-          closedColor: kScaffoldBackgroundColor,
+          closedColor: Colors.white,
           closedShape: RoundedRectangleBorder(
               borderRadius: BorderRadius.all(Radius.circular(360))),
           closedBuilder: (BuildContext _, VoidCallback openContainer) {

@@ -109,7 +109,7 @@ class _InputRewardInfoScreenState extends State<InputRewardInfoScreen> {
     return SizedBox(
       width: MediaQuery.of(context).size.width,
       height: 50,
-      child: TextButton(
+      child: ElevatedButton(
         child: Text(
           '보상 등록하기',
           style: TextStyle(
@@ -129,6 +129,7 @@ class _InputRewardInfoScreenState extends State<InputRewardInfoScreen> {
           }
         },
         style: ButtonStyle(
+            shadowColor: MaterialStateProperty.all<Color>(kShadowColor),
             backgroundColor: MaterialStateProperty.all<Color>(kThemeColor),
             shape: MaterialStateProperty.all<OutlinedBorder>(
                 RoundedRectangleBorder(

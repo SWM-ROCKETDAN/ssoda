@@ -203,7 +203,7 @@ class _SignInScreenState extends State<SignInScreen> {
             content: IntrinsicHeight(
               child: Column(children: [
                 Text("로그인 도중 오류가 발생하였습니다.", style: TextStyle(fontSize: 14)),
-                SizedBox(height: kDefaultPadding / 3),
+                SizedBox(height: kDefaultPadding / 5),
                 Text("네트워크 연결 상태를 확인해주세요.", style: TextStyle(fontSize: 14)),
               ]),
             ),

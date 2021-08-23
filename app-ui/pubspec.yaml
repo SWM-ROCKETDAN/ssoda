@@ -11,6 +11,8 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  flutter_localizations:
+    sdk: flutter
 
   auto_size_text: ^3.0.0-nullsafety.0
   image_picker: ^0.8.3
@@ -29,6 +31,10 @@ dependencies:
   gallery_saver: ^2.1.2
   dio: ^4.0.0
   animations: ^2.0.1
+  ms_undraw: ^3.0.0+0
+  flutter_staggered_animations: ^1.0.0
+  modal_bottom_sheet: ^2.0.0
+  syncfusion_flutter_datepicker: ^19.2.56
     
 dev_dependencies:
   flutter_test:

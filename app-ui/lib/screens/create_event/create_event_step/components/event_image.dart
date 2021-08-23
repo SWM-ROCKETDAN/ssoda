@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:hashchecker/constants.dart';
@@ -19,38 +21,32 @@ class _EventImageState extends State<EventImage> {
   @override
   Widget build(BuildContext context) {
     return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            crossAxisAlignment: CrossAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [StepText(step: 4), StepHelp(step: 4)]),
+          SizedBox(height: kDefaultPadding),
+          Column(
             children: [
-              StepText(step: 4),
-              StepHelp(step: 4)
-            ]),
-        SizedBox(height: kDefaultPadding),Column(
-      children: [
-        Container(
-            child: CarouselSlider(
-          options: CarouselOptions(
-            height: MediaQuery.of(context).size.height * 0.25,
-            aspectRatio: 2.0,
-            enlargeCenterPage: true,
-            enableInfiniteScroll: false,
-            initialPage: 2,
-            autoPlay: false,
-          ),
-          items: List.generate(
-              widget.event.images.length,
-              (index) => ClipRRect(
-                  borderRadius: BorderRadius.all(Radius.circular(16.0)),
-                  child: GestureDetector(
-                      onTap: () {
-                        _getImageFromGallery(context, index);
-                      },
-                      child: widget.event.images[index] == null
-                          ? ElevatedButton(
+              Container(
+                  child: CarouselSlider(
+                options: CarouselOptions(
+                  height: MediaQuery.of(context).size.height * 0.25,
+                  enlargeCenterPage: true,
+                  enableInfiniteScroll: false,
+                  initialPage: max(widget.event.images.length - 2, 0),
+                  autoPlay: false,
+                  viewportFraction: 0.75,
+                ),
+                items: List.generate(
+                    widget.event.images.length,
+                    (index) => widget.event.images[index] == null
+                        ? SizedBox(
+                            width: MediaQuery.of(context).size.width * 0.75,
+                            child: TextButton(
                               onPressed: () {
                                 _getImageFromGallery(context, index);
                               },
@@ -74,23 +70,54 @@ class _EventImageState extends State<EventImage> {
                                           kShadowColor),
                                   side: MaterialStateProperty.all<BorderSide>(
                                       BorderSide(color: kLiteFontColor))),
-                            )
-                          : Image.file(File(widget.event.images[index]!),
-                              fit: BoxFit.cover)))).cast<Widget>().toList(),
-        )),
-        SizedBox(height: kDefaultPadding),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Icon(Icons.info_outline, size: 16, color: kLiteFontColor),
-            Text(
-              ' 좌우 슬라이드로 최대 3장까지 등록할 수 있어요!',
-              style: TextStyle(color: kLiteFontColor, fontSize: 12),
-            )
-          ],
-        )
-      ],
-    )]);
+                            ),
+                          )
+                        : GestureDetector(
+                            onTap: () {
+                              _getImageFromGallery(context, index);
+                            },
+                            child: Stack(children: [
+                              ClipRRect(
+                                child: Image.file(
+                                    File(widget.event.images[index]!),
+                                    fit: BoxFit.cover),
+                                borderRadius: BorderRadius.circular(16),
+                              ),
+                              if (widget.event.images.last == null &&
+                                      widget.event.images.length == index + 2 ||
+                                  widget.event.images.length == index + 1)
+                                Positioned(
+                                    right: 10,
+                                    top: 10,
+                                    child: GestureDetector(
+                                      onTap: () {
+                                        setState(() {
+                                          if (widget.event.images.last == null)
+                                            widget.event.images.removeLast();
+                                          widget.event.images[index] = null;
+                                        });
+                                      },
+                                      child: Icon(Icons.cancel_rounded,
+                                          size: 32,
+                                          color: Colors.white.withOpacity(0.9)),
+                                    ))
+                            ]),
+                          )).cast<Widget>().toList(),
+              )),
+              SizedBox(height: kDefaultPadding),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(Icons.info_outline, size: 16, color: kLiteFontColor),
+                  Text(
+                    ' 좌우 슬라이드로 최대 3장까지 등록할 수 있어요!',
+                    style: TextStyle(color: kLiteFontColor, fontSize: 12),
+                  )
+                ],
+              )
+            ],
+          )
+        ]);
   }
 
   Future _getImageFromGallery(BuildContext context, int index) async {

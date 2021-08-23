@@ -22,7 +22,7 @@ class NextStepButton extends StatelessWidget {
     return SizedBox(
       width: MediaQuery.of(context).size.width,
       height: 50,
-      child: TextButton(
+      child: ElevatedButton(
         child: Text(
           step == maxStep - 1 ? '이벤트 미리보기' : '다음 단계로',
           style: TextStyle(
@@ -32,6 +32,7 @@ class NextStepButton extends StatelessWidget {
           _onNextStepButtonPressed(context);
         },
         style: ButtonStyle(
+            shadowColor: MaterialStateProperty.all<Color>(kShadowColor),
             backgroundColor: MaterialStateProperty.all<Color>(kThemeColor),
             shape: MaterialStateProperty.all<OutlinedBorder>(
                 RoundedRectangleBorder(

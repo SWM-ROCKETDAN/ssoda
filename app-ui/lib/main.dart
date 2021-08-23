@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:hashchecker/constants.dart';
 import 'package:hashchecker/env.dart';
 import 'package:hashchecker/models/token.dart';
@@ -26,6 +27,14 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'HashChecker',
+      localizationsDelegates: [
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+      ],
+      supportedLocales: [
+        const Locale('ko'),
+      ],
+      locale: const Locale('ko'),
       theme: ThemeData(
           primarySwatch: _createMaterialColor(kThemeColor),
           visualDensity: VisualDensity.adaptivePlatformDensity,
