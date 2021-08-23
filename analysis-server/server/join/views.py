@@ -1,5 +1,6 @@
-from django.http import JsonResponse, HttpResponse
-from django.shortcuts import get_object_or_404, get_list_or_404
+from django.http import JsonResponse
+from django.shortcuts import get_object_or_404
+from django.shortcuts import get_list_or_404
 from rest_framework.views import APIView
 from core.models import JoinPost
 from core.models import JoinUser

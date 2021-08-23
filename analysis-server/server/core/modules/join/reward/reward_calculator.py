@@ -1,5 +1,4 @@
 from server.core.modules.static.common import Type
-from server.core.modules.static.common import Status
 from .reward_calculator_instagram import get_reward_point as get_reward_point_instagram
 from .reward_calculator_facebook import get_reward_point as get_reward_point_facebook
 from server.core.exceptions import exceptions
@@ -77,10 +76,6 @@ class RewardCalculator:
             # 리워드 점수 랭킹과 리워드 랭킹 리스트 얻기
             this_reward_point_rank = self.get_this_reward_point_rank()
             reward_ranks = self.get_reward_ranks()
-            # pprint.pprint(self.this_reward_point)
-            # pprint.pprint(self.other_reward_points)
-            # pprint.pprint(this_reward_point_rank)
-            # pprint.pprint(reward_ranks)
             # 랭킹 계산 후 리워드 아이디 추출
             this_reward_id = None
             for reward_id, reward_level, reward_rank in reward_ranks:
