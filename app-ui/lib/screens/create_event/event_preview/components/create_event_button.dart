@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:hashchecker/api.dart';
+import 'package:hashchecker/constants.dart';
 import 'package:hashchecker/models/event.dart';
 import 'package:hashchecker/models/token.dart';
 import 'package:hashchecker/screens/create_event/show_qrcode/show_qrcode_screen.dart';
@@ -18,7 +19,7 @@ class CreateEventButton extends StatelessWidget {
     return SizedBox(
       width: MediaQuery.of(context).size.width,
       height: 50,
-      child: TextButton(
+      child: ElevatedButton(
         child: Text(
           '이대로 등록하기',
           style: TextStyle(
@@ -84,8 +85,8 @@ class CreateEventButton extends StatelessWidget {
           );
         },
         style: ButtonStyle(
-            backgroundColor: MaterialStateProperty.all<Color>(
-                Theme.of(context).primaryColor),
+            shadowColor: MaterialStateProperty.all<Color>(kShadowColor),
+            backgroundColor: MaterialStateProperty.all<Color>(kThemeColor),
             shape: MaterialStateProperty.all<OutlinedBorder>(
                 RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(27.0)))),

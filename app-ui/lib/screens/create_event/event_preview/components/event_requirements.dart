@@ -26,7 +26,7 @@ class EventRequirements extends StatelessWidget {
               event.requireList.length,
               (index) => event.requireList[index]
                   ? Text(
-                      '• ${requireStringList[index]}\n',
+                      '• ${requireSingleLineStringList[index]}\n',
                       style: TextStyle(color: kDefaultFontColor),
                     )
                   : Container()))
