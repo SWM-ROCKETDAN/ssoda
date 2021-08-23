@@ -4,6 +4,7 @@ import 'package:hashchecker/constants.dart';
 import 'package:hashchecker/models/event.dart';
 import 'package:hashchecker/models/event_list_item.dart';
 import 'package:hashchecker/screens/event_list/components/event_edit_modal.dart';
+import 'package:hashchecker/screens/event_list/event_detail/event_detail_screen.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 
 class EventListTile extends StatelessWidget {
@@ -45,7 +46,15 @@ class EventListTile extends StatelessWidget {
                             overlayColor:
                                 MaterialStateProperty.all<Color>(kShadowColor),
                             borderRadius: BorderRadius.circular(12),
-                            onTap: () {},
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => EventDetailScreen(
+                                      eventListItem: eventList[index]),
+                                ),
+                              );
+                            },
                             child: Padding(
                               padding: const EdgeInsets.fromLTRB(0, 10, 15, 10),
                               child: Row(
