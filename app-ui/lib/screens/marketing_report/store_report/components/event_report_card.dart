@@ -30,6 +30,8 @@ class EventReportCard extends StatelessWidget {
             shadowColor: kShadowColor,
             elevation: 18,
             child: InkWell(
+              highlightColor: kShadowColor,
+              overlayColor: MaterialStateProperty.all<Color>(kShadowColor),
               onTap: () {
                 Navigator.push(
                   context,
