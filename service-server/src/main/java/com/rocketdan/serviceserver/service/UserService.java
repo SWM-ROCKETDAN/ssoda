@@ -16,8 +16,8 @@ public class UserService {
     private final UserRepository userRepository;
 
     @Transactional
-    public List<StoreListResponseDto> getStoreListById(Long id) {
-        User entity =  userRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("해당 유저가 없습니다. id=" + id));
+    public List<StoreListResponseDto> getStoreListById(String email) {
+        User entity = userRepository.findByEmail(email).orElseThrow(() -> new IllegalArgumentException("해당 유저가 없습니다. email=" + email));
 
         return entity.getStores().stream()
                 .map(StoreListResponseDto::new)
