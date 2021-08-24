@@ -1,20 +1,18 @@
-from django.http import JsonResponse, HttpResponse
-from django.shortcuts import get_object_or_404, get_list_or_404
+from django.http import JsonResponse
+from django.shortcuts import get_object_or_404
+from django.shortcuts import get_list_or_404
 from rest_framework.views import APIView
 from core.models import JoinPost
 from core.models import JoinUser
-from core.models import Event
 from .serializers import JoinPostSerializer
 from .serializers import JoinUserSerializer
-from .serializers import JoinSerializer
-from .serializers import EventSerializer
+from .serializers import ThisJoinSerializer
+from .serializers import OtherJoinSerializer
 from core.modules.join.post.post_scraper import PostScraper
 from core.modules.join.user.user_scraper import UserScraper
 from core.modules.join.reward.reward_calculator import RewardCalculator
 from core.exceptions import exceptions
 from core.exceptions.exception_parser import parse_exception
-
-import pprint
 
 
 # JoinPost PUT 요청
@@ -48,58 +46,12 @@ class JoinUserView(APIView):
 # Reward GET 요청
 class JoinRewardView(APIView):
     def get(self, request, pk):
+        join_post = get_object_or_404(JoinPost, pk=pk)
+        this_join_serializer = ThisJoinSerializer(join_post)
         join_posts = get_list_or_404(JoinPost)
-        joins_serializer = JoinSerializer(data=join_posts, many=True)
-        joins_serializer.is_valid()
-        # reward_calculator = RewardCalculator(joins_serializer.data[0], joins_serializer.data)
-        event = get_object_or_404(Event, pk=pk)
-        event_serializer = EventSerializer(event)
-        # return JsonResponse(joins_serializer.data.pop())
-        return JsonResponse(event_serializer.data)
-        # try:
-        #     join_post_list = get_list_or_404(JoinPost)
-        #     join_list_serializer = JoinSerializer(data=join_post_list, many=True)
-        #     join_list_serializer.is_valid()
-        #     join_post = get_object_or_404(pk=pk)
-        #     join_serializer = JoinSerializer(join_post)
-        #     event_id = join_serializer.data.get('event')
-        #     event = get_object_or_404(Event, pk=event_id)
-        #     event_serializer = EventSerializer(event)
-        #     join_reward = JoinReward(join_list_serializer.data, join_serializer.data, event_serializer.data)
-        #     reward = join_reward.get_reward()
-        # except Exception as e:
-        #     print(e)
-        #     return JsonResponse(custom_status.ServerError.JOIN_REWARD_ERROR)
-        #
-        # # Join Post 의 reward_id 값 업데이트
-        # join_post_serializer = JoinPostSerializer(join_post, {'reward': reward[0]}, partial=True)
-        # if join_post_serializer.is_valid():
-        #     join_post_serializer.save()
-        # # test
-        # return JsonResponse({'reward_id': reward[0]})
+        other_join_serializer = OtherJoinSerializer(data=join_posts, many=True)
+        other_join_serializer.is_valid()
+        reward_calculator = RewardCalculator(this_join_serializer.data, other_join_serializer.data)
+        this_reward_id = reward_calculator.get_this_reward_id()
 
-    #
-    # class JoinRewardView(APIView):
-    #     def get(self, request, pk):
-    #         # Join List 가져오기
-    #         try:
-    #             join_post_list = get_list_or_404(JoinPost)
-    #             join_list_serializer = JoinSerializer(data=join_post_list, many=True)
-    #             join_list_serializer.is_valid()
-    #             join_post = get_object_or_404(pk=pk)
-    #             join_serializer = JoinSerializer(join_post)
-    #             event_id = join_serializer.data.get('event')
-    #             event = get_object_or_404(Event, pk=event_id)
-    #             event_serializer = EventSerializer(event)
-    #             join_reward = JoinReward(join_list_serializer.data, join_serializer.data, event_serializer.data)
-    #             reward = join_reward.get_reward()
-    #         except Exception as e:
-    #             print(e)
-    #             return JsonResponse(custom_status.ServerError.JOIN_REWARD_ERROR)
-    #
-    #         # Join Post 의 reward_id 값 업데이트
-    #         join_post_serializer = JoinPostSerializer(join_post, {'reward': reward[0]}, partial=True)
-    #         if join_post_serializer.is_valid():
-    #             join_post_serializer.save()
-    #         # test
-    #         return JsonResponse({'reward_id': reward[0]})
+        return JsonResponse({'reward_id': this_reward_id})

@@ -4,13 +4,19 @@ from . import exceptions
 
 def custom_exception_handler(exc, context):
     handlers = {
+        # OK
         exceptions.PostUpdateOk.__name__: exceptions.PostUpdateOk,
         exceptions.UserUpdateOk.__name__: exceptions.UserUpdateOk,
+        # Client Error
         exceptions.PostIsPrivate.__name__: exceptions.PostIsPrivate,
         exceptions.PostIsDeleted.__name__: exceptions.PostIsDeleted,
         exceptions.PostIsDiffHashtag.__name__: exceptions.PostIsDiffHashtag,
+        # Server Error
         exceptions.ProxyFailed.__name__: exceptions.ProxyFailed,
         exceptions.ScrapFailed.__name__: exceptions.ScrapFailed,
+        exceptions.PostUpdateFailed.__name__: exceptions.PostUpdateFailed,
+        exceptions.UserUpdateFailed.__name__: exceptions.UserUpdateFailed,
+        exceptions.RewardCalculateFailed.__name__: exceptions.RewardCalculateFailed,
     }
 
     response = exception_handler(exc, context)

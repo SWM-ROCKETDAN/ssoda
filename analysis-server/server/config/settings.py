@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'core',
     'join',
+    'report',
 ]
 
 REST_FRAMEWORK = {

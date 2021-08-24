@@ -34,25 +34,31 @@ class PostIsDiffHashtag(APIException):
 
 
 # 서버 에러
-class PostUpdateFailed(APIException):
-    default_detail = 'Post update failed'
-    status_code = 500
-    default_code = 'SERVER_ERROR_001'
-
-
-class UserUpdateFailed(APIException):
-    default_detail = 'User update failed'
-    status_code = 500
-    default_code = 'SERVER_ERROR_002'
-
-
 class ProxyFailed(APIException):
     default_detail = 'Proxy is failed'
     status_code = 500
-    default_code = 'SERVER_ERROR_003'
+    default_code = 'SERVER_ERROR_001'
 
 
 class ScrapFailed(APIException):
     default_detail = 'Scrap is failed'
     status_code = 500
+    default_code = 'SERVER_ERROR_002'
+
+
+class PostUpdateFailed(APIException):
+    default_detail = 'Post update failed'
+    status_code = 500
+    default_code = 'SERVER_ERROR_003'
+
+
+class UserUpdateFailed(APIException):
+    default_detail = 'User update failed'
+    status_code = 500
     default_code = 'SERVER_ERROR_004'
+
+
+class RewardCalculateFailed(APIException):
+    default_detail = 'Reward calculate failed'
+    status_code = 500
+    default_code = 'SERVER_ERROR_005'
