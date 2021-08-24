@@ -13,6 +13,8 @@ import 'package:hashchecker/screens/sign_in/sign_in_screen.dart';
 import 'package:kakao_flutter_sdk/user.dart';
 import 'package:provider/provider.dart';
 
+import 'screens/sign_in/new_sign_in_screen.dart';
+
 void main() {
   SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
     statusBarColor: Colors.transparent,
@@ -40,7 +42,7 @@ class MyApp extends StatelessWidget {
           visualDensity: VisualDensity.adaptivePlatformDensity,
           scaffoldBackgroundColor: kScaffoldBackgroundColor,
           accentColor: kShadowColor),
-      home: HallScreen(),
+      home: NewSignInScreen(),
     );
   }
 
