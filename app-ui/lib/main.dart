@@ -4,14 +4,11 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:hashchecker/constants.dart';
 import 'package:hashchecker/env.dart';
 import 'package:hashchecker/models/token.dart';
-import 'package:hashchecker/screens/create_event/create_event_step/create_event_step_screen.dart';
-import 'package:hashchecker/screens/create_event/show_qrcode/show_qrcode_screen.dart';
 import 'package:hashchecker/screens/hall/hall_screen.dart';
-import 'package:hashchecker/screens/marketing_report/event_report/event_report_screen.dart';
-import 'package:hashchecker/screens/marketing_report/store_report/store_report_screen.dart';
-import 'package:hashchecker/screens/sign_in/sign_in_screen.dart';
+import 'package:hashchecker/screens/splash/splash_screen.dart';
 import 'package:kakao_flutter_sdk/user.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter_native_splash/flutter_native_splash.dart';
 
 void main() {
   SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
@@ -24,23 +21,31 @@ void main() {
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'HashChecker',
-      localizationsDelegates: [
-        GlobalMaterialLocalizations.delegate,
-        GlobalWidgetsLocalizations.delegate,
-      ],
-      supportedLocales: [
-        const Locale('ko'),
-      ],
-      locale: const Locale('ko'),
-      theme: ThemeData(
-          primarySwatch: _createMaterialColor(kThemeColor),
-          visualDensity: VisualDensity.adaptivePlatformDensity,
-          scaffoldBackgroundColor: kScaffoldBackgroundColor,
-          accentColor: kShadowColor),
-      home: HallScreen(),
+    return FutureBuilder(
+      future: Init.instance.initialize(),
+      builder: (context, AsyncSnapshot snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return MaterialApp(home: SplashScreen());
+        } else {
+          return MaterialApp(
+              debugShowCheckedModeBanner: false,
+              title: 'HashChecker',
+              localizationsDelegates: [
+                GlobalMaterialLocalizations.delegate,
+                GlobalWidgetsLocalizations.delegate,
+              ],
+              supportedLocales: [
+                const Locale('ko'),
+              ],
+              locale: const Locale('ko'),
+              theme: ThemeData(
+                  primarySwatch: _createMaterialColor(kThemeColor),
+                  visualDensity: VisualDensity.adaptivePlatformDensity,
+                  scaffoldBackgroundColor: kScaffoldBackgroundColor,
+                  accentColor: kShadowColor),
+              home: HallScreen());
+        }
+      },
     );
   }
 
@@ -62,5 +67,14 @@ class MyApp extends StatelessWidget {
       );
     });
     return MaterialColor(color.value, swatch);
+  }
+}
+
+class Init {
+  Init._();
+  static final instance = Init._();
+
+  Future initialize() async {
+    await Future.delayed(Duration(milliseconds: 3500));
   }
 }
