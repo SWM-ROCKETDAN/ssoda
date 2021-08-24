@@ -1,6 +1,7 @@
 package com.rocketdan.serviceserver.app;
 
 import com.rocketdan.serviceserver.app.dto.store.StoreListResponseDto;
+import com.rocketdan.serviceserver.app.dto.user.UserResponseDto;
 import com.rocketdan.serviceserver.core.security.TokenUserEmail;
 import com.rocketdan.serviceserver.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -16,4 +17,7 @@ public class UserApiController {
 
     @GetMapping("/stores")
     public List<StoreListResponseDto> retrieveStoreListById(@TokenUserEmail String email) { return userService.getStoreListById(email); }
+
+    @GetMapping
+    public UserResponseDto retrieveMyInfo(@TokenUserEmail String email) { return userService.findByEmail(email); }
 }
