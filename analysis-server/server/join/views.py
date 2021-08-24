@@ -20,7 +20,8 @@ class JoinPostView(APIView):
     def put(self, request, pk):
         # Join Post 가져오기
         join_post = get_object_or_404(JoinPost, pk=pk)
-        post_scraper = PostScraper(JoinPostSerializer(join_post).data)
+        join_post_serializer = JoinPostSerializer(join_post)
+        post_scraper = PostScraper(join_post_serializer.data)
         scraped_post = post_scraper.get_scraped_post()
         join_post_serializer = JoinPostSerializer(join_post, scraped_post, partial=True)
         if join_post_serializer.is_valid():
@@ -34,7 +35,8 @@ class JoinUserView(APIView):
     def put(self, request, pk):
         # Join User 가져오기
         join_user = get_object_or_404(JoinUser, pk=pk)
-        user_scraper = UserScraper(JoinUserSerializer(join_user).data)
+        join_user_serializer = JoinUserSerializer(join_user)
+        user_scraper = UserScraper(join_user_serializer.data)
         scraped_user = user_scraper.get_scraped_user()
         join_user_serializer = JoinUserSerializer(join_user, scraped_user, partial=True)
         if join_user_serializer.is_valid():
