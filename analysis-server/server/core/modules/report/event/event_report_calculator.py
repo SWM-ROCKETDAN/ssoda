@@ -8,6 +8,7 @@ from .calculator_report import get_comment_count
 from .calculator_report import get_expenditure_count
 from .calculator_report import parse_from_str_date_to_datetime_date
 from .calculator_report import get_days_from_start_date_to_now_date
+from server.core.exceptions import exceptions
 
 calculator_handlers = {
     'exposure_count': get_exposure_count,
@@ -21,6 +22,7 @@ calculator_handlers = {
 }
 
 
+# 계산을 빠르게 하기 위한 딕셔너리 form
 def get_report_dict(_event, _event_joins):
     event = _event
     event_joins = _event_joins
@@ -97,12 +99,20 @@ def parse_from_report_dict_to_event_report(_report_dict):
     return event_report
 
 
+def get_event_report(event, join_posts):
+    report_dict = get_report_dict(event, join_posts)
+    event_report = parse_from_report_dict_to_event_report(report_dict)
+    return event_report
+
+
 class EventReportCalculator:
-    def __init__(self, event, event_joins):
+    def __init__(self, event):
         self.event = event
-        self.event_joins = event_joins
 
     def get_event_report(self):
-        report_dict = get_report_dict(self.event, self.event_joins)
-        event_report = parse_from_report_dict_to_event_report(report_dict)
+        try:
+            event_report = get_event_report(self.event, self.event['join_posts'])
+        except Exception as e:
+            raise exceptions.EventReportCalculateFailed
+
         return event_report

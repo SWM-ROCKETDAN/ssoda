@@ -62,3 +62,15 @@ class RewardCalculateFailed(APIException):
     default_detail = 'Reward calculate failed'
     status_code = 500
     default_code = 'SERVER_ERROR_005'
+
+
+class EventReportCalculateFailed(APIException):
+    default_detail = 'Event Report calculate failed'
+    status_code = 500
+    default_code = 'SERVER_ERROR_006'
+
+
+class StoreReportCalculateFailed(APIException):
+    default_detail = 'Store Report calculate failed'
+    status_code = 500
+    default_code = 'SERVER_ERROR_007'

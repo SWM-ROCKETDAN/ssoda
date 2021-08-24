@@ -17,6 +17,8 @@ def custom_exception_handler(exc, context):
         exceptions.PostUpdateFailed.__name__: exceptions.PostUpdateFailed,
         exceptions.UserUpdateFailed.__name__: exceptions.UserUpdateFailed,
         exceptions.RewardCalculateFailed.__name__: exceptions.RewardCalculateFailed,
+        exceptions.EventReportCalculateFailed.__name__: exceptions.EventReportCalculateFailed,
+        exceptions.StoreReportCalculateFailed.__name__: exceptions.StoreReportCalculateFailed,
     }
 
     response = exception_handler(exc, context)
