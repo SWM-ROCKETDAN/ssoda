@@ -1,5 +1,3 @@
-import pprint
-
 from .calculator_report import get_exposure_count
 from .calculator_report import get_participate_count
 from .calculator_report import get_public_post_count
@@ -23,31 +21,88 @@ calculator_handlers = {
 }
 
 
+def get_report_dict(_event, _event_joins):
+    event = _event
+    event_joins = _event_joins
+
+    days = get_days_from_start_date_to_now_date(event['start_date'])
+    report_dict = {
+        'day': {},
+        'week': {},
+        'month': {},
+    }
+
+    for term in report_dict.keys():
+        if term == 'day':
+            for day in days:
+                report_dict[term][day] = {}
+        elif term == 'week':
+            for day in days:
+                week = (day.isocalendar()[0], day.isocalendar()[1])
+                report_dict[term][week] = {}
+        elif term == 'month':
+            for day in days:
+                month = day.month
+                report_dict[term][month] = {}
+        else:
+            pass
+
+    # day_report_dict 채워넣기
+    for event_join in event_joins:
+        upload_date = parse_from_str_date_to_datetime_date(event_join['upload_date'])
+        upload_day = upload_date
+        upload_week = (upload_date.isocalendar()[0], upload_date.isocalendar()[1])
+        upload_month = upload_date.month
+        if upload_date in report_dict['day']:
+            for key, calculator in calculator_handlers.items():
+                if report_dict['day'][upload_day].get(key) is None:
+                    report_dict['day'][upload_day][key] = calculator(event_join)
+                else:
+                    report_dict['day'][upload_day][key] += calculator(event_join)
+        if upload_week in report_dict['week']:
+            for key, calculator in calculator_handlers.items():
+                if report_dict['week'][upload_week].get(key) is None:
+                    report_dict['week'][upload_week][key] = calculator(event_join)
+                else:
+                    report_dict['week'][upload_week][key] += calculator(event_join)
+        if upload_month in report_dict['month']:
+            for key, calculator in calculator_handlers.items():
+                if report_dict['month'][upload_month].get(key) is None:
+                    report_dict['month'][upload_month][key] = calculator(event_join)
+                else:
+                    report_dict['month'][upload_month][key] += calculator(event_join)
+
+    return report_dict
+
+
+def parse_from_report_dict_to_event_report(_report_dict):
+    report_dict = _report_dict
+    event_report = {
+        'day': {},
+        'week': {},
+        'month': {},
+    }
+    for term in event_report.keys():
+        for key in calculator_handlers.keys():
+            event_report[term][key] = []
+
+    for term in report_dict.keys():
+        for term_date in report_dict[term].keys():
+            for key in calculator_handlers.keys():
+                if report_dict[term][term_date].get(key) is None:
+                    event_report[term][key].append(0)
+                else:
+                    event_report[term][key].append(report_dict[term][term_date][key])
+
+    return event_report
+
+
 class EventReportCalculator:
     def __init__(self, event, event_joins):
         self.event = event
         self.event_joins = event_joins
 
-    def get_day_report_dict(self):
-        event = self.event
-        event_joins = self.event_joins
-
-        days = get_days_from_start_date_to_now_date(event['start_date'])
-        day_report_dict = {}
-        for day in days:
-            day_report_dict[day] = {}
-
-        # day_report_dict 채워넣기
-        for event_join in event_joins:
-            upload_date = parse_from_str_date_to_datetime_date(event_join['upload_date'])
-            if upload_date not in day_report_dict:
-                continue
-
-            for key, calculator in calculator_handlers.items():
-                day_report_dict[upload_date][key] = calculator(event_join)
-
-        return day_report_dict
-
     def get_event_report(self):
-        day_report_dict = self.get_day_report_dict()
-        pprint.pprint(day_report_dict)
+        report_dict = get_report_dict(self.event, self.event_joins)
+        event_report = parse_from_report_dict_to_event_report(report_dict)
+        return event_report

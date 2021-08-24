@@ -18,9 +18,8 @@ class ReportEvent(APIView):
         event = get_object_or_404(Event, pk=pk)
         event_serializer = EventSerializer(event)
         event_report_calculator = EventReportCalculator(event_serializer.data, this_join_serializer.data)
-        event_report_calculator.get_event_report()
-        # return JsonResponse(event_serializer.data)
-        return JsonResponse(this_join_serializer.data, safe=False)
+        event_report = event_report_calculator.get_event_report()
+        return JsonResponse(event_report)
 
 
 class ReportStore(APIView):

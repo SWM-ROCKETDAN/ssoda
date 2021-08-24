@@ -5,8 +5,9 @@ from .calculator_engagement import calculate_comment_count
 from .calculator_engagement import calculate_like_count
 from .calculator_expenditure import calculate_expenditure_count
 from .calculator_participate import calculate_participate_count
-from .calculator_post import calculate_post_count
-from server.core.modules.static.common import Status
+from .calculator_post import calculate_public_post_count
+from .calculator_post import calculate_private_post_count
+from .calculator_post import calculate_deleted_post_count
 
 
 def parse_from_str_date_to_datetime_date(str_date):
@@ -24,7 +25,7 @@ def get_days_from_start_date_to_now_date(start_date):
 
 
 def get_exposure_count(event_join):
-    return calculate_exposure_count(event_join['join_user']['follow_count'])
+    return calculate_exposure_count(event_join['join_user']['follow_count'], event_join['type'])
 
 
 def get_participate_count(event_join):
@@ -32,15 +33,15 @@ def get_participate_count(event_join):
 
 
 def get_public_post_count(event_join):
-    return calculate_post_count(event_join['status'], Status.PUBLIC)
+    return calculate_public_post_count(event_join['status'])
 
 
 def get_private_post_count(event_join):
-    return calculate_post_count(event_join['status'], Status.PRIVATE)
+    return calculate_private_post_count(event_join['status'])
 
 
 def get_deleted_post_count(event_join):
-    return calculate_post_count(event_join['status'], Status.DELETED)
+    return calculate_deleted_post_count(event_join['status'])
 
 
 def get_like_count(event_join):
