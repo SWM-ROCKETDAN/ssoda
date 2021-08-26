@@ -2,7 +2,7 @@ from bs4 import BeautifulSoup
 from urllib.request import urlopen
 from ..proxy import get_proxy_url
 from ..time import get_now_time
-from ..time import get_datetime
+from ..time import parse_from_str_time_to_date_time
 from server.core.modules.static.common import Type
 from server.core.modules.static.common import Status
 from ._post import get_default_post
@@ -56,7 +56,7 @@ def scrap_post(url):
 
     # uploadDate
     if 'uploadDate' in post_data:
-        upload = get_datetime(post_data['uploadDate'])
+        upload = parse_from_str_time_to_date_time(post_data['uploadDate'])
     else:
         upload = ''
 

@@ -34,6 +34,6 @@ class StoreReportCalculator:
         try:
             store_report = _get_store_report(self.store)
         except Exception as e:
-            raise exceptions.StoreReportCalculateFailed
+            raise exceptions.StoreReportCalculateFailed()
 
         return store_report
