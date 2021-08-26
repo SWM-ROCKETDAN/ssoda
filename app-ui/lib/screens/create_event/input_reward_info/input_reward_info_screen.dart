@@ -111,7 +111,7 @@ class _InputRewardInfoScreenState extends State<InputRewardInfoScreen> {
       height: 50,
       child: ElevatedButton(
         child: Text(
-          '보상 등록하기',
+          '상품 등록하기',
           style: TextStyle(
               color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold),
         ),
@@ -271,7 +271,7 @@ class _InputRewardInfoScreenState extends State<InputRewardInfoScreen> {
         backgroundColor: kScaffoldBackgroundColor,
         iconTheme: IconThemeData(color: kDefaultFontColor),
         title: Text(
-          '보상 상세정보 등록',
+          '상품 상세정보 등록',
           style:
               TextStyle(color: kDefaultFontColor, fontWeight: FontWeight.bold),
         ),
