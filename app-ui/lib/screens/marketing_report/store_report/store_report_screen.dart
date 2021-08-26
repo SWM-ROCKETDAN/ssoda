@@ -100,7 +100,10 @@ class _StoreReportScreenState extends State<StoreReportScreen> {
                       ),
                       iconSize: 24,
                       elevation: 0,
-                      style: TextStyle(color: kDefaultFontColor, fontSize: 13),
+                      style: TextStyle(
+                          color: kDefaultFontColor,
+                          fontSize: 13,
+                          fontFamily: 'NanumSquareRound'),
                       underline: Container(
                         height: 0,
                         color: kDefaultFontColor,
@@ -131,7 +134,7 @@ class _StoreReportScreenState extends State<StoreReportScreen> {
                 children: AnimationConfiguration.toStaggeredList(
                     duration: const Duration(milliseconds: 500),
                     childAnimationBuilder: (widget) => SlideAnimation(
-                          horizontalOffset: 120.0,
+                          horizontalOffset: 100,
                           child: FadeInAnimation(
                             child: widget,
                           ),

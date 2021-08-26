@@ -64,7 +64,7 @@ class _EventListScreenState extends State<EventListScreen> {
             ? Empty()
             : SingleChildScrollView(
                 child: Padding(
-                  padding: const EdgeInsets.fromLTRB(20, 15, 20, 15),
+                  padding: const EdgeInsets.fromLTRB(20, 10, 20, 15),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -109,6 +109,7 @@ class _EventListScreenState extends State<EventListScreen> {
                                       child: Text(
                                         value,
                                         style: TextStyle(
+                                            fontFamily: 'NanumSquareRound',
                                             fontSize: 13,
                                             color: kDefaultFontColor),
                                         textAlign: TextAlign.center,
@@ -163,7 +164,7 @@ class _EventListScreenState extends State<EventListScreen> {
                             children: AnimationConfiguration.toStaggeredList(
                           duration: const Duration(milliseconds: 500),
                           childAnimationBuilder: (widget) => SlideAnimation(
-                            horizontalOffset: 75.0,
+                            horizontalOffset: 75,
                             child: FadeInAnimation(
                               child: widget,
                             ),
