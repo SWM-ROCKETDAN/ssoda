@@ -1,3 +1,4 @@
+import 'package:animations/animations.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:hashchecker/constants.dart';
@@ -29,156 +30,168 @@ class EventReportCard extends StatelessWidget {
             color: kScaffoldBackgroundColor,
             shadowColor: kShadowColor,
             elevation: 18,
-            child: InkWell(
-              highlightColor: kShadowColor,
-              overlayColor: MaterialStateProperty.all<Color>(kShadowColor),
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => EventReportScreen(
+            child: OpenContainer<bool>(
+                openColor: kScaffoldBackgroundColor,
+                openElevation: 0,
+                openShape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(20))),
+                closedColor: kScaffoldBackgroundColor,
+                closedShape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(20))),
+                closedElevation: 0,
+                transitionType: ContainerTransitionType.fade,
+                openBuilder: (context, _) => EventReportScreen(
                       indexForHero: index,
                       eventThumbnail: eventReportList[index].thumbnail,
                     ),
-                  ),
-                );
-              },
-              borderRadius: BorderRadius.all(Radius.circular(20)),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  ClipRRect(
-                    borderRadius:
-                        BorderRadius.vertical(top: Radius.circular(20)),
-                    child: Stack(
-                      children: [
-                        Hero(
-                          tag: 'reportThumbnail$index', // index for hero ani
-                          child: Image.asset(
-                            eventReportList[index].thumbnail,
-                            fit: BoxFit.cover,
-                          ),
-                        ),
-                        Positioned(
-                            bottom: 15,
-                            right: 15,
-                            child: Container(
-                              padding: const EdgeInsets.fromLTRB(4, 1, 4, 2),
-                              width: 60,
-                              child: Center(
-                                child: Text(
-                                  eventReportList[index].status ==
-                                          EventStatus.PROCEEDING
-                                      ? '진행 중'
-                                      : '종료',
-                                  style: TextStyle(
-                                      fontSize: 13,
-                                      color: Colors.white,
-                                      fontWeight: FontWeight.bold),
-                                ),
-                              ),
-                              color: eventReportList[index].status ==
-                                      EventStatus.PROCEEDING
-                                  ? Colors.greenAccent.shade700
-                                  : Colors.grey.shade600,
-                            ))
-                      ],
-                    ),
-                  ),
-                  Padding(
-                      padding: const EdgeInsets.fromLTRB(15, 10, 15, 10),
+                closedBuilder: (context, openContainer) => InkWell(
+                      highlightColor: kShadowColor,
+                      overlayColor:
+                          MaterialStateProperty.all<Color>(kShadowColor),
+                      onTap: openContainer,
+                      borderRadius: BorderRadius.all(Radius.circular(20)),
                       child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          AutoSizeText(eventReportList[index].eventName,
-                              style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 18,
-                                  color: kDefaultFontColor),
-                              maxLines: 1,
-                              minFontSize: 12),
-                          SizedBox(height: kDefaultPadding),
-                          IntrinsicHeight(
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
+                          ClipRRect(
+                            borderRadius:
+                                BorderRadius.vertical(top: Radius.circular(20)),
+                            child: Stack(
                               children: [
-                                Expanded(
-                                  child: Column(children: [
-                                    Icon(
-                                      Icons.attach_money_rounded,
-                                      size: 22,
-                                      color: Colors.blueGrey,
-                                    ),
-                                    Text(
-                                      '${numberDisplay(eventReportList[index].guestPrice)}원',
-                                      style: TextStyle(
-                                          color: kLiteFontColor, fontSize: 14),
-                                    ),
-                                  ]),
+                                Image.asset(
+                                  eventReportList[index].thumbnail,
+                                  fit: BoxFit.cover,
                                 ),
-                                VerticalDivider(
-                                  width: kDefaultPadding,
-                                  color: kShadowColor.withOpacity(0.6),
-                                ),
-                                Expanded(
-                                  child: Column(children: [
-                                    Icon(
-                                      Icons.group_rounded,
-                                      size: 22,
-                                      color: Colors.blueGrey,
-                                    ),
-                                    SizedBox(width: kDefaultPadding / 3),
-                                    Text(
-                                        '${numberDisplay(eventReportList[index].joinCount)}명',
-                                        style: TextStyle(
-                                            color: kLiteFontColor,
-                                            fontSize: 14)),
-                                  ]),
-                                ),
-                                VerticalDivider(
-                                  width: kDefaultPadding,
-                                  color: kShadowColor.withOpacity(0.6),
-                                ),
-                                Expanded(
-                                  child: Column(children: [
-                                    Icon(
-                                      Icons.favorite_rounded,
-                                      size: 22,
-                                      color: Colors.blueGrey,
-                                    ),
-                                    SizedBox(width: kDefaultPadding / 3),
-                                    Text(
-                                        '${numberDisplay(eventReportList[index].likeCount)}개',
-                                        style: TextStyle(
-                                            color: kLiteFontColor,
-                                            fontSize: 14)),
-                                  ]),
-                                ),
+                                Positioned(
+                                    bottom: 15,
+                                    right: 15,
+                                    child: Container(
+                                      padding:
+                                          const EdgeInsets.fromLTRB(4, 1, 4, 2),
+                                      width: 60,
+                                      child: Center(
+                                        child: Text(
+                                          eventReportList[index].status ==
+                                                  EventStatus.PROCEEDING
+                                              ? '진행 중'
+                                              : '종료',
+                                          style: TextStyle(
+                                              fontSize: 13,
+                                              color: Colors.white,
+                                              fontWeight: FontWeight.bold),
+                                        ),
+                                      ),
+                                      color: eventReportList[index].status ==
+                                              EventStatus.PROCEEDING
+                                          ? Colors.greenAccent.shade700
+                                          : Colors.grey.shade600,
+                                    ))
                               ],
                             ),
                           ),
-                          SizedBox(height: kDefaultPadding),
-                          Wrap(
-                              direction: Axis.horizontal,
-                              spacing: 5.0,
-                              children: List.generate(
-                                eventReportList[index].rewardNameList.length,
-                                (rewardIndex) => Chip(
-                                  label: Text(
-                                    eventReportList[index]
-                                        .rewardNameList[rewardIndex],
-                                    style: TextStyle(
-                                        fontSize: 11, color: kDefaultFontColor),
+                          Padding(
+                              padding:
+                                  const EdgeInsets.fromLTRB(15, 10, 15, 10),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  AutoSizeText(eventReportList[index].eventName,
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 18,
+                                          color: kDefaultFontColor),
+                                      maxLines: 1,
+                                      minFontSize: 12),
+                                  SizedBox(height: kDefaultPadding),
+                                  IntrinsicHeight(
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        Expanded(
+                                          child: Column(children: [
+                                            Icon(
+                                              Icons.attach_money_rounded,
+                                              size: 22,
+                                              color: Colors.blueGrey,
+                                            ),
+                                            Text(
+                                              '${numberDisplay(eventReportList[index].guestPrice)}원',
+                                              style: TextStyle(
+                                                  color: kLiteFontColor,
+                                                  fontSize: 14),
+                                            ),
+                                          ]),
+                                        ),
+                                        VerticalDivider(
+                                          width: kDefaultPadding,
+                                          color: kShadowColor.withOpacity(0.6),
+                                        ),
+                                        Expanded(
+                                          child: Column(children: [
+                                            Icon(
+                                              Icons.group_rounded,
+                                              size: 22,
+                                              color: Colors.blueGrey,
+                                            ),
+                                            SizedBox(
+                                                width: kDefaultPadding / 3),
+                                            Text(
+                                                '${numberDisplay(eventReportList[index].joinCount)}명',
+                                                style: TextStyle(
+                                                    color: kLiteFontColor,
+                                                    fontSize: 14)),
+                                          ]),
+                                        ),
+                                        VerticalDivider(
+                                          width: kDefaultPadding,
+                                          color: kShadowColor.withOpacity(0.6),
+                                        ),
+                                        Expanded(
+                                          child: Column(children: [
+                                            Icon(
+                                              Icons.favorite_rounded,
+                                              size: 22,
+                                              color: Colors.blueGrey,
+                                            ),
+                                            SizedBox(
+                                                width: kDefaultPadding / 3),
+                                            Text(
+                                                '${numberDisplay(eventReportList[index].likeCount)}개',
+                                                style: TextStyle(
+                                                    color: kLiteFontColor,
+                                                    fontSize: 14)),
+                                          ]),
+                                        ),
+                                      ],
+                                    ),
                                   ),
-                                  padding: const EdgeInsets.all(2),
-                                  backgroundColor: kThemeColor.withOpacity(0.2),
-                                ),
+                                  SizedBox(height: kDefaultPadding),
+                                  Wrap(
+                                      direction: Axis.horizontal,
+                                      spacing: 5.0,
+                                      children: List.generate(
+                                        eventReportList[index]
+                                            .rewardNameList
+                                            .length,
+                                        (rewardIndex) => Chip(
+                                          label: Text(
+                                            eventReportList[index]
+                                                .rewardNameList[rewardIndex],
+                                            style: TextStyle(
+                                                fontSize: 11,
+                                                color: kDefaultFontColor),
+                                          ),
+                                          padding: const EdgeInsets.all(2),
+                                          backgroundColor:
+                                              kThemeColor.withOpacity(0.2),
+                                        ),
+                                      )),
+                                ],
                               )),
                         ],
-                      )),
-                ],
-              ),
-            ),
+                      ),
+                    )),
             shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.all(Radius.circular(20)))));
   }

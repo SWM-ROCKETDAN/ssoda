@@ -32,184 +32,184 @@ class EventListTile extends StatelessWidget {
       children: [
         Container(
             height: 114,
-            child: Stack(children: [
-              Positioned(
-                  bottom: 0,
-                  right: 0,
-                  child: Container(
-                      width: size.width * 0.7,
-                      height: 100,
-                      child: Material(
-                        color: Colors.white.withOpacity(0.0),
-                        child: InkWell(
-                          highlightColor: kShadowColor,
-                          overlayColor:
-                              MaterialStateProperty.all<Color>(kShadowColor),
-                          borderRadius: BorderRadius.circular(12),
-                          onTap: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => EventDetailScreen(
-                                        eventListItem: eventList[index])));
-                          },
-                          child: Padding(
-                            padding: const EdgeInsets.fromLTRB(0, 10, 15, 10),
-                            child: Row(
-                              children: [
-                                SizedBox(
-                                  width: size.width * 0.20,
-                                ),
-                                Expanded(
-                                  child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    crossAxisAlignment: CrossAxisAlignment.end,
-                                    children: [
-                                      AutoSizeText(
-                                        eventList[index].title,
-                                        style: TextStyle(
-                                          color: kDefaultFontColor,
-                                          fontWeight: FontWeight.bold,
+            child: OpenContainer<bool>(
+                openColor: Colors.white.withOpacity(0),
+                openElevation: 0,
+                openShape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(12))),
+                closedColor: Colors.white.withOpacity(0),
+                closedShape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(12))),
+                closedElevation: 0,
+                transitionType: ContainerTransitionType.fade,
+                openBuilder: (context, _) =>
+                    EventDetailScreen(eventListItem: eventList[index]),
+                closedBuilder: (context, openContainer) => Stack(children: [
+                      Positioned(
+                          bottom: 0,
+                          right: 0,
+                          child: Container(
+                              width: size.width * 0.7,
+                              height: 100,
+                              child: Material(
+                                color: Colors.white.withOpacity(0.0),
+                                child: InkWell(
+                                  highlightColor: kShadowColor,
+                                  overlayColor:
+                                      MaterialStateProperty.all<Color>(
+                                          kShadowColor),
+                                  borderRadius: BorderRadius.circular(12),
+                                  onTap: openContainer,
+                                  child: Padding(
+                                    padding: const EdgeInsets.fromLTRB(
+                                        0, 10, 15, 10),
+                                    child: Row(
+                                      children: [
+                                        SizedBox(
+                                          width: size.width * 0.20,
                                         ),
-                                        maxLines: 1,
-                                        minFontSize: 10,
-                                        overflow: TextOverflow.ellipsis,
-                                      ),
-                                      SizedBox(height: kDefaultPadding / 3),
-                                      Text(
-                                          '${eventList[index].startDate} ~ ${eventList[index].finishDate}',
-                                          style: TextStyle(
-                                              color: kLiteFontColor,
-                                              fontSize: 12)),
-                                      SizedBox(height: kDefaultPadding),
-                                      IntrinsicHeight(
-                                        child: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.end,
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.center,
-                                          children: [
-                                            Container(
-                                              padding:
-                                                  const EdgeInsets.fromLTRB(
-                                                      0, 4, 8, 4),
-                                              child: Text(
-                                                  _statusStringMap[
-                                                      eventList[index].status]!,
+                                        Expanded(
+                                          child: Column(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.end,
+                                            children: [
+                                              AutoSizeText(
+                                                eventList[index].title,
+                                                style: TextStyle(
+                                                  color: kDefaultFontColor,
+                                                  fontWeight: FontWeight.bold,
+                                                ),
+                                                maxLines: 1,
+                                                minFontSize: 10,
+                                                overflow: TextOverflow.ellipsis,
+                                              ),
+                                              SizedBox(
+                                                  height: kDefaultPadding / 3),
+                                              Text(
+                                                  '${eventList[index].startDate} ~ ${eventList[index].finishDate}',
                                                   style: TextStyle(
-                                                      fontSize: 12,
-                                                      color: _statusColorMap[
-                                                          eventList[index]
-                                                              .status],
-                                                      fontWeight: eventList[
-                                                                      index]
-                                                                  .status ==
-                                                              EventStatus
-                                                                  .PROCEEDING
-                                                          ? FontWeight.bold
-                                                          : FontWeight.normal)),
-                                            ),
-                                            VerticalDivider(
-                                                width: 0,
-                                                color: kShadowColor
-                                                    .withOpacity(0.6)),
-                                            GestureDetector(
-                                              onTap: () =>
-                                                  showBarModalBottomSheet(
-                                                expand: true,
-                                                context: context,
-                                                builder: (context) =>
-                                                    EventEditModal(),
-                                              ),
-                                              child: Container(
-                                                padding:
-                                                    const EdgeInsets.fromLTRB(
-                                                        8, 4, 8, 4),
-                                                child: Icon(Icons.edit_rounded,
-                                                    color: Colors.blueGrey,
-                                                    size: 18),
-                                              ),
-                                            ),
-                                            VerticalDivider(
-                                                width: 0,
-                                                color: kShadowColor
-                                                    .withOpacity(0.6)),
-                                            GestureDetector(
-                                              onTap: () {
-                                                showEventDeleteDialog(context);
-                                              },
-                                              child: Container(
-                                                padding:
-                                                    const EdgeInsets.fromLTRB(
-                                                        8, 4, 0, 4),
-                                                child: Icon(
-                                                    Icons.delete_rounded,
-                                                    color: Colors.blueGrey,
-                                                    size: 18),
-                                              ),
-                                            )
-                                          ],
+                                                      color: kLiteFontColor,
+                                                      fontSize: 12)),
+                                              SizedBox(height: kDefaultPadding),
+                                              IntrinsicHeight(
+                                                child: Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.end,
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.center,
+                                                  children: [
+                                                    Container(
+                                                      padding: const EdgeInsets
+                                                          .fromLTRB(0, 4, 8, 4),
+                                                      child: Text(
+                                                          _statusStringMap[
+                                                              eventList[index]
+                                                                  .status]!,
+                                                          style: TextStyle(
+                                                              fontSize: 12,
+                                                              color: _statusColorMap[
+                                                                  eventList[
+                                                                          index]
+                                                                      .status],
+                                                              fontWeight: eventList[
+                                                                              index]
+                                                                          .status ==
+                                                                      EventStatus
+                                                                          .PROCEEDING
+                                                                  ? FontWeight
+                                                                      .bold
+                                                                  : FontWeight
+                                                                      .normal)),
+                                                    ),
+                                                    VerticalDivider(
+                                                        width: 0,
+                                                        color: kShadowColor
+                                                            .withOpacity(0.6)),
+                                                    GestureDetector(
+                                                      onTap: () =>
+                                                          showBarModalBottomSheet(
+                                                        expand: true,
+                                                        context: context,
+                                                        builder: (context) =>
+                                                            EventEditModal(),
+                                                      ),
+                                                      child: Container(
+                                                        padding:
+                                                            const EdgeInsets
+                                                                    .fromLTRB(
+                                                                8, 4, 8, 4),
+                                                        child: Icon(
+                                                            Icons.edit_rounded,
+                                                            color:
+                                                                Colors.blueGrey,
+                                                            size: 18),
+                                                      ),
+                                                    ),
+                                                    VerticalDivider(
+                                                        width: 0,
+                                                        color: kShadowColor
+                                                            .withOpacity(0.6)),
+                                                    GestureDetector(
+                                                      onTap: () {
+                                                        showEventDeleteDialog(
+                                                            context);
+                                                      },
+                                                      child: Container(
+                                                        padding:
+                                                            const EdgeInsets
+                                                                    .fromLTRB(
+                                                                8, 4, 0, 4),
+                                                        child: Icon(
+                                                            Icons
+                                                                .delete_rounded,
+                                                            color:
+                                                                Colors.blueGrey,
+                                                            size: 18),
+                                                      ),
+                                                    )
+                                                  ],
+                                                ),
+                                              )
+                                            ],
+                                          ),
                                         ),
-                                      )
-                                    ],
+                                      ],
+                                    ),
                                   ),
                                 ),
-                              ],
-                            ),
-                          ),
-                        ),
-                      ),
-                      decoration: BoxDecoration(
-                          boxShadow: [
-                            BoxShadow(
-                              color: kShadowColor,
-                              spreadRadius: 6,
-                              blurRadius: 20,
-                              offset:
-                                  Offset(0, 0), // changes position of shadow
-                            ),
-                          ],
-                          color: kScaffoldBackgroundColor,
-                          borderRadius: BorderRadius.circular(12)))),
-              Positioned(
-                  top: 0,
-                  left: 0,
-                  child: OpenContainer<bool>(
-                    openColor: kScaffoldBackgroundColor,
-                    openElevation: 0,
-                    openShape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(12))),
-                    closedColor: kScaffoldBackgroundColor,
-                    closedShape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(12))),
-                    closedElevation: 0,
-                    transitionType: ContainerTransitionType.fade,
-                    openBuilder: (context, _) =>
-                        EventDetailScreen(eventListItem: eventList[index]),
-                    closedBuilder: (context, openContainer) => Container(
-                        child: ClipRRect(
-                          borderRadius: BorderRadius.all(Radius.circular(12)),
-                          child: Image.asset(
-                            eventList[index].thumbnail,
-                            width: size.width * 0.37,
-                            height: 100,
-                            fit: BoxFit.cover,
-                          ),
-                        ),
-                        decoration: BoxDecoration(
-                            boxShadow: [
-                              BoxShadow(
-                                color: kShadowColor,
-                                spreadRadius: 6,
-                                blurRadius: 20,
-                                offset:
-                                    Offset(0, 0), // changes position of shadow
                               ),
-                            ],
-                            color: kScaffoldBackgroundColor,
-                            borderRadius: BorderRadius.circular(12))),
-                  )),
-            ])),
+                              decoration: BoxDecoration(
+                                  color: kScaffoldBackgroundColor,
+                                  borderRadius: BorderRadius.circular(12)))),
+                      Positioned(
+                          top: 0,
+                          left: 0,
+                          child: Container(
+                            child: ClipRRect(
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(12)),
+                              child: Image.asset(
+                                eventList[index].thumbnail,
+                                width: size.width * 0.37,
+                                height: 100,
+                                fit: BoxFit.cover,
+                              ),
+                            ),
+                          )),
+                    ])),
+            decoration: BoxDecoration(
+                boxShadow: [
+                  BoxShadow(
+                    color: kShadowColor,
+                    spreadRadius: 3,
+                    blurRadius: 60,
+                    offset: Offset(0, 0), // changes position of shadow
+                  ),
+                ],
+                color: Colors.white.withOpacity(0),
+                borderRadius: BorderRadius.circular(12))),
         SizedBox(height: kDefaultPadding)
       ],
     );
