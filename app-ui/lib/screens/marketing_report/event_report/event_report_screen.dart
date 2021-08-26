@@ -100,7 +100,7 @@ class _EventReportScreenState extends State<EventReportScreen> {
                         decoration: BoxDecoration(
                             color: Colors.white,
                             gradient: LinearGradient(
-                                begin: FractionalOffset.topCenter,
+                                begin: FractionalOffset.center,
                                 end: FractionalOffset.bottomCenter,
                                 colors: [
                                   Colors.transparent.withOpacity(0.0),
