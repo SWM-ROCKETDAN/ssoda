@@ -9,30 +9,30 @@ from server.core.modules.static.common import Type
 from server.core.modules.static.common import Status
 from ._post import get_default_post
 import json
+import yaml
+import re
+import demjson
 
 TEST_URL = 'https://www.facebook.com/155316101256398/posts/4290753117712655/'
 
 match_dict = {'}': '{', ')': '('}
 
 
-def solution(user_input):
-    arr = []
-    for s in user_input:
-        if s == '(' or s == '{':
-            arr.append(s)
-        elif s == ')' or s == '}':
-            if len(arr) == 0 or arr[len(arr) - 1] != match_dict[s]:
-                return 0
-            arr.pop()
-    if len(arr) != 0:
-        return 0
-
-    return 1
+def get_post_id_from_facebook_url(url):
+    post_id = ''
+    split_urls = url.split("/")
+    while split_urls:
+        split_url = split_urls.pop()
+        if split_url != '':
+            post_id = split_url
+            break
+    return post_id
 
 
-def scrap_post(url):
-    proxy_url = get_proxy_url(url)
+def scrap_post(dummy_url):
+    proxy_url = get_proxy_url(dummy_url)
     response = urlopen(proxy_url)
+    post_id = get_post_id_from_facebook_url(dummy_url)
 
     # 상태 이상일 시 삭제됨 처리
     # if response.getcode() != 200:
@@ -40,31 +40,27 @@ def scrap_post(url):
     #     return scraped_post
 
     soup = BeautifulSoup(response, "html.parser")
-    tmp = soup.find_all('script', nonce="")
-    for i in tmp:
-        print('------------')
-        t = str(i.string)
-        if '{displayResources:' in t:
-            tm_count = t[t.find("i18n_comment_count"):]
-            tm_count = tm_count[: tm_count.find("url")]
-            print(tm_count)
+    soup_scripts = soup.find_all('script', nonce="")
+    dummies = []
+    for soup_script in soup_scripts:
+        soup_script = soup_script.string
+        try:
+            soup_script = soup_script[soup_script.find("{displayResources"):-6]
+            soup_script = demjson.decode(soup_script)
+            dummies.append(soup_script)
+        except Exception as e:
+            pass
 
-    # title_meta = soup.find('meta', property="og:title")
-    # tmp = soup.find_all('script', nonce='')
-    # # tmp = tmp[tmp.find('m.handlePayload') + 16:-4]
-    # for i in tmp:
-    #     print('------------')
-    #     t = i.string
-    #     if '1' in t:
-    #         print(t)
-    #     # print(i)
-    # print(type(tmp))
-    # check = solution(tmp)
-    # print(check)
-    # json_acceptable_string = tmp.replace("'", "\"")
-    # post_data = json.loads(json_acceptable_string)
-    # pprint.pprint(post_data)
-
+    for dummy in dummies:
+        try:
+            pprint.pprint(
+                dummy['jsmods']['pre_display_requires'][0][3][1]['__bbox']['result']['data']['feedback']['url'])
+            dummy_url = dummy['jsmods']['pre_display_requires'][0][3][1]['__bbox']['result']['data']['feedback']['url']
+            dummy_post_id = get_post_id_from_facebook_url(dummy_url)
+            if post_id == dummy_post_id:
+                pprint.pprint(dummy['jsmods']['pre_display_requires'][0][3][1]['__bbox'])
+        except Exception as e:
+            pass
     # post = {
     #     'sns_id': sns_id,
     #     'url': url,
