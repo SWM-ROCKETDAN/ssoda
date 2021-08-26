@@ -1,27 +1,11 @@
-import 'package:animations/animations.dart';
 import 'package:flutter/material.dart';
 import 'package:hashchecker/constants.dart';
 import 'package:hashchecker/models/requires.dart';
 
 import 'components/body.dart';
-import 'components/event_title.dart';
-import 'components/event_reward.dart';
-import 'components/event_hashtags.dart';
-import 'components/event_period.dart';
-import 'components/event_require.dart';
-import 'components/event_template.dart';
-import 'components/step_text.dart';
-import 'components/step_progressbar.dart';
-import 'components/step_help.dart';
-import 'components/step_count.dart';
-import 'components/event_image.dart';
-
-import 'package:hashchecker/models/reward.dart';
 import 'package:hashchecker/models/event.dart';
 import 'package:hashchecker/models/period.dart';
 import 'package:hashchecker/models/template.dart';
-
-import '../event_preview/event_preview_screen.dart';
 
 class CreateEventStepScreen extends StatefulWidget {
   const CreateEventStepScreen({Key? key}) : super(key: key);
@@ -33,7 +17,7 @@ class CreateEventStepScreen extends StatefulWidget {
 class _CreateEventStepScreenState extends State<CreateEventStepScreen> {
   int step = 0;
   int prevStep = -1;
-  final maxStep = 7;
+  final maxStep = 6;
 
   late Event savingEvent;
 
