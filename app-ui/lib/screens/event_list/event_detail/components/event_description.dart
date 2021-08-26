@@ -26,7 +26,7 @@ class EventDescription extends StatelessWidget {
         ]),
         textAlign: TextAlign.center,
         maxLines: 2,
-        style: TextStyle(color: kDefaultFontColor),
+        style: TextStyle(color: kDefaultFontColor, height: 1.4),
       ),
     );
   }
