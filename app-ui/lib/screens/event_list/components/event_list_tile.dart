@@ -78,11 +78,12 @@ class EventListTile extends StatelessWidget {
                                               AutoSizeText(
                                                 eventList[index].title,
                                                 style: TextStyle(
+                                                  fontSize: 13,
                                                   color: kDefaultFontColor,
                                                   fontWeight: FontWeight.w800,
                                                 ),
                                                 maxLines: 1,
-                                                minFontSize: 10,
+                                                minFontSize: 8,
                                                 overflow: TextOverflow.ellipsis,
                                               ),
                                               SizedBox(
@@ -91,7 +92,7 @@ class EventListTile extends StatelessWidget {
                                                   '${eventList[index].startDate} ~ ${eventList[index].finishDate}',
                                                   style: TextStyle(
                                                       color: kLiteFontColor,
-                                                      fontSize: 12)),
+                                                      fontSize: 11)),
                                               SizedBox(height: kDefaultPadding),
                                               IntrinsicHeight(
                                                 child: Row(
