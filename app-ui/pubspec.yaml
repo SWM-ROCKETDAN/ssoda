@@ -52,8 +52,10 @@ flutter:
     - assets/images/splash/
   
   fonts:
-    - family: Bauhaus93
+    - family: NanumSquareRound
       fonts:
-        - asset: assets/fonts/BAUHS93.ttf
-
+        - asset: assets/fonts/NanumSquareRoundB.ttf
+        - asset: assets/fonts/NanumSquareRoundEB.ttf
+          weight: 800
+          
   uses-material-design: true

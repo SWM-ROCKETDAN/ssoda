@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:hashchecker/constants.dart';
 import 'package:hashchecker/env.dart';
 import 'package:hashchecker/models/token.dart';
@@ -29,7 +30,7 @@ class MyApp extends StatelessWidget {
         } else {
           return MaterialApp(
               debugShowCheckedModeBanner: false,
-              title: 'HashChecker',
+              title: 'SSODA',
               localizationsDelegates: [
                 GlobalMaterialLocalizations.delegate,
                 GlobalWidgetsLocalizations.delegate,
@@ -39,6 +40,7 @@ class MyApp extends StatelessWidget {
               ],
               locale: const Locale('ko'),
               theme: ThemeData(
+                  fontFamily: 'NanumSquareRound',
                   primarySwatch: _createMaterialColor(kThemeColor),
                   visualDensity: VisualDensity.adaptivePlatformDensity,
                   scaffoldBackgroundColor: kScaffoldBackgroundColor,
