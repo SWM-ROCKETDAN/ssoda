@@ -20,29 +20,29 @@ class _SplashScreenState extends State<SplashScreen> {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     final _tween = TimelineTween<AniProps>()
+      ..addScene(begin: 0.milliseconds, duration: 750.milliseconds, curve: Curves.fastOutSlowIn)
+          .animate(AniProps.size0, tween: 0.0.tweenTo(size.width * 0.4))
+      ..addScene(begin: 100.milliseconds, duration: 750.milliseconds, curve: Curves.fastOutSlowIn)
+          .animate(AniProps.size1, tween: 0.0.tweenTo(size.width * 0.4))
+      ..addScene(begin: 200.milliseconds, duration: 750.milliseconds, curve: Curves.fastOutSlowIn)
+          .animate(AniProps.size2, tween: 0.0.tweenTo(size.width * 0.4))
       ..addScene(
-              begin: 0.milliseconds,
+              begin: 300.milliseconds,
               duration: 750.milliseconds,
               curve: Curves.fastOutSlowIn)
-          .animate(AniProps.size0, tween: 0.0.tweenTo(size.width * 0.4))
-      ..addScene(begin: 100.milliseconds, duration: 1.seconds, curve: Curves.fastOutSlowIn)
-          .animate(AniProps.size1, tween: 0.0.tweenTo(size.width * 0.4))
-      ..addScene(begin: 300.milliseconds, duration: 1.seconds, curve: Curves.fastOutSlowIn)
-          .animate(AniProps.size2, tween: 0.0.tweenTo(size.width * 0.4))
-      ..addScene(begin: 500.milliseconds, duration: 1.seconds, curve: Curves.fastOutSlowIn)
           .animate(AniProps.size3, tween: 0.0.tweenTo(size.width * 0.4))
       ..addScene(
-              begin: 700.milliseconds,
-              duration: 1.seconds,
+              begin: 400.milliseconds,
+              duration: 750.milliseconds,
               curve: Curves.fastOutSlowIn)
           .animate(AniProps.size4, tween: 0.0.tweenTo(size.width * 0.4))
       ..addScene(
-              begin: 900.milliseconds,
-              duration: 1.seconds,
+              begin: 500.milliseconds,
+              duration: 750.milliseconds,
               curve: Curves.fastOutSlowIn)
           .animate(AniProps.size5, tween: 0.0.tweenTo(size.width * 0.4))
       ..addScene(
-              begin: 1900.milliseconds,
+              begin: 1250.milliseconds,
               duration: 500.milliseconds,
               curve: Curves.fastOutSlowIn)
           .animate(AniProps.color, tween: kScaffoldBackgroundColor.tweenTo(kLogoColor));

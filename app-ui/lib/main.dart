@@ -75,6 +75,6 @@ class Init {
   static final instance = Init._();
 
   Future initialize() async {
-    await Future.delayed(Duration(milliseconds: 3500));
+    await Future.delayed(Duration(milliseconds: 2500));
   }
 }
