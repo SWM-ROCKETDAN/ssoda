@@ -5,11 +5,8 @@ import 'package:hashchecker/models/event.dart';
 import 'dart:io';
 
 class HeaderWithImages extends StatelessWidget {
-  const HeaderWithImages({
-    Key? key,
-    required this.size,
-    required this.event,
-  }) : super(key: key);
+  const HeaderWithImages({Key? key, required this.size, required this.event})
+      : super(key: key);
 
   final Size size;
   final Event event;

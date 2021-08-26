@@ -6,8 +6,6 @@ import 'package:hashchecker/models/event_report_item.dart';
 import 'package:hashchecker/models/store_report_overview.dart';
 import 'package:hashchecker/screens/marketing_report/store_report/components/event_report_card.dart';
 import 'package:number_display/number_display.dart';
-
-import 'components/custom_sliver_appbar.dart';
 import 'components/report_overview.dart';
 
 class StoreReportScreen extends StatefulWidget {
