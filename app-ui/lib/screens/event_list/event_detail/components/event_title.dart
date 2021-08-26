@@ -18,7 +18,7 @@ class EventTitle extends StatelessWidget {
       child: AutoSizeText(event.title,
           style: TextStyle(
               fontWeight: FontWeight.bold,
-              fontSize: 26,
+              fontSize: 24,
               color: kDefaultFontColor),
           maxLines: 1,
           textAlign: TextAlign.center),
