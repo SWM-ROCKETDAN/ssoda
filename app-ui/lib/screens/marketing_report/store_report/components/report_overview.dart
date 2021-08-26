@@ -76,7 +76,7 @@ class ReportOverview extends StatelessWidget {
                             text: numberDisplay(storeReportOverview.guestPrice),
                             style: TextStyle(
                                 color: kThemeColor,
-                                fontWeight: FontWeight.bold,
+                                fontWeight: FontWeight.w800,
                                 fontSize: 16)),
                         TextSpan(text: ' 원')
                       ]),
@@ -113,7 +113,7 @@ class ReportOverview extends StatelessWidget {
                             text: numberDisplay(storeReportOverview.joinCount),
                             style: TextStyle(
                                 color: kThemeColor,
-                                fontWeight: FontWeight.bold,
+                                fontWeight: FontWeight.w800,
                                 fontSize: 16)),
                         TextSpan(text: ' 명')
                       ]),
@@ -150,7 +150,7 @@ class ReportOverview extends StatelessWidget {
                             text: numberDisplay(storeReportOverview.likeCount),
                             style: TextStyle(
                                 color: kThemeColor,
-                                fontWeight: FontWeight.bold,
+                                fontWeight: FontWeight.w800,
                                 fontSize: 16)),
                         TextSpan(text: ' 개')
                       ]),

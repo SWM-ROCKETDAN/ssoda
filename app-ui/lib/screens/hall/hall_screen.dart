@@ -65,7 +65,7 @@ class _HallScreenState extends State<HallScreen> {
           PandaBarButtonData(
               id: TabPage.REPORT,
               icon: Icons.description_rounded,
-              title: '레포트'),
+              title: '리포트'),
           PandaBarButtonData(
               id: TabPage.MORE, icon: Icons.more_horiz_rounded, title: '더보기'),
         ],

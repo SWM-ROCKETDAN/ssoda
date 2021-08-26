@@ -74,7 +74,7 @@ class _EventListScreenState extends State<EventListScreen> {
                           Text(
                             '이벤트 목록',
                             style: TextStyle(
-                                fontWeight: FontWeight.bold,
+                                fontWeight: FontWeight.w800,
                                 fontSize: 24,
                                 color: kDefaultFontColor),
                           ),

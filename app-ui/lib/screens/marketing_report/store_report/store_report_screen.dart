@@ -70,9 +70,9 @@ class _StoreReportScreenState extends State<StoreReportScreen> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                '레포트 요약',
+                '리포트 요약',
                 style: TextStyle(
-                    fontWeight: FontWeight.bold,
+                    fontWeight: FontWeight.w800,
                     fontSize: 24,
                     color: kDefaultFontColor),
               ),
@@ -84,9 +84,9 @@ class _StoreReportScreenState extends State<StoreReportScreen> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    '이벤트 별 레포트',
+                    '이벤트 별 리포트',
                     style: TextStyle(
-                        fontWeight: FontWeight.bold,
+                        fontWeight: FontWeight.w800,
                         fontSize: 24,
                         color: kDefaultFontColor),
                   ),

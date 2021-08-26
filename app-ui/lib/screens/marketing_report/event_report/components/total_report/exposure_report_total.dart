@@ -36,7 +36,7 @@ class _ExposureReportTotalState extends State<ExposureReportTotal> {
               Text('총 ',
                   style: TextStyle(
                       color: kDefaultFontColor,
-                      fontWeight: FontWeight.bold,
+                      fontWeight: FontWeight.w800,
                       fontSize: 18)),
               NumberSlideAnimation(
                   number: widget.eventReport.exposeCount.toString(),
@@ -45,20 +45,20 @@ class _ExposureReportTotalState extends State<ExposureReportTotal> {
                   textStyle: TextStyle(
                       color: kThemeColor,
                       fontSize: 32,
-                      fontWeight: FontWeight.bold),
+                      fontWeight: FontWeight.w800),
                   format: NumberFormatMode.comma),
               Text(
                 ' 명에게 ',
                 style: TextStyle(
                     color: kDefaultFontColor,
-                    fontWeight: FontWeight.bold,
+                    fontWeight: FontWeight.w800,
                     fontSize: 18),
               ),
               Text(
                 '노출되었습니다',
                 style: TextStyle(
                     color: kDefaultFontColor,
-                    fontWeight: FontWeight.bold,
+                    fontWeight: FontWeight.w800,
                     fontSize: 18),
               )
             ],
@@ -81,11 +81,11 @@ class _ExposureReportTotalState extends State<ExposureReportTotal> {
                         style: TextStyle(
                           color: kThemeColor,
                           fontSize: 28,
-                          fontWeight: FontWeight.bold,
+                          fontWeight: FontWeight.w800,
                         )),
                     Text('인 노출 당 ',
                         style: TextStyle(
-                            fontWeight: FontWeight.bold,
+                            fontWeight: FontWeight.w800,
                             fontSize: 14,
                             color: kDefaultFontColor)),
                     NumberSlideAnimation(
@@ -97,11 +97,11 @@ class _ExposureReportTotalState extends State<ExposureReportTotal> {
                         textStyle: TextStyle(
                             color: kThemeColor,
                             fontSize: 28,
-                            fontWeight: FontWeight.bold),
+                            fontWeight: FontWeight.w800),
                         format: NumberFormatMode.comma),
                     Text('원 사용',
                         style: TextStyle(
-                            fontWeight: FontWeight.bold,
+                            fontWeight: FontWeight.w800,
                             fontSize: 14,
                             color: kDefaultFontColor))
                   ],

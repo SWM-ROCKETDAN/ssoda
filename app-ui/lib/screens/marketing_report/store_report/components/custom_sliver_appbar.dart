@@ -40,7 +40,7 @@ class CustomSliverAppBar extends StatelessWidget {
                     child: AutoSizeText(
                       '우리가게 마케팅 보고서',
                       style:
-                          TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+                          TextStyle(fontWeight: FontWeight.w800, fontSize: 16),
                       maxLines: 1,
                     ),
                   ),

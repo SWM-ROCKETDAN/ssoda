@@ -37,7 +37,7 @@ class _ExposureReportDailyState extends State<ExposureReportDaily> {
             Text('오늘',
                 style: TextStyle(
                     color: kDefaultFontColor,
-                    fontWeight: FontWeight.bold,
+                    fontWeight: FontWeight.w800,
                     fontSize: 14)),
             DeltaData(value: 57, icon: Icons.arrow_drop_down, color: Colors.red)
           ]),
@@ -48,7 +48,7 @@ class _ExposureReportDailyState extends State<ExposureReportDaily> {
               Text('총 ',
                   style: TextStyle(
                       color: kDefaultFontColor,
-                      fontWeight: FontWeight.bold,
+                      fontWeight: FontWeight.w800,
                       fontSize: 18)),
               NumberSlideAnimation(
                   number: (widget.eventReport.exposeCount ~/ 85).toString(),
@@ -57,20 +57,20 @@ class _ExposureReportDailyState extends State<ExposureReportDaily> {
                   textStyle: TextStyle(
                       color: kThemeColor,
                       fontSize: 32,
-                      fontWeight: FontWeight.bold),
+                      fontWeight: FontWeight.w800),
                   format: NumberFormatMode.comma),
               Text(
                 ' 명에게 ',
                 style: TextStyle(
                     color: kDefaultFontColor,
-                    fontWeight: FontWeight.bold,
+                    fontWeight: FontWeight.w800,
                     fontSize: 18),
               ),
               Text(
                 '노출되었습니다',
                 style: TextStyle(
                     color: kDefaultFontColor,
-                    fontWeight: FontWeight.bold,
+                    fontWeight: FontWeight.w800,
                     fontSize: 18),
               )
             ],
@@ -93,11 +93,11 @@ class _ExposureReportDailyState extends State<ExposureReportDaily> {
                         style: TextStyle(
                           color: kThemeColor,
                           fontSize: 28,
-                          fontWeight: FontWeight.bold,
+                          fontWeight: FontWeight.w800,
                         )),
                     Text('인 노출 당 ',
                         style: TextStyle(
-                            fontWeight: FontWeight.bold,
+                            fontWeight: FontWeight.w800,
                             fontSize: 14,
                             color: kDefaultFontColor)),
                     NumberSlideAnimation(
@@ -107,11 +107,11 @@ class _ExposureReportDailyState extends State<ExposureReportDaily> {
                         textStyle: TextStyle(
                             color: kThemeColor,
                             fontSize: 28,
-                            fontWeight: FontWeight.bold),
+                            fontWeight: FontWeight.w800),
                         format: NumberFormatMode.comma),
                     Text('원 사용',
                         style: TextStyle(
-                            fontWeight: FontWeight.bold,
+                            fontWeight: FontWeight.w800,
                             fontSize: 14,
                             color: kDefaultFontColor))
                   ],
@@ -146,7 +146,7 @@ class _ExposureReportDailyState extends State<ExposureReportDaily> {
                         reservedSize: 14,
                         getTextStyles: (context, value) => const TextStyle(
                             color: kLiteFontColor,
-                            fontWeight: FontWeight.bold,
+                            fontWeight: FontWeight.w800,
                             fontSize: 12),
                         getTitles: (value) {
                           switch (value.toInt()) {
@@ -173,7 +173,7 @@ class _ExposureReportDailyState extends State<ExposureReportDaily> {
                         showTitles: true,
                         getTextStyles: (context, value) => const TextStyle(
                           color: kLiteFontColor,
-                          fontWeight: FontWeight.bold,
+                          fontWeight: FontWeight.w800,
                           fontSize: 12,
                         ),
                         getTitles: (value) {

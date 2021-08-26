@@ -79,7 +79,7 @@ class EventListTile extends StatelessWidget {
                                                 eventList[index].title,
                                                 style: TextStyle(
                                                   color: kDefaultFontColor,
-                                                  fontWeight: FontWeight.bold,
+                                                  fontWeight: FontWeight.w800,
                                                 ),
                                                 maxLines: 1,
                                                 minFontSize: 10,
@@ -222,7 +222,7 @@ class EventListTile extends StatelessWidget {
             title: Center(
               child: Text('이벤트 삭제',
                   style: TextStyle(
-                      fontWeight: FontWeight.bold,
+                      fontWeight: FontWeight.w800,
                       fontSize: 18,
                       color: kDefaultFontColor),
                   textAlign: TextAlign.center),

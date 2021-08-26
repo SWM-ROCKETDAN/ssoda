@@ -47,7 +47,7 @@ class _EventTitleState extends State<EventTitle> {
               maxLines: 1,
               maxLength: 25,
               style: TextStyle(
-                  fontWeight: FontWeight.bold,
+                  fontWeight: FontWeight.w800,
                   fontSize: 20,
                   color: kThemeColor),
               decoration: InputDecoration(

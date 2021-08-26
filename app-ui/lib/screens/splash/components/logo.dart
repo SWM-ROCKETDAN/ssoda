@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:hashchecker/screens/splash/splash_screen.dart';
 import 'package:simple_animations/simple_animations.dart';
 
@@ -70,11 +69,11 @@ class Logo extends StatelessWidget {
                     ),
                     Text('우리가게 SNS 이벤트 마케팅 매니저',
                         textAlign: TextAlign.center,
-                        style: GoogleFonts.notoSans(
-                            textStyle: TextStyle(
-                                fontSize: 15,
-                                fontWeight: FontWeight.w600,
-                                color: value.get(AniProps.color)))),
+                        style: TextStyle(
+                            fontWeight: FontWeight.w800,
+                            fontFamily: 'NanumSquareRound',
+                            fontSize: 15,
+                            color: value.get(AniProps.color))),
                   ])),
     );
   }

@@ -78,7 +78,7 @@ class EventReportCard extends StatelessWidget {
                                           style: TextStyle(
                                               fontSize: 13,
                                               color: Colors.white,
-                                              fontWeight: FontWeight.bold),
+                                              fontWeight: FontWeight.w800),
                                         ),
                                       ),
                                       color: eventReportList[index].status ==
@@ -97,7 +97,7 @@ class EventReportCard extends StatelessWidget {
                                 children: [
                                   AutoSizeText(eventReportList[index].eventName,
                                       style: TextStyle(
-                                          fontWeight: FontWeight.bold,
+                                          fontWeight: FontWeight.w800,
                                           fontSize: 18,
                                           color: kDefaultFontColor),
                                       maxLines: 1,

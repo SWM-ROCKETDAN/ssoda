@@ -65,7 +65,7 @@ class _ParticipationReportDailyState extends State<ParticipationReportDaily> {
               Text('오늘',
                   style: TextStyle(
                       color: kDefaultFontColor,
-                      fontWeight: FontWeight.bold,
+                      fontWeight: FontWeight.w800,
                       fontSize: 14)),
               DeltaData(
                   value: 9, icon: Icons.arrow_drop_up, color: Colors.green)
@@ -77,7 +77,7 @@ class _ParticipationReportDailyState extends State<ParticipationReportDaily> {
                 Text('총 ',
                     style: TextStyle(
                         color: kDefaultFontColor,
-                        fontWeight: FontWeight.bold,
+                        fontWeight: FontWeight.w800,
                         fontSize: 18)),
                 NumberSlideAnimation(
                     number: (widget.eventReport.joinCount ~/ 85).toString(),
@@ -86,20 +86,20 @@ class _ParticipationReportDailyState extends State<ParticipationReportDaily> {
                     textStyle: TextStyle(
                         color: kThemeColor,
                         fontSize: 32,
-                        fontWeight: FontWeight.bold),
+                        fontWeight: FontWeight.w800),
                     format: NumberFormatMode.comma),
                 Text(
                   ' 명이 ',
                   style: TextStyle(
                       color: kDefaultFontColor,
-                      fontWeight: FontWeight.bold,
+                      fontWeight: FontWeight.w800,
                       fontSize: 18),
                 ),
                 Text(
                   '참여했습니다',
                   style: TextStyle(
                       color: kDefaultFontColor,
-                      fontWeight: FontWeight.bold,
+                      fontWeight: FontWeight.w800,
                       fontSize: 18),
                 ),
               ],
@@ -150,7 +150,7 @@ class _ParticipationReportDailyState extends State<ParticipationReportDaily> {
                                         titleStyle: TextStyle(
                                             fontSize:
                                                 touchedIndex == 0 ? 16 : 12,
-                                            fontWeight: FontWeight.bold)),
+                                            fontWeight: FontWeight.w800)),
                                     PieChartSectionData(
                                         radius: touchedIndex == 1 ? 40 : 30,
                                         title: widget.eventReport.deadPostCount
@@ -161,7 +161,7 @@ class _ParticipationReportDailyState extends State<ParticipationReportDaily> {
                                         titleStyle: TextStyle(
                                             fontSize:
                                                 touchedIndex == 1 ? 16 : 12,
-                                            fontWeight: FontWeight.bold,
+                                            fontWeight: FontWeight.w800,
                                             color: Colors.black45))
                                   ])),
                             ),
@@ -171,12 +171,12 @@ class _ParticipationReportDailyState extends State<ParticipationReportDaily> {
                                     style: TextStyle(
                                         fontSize: 15,
                                         color: kThemeColor,
-                                        fontWeight: FontWeight.bold))),
+                                        fontWeight: FontWeight.w800))),
                           ]),
                         ),
                         Text('게시글 유지 비율',
                             style: TextStyle(
-                                fontWeight: FontWeight.bold,
+                                fontWeight: FontWeight.w800,
                                 color: kDefaultFontColor)),
                       ],
                     ),
@@ -202,14 +202,14 @@ class _ParticipationReportDailyState extends State<ParticipationReportDaily> {
                                   textStyle: TextStyle(
                                       fontSize: 16,
                                       color: Colors.pink,
-                                      fontWeight: FontWeight.bold),
+                                      fontWeight: FontWeight.w800),
                                   format: NumberFormatMode.comma,
                                 ),
                                 Text(' 개',
                                     style: TextStyle(
                                         fontSize: 16,
                                         color: Colors.pink,
-                                        fontWeight: FontWeight.bold)),
+                                        fontWeight: FontWeight.w800)),
                               ]),
                               SizedBox(height: kDefaultPadding * 2 / 3),
                               Row(children: [
@@ -228,14 +228,14 @@ class _ParticipationReportDailyState extends State<ParticipationReportDaily> {
                                   textStyle: TextStyle(
                                       fontSize: 16,
                                       color: Color(0xFF1fbf89),
-                                      fontWeight: FontWeight.bold),
+                                      fontWeight: FontWeight.w800),
                                   format: NumberFormatMode.comma,
                                 ),
                                 Text(' 개',
                                     style: TextStyle(
                                         fontSize: 16,
                                         color: Color(0xFF1fbf89),
-                                        fontWeight: FontWeight.bold))
+                                        fontWeight: FontWeight.w800))
                               ])
                             ],
                           ),
@@ -243,7 +243,7 @@ class _ParticipationReportDailyState extends State<ParticipationReportDaily> {
                         SizedBox(height: kDefaultPadding),
                         Text('누적 좋아요&덧글',
                             style: TextStyle(
-                                fontWeight: FontWeight.bold,
+                                fontWeight: FontWeight.w800,
                                 color: kDefaultFontColor)),
                       ],
                     ),

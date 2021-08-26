@@ -66,7 +66,7 @@ class _ParticipationReportMonthlyState
               Text('이번 달에',
                   style: TextStyle(
                       color: kDefaultFontColor,
-                      fontWeight: FontWeight.bold,
+                      fontWeight: FontWeight.w800,
                       fontSize: 14)),
               DeltaData(
                   value: 198, icon: Icons.arrow_drop_up, color: Colors.green)
@@ -78,7 +78,7 @@ class _ParticipationReportMonthlyState
                 Text('총 ',
                     style: TextStyle(
                         color: kDefaultFontColor,
-                        fontWeight: FontWeight.bold,
+                        fontWeight: FontWeight.w800,
                         fontSize: 18)),
                 NumberSlideAnimation(
                     number: (widget.eventReport.joinCount ~/ 3).toString(),
@@ -87,20 +87,20 @@ class _ParticipationReportMonthlyState
                     textStyle: TextStyle(
                         color: kThemeColor,
                         fontSize: 32,
-                        fontWeight: FontWeight.bold),
+                        fontWeight: FontWeight.w800),
                     format: NumberFormatMode.comma),
                 Text(
                   ' 명이 ',
                   style: TextStyle(
                       color: kDefaultFontColor,
-                      fontWeight: FontWeight.bold,
+                      fontWeight: FontWeight.w800,
                       fontSize: 18),
                 ),
                 Text(
                   '참여했습니다',
                   style: TextStyle(
                       color: kDefaultFontColor,
-                      fontWeight: FontWeight.bold,
+                      fontWeight: FontWeight.w800,
                       fontSize: 18),
                 ),
               ],
@@ -151,7 +151,7 @@ class _ParticipationReportMonthlyState
                                         titleStyle: TextStyle(
                                             fontSize:
                                                 touchedIndex == 0 ? 16 : 12,
-                                            fontWeight: FontWeight.bold)),
+                                            fontWeight: FontWeight.w800)),
                                     PieChartSectionData(
                                         radius: touchedIndex == 1 ? 40 : 30,
                                         title: widget.eventReport.deadPostCount
@@ -162,7 +162,7 @@ class _ParticipationReportMonthlyState
                                         titleStyle: TextStyle(
                                             fontSize:
                                                 touchedIndex == 1 ? 16 : 12,
-                                            fontWeight: FontWeight.bold,
+                                            fontWeight: FontWeight.w800,
                                             color: Colors.black45))
                                   ])),
                             ),
@@ -172,12 +172,12 @@ class _ParticipationReportMonthlyState
                                     style: TextStyle(
                                         fontSize: 15,
                                         color: kThemeColor,
-                                        fontWeight: FontWeight.bold))),
+                                        fontWeight: FontWeight.w800))),
                           ]),
                         ),
                         Text('게시글 유지 비율',
                             style: TextStyle(
-                                fontWeight: FontWeight.bold,
+                                fontWeight: FontWeight.w800,
                                 color: kDefaultFontColor)),
                       ],
                     ),
@@ -203,14 +203,14 @@ class _ParticipationReportMonthlyState
                                   textStyle: TextStyle(
                                       fontSize: 16,
                                       color: Colors.pink,
-                                      fontWeight: FontWeight.bold),
+                                      fontWeight: FontWeight.w800),
                                   format: NumberFormatMode.comma,
                                 ),
                                 Text(' 개',
                                     style: TextStyle(
                                         fontSize: 16,
                                         color: Colors.pink,
-                                        fontWeight: FontWeight.bold)),
+                                        fontWeight: FontWeight.w800)),
                               ]),
                               SizedBox(height: kDefaultPadding * 2 / 3),
                               Row(children: [
@@ -228,14 +228,14 @@ class _ParticipationReportMonthlyState
                                   textStyle: TextStyle(
                                       fontSize: 16,
                                       color: Color(0xFF1fbf89),
-                                      fontWeight: FontWeight.bold),
+                                      fontWeight: FontWeight.w800),
                                   format: NumberFormatMode.comma,
                                 ),
                                 Text(' 개',
                                     style: TextStyle(
                                         fontSize: 16,
                                         color: Color(0xFF1fbf89),
-                                        fontWeight: FontWeight.bold))
+                                        fontWeight: FontWeight.w800))
                               ])
                             ],
                           ),
@@ -243,7 +243,7 @@ class _ParticipationReportMonthlyState
                         SizedBox(height: kDefaultPadding),
                         Text('누적 좋아요&덧글',
                             style: TextStyle(
-                                fontWeight: FontWeight.bold,
+                                fontWeight: FontWeight.w800,
                                 color: kDefaultFontColor)),
                       ],
                     ),

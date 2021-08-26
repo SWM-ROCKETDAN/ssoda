@@ -132,7 +132,7 @@ class HeaderWithImages extends StatelessWidget {
             title: Center(
               child: Text('이벤트 삭제',
                   style: TextStyle(
-                      fontWeight: FontWeight.bold,
+                      fontWeight: FontWeight.w800,
                       fontSize: 18,
                       color: kDefaultFontColor),
                   textAlign: TextAlign.center),

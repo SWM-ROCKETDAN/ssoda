@@ -113,7 +113,7 @@ class _InputRewardInfoScreenState extends State<InputRewardInfoScreen> {
         child: Text(
           '상품 등록하기',
           style: TextStyle(
-              color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold),
+              color: Colors.white, fontSize: 16, fontWeight: FontWeight.w800),
         ),
         onPressed: () {
           if (isValidReward()) {
@@ -273,7 +273,7 @@ class _InputRewardInfoScreenState extends State<InputRewardInfoScreen> {
         title: Text(
           '상품 상세정보 등록',
           style:
-              TextStyle(color: kDefaultFontColor, fontWeight: FontWeight.bold),
+              TextStyle(color: kDefaultFontColor, fontWeight: FontWeight.w800),
         ),
         centerTitle: true);
   }

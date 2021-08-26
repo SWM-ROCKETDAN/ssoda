@@ -22,7 +22,7 @@ class InputHelp extends StatelessWidget {
                 ),
                 Text(' 단가와 수량',
                     style: TextStyle(
-                        fontWeight: FontWeight.bold,
+                        fontWeight: FontWeight.w800,
                         fontSize: 18,
                         color: kDefaultFontColor),
                     textAlign: TextAlign.center),

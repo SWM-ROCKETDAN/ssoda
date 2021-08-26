@@ -54,7 +54,7 @@ class _EventRequireState extends State<EventRequire> {
                                           fontSize: 13,
                                           fontWeight:
                                               widget.event.requireList[index]
-                                                  ? FontWeight.bold
+                                                  ? FontWeight.w800
                                                   : FontWeight.normal),
                                       textAlign: TextAlign.center,
                                     ),

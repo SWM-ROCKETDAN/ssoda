@@ -99,7 +99,7 @@ class _EventRewardState extends State<EventReward> {
                                         Text(
                                           '${index + 1}단계',
                                           style: TextStyle(
-                                              fontWeight: FontWeight.bold,
+                                              fontWeight: FontWeight.w800,
                                               fontSize: 20,
                                               color: Colors.white),
                                         ),

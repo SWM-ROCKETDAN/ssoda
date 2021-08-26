@@ -15,7 +15,7 @@ class EventPeriod extends StatelessWidget {
     return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
       Text('이벤트 기간',
           style: TextStyle(
-              fontWeight: FontWeight.bold,
+              fontWeight: FontWeight.w800,
               fontSize: 17,
               color: kDefaultFontColor)),
       SizedBox(height: kDefaultPadding),

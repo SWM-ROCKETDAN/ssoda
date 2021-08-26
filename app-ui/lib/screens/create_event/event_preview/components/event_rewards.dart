@@ -16,7 +16,7 @@ class EventRewards extends StatelessWidget {
     return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
       Text('이벤트 상품',
           style: TextStyle(
-              fontWeight: FontWeight.bold,
+              fontWeight: FontWeight.w800,
               fontSize: 17,
               color: kDefaultFontColor)),
       SizedBox(height: kDefaultPadding),
