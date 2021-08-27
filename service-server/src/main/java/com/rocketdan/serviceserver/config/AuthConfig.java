@@ -10,8 +10,9 @@ import org.springframework.context.annotation.Configuration;
 import java.util.ArrayList;
 import java.util.List;
 
-@Getter
+@ConfigurationProperties(prefix = "app")
 @Configuration
+@Getter
 public class AuthConfig {
 
     private final Auth auth = new Auth();

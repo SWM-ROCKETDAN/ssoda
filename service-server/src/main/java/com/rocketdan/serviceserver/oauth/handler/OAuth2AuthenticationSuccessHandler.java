@@ -108,7 +108,7 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
 //        return UriComponentsBuilder.fromUriString(targetUrl)
 //                .queryParam("token", accessToken.getToken())
 //                .build().toUriString();
-        return targetUrl + "://token=" + accessToken.getToken();
+        return targetUrl + ":/token=" + accessToken.getToken();
     }
 
     protected void clearAuthenticationAttributes(HttpServletRequest request, HttpServletResponse response) {
@@ -137,9 +137,20 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
                 .anyMatch(authorizedRedirectUri -> {
                     // Only validate host and port. Let the clients use different paths if they want to
                     URI authorizedURI = URI.create(authorizedRedirectUri);
-                    if(authorizedURI.getHost().equalsIgnoreCase(clientRedirectUri.getHost())
-                            && authorizedURI.getPort() == clientRedirectUri.getPort()) {
-                        return true;
+                    // app의 경우 host가 없다. -> authorizedURI.getHost() = null로 나온다.
+//                    if (authorizedURI.getHost().equalsIgnoreCase(clientRedirectUri.getHost())
+//                            && authorizedURI.getPort() == clientRedirectUri.getPort()) {
+//                        return true;
+//                    }
+                    if (authorizedURI.getHost() != null) {
+                        if (authorizedURI.getHost().equalsIgnoreCase(clientRedirectUri.getHost())
+                                && authorizedURI.getPort() == clientRedirectUri.getPort()) {
+                            return true;
+                        }
+                    } else { // 앱인 경우 (앱 uri는 호스트와 포트를 검사할 수 없음)
+                        if (authorizedURI.equals(clientRedirectUri)) {
+                            return true;
+                        }
                     }
                     return false;
                 });
