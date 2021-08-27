@@ -4,6 +4,7 @@ import 'dart:convert';
 import 'package:dio/dio.dart';
 import 'package:flutter_web_auth/flutter_web_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:hashchecker/api.dart';
 import 'package:hashchecker/constants.dart';
 import 'package:hashchecker/env.dart';
 
@@ -33,7 +34,7 @@ class _NewSignInScreenState extends State<NewSignInScreen> {
                   Expanded(
                     child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [Text('login test')]),
+                        children: []),
                   ),
                   Column(
                     children: [
@@ -54,18 +55,10 @@ class _NewSignInScreenState extends State<NewSignInScreen> {
   }
 
   Future<void> naverLoginPressed() async {
-    final redirectUri = Uri.parse('http://rocketdan.hashchecker.com/naver');
-
     final callbackUrlScheme = 'com.rocketdan.hashchecker';
 
-    final state = Uri.parse('com.rocketdan.hashchecker');
-
-    final url = Uri.https('nid.naver.com', '/oauth2.0/authorize', {
-      'client_id': NAVER_CLIENT_ID,
-      'redirect_uri': redirectUri.toString(),
-      'response_type': 'code',
-      'state': state.toString()
-    });
+    final url = Uri.parse(
+        'http://ec2-3-37-85-236.ap-northeast-2.compute.amazonaws.com:8080/oauth2/authorization/naver?redirect_uri=com.rocketdan.hashchecker:/');
 
     final result = await FlutterWebAuth.authenticate(
         url: url.toString(), callbackUrlScheme: callbackUrlScheme);
