@@ -7,6 +7,7 @@ from .serializers import EventReportSerializer
 from .serializers import StoreReportSerializer
 from core.modules.report.event.event_report_calculator import EventReportCalculator
 from core.modules.report.store.store_report_calculator import StoreReportCalculator
+from core.exceptions import exceptions
 
 
 # Reward GET 요청
@@ -16,8 +17,7 @@ class ReportEvent(APIView):
         event_report_serializer = EventReportSerializer(event)
         event_report_calculator = EventReportCalculator(event_report_serializer.data)
         event_report = event_report_calculator.get_event_report()
-
-        return JsonResponse(event_report)
+        raise exceptions.EventReportCalculateOK(event_report)
 
 
 class ReportStore(APIView):
@@ -26,5 +26,4 @@ class ReportStore(APIView):
         store_report_serializer = StoreReportSerializer(store)
         store_report_calculator = StoreReportCalculator(store_report_serializer.data)
         store_report = store_report_calculator.get_store_report()
-
-        return JsonResponse(store_report)
+        raise exceptions.StoreReportCalculateOK(store_report)

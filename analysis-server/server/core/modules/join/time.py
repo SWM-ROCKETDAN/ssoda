@@ -6,16 +6,25 @@ def get_now_time():
     return now
 
 
-def get_datetime(time):
-    date_time = datetime.datetime.strptime(time, '%Y-%m-%dT%H:%M:%S')
+def parse_from_str_time_to_date_time(str_time):
+    date_time = datetime.datetime.strptime(str_time, '%Y-%m-%dT%H:%M:%S')
     return date_time
 
 
-def cal_time_gap(start, end):
+def get_interval_day_from_old_time_to_recent_time(old_time, recent_time):
     try:
-        date_time_start = datetime.datetime.strptime(start, '%Y-%m-%dT%H:%M:%S')
-        date_time_end = datetime.datetime.strptime(end, '%Y-%m-%dT%H:%M:%S')
-        gap = date_time_start - date_time_end
-        return int(gap.days)
-    except:
+        old_date_time = parse_from_str_time_to_date_time(old_time)
+        recent_date_time = parse_from_str_time_to_date_time(recent_time)
+        interval_day = (old_date_time - recent_date_time).days
+    except Exception as e:
         return 0
+    return int(interval_day)
+
+
+def get_interval_day_from_now_time_to_target_time(target_time):
+    try:
+        now_time = get_now_time()
+        interval_day = get_interval_day_from_old_time_to_recent_time(target_time, now_time)
+    except Exception as e:
+        return 0
+    return interval_day

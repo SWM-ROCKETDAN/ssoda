@@ -113,6 +113,6 @@ class EventReportCalculator:
         try:
             event_report = get_event_report(self.event, self.event['join_posts'])
         except Exception as e:
-            raise exceptions.EventReportCalculateFailed
+            raise exceptions.EventReportCalculateFailed()
 
         return event_report
