@@ -3,6 +3,7 @@ import pprint
 from bs4 import BeautifulSoup
 from urllib.request import urlopen
 from ..proxy import get_proxy_url
+from ..time import parse_from_utc_timestamp_to_date_time
 from ..time import get_now_time
 from ..time import parse_from_str_time_to_date_time
 from server.core.modules.static.common import Type
@@ -12,10 +13,6 @@ import json
 import yaml
 import re
 import demjson
-
-TEST_URL = 'https://www.facebook.com/155316101256398/posts/4290753117712655/'
-
-match_dict = {'}': '{', ')': '('}
 
 
 def get_post_id_from_facebook_url(url):
@@ -40,6 +37,13 @@ def scrap_post(dummy_url):
     #     return scraped_post
 
     soup = BeautifulSoup(response, "html.parser")
+    print(soup)
+    soup_content = ''
+    try:
+        soup_content = soup.find('meta', property="og:description")["content"]
+    except Exception as e:
+        pass
+
     soup_scripts = soup.find_all('script', nonce="")
     dummies = []
     for soup_script in soup_scripts:
@@ -51,30 +55,47 @@ def scrap_post(dummy_url):
         except Exception as e:
             pass
 
+    sns_id = None
+    url = ''
+    like_count = 0
+    comment_count = 0
+    upload_date = None
+
     for dummy in dummies:
         try:
-            pprint.pprint(
-                dummy['jsmods']['pre_display_requires'][0][3][1]['__bbox']['result']['data']['feedback']['url'])
-            dummy_url = dummy['jsmods']['pre_display_requires'][0][3][1]['__bbox']['result']['data']['feedback']['url']
-            dummy_post_id = get_post_id_from_facebook_url(dummy_url)
-            if post_id == dummy_post_id:
-                pprint.pprint(dummy['jsmods']['pre_display_requires'][0][3][1]['__bbox'])
+            dummy_require = dummy['jsmods']['require'][1][3][1]['t']
+            publish_time_index = dummy_require.find("publish_time")
+            publish_time = dummy_require[publish_time_index + 14: publish_time_index + 24]
+            upload_date = parse_from_utc_timestamp_to_date_time(publish_time)
         except Exception as e:
             pass
-    # post = {
-    #     'sns_id': sns_id,
-    #     'url': url,
-    #     'type': Type.INSTAGRAM,
-    #     'status': status,
-    #     'like_count': likes,
-    #     'comment_count': comments,
-    #     'hashtags': hashtags,
-    #     'upload_date': upload,
-    #     'private_date': None,
-    #     'delete_data': None,
-    #     'update_date': get_now_time(),
-    # }
+        try:
+            dummy_feedback = dummy['jsmods']['pre_display_requires'][0][3][1]['__bbox']['result']['data']['feedback']
+            dummy_url = dummy_feedback['url']
 
+            dummy_post_id = get_post_id_from_facebook_url(dummy_url)
+            if post_id == dummy_post_id:
+                url = dummy_url
+                sns_id = dummy_feedback['owning_profile']['id']
+                like_count = dummy_feedback['reaction_count']['count']
+                comment_count = dummy_feedback['comment_count']['total_count']
+        except Exception as e:
+            pass
+
+    post = {
+        'sns_id': sns_id,
+        'url': url,
+        'type': Type.FACEBOOK,
+        'status': Status.PUBLIC,
+        'like_count': like_count,
+        'comment_count': comment_count,
+        'hashtags': soup_content,
+        'upload_date': upload_date,
+        'private_date': None,
+        'delete_date': None,
+        'update_date': get_now_time(),
+    }
+    pprint.pprint(post)
     # return post
 
 # scrap_post(TEST_URL)
