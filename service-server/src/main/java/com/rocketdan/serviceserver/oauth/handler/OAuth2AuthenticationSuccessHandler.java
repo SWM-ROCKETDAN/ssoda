@@ -105,9 +105,10 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
 //        CookieUtil.deleteCookie(request, response, REFRESH_TOKEN);
 //        CookieUtil.addCookie(response, REFRESH_TOKEN, refreshToken.getToken(), cookieMaxAge);
 
-        return UriComponentsBuilder.fromUriString(targetUrl)
-                .queryParam("token", accessToken.getToken())
-                .build().toUriString();
+//        return UriComponentsBuilder.fromUriString(targetUrl)
+//                .queryParam("token", accessToken.getToken())
+//                .build().toUriString();
+        return targetUrl + "://token=" + accessToken.getToken();
     }
 
     protected void clearAuthenticationAttributes(HttpServletRequest request, HttpServletResponse response) {
