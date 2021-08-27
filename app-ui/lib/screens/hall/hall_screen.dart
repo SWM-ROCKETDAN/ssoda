@@ -29,6 +29,7 @@ class _HallScreenState extends State<HallScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       extendBody: true,
+      /*
       appBar: AppBar(
         automaticallyImplyLeading: false,
         backgroundColor: kScaffoldBackgroundColor,
@@ -55,6 +56,7 @@ class _HallScreenState extends State<HallScreen> {
         ],
         */
       ),
+      */
       bottomNavigationBar: PandaBar(
         backgroundColor: Colors.white,
         buttonData: [
@@ -75,19 +77,21 @@ class _HallScreenState extends State<HallScreen> {
           });
         },
       ),
-      body: PageTransitionSwitcher(
-        transitionBuilder: (
-          Widget child,
-          Animation<double> animation,
-          Animation<double> secondaryAnimation,
-        ) {
-          return FadeThroughTransition(
-            animation: animation,
-            secondaryAnimation: secondaryAnimation,
-            child: child,
-          );
-        },
-        child: pageMap[currentPage],
+      body: SafeArea(
+        child: PageTransitionSwitcher(
+          transitionBuilder: (
+            Widget child,
+            Animation<double> animation,
+            Animation<double> secondaryAnimation,
+          ) {
+            return FadeThroughTransition(
+              animation: animation,
+              secondaryAnimation: secondaryAnimation,
+              child: child,
+            );
+          },
+          child: pageMap[currentPage],
+        ),
       ),
     );
   }

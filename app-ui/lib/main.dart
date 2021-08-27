@@ -13,7 +13,8 @@ import 'package:flutter_native_splash/flutter_native_splash.dart';
 
 void main() {
   SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
-    statusBarColor: Colors.transparent,
+    systemNavigationBarColor: kScaffoldBackgroundColor,
+    statusBarColor: kShadowColor,
   ));
   KakaoContext.clientId = KAKAO_APP_KEY;
   runApp(Provider(create: (context) => Token(), child: MyApp()));
