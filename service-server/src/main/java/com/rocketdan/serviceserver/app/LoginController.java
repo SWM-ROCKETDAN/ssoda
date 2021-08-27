@@ -20,7 +20,7 @@ import java.util.Optional;
 @RequestMapping("/api/v1/login")
 @RequiredArgsConstructor
 public class LoginController {
-
+/*
     private final LoginService loginService;
 
     @PostMapping
@@ -49,5 +49,5 @@ public class LoginController {
         } else {
             throw new LoginFailedException();
         }
-    }
+    }*/
 }

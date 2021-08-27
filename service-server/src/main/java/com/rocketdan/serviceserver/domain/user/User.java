@@ -4,8 +4,10 @@ import com.rocketdan.serviceserver.domain.store.Store;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import net.minidev.json.annotate.JsonIgnore;
 
 import javax.persistence.*;
+import java.util.Date;
 import java.util.List;
 
 @Getter
@@ -16,7 +18,13 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(nullable = false, unique = true)
+    private String userId;
+
+    @JsonIgnore
     @Column(nullable = false)
+    private String password;
+
     private String name;
 
     @Column(nullable = false)
@@ -37,13 +45,28 @@ public class User {
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Store> stores;
 
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private Provider provider;
+
+    @Column(nullable = false)
+    private Date createdDate;
+
+    @Column(nullable = false)
+    private Date modifiedDate;
+
     @Builder
-    public User(String name, String email, String picture, Role role, List<Store> stores) {
+    public User(String userId, String password, String name, String email, String picture, Role role, List<Store> stores, Provider provider, Date createdDate, Date modifiedDate) {
+        this.userId = userId;
+        this.password = password;
         this.name = name;
         this.email = email;
         this.picture = picture;
         this.role = role;
         this.stores = stores;
+        this.provider = provider;
+        this.createdDate = createdDate;
+        this.modifiedDate = modifiedDate;
     }
 
     public User update(String name, String picture) {

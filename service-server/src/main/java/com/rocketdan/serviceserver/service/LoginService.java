@@ -18,8 +18,8 @@ import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
-public class LoginService implements LoginUseCase {
-
+public class LoginService {// implements LoginUseCase {
+/*
     private final JwtAuthTokenProvider jwtAuthTokenProvider;
     private final static long LOGIN_RETENTION_MINUTES = 10080;
     private final UserRepository userRepository;
@@ -51,5 +51,5 @@ public class LoginService implements LoginUseCase {
                 .orElse(loginRequestDto.toEntity());
 
         return userRepository.save(user);
-    }
+    }*/
 }
