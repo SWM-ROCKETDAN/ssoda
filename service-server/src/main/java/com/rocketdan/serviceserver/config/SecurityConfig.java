@@ -4,6 +4,8 @@ import com.rocketdan.serviceserver.Exception.auth.RestAuthenticationEntryPoint;
 import com.rocketdan.serviceserver.config.auth.CustomOAuth2UserService;
 import com.rocketdan.serviceserver.domain.user.Role;
 import com.rocketdan.serviceserver.oauth.filter.TokenAuthenticationFilter;
+import com.rocketdan.serviceserver.oauth.handler.OAuth2AuthenticationFailureHandler;
+import com.rocketdan.serviceserver.oauth.handler.OAuth2AuthenticationSuccessHandler;
 import com.rocketdan.serviceserver.oauth.handler.TokenAccessDeniedHandler;
 import com.rocketdan.serviceserver.oauth.repository.OAuth2AuthorizationRequestBasedOnCookieRepository;
 import com.rocketdan.serviceserver.oauth.service.CustomUserDetailsService;
@@ -27,6 +29,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
 //    private final CorsProperties corsProperties;
 //    private final AppProperties appProperties;
+    private final AuthConfig authConfig;
     private final JwtAuthTokenProvider jwtAuthTokenProvider;
     private final CustomUserDetailsService userDetailsService;
     private final CustomOAuth2UserService oAuth2UserService;
@@ -78,10 +81,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 // oauth2 로그인 성공 이후 사용자 정보를 가져올 때의 설정
                 .userInfoEndpoint()
-                .userService(oAuth2UserService);
-//                .and()
-//                .successHandler(oAuth2AuthenticationSuccessHandler())
-//                .failureHandler(oAuth2AuthenticationFailureHandler());
+                .userService(oAuth2UserService)
+                .and()
+                .successHandler(oAuth2AuthenticationSuccessHandler())
+                .failureHandler(oAuth2AuthenticationFailureHandler());
 
         http.addFilterBefore(tokenAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
     }
@@ -132,14 +135,23 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 //                oAuth2AuthorizationRequestBasedOnCookieRepository()
 //        );
 //    }
-//
-//    /*
-//     * Oauth 인증 실패 핸들러
-//     * */
-//    @Bean
-//    public OAuth2AuthenticationFailureHandler oAuth2AuthenticationFailureHandler() {
-//        return new OAuth2AuthenticationFailureHandler(oAuth2AuthorizationRequestBasedOnCookieRepository());
-//    }
+    @Bean
+    public OAuth2AuthenticationSuccessHandler oAuth2AuthenticationSuccessHandler() {
+        return new OAuth2AuthenticationSuccessHandler(
+                jwtAuthTokenProvider,
+                authConfig,
+//                userRefreshTokenRepository,
+                oAuth2AuthorizationRequestBasedOnCookieRepository()
+        );
+    }
+
+    /*
+     * Oauth 인증 실패 핸들러
+     * */
+    @Bean
+    public OAuth2AuthenticationFailureHandler oAuth2AuthenticationFailureHandler() {
+        return new OAuth2AuthenticationFailureHandler(oAuth2AuthorizationRequestBasedOnCookieRepository());
+    }
 
 //    /*
 //     * Cors 설정
