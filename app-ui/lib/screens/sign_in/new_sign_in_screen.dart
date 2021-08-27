@@ -34,7 +34,18 @@ class _NewSignInScreenState extends State<NewSignInScreen> {
                   Expanded(
                     child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
-                        children: []),
+                        children: [
+                          ElevatedButton(
+                              onPressed: () async {
+                                var dio = Dio();
+                                dio.options.headers['Authorization'] =
+                                    'Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJIU1hhaWVpQTBXWi12VUExTVpvaEltc1o4RThhdTBHV3ROM29mSGZaeVZrIiwicm9sZSI6IlJPTEVfVVNFUiIsImV4cCI6MTczODA3MzI4OH0.dW_Ncjt9Rw4zFK1y5PghEb8rlWo-bKQ8R6ggjEAnG-k';
+                                Response response = await dio.get(
+                                    'http://ec2-3-37-85-236.ap-northeast-2.compute.amazonaws.com:8080/api/v1/my/stores');
+                                print(response.data.toString());
+                              },
+                              child: Text('테스트'))
+                        ]),
                   ),
                   Column(
                     children: [
@@ -58,7 +69,7 @@ class _NewSignInScreenState extends State<NewSignInScreen> {
     final callbackUrlScheme = 'com.rocketdan.hashchecker';
 
     final url = Uri.parse(
-        'http://ec2-3-37-85-236.ap-northeast-2.compute.amazonaws.com:8080/oauth2/authorization/naver?redirect_uri=com.rocketdan.hashchecker:/');
+        'http://ec2-3-37-85-236.ap-northeast-2.compute.amazonaws.com:8080/oauth2/authorization/naver?redirect_uri=com.rocketdan.hashchecker');
 
     final result = await FlutterWebAuth.authenticate(
         url: url.toString(), callbackUrlScheme: callbackUrlScheme);
