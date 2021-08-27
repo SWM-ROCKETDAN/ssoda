@@ -53,8 +53,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 //                                " account. Please use your " + savedUser.getProviderType() + " account to login."
 //                );
             }
-            updateUser(savedUser.get(), userInfo);
-            return UserPrincipal.create(savedUser.get(), user.getAttributes());
+            return UserPrincipal.create(updateUser(savedUser.get(), userInfo), user.getAttributes());
         } else { // 신규 유저면 create
             return UserPrincipal.create(createUser(userInfo, provider), user.getAttributes());
         }
