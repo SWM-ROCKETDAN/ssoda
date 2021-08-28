@@ -19,6 +19,10 @@ class NewSignInScreen extends StatefulWidget {
 }
 
 class _NewSignInScreenState extends State<NewSignInScreen> {
+  String? token;
+  String? debugLog;
+  TextEditingController _tokenTextController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -35,16 +39,21 @@ class _NewSignInScreenState extends State<NewSignInScreen> {
                     child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
+                          Text('Token:'),
+                          TextField(controller: _tokenTextController),
                           ElevatedButton(
                               onPressed: () async {
                                 var dio = Dio();
                                 dio.options.headers['Authorization'] =
-                                    'Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJIU1hhaWVpQTBXWi12VUExTVpvaEltc1o4RThhdTBHV3ROM29mSGZaeVZrIiwicm9sZSI6IlJPTEVfVVNFUiIsImV4cCI6MTczODA3MzI4OH0.dW_Ncjt9Rw4zFK1y5PghEb8rlWo-bKQ8R6ggjEAnG-k';
-                                Response response = await dio.get(
+                                    'Bearer $token';
+                                final response = await dio.get(
                                     'http://ec2-3-37-85-236.ap-northeast-2.compute.amazonaws.com:8080/api/v1/my/stores');
-                                print(response.data.toString());
+                                setState(() {
+                                  debugLog = response.data.toString();
+                                });
                               },
-                              child: Text('테스트'))
+                              child: Text('테스트')),
+                          Text('Log: $debugLog'),
                         ]),
                   ),
                   Column(
@@ -74,7 +83,10 @@ class _NewSignInScreenState extends State<NewSignInScreen> {
     final result = await FlutterWebAuth.authenticate(
         url: url.toString(), callbackUrlScheme: callbackUrlScheme);
 
-    print(result);
+    setState(() {
+      token = Uri.parse(result).queryParameters['token'];
+      _tokenTextController.text = token!;
+    });
   }
 
   Future<void> kakaoLoginPressed() async {
