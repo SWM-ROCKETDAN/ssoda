@@ -78,7 +78,18 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
     }
 
     private User updateUser(User user, OAuth2UserInfo userInfo) {
-        user.update(userInfo.getName(), userInfo.getImageUrl());
+        Date now = new Date();
+
+        if (userInfo.getName() != null && !user.getName().equals(userInfo.getName())) {
+            user.setName(userInfo.getName());
+            user.setModifiedDate(now);
+
+        }
+        if (userInfo.getImageUrl() != null && !user.getPicture().equals(userInfo.getImageUrl())) {
+            user.setPicture(userInfo.getImageUrl());
+            user.setModifiedDate(now);
+        }
+
         return user;
     }
 }

@@ -69,11 +69,16 @@ public class User {
         this.modifiedDate = modifiedDate;
     }
 
-    public User update(String name, String picture) {
+    public void setName(String name) {
         this.name = name;
-        this.picture = picture;
+    }
 
-        return this;
+    public void setPicture(String picture) {
+        this.picture = picture;
+    }
+
+    public void setModifiedDate(Date date) {
+        this.modifiedDate = date;
     }
 
     public String getRoleCode() {
