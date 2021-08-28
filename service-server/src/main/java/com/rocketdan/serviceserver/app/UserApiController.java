@@ -15,13 +15,13 @@ import java.util.List;
 public class UserApiController {
     private final UserService userService;
 
-    @GetMapping("/my/stores")
+    @GetMapping("/me/stores")
     public List<StoreListResponseDto> retrieveStoreListById() {
         org.springframework.security.core.userdetails.User principal = (org.springframework.security.core.userdetails.User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         return userService.getStoreListById(principal.getUsername());
     }
 
-    @GetMapping("/my")
+    @GetMapping("/me")
     public UserResponseDto retrieveMyInfo() {
         org.springframework.security.core.userdetails.User principal = (org.springframework.security.core.userdetails.User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         return userService.findByUserId(principal.getUsername());
