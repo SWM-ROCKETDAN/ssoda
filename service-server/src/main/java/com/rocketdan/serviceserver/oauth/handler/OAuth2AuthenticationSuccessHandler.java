@@ -42,11 +42,12 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
     private final OAuth2AuthorizationRequestBasedOnCookieRepository authorizationRequestRepository;
 
     private final static long THIRTY_MINUTE_MSEC = 1800000;
+    private final static String SUCCESS_COMMAND = "://success";
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
         String targetUrl = determineTargetUrl(request, response, authentication);
-
+        System.out.println(targetUrl);
         if (response.isCommitted()) {
             logger.debug("Response has already been committed. Unable to redirect to " + targetUrl);
             return;
@@ -105,10 +106,9 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
 //        CookieUtil.deleteCookie(request, response, REFRESH_TOKEN);
 //        CookieUtil.addCookie(response, REFRESH_TOKEN, refreshToken.getToken(), cookieMaxAge);
 
-//        return UriComponentsBuilder.fromUriString(targetUrl)
-//                .queryParam("token", accessToken.getToken())
-//                .build().toUriString();
-        return targetUrl + ":/token=" + accessToken.getToken();
+        return UriComponentsBuilder.fromUriString(targetUrl + SUCCESS_COMMAND)
+                .queryParam("token", accessToken.getToken())
+                .build().toUriString();
     }
 
     protected void clearAuthenticationAttributes(HttpServletRequest request, HttpServletResponse response) {
