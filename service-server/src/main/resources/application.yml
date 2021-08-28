@@ -13,4 +13,4 @@ spring:
 #      initialize-schema: always
 #      table-name: SPRING_SESSION
   profiles:
-    include: jwt, db, aws, analysis, oauth
+    include: jwt, db, aws, analysis, oauth, cors

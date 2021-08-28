@@ -2,6 +2,8 @@ package com.rocketdan.serviceserver.config;
 
 import com.rocketdan.serviceserver.Exception.auth.RestAuthenticationEntryPoint;
 import com.rocketdan.serviceserver.config.auth.CustomOAuth2UserService;
+import com.rocketdan.serviceserver.config.properties.AppProperties;
+import com.rocketdan.serviceserver.config.properties.CorsProperties;
 import com.rocketdan.serviceserver.domain.user.Role;
 import com.rocketdan.serviceserver.oauth.filter.TokenAuthenticationFilter;
 import com.rocketdan.serviceserver.oauth.handler.OAuth2AuthenticationFailureHandler;
@@ -21,15 +23,18 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsUtils;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+
+import java.util.Arrays;
 
 @Configuration
 @RequiredArgsConstructor
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
-//    private final CorsProperties corsProperties;
-//    private final AppProperties appProperties;
-    private final AuthConfig authConfig;
+    private final CorsProperties corsProperties;
+    private final AppProperties appProperties;
     private final JwtAuthTokenProvider jwtAuthTokenProvider;
     private final CustomUserDetailsService userDetailsService;
     private final CustomOAuth2UserService oAuth2UserService;
@@ -139,7 +144,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     public OAuth2AuthenticationSuccessHandler oAuth2AuthenticationSuccessHandler() {
         return new OAuth2AuthenticationSuccessHandler(
                 jwtAuthTokenProvider,
-                authConfig,
+                appProperties,
 //                userRefreshTokenRepository,
                 oAuth2AuthorizationRequestBasedOnCookieRepository()
         );
@@ -153,22 +158,22 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         return new OAuth2AuthenticationFailureHandler(oAuth2AuthorizationRequestBasedOnCookieRepository());
     }
 
-//    /*
-//     * Cors 설정
-//     * */
-//    @Bean
-//    public UrlBasedCorsConfigurationSource corsConfigurationSource() {
-//        UrlBasedCorsConfigurationSource corsConfigSource = new UrlBasedCorsConfigurationSource();
-//
-//        CorsConfiguration corsConfig = new CorsConfiguration();
-//        corsConfig.setAllowedHeaders(Arrays.asList(corsProperties.getAllowedHeaders().split(",")));
-//        corsConfig.setAllowedMethods(Arrays.asList(corsProperties.getAllowedMethods().split(",")));
-//        corsConfig.setAllowedOrigins(Arrays.asList(corsProperties.getAllowedOrigins().split(",")));
-//        corsConfig.setAllowCredentials(true);
-//        corsConfig.setMaxAge(corsConfig.getMaxAge());
-//
-//        corsConfigSource.registerCorsConfiguration("/**", corsConfig);
-//        return corsConfigSource;
-//    }
+    /*
+     * Cors 설정
+     * */
+    @Bean
+    public UrlBasedCorsConfigurationSource corsConfigurationSource() {
+        UrlBasedCorsConfigurationSource corsConfigSource = new UrlBasedCorsConfigurationSource();
+
+        CorsConfiguration corsConfig = new CorsConfiguration();
+        corsConfig.setAllowedHeaders(Arrays.asList(corsProperties.getAllowedHeaders().split(",")));
+        corsConfig.setAllowedMethods(Arrays.asList(corsProperties.getAllowedMethods().split(",")));
+        corsConfig.setAllowedOrigins(Arrays.asList(corsProperties.getAllowedOrigins().split(",")));
+        corsConfig.setAllowCredentials(true);
+        corsConfig.setMaxAge(corsConfig.getMaxAge());
+
+        corsConfigSource.registerCorsConfiguration("/**", corsConfig);
+        return corsConfigSource;
+    }
 }
 

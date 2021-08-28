@@ -2,11 +2,9 @@ package com.rocketdan.serviceserver.app;
 
 import com.rocketdan.serviceserver.app.dto.store.StoreListResponseDto;
 import com.rocketdan.serviceserver.app.dto.user.UserResponseDto;
-import com.rocketdan.serviceserver.core.security.TokenUserEmail;
 import com.rocketdan.serviceserver.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;

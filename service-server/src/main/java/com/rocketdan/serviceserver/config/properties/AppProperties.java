@@ -1,4 +1,4 @@
-package com.rocketdan.serviceserver.config;
+package com.rocketdan.serviceserver.config.properties;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -13,7 +13,7 @@ import java.util.List;
 @ConfigurationProperties(prefix = "app")
 @Configuration
 @Getter
-public class AuthConfig {
+public class AppProperties {
 
     private final Auth auth = new Auth();
     private final OAuth2 oauth2 = new OAuth2();

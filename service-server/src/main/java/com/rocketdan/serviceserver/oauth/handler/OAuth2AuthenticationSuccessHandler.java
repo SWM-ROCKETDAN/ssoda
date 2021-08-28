@@ -1,6 +1,6 @@
 package com.rocketdan.serviceserver.oauth.handler;
 
-import com.rocketdan.serviceserver.config.AuthConfig;
+import com.rocketdan.serviceserver.config.properties.AppProperties;
 import com.rocketdan.serviceserver.domain.user.Provider;
 import com.rocketdan.serviceserver.domain.user.Role;
 import com.rocketdan.serviceserver.oauth.info.OAuth2UserInfo;
@@ -37,7 +37,7 @@ import static com.rocketdan.serviceserver.oauth.repository.OAuth2AuthorizationRe
 public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
 
     private final JwtAuthTokenProvider jwtAuthTokenProvider;
-    private final AuthConfig authConfig;
+    private final AppProperties appProperties;
 //    private final UserRefreshTokenRepository userRefreshTokenRepository;
     private final OAuth2AuthorizationRequestBasedOnCookieRepository authorizationRequestRepository;
 
@@ -132,7 +132,7 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
     private boolean isAuthorizedRedirectUri(String uri) {
         URI clientRedirectUri = URI.create(uri);
 
-        return authConfig.getOauth2().getAuthorizedRedirectUris()
+        return appProperties.getOauth2().getAuthorizedRedirectUris()
                 .stream()
                 .anyMatch(authorizedRedirectUri -> {
                     // Only validate host and port. Let the clients use different paths if they want to
