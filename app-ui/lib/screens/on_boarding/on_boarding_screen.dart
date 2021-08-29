@@ -15,7 +15,7 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
   final introKey = GlobalKey<IntroductionScreenState>();
 
   void _onIntroEnd(context) {
-    Navigator.of(context).push(_createRoute());
+    Navigator.of(context).push(_routeToSignInScreen());
   }
 
   @override
@@ -90,7 +90,7 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
   }
 }
 
-Route _createRoute() {
+Route _routeToSignInScreen() {
   return PageRouteBuilder(
     pageBuilder: (context, animation, secondaryAnimation) =>
         const SignInScreen(),
