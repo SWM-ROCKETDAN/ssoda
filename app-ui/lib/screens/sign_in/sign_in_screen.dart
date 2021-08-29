@@ -8,12 +8,7 @@ import 'package:hashchecker/constants.dart';
 import 'package:hashchecker/models/token.dart';
 import 'package:hashchecker/models/user_social_account.dart';
 import 'package:hashchecker/screens/create_event/create_event_step/create_event_step_screen.dart';
-import 'package:kakao_flutter_sdk/auth.dart';
-import 'package:kakao_flutter_sdk/user.dart';
-import 'package:kakao_flutter_sdk/common.dart';
-import 'package:flutter_naver_login/flutter_naver_login.dart';
 import 'package:http/http.dart' as http;
-import 'package:ms_undraw/ms_undraw.dart';
 import 'package:provider/provider.dart';
 
 import 'components/kakao_sign_in_button.dart';
@@ -46,11 +41,11 @@ class _SignInScreenState extends State<SignInScreen> {
                         SizedBox(height: kDefaultPadding),
                         Text('시작하기',
                             style: TextStyle(
-                                fontSize: 24.0, fontWeight: FontWeight.bold)),
+                                fontSize: 25.0, fontWeight: FontWeight.bold)),
                         SizedBox(height: kDefaultPadding),
-                        Text('안녕하세요, 사장님!\n네이버 또는 카카오를 통해 로그인해주세요.',
+                        Text('네이버 또는 카카오를 통해 로그인 해주세요.',
                             textAlign: TextAlign.center,
-                            style: TextStyle(fontSize: 17.0)),
+                            style: TextStyle(fontSize: 17.0, height: 1.2)),
                       ]),
                 ),
                 Container(

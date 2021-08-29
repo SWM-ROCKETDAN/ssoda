@@ -2,14 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:hashchecker/constants.dart';
-import 'package:hashchecker/env.dart';
 import 'package:hashchecker/models/token.dart';
 import 'package:hashchecker/screens/event_list/event_list_screen.dart';
 import 'package:hashchecker/screens/hall/hall_screen.dart';
 import 'package:hashchecker/screens/on_boarding/on_boarding_screen.dart';
 import 'package:hashchecker/screens/sign_in/sign_in_screen.dart';
 import 'package:hashchecker/screens/splash/splash_screen.dart';
-import 'package:kakao_flutter_sdk/user.dart';
 import 'package:provider/provider.dart';
 
 void main() {
@@ -17,7 +15,6 @@ void main() {
       statusBarColor: Colors.transparent,
       statusBarIconBrightness: Brightness.dark,
       statusBarBrightness: Brightness.dark));
-  KakaoContext.clientId = KAKAO_APP_KEY;
   runApp(Provider(create: (context) => Token(), child: MyApp()));
 }
 
