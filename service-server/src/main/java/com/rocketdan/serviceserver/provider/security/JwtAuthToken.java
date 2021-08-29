@@ -24,9 +24,9 @@ public class JwtAuthToken implements AuthToken<Claims> {
         this.key = key;
     }
 
-    JwtAuthToken(String email, String role, Date expiredDate, Key key) {
+    JwtAuthToken(String id, String role, Date expiredDate, Key key) {
         this.key = key;
-        this.token = createJwtAuthToken(email, role, expiredDate).get();
+        this.token = createJwtAuthToken(id, role, expiredDate).get();
     }
 
     @Override
@@ -58,10 +58,10 @@ public class JwtAuthToken implements AuthToken<Claims> {
     }
 
     // 로그인 요청 및 JWT 토큰을 생성
-    private Optional<String> createJwtAuthToken(String email, String role, Date expiredDate) {
+    private Optional<String> createJwtAuthToken(String id, String role, Date expiredDate) {
 
         var token = Jwts.builder()
-                .setSubject(email)
+                .setSubject(id)
                 .claim(AUTHORITIES_KEY, role)
                 .signWith(key, SignatureAlgorithm.HS256)
                 .setExpiration(expiredDate) // 토큰 만료 시간 지정

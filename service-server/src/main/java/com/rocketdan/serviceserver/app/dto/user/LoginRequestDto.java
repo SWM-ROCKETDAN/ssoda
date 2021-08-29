@@ -6,15 +6,13 @@ import lombok.Getter;
 
 @Getter
 public class LoginRequestDto {
-    private String name;
-    private String email;
-    private String picture;
+    private String id;
+    private String password;
 
     public User toEntity() {
         return User.builder()
-                .name(name)
-                .email(email)
-                .picture(picture)
+                .userId(id)
+                .password(password)
                 .role(Role.USER)
                 .build();
     }
