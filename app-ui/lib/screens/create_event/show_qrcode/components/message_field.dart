@@ -21,7 +21,7 @@ class MessageField extends StatelessWidget {
                 '이벤트가 등록되었습니다 ',
                 style: TextStyle(
                     fontSize: 20,
-                    fontWeight: FontWeight.w800,
+                    fontWeight: FontWeight.bold,
                     color: kDefaultFontColor),
               ),
             ]),

@@ -21,7 +21,7 @@ class _OnboardingState extends State<Onboarding> {
     const bodyStyle = TextStyle(fontSize: 19.0);
 
     const pageDecoration = const PageDecoration(
-      titleTextStyle: TextStyle(fontSize: 28.0, fontWeight: FontWeight.w800),
+      titleTextStyle: TextStyle(fontSize: 28.0, fontWeight: FontWeight.bold),
       bodyTextStyle: bodyStyle,
       descriptionPadding: EdgeInsets.fromLTRB(16.0, 0.0, 16.0, 16.0),
       pageColor: kScaffoldBackgroundColor,
@@ -35,7 +35,7 @@ class _OnboardingState extends State<Onboarding> {
       pages: [
         PageViewModel(
           title: "온보딩 제목",
-          body: "SSDOA는 소상공인을 위한 SNS 해시태그 이벤트 매니저입니다.",
+          body: "SSODA는 소상공인을 위한 SNS 해시태그 이벤트 마케팅 매니저입니다.",
           image: Container(color: Colors.blueGrey, width: 100, height: 100),
           decoration: pageDecoration,
         ),
@@ -112,7 +112,7 @@ class _OnboardingState extends State<Onboarding> {
       //rtl: true, // Display as right-to-left
       skip: const Text('건너뛰기'),
       next: const Icon(Icons.arrow_forward_ios_rounded),
-      done: const Text('시작', style: TextStyle(fontWeight: FontWeight.w600)),
+      done: const Text('시작하기', style: TextStyle(fontWeight: FontWeight.w600)),
       curve: Curves.fastLinearToSlowEaseIn,
       controlsMargin: const EdgeInsets.all(16),
       controlsPadding: kIsWeb

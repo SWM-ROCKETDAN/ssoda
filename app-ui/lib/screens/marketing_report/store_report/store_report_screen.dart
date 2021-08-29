@@ -72,7 +72,7 @@ class _StoreReportScreenState extends State<StoreReportScreen> {
               Text(
                 '리포트 요약',
                 style: TextStyle(
-                    fontWeight: FontWeight.w800,
+                    fontWeight: FontWeight.bold,
                     fontSize: 24,
                     color: kDefaultFontColor),
               ),
@@ -86,7 +86,7 @@ class _StoreReportScreenState extends State<StoreReportScreen> {
                   Text(
                     '이벤트 별 리포트',
                     style: TextStyle(
-                        fontWeight: FontWeight.w800,
+                        fontWeight: FontWeight.bold,
                         fontSize: 24,
                         color: kDefaultFontColor),
                   ),
@@ -101,9 +101,9 @@ class _StoreReportScreenState extends State<StoreReportScreen> {
                       iconSize: 24,
                       elevation: 0,
                       style: TextStyle(
-                          color: kDefaultFontColor,
-                          fontSize: 13,
-                          fontFamily: 'NanumSquareRound'),
+                        color: kDefaultFontColor,
+                        fontSize: 13,
+                      ),
                       underline: Container(
                         height: 0,
                         color: kDefaultFontColor,

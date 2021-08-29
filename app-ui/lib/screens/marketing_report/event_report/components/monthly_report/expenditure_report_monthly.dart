@@ -46,7 +46,7 @@ class _ExpenditureReportMonthlyState extends State<ExpenditureReportMonthly> {
             Text('이번 달에',
                 style: TextStyle(
                     color: kDefaultFontColor,
-                    fontWeight: FontWeight.w800,
+                    fontWeight: FontWeight.bold,
                     fontSize: 14)),
             DeltaData(
                 value: 13400, icon: Icons.arrow_drop_up, color: Colors.green)
@@ -58,7 +58,7 @@ class _ExpenditureReportMonthlyState extends State<ExpenditureReportMonthly> {
               Text('총 ',
                   style: TextStyle(
                       color: kDefaultFontColor,
-                      fontWeight: FontWeight.w800,
+                      fontWeight: FontWeight.bold,
                       fontSize: 18)),
               NumberSlideAnimation(
                 number: (widget.eventReport.costSum ~/ 3).toString(),
@@ -67,21 +67,21 @@ class _ExpenditureReportMonthlyState extends State<ExpenditureReportMonthly> {
                 textStyle: TextStyle(
                     color: kThemeColor,
                     fontSize: 32,
-                    fontWeight: FontWeight.w800),
+                    fontWeight: FontWeight.bold),
                 format: NumberFormatMode.comma,
               ),
               Text(
                 ' 원 ',
                 style: TextStyle(
                     color: kDefaultFontColor,
-                    fontWeight: FontWeight.w800,
+                    fontWeight: FontWeight.bold,
                     fontSize: 18),
               ),
               Text(
                 '사용하였습니다',
                 style: TextStyle(
                     color: kDefaultFontColor,
-                    fontWeight: FontWeight.w800,
+                    fontWeight: FontWeight.bold,
                     fontSize: 18),
               ),
             ],
@@ -163,7 +163,7 @@ class _ExpenditureReportMonthlyState extends State<ExpenditureReportMonthly> {
                 rewardName + '\n',
                 TextStyle(
                   color: kThemeColor,
-                  fontWeight: FontWeight.w800,
+                  fontWeight: FontWeight.bold,
                   fontSize: 18,
                 ),
                 children: <TextSpan>[
@@ -196,7 +196,7 @@ class _ExpenditureReportMonthlyState extends State<ExpenditureReportMonthly> {
           showTitles: true,
           getTextStyles: (context, value) => const TextStyle(
               color: kDefaultFontColor,
-              fontWeight: FontWeight.w800,
+              fontWeight: FontWeight.bold,
               fontSize: 14),
           margin: 16,
           getTitles: (double value) {

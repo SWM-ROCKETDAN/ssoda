@@ -97,7 +97,7 @@ class _EventHashtagsState extends State<EventHashtags> {
                 title: Center(
                   child: Text(
                     '해시태그 추가하기',
-                    style: TextStyle(fontWeight: FontWeight.w800, fontSize: 18),
+                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
                   ),
                 ),
                 content: IntrinsicHeight(
@@ -138,7 +138,7 @@ class _EventHashtagsState extends State<EventHashtags> {
                         },
                         child: Text(
                           '추가',
-                          style: TextStyle(fontWeight: FontWeight.w800),
+                          style: TextStyle(fontWeight: FontWeight.bold),
                         )),
                   )
                 ],

@@ -75,7 +75,7 @@ class _EventReportScreenState extends State<EventReportScreen> {
                             '마케팅 성과 리포트',
                             style: TextStyle(
                                 color: Colors.white,
-                                fontWeight: FontWeight.w800,
+                                fontWeight: FontWeight.bold,
                                 fontSize: 18),
                             maxLines: 1,
                           )

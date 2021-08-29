@@ -48,7 +48,7 @@ class _SignInScreenState extends State<SignInScreen> {
                           style: TextStyle(
                               color: kThemeColor,
                               fontSize: 36,
-                              fontWeight: FontWeight.w800),
+                              fontWeight: FontWeight.bold),
                         )
                       ]),
                 ),
@@ -90,7 +90,7 @@ class _SignInScreenState extends State<SignInScreen> {
             title: Center(
                 child: Text(
               "로그인 오류",
-              style: TextStyle(fontWeight: FontWeight.w800, fontSize: 18),
+              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
             )),
             content: IntrinsicHeight(
               child: Column(children: [

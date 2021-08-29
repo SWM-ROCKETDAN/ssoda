@@ -76,7 +76,7 @@ class _PandaBarButtonState extends State<PandaBarButton>
                     color: widget.isSelected
                         ? (widget.selectedColor ?? Color(0xFF078DF0))
                         : (widget.unselectedColor ?? Color(0xFF9FACBE)),
-                    fontWeight: FontWeight.w800,
+                    fontWeight: FontWeight.bold,
                     fontSize: 10))
           ],
         ),

@@ -15,7 +15,7 @@ class EventHashtags extends StatelessWidget {
     return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
       Text('필수 해시태그',
           style: TextStyle(
-              fontWeight: FontWeight.w800,
+              fontWeight: FontWeight.bold,
               fontSize: 17,
               color: kDefaultFontColor)),
       SizedBox(height: kDefaultPadding),

@@ -16,7 +16,7 @@ class EventRequirements extends StatelessWidget {
     return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
       Text('추가 조건',
           style: TextStyle(
-              fontWeight: FontWeight.w800,
+              fontWeight: FontWeight.bold,
               fontSize: 17,
               color: kDefaultFontColor)),
       SizedBox(height: kDefaultPadding),

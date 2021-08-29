@@ -46,7 +46,7 @@ class _EventTemplateState extends State<EventTemplate> {
                             style: TextStyle(
                               color: Colors.white,
                               fontSize: 20.0,
-                              fontWeight: FontWeight.w800,
+                              fontWeight: FontWeight.bold,
                             ),
                           ),
                         ),

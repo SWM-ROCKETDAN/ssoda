@@ -70,7 +70,7 @@ class Logo extends StatelessWidget {
                     Text('우리가게 SNS 이벤트 마케팅 매니저',
                         textAlign: TextAlign.center,
                         style: TextStyle(
-                            fontWeight: FontWeight.w800,
+                            fontWeight: FontWeight.bold,
                             fontFamily: 'NanumSquareRound',
                             fontSize: 15,
                             color: value.get(AniProps.color))),

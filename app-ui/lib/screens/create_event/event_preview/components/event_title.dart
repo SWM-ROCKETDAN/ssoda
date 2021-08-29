@@ -17,7 +17,7 @@ class EventTitle extends StatelessWidget {
       padding: const EdgeInsets.symmetric(horizontal: 20),
       child: AutoSizeText(event.title,
           style: TextStyle(
-              fontWeight: FontWeight.w800,
+              fontWeight: FontWeight.bold,
               fontSize: 24,
               color: kDefaultFontColor),
           maxLines: 1,

@@ -12,11 +12,9 @@ import 'package:provider/provider.dart';
 
 void main() {
   SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
-      systemNavigationBarColor: Colors.white,
-      systemNavigationBarIconBrightness: Brightness.dark,
       statusBarColor: Colors.transparent,
-      statusBarBrightness: Brightness.dark,
-      statusBarIconBrightness: Brightness.dark));
+      statusBarIconBrightness: Brightness.dark,
+      statusBarBrightness: Brightness.dark));
   KakaoContext.clientId = KAKAO_APP_KEY;
   runApp(Provider(create: (context) => Token(), child: MyApp()));
 }
@@ -24,38 +22,33 @@ void main() {
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    /*
     return FutureBuilder(
       future: Init.instance.initialize(),
       builder: (context, AsyncSnapshot snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return MaterialApp(home: SplashScreen());
         } else {
-          */
-    return MaterialApp(
-        debugShowCheckedModeBanner: false,
-        title: 'SSODA',
-        localizationsDelegates: [
-          GlobalMaterialLocalizations.delegate,
-          GlobalWidgetsLocalizations.delegate,
-        ],
-        supportedLocales: [
-          const Locale('ko'),
-        ],
-        locale: const Locale('ko'),
-        theme: ThemeData(
-            primarySwatch: _createMaterialColor(kThemeColor),
-            visualDensity: VisualDensity.adaptivePlatformDensity,
-            scaffoldBackgroundColor: kScaffoldBackgroundColor,
-            accentColor: kShadowColor),
-        home: SignInScreen());
-  }
-  /*
+          return MaterialApp(
+              debugShowCheckedModeBanner: false,
+              title: 'SSODA',
+              localizationsDelegates: [
+                GlobalMaterialLocalizations.delegate,
+                GlobalWidgetsLocalizations.delegate,
+              ],
+              supportedLocales: [
+                const Locale('ko'),
+              ],
+              locale: const Locale('ko'),
+              theme: ThemeData(
+                  primarySwatch: _createMaterialColor(kThemeColor),
+                  visualDensity: VisualDensity.adaptivePlatformDensity,
+                  scaffoldBackgroundColor: kScaffoldBackgroundColor,
+                  accentColor: kShadowColor),
+              home: SignInScreen());
+        }
       },
     );
-    
   }
-  */
 
   MaterialColor _createMaterialColor(Color color) {
     List<double> strengths = [.05];

@@ -21,7 +21,7 @@ class EventDescription extends StatelessWidget {
           TextSpan(
               text: _createRewardNameList(),
               style: TextStyle(
-                  fontWeight: FontWeight.w800, color: kDefaultFontColor)),
+                  fontWeight: FontWeight.bold, color: kDefaultFontColor)),
           TextSpan(text: ' 받아가세요!')
         ]),
         textAlign: TextAlign.center,

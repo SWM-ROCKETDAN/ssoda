@@ -13,7 +13,7 @@ class CloseDetailButton extends StatelessWidget {
         child: Text(
           '확인',
           style: TextStyle(
-              color: Colors.white, fontSize: 16, fontWeight: FontWeight.w800),
+              color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold),
         ),
         onPressed: () {
           Navigator.pop(context);

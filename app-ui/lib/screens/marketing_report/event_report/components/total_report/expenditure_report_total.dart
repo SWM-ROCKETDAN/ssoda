@@ -47,7 +47,7 @@ class _ExpenditureReportTotalState extends State<ExpenditureReportTotal> {
               Text('총 ',
                   style: TextStyle(
                       color: kDefaultFontColor,
-                      fontWeight: FontWeight.w800,
+                      fontWeight: FontWeight.bold,
                       fontSize: 18)),
               NumberSlideAnimation(
                 number: widget.eventReport.costSum.toString(),
@@ -56,21 +56,21 @@ class _ExpenditureReportTotalState extends State<ExpenditureReportTotal> {
                 textStyle: TextStyle(
                     color: kThemeColor,
                     fontSize: 32,
-                    fontWeight: FontWeight.w800),
+                    fontWeight: FontWeight.bold),
                 format: NumberFormatMode.comma,
               ),
               Text(
                 ' 원 ',
                 style: TextStyle(
                     color: kDefaultFontColor,
-                    fontWeight: FontWeight.w800,
+                    fontWeight: FontWeight.bold,
                     fontSize: 18),
               ),
               Text(
                 '사용하였습니다',
                 style: TextStyle(
                     color: kDefaultFontColor,
-                    fontWeight: FontWeight.w800,
+                    fontWeight: FontWeight.bold,
                     fontSize: 18),
               )
             ],
@@ -152,7 +152,7 @@ class _ExpenditureReportTotalState extends State<ExpenditureReportTotal> {
                 rewardName + '\n',
                 TextStyle(
                   color: kThemeColor,
-                  fontWeight: FontWeight.w800,
+                  fontWeight: FontWeight.bold,
                   fontSize: 18,
                 ),
                 children: <TextSpan>[
@@ -185,7 +185,7 @@ class _ExpenditureReportTotalState extends State<ExpenditureReportTotal> {
           showTitles: true,
           getTextStyles: (context, value) => const TextStyle(
               color: kDefaultFontColor,
-              fontWeight: FontWeight.w800,
+              fontWeight: FontWeight.bold,
               fontSize: 14),
           margin: 16,
           getTitles: (double value) {

@@ -88,7 +88,7 @@ class _EventEditModalState extends State<EventEditModal> {
                   title: Center(
                     child: Text('이벤트 수정',
                         style: TextStyle(
-                            fontWeight: FontWeight.w800,
+                            fontWeight: FontWeight.bold,
                             fontSize: 18,
                             color: kDefaultFontColor),
                         textAlign: TextAlign.center),
@@ -193,7 +193,7 @@ class _EventEditModalState extends State<EventEditModal> {
                   title: Center(
                     child: Text('이벤트 수정',
                         style: TextStyle(
-                            fontWeight: FontWeight.w800,
+                            fontWeight: FontWeight.bold,
                             fontSize: 18,
                             color: kDefaultFontColor),
                         textAlign: TextAlign.center),
@@ -225,7 +225,7 @@ class _EventEditModalState extends State<EventEditModal> {
             style: TextStyle(
                 color: Colors.white,
                 fontSize: 14,
-                fontWeight: FontWeight.w800)),
+                fontWeight: FontWeight.bold)),
         style: ButtonStyle(
             shadowColor: MaterialStateProperty.all<Color>(kShadowColor),
             backgroundColor: MaterialStateProperty.all<Color>(kThemeColor),
@@ -266,7 +266,7 @@ class _EventEditModalState extends State<EventEditModal> {
                                         : kLiteFontColor,
                                     fontSize: 11,
                                     fontWeight: event.requireList[index]
-                                        ? FontWeight.w800
+                                        ? FontWeight.bold
                                         : FontWeight.normal),
                                 textAlign: TextAlign.center,
                               ),
@@ -307,7 +307,7 @@ class _EventEditModalState extends State<EventEditModal> {
         style: TextStyle(
             color: kDefaultFontColor,
             fontSize: 19,
-            fontWeight: FontWeight.w800),
+            fontWeight: FontWeight.bold),
       ),
       centerTitle: true,
     );
@@ -526,7 +526,7 @@ class _EventEditModalState extends State<EventEditModal> {
                 style: TextStyle(
                     color: kDefaultFontColor.withOpacity(0.85),
                     fontSize: 14,
-                    fontWeight: FontWeight.w800))
+                    fontWeight: FontWeight.bold))
             : ElevatedButton(
                 onPressed: () {
                   showDialog(
@@ -754,7 +754,7 @@ class _EventEditModalState extends State<EventEditModal> {
                                 Text(
                                   '${index + 1}단계',
                                   style: TextStyle(
-                                      fontWeight: FontWeight.w800,
+                                      fontWeight: FontWeight.bold,
                                       fontSize: 16,
                                       color: Colors.white),
                                 ),
@@ -808,7 +808,7 @@ class _EventEditModalState extends State<EventEditModal> {
               hintStyle: TextStyle(
                   color: kLiteFontColor,
                   fontSize: 15,
-                  fontWeight: FontWeight.w800))),
+                  fontWeight: FontWeight.bold))),
     );
   }
 
@@ -823,7 +823,7 @@ class _EventEditModalState extends State<EventEditModal> {
                 title: Center(
                   child: Text(
                     '해시태그 추가하기',
-                    style: TextStyle(fontWeight: FontWeight.w800, fontSize: 18),
+                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
                   ),
                 ),
                 content: IntrinsicHeight(
@@ -864,7 +864,7 @@ class _EventEditModalState extends State<EventEditModal> {
                         },
                         child: Text(
                           '추가',
-                          style: TextStyle(fontWeight: FontWeight.w800),
+                          style: TextStyle(fontWeight: FontWeight.bold),
                         )),
                   )
                 ],
@@ -916,7 +916,7 @@ class Section extends StatelessWidget {
     return Text(
       text,
       style: TextStyle(
-          color: kDefaultFontColor, fontSize: 18, fontWeight: FontWeight.w800),
+          color: kDefaultFontColor, fontSize: 18, fontWeight: FontWeight.bold),
     );
   }
 }

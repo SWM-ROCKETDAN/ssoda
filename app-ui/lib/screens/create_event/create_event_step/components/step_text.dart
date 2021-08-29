@@ -27,7 +27,7 @@ class StepText extends StatelessWidget {
       style: TextStyle(
           height: 1.2,
           fontSize: 24,
-          fontWeight: FontWeight.w800,
+          fontWeight: FontWeight.bold,
           color: kDefaultFontColor),
     );
   }
