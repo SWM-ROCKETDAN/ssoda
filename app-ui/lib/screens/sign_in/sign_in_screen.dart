@@ -8,7 +8,6 @@ import 'package:hashchecker/constants.dart';
 import 'package:hashchecker/models/token.dart';
 import 'package:hashchecker/models/user_social_account.dart';
 import 'package:hashchecker/screens/create_event/create_event_step/create_event_step_screen.dart';
-import 'package:hashchecker/screens/sign_in/components/onboarding.dart';
 import 'package:kakao_flutter_sdk/auth.dart';
 import 'package:kakao_flutter_sdk/user.dart';
 import 'package:kakao_flutter_sdk/common.dart';
@@ -34,7 +33,7 @@ class _SignInScreenState extends State<SignInScreen> {
 
     return Scaffold(
       body: Container(
-          padding: const EdgeInsets.fromLTRB(20, 20, 20, 30),
+          padding: const EdgeInsets.fromLTRB(20, 0, 20, 30),
           child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.center,
@@ -43,13 +42,15 @@ class _SignInScreenState extends State<SignInScreen> {
                   child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Text(
-                          '안녕하세요,\n사장님!',
-                          style: TextStyle(
-                              color: kThemeColor,
-                              fontSize: 36,
-                              fontWeight: FontWeight.bold),
-                        )
+                        Image.asset('assets/images/sign_in/hello.png'),
+                        SizedBox(height: kDefaultPadding),
+                        Text('시작하기',
+                            style: TextStyle(
+                                fontSize: 24.0, fontWeight: FontWeight.bold)),
+                        SizedBox(height: kDefaultPadding),
+                        Text('안녕하세요, 사장님!\n네이버 또는 카카오를 통해 로그인해주세요.',
+                            textAlign: TextAlign.center,
+                            style: TextStyle(fontSize: 17.0)),
                       ]),
                 ),
                 Container(
@@ -75,11 +76,7 @@ class _SignInScreenState extends State<SignInScreen> {
 
   Future<void> naverLoginPressed() async {}
 
-  Future<void> kakaoLoginPressed() async {
-    Navigator.of(context).push(
-      MaterialPageRoute(builder: (_) => Onboarding()),
-    );
-  }
+  Future<void> kakaoLoginPressed() async {}
 
   Future<void> signIn(UserSocialAccount account) async {}
 

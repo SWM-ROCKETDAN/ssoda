@@ -4,7 +4,9 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:hashchecker/constants.dart';
 import 'package:hashchecker/env.dart';
 import 'package:hashchecker/models/token.dart';
+import 'package:hashchecker/screens/event_list/event_list_screen.dart';
 import 'package:hashchecker/screens/hall/hall_screen.dart';
+import 'package:hashchecker/screens/on_boarding/on_boarding_screen.dart';
 import 'package:hashchecker/screens/sign_in/sign_in_screen.dart';
 import 'package:hashchecker/screens/splash/splash_screen.dart';
 import 'package:kakao_flutter_sdk/user.dart';
@@ -44,7 +46,7 @@ class MyApp extends StatelessWidget {
                   visualDensity: VisualDensity.adaptivePlatformDensity,
                   scaffoldBackgroundColor: kScaffoldBackgroundColor,
                   accentColor: kShadowColor),
-              home: SignInScreen());
+              home: OnBoardingScreen());
         }
       },
     );
