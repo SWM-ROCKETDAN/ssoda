@@ -24,7 +24,7 @@ class _SignInScreenState extends State<SignInScreen> {
 
     return Scaffold(
       body: Container(
-          padding: const EdgeInsets.fromLTRB(20, 0, 20, 30),
+          padding: const EdgeInsets.fromLTRB(20, 0, 20, 16),
           child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.center,
@@ -34,14 +34,13 @@ class _SignInScreenState extends State<SignInScreen> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Image.asset('assets/images/sign_in/hello.png'),
-                        SizedBox(height: kDefaultPadding),
                         Text('시작하기',
                             style: TextStyle(
-                                fontSize: 25.0, fontWeight: FontWeight.bold)),
-                        SizedBox(height: kDefaultPadding),
-                        Text('네이버 또는 카카오를 통해 로그인 해주세요.',
-                            textAlign: TextAlign.center,
-                            style: TextStyle(fontSize: 17.0, height: 1.2)),
+                                fontSize: 12.0, color: kLiteFontColor)),
+                        SizedBox(height: kDefaultPadding / 2),
+                        Text('안녕하세요, 사장님',
+                            style: TextStyle(
+                                fontSize: 26.0, fontWeight: FontWeight.bold)),
                       ]),
                 ),
                 Container(
@@ -56,6 +55,10 @@ class _SignInScreenState extends State<SignInScreen> {
                         size: size,
                         signIn: kakaoLoginPressed,
                       ),
+                      SizedBox(height: kDefaultPadding / 3 * 2),
+                      Text('로그인 할 플랫폼을 선택해주세요!',
+                          style:
+                              TextStyle(fontSize: 12.0, color: kLiteFontColor)),
                     ],
                   ),
                   decoration:
