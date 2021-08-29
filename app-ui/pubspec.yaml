@@ -31,7 +31,7 @@ dependencies:
   gallery_saver: ^2.1.2
   dio: ^4.0.0
   animations: ^2.0.1
-  ms_undraw: ^3.0.0+0
+  ms_undraw: ^3.0.1+1
   flutter_staggered_animations: ^1.0.0
   modal_bottom_sheet: ^2.0.0
   syncfusion_flutter_datepicker: ^19.2.56
@@ -51,12 +51,7 @@ flutter:
     - assets/images/event_report/
     - assets/images/sign_in/
     - assets/images/splash/
-  
-  fonts:
-    - family: NanumSquareRound
-      fonts:
-        - asset: assets/fonts/NanumSquareRoundB.ttf
-        - asset: assets/fonts/NanumSquareRoundEB.ttf
-          weight: 800
+    - assets/images/event_list/
+    - assets/images/on_boarding/
           
   uses-material-design: true
