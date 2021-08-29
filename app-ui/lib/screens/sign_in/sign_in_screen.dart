@@ -1,14 +1,10 @@
 import 'dart:async';
-import 'dart:convert';
-
-import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_web_auth/flutter_web_auth.dart';
 import 'package:hashchecker/api.dart';
 import 'package:hashchecker/constants.dart';
 import 'package:hashchecker/models/token.dart';
-import 'package:hashchecker/models/user_social_account.dart';
-import 'package:hashchecker/screens/create_event/create_event_step/create_event_step_screen.dart';
-import 'package:http/http.dart' as http;
+import 'package:hashchecker/screens/hall/hall_screen.dart';
 import 'package:provider/provider.dart';
 
 import 'components/kakao_sign_in_button.dart';
@@ -69,11 +65,27 @@ class _SignInScreenState extends State<SignInScreen> {
     );
   }
 
-  Future<void> naverLoginPressed() async {}
+  Future<void> naverLoginPressed() async {
+    try {
+      final url = Uri.parse(
+          'http://ec2-3-37-85-236.ap-northeast-2.compute.amazonaws.com:8080/oauth2/authorization/naver?redirect_uri=$kAppUrlScheme');
+
+      final result = await FlutterWebAuth.authenticate(
+          url: url.toString(), callbackUrlScheme: kAppUrlScheme);
+
+      final accessToken = Uri.parse(result).queryParameters['token'];
+
+      if (accessToken != null) {
+        context.read<Token>().token = accessToken;
+        Navigator.of(context).push(_routeToHallScreen());
+      } else
+        throw Exception;
+    } catch (e) {
+      showLoginFailDialog();
+    }
+  }
 
   Future<void> kakaoLoginPressed() async {}
-
-  Future<void> signIn(UserSocialAccount account) async {}
 
   void showLoginFailDialog() {
     showDialog(
@@ -104,4 +116,22 @@ class _SignInScreenState extends State<SignInScreen> {
             shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(15))));
   }
+}
+
+Route _routeToHallScreen() {
+  return PageRouteBuilder(
+    pageBuilder: (context, animation, secondaryAnimation) => const HallScreen(),
+    transitionsBuilder: (context, animation, secondaryAnimation, child) {
+      const begin = Offset(1.0, 0.0);
+      const end = Offset.zero;
+      const curve = Curves.ease;
+
+      var tween = Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+
+      return SlideTransition(
+        position: animation.drive(tween),
+        child: child,
+      );
+    },
+  );
 }
