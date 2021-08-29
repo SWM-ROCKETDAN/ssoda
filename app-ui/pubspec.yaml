@@ -22,8 +22,6 @@ dependencies:
   number_display: ^3.0.0
   http: ^0.13.3
   animated_text_kit: ^4.2.1
-  flutter_naver_login: ^1.2.2
-  kakao_flutter_sdk: ^0.7.0
   intl: ^0.17.0
   provider: ^5.0.0
   qr_flutter: ^4.0.0
@@ -31,13 +29,11 @@ dependencies:
   gallery_saver: ^2.1.2
   dio: ^4.0.0
   animations: ^2.0.1
-  ms_undraw: ^3.0.1+1
   flutter_staggered_animations: ^1.0.0
   modal_bottom_sheet: ^2.0.0
   syncfusion_flutter_datepicker: ^19.2.56
   flutter_native_splash: ^1.2.1
   simple_animations: ^3.1.1
-  google_fonts: ^2.1.0
   introduction_screen: ^2.1.0
     
 dev_dependencies:
@@ -48,7 +44,6 @@ flutter:
   assets:
     - assets/images/
     - assets/images/create_event_step_help/
-    - assets/images/event_report/
     - assets/images/sign_in/
     - assets/images/splash/
     - assets/images/event_list/
