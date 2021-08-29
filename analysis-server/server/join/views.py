@@ -11,19 +11,13 @@ from core.modules.join.post.post_scraper import PostScraper
 from core.modules.join.user.user_scraper import UserScraper
 from core.modules.join.reward.reward_calculator import RewardCalculator
 from core.exceptions import exceptions
+from core.modules.join.post.post_scraper_instagram import scrap_post
 
-from core.modules.join.post.post_scraper_facebook import scrap_post
-from core.modules.join.post.post_scraper_instagram import scrap_post as scrap_post_instagram
-
-# TEST_URL = 'https://www.facebook.com/155316101256398/posts/4290753117712655/'
-# TEST_URL = 'https://www.instagram.com/p/CH7RveenG_B/?utm_source=ig_web_copy_link'
 
 # JoinPost PUT 요청
 class JoinPostView(APIView):
     def put(self, request, pk):
         # Join Post 가져오기
-        # scrap_post(TEST_URL)
-        # raise exceptions.PostUpdateDontButOK()
         join_post = get_object_or_404(JoinPost, pk=pk)
         join_post_serializer = JoinPostSerializer(join_post)
         post_scraper = PostScraper(join_post_serializer.data)

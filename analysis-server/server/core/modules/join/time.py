@@ -11,6 +11,13 @@ def parse_from_str_time_to_date_time(str_time):
     return date_time
 
 
+def parse_from_utc_timestamp_to_date_time(timestamp):
+    date_time = datetime.datetime.fromtimestamp(int(timestamp)).strftime('%Y-%m-%dT%H:%M:%S')
+    date_time = parse_from_str_time_to_date_time(date_time)
+    date_time = date_time - datetime.timedelta(hours=9)
+    return date_time
+
+
 def get_interval_day_from_old_time_to_recent_time(old_time, recent_time):
     try:
         old_date_time = parse_from_str_time_to_date_time(old_time)
