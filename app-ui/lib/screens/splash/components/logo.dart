@@ -71,7 +71,6 @@ class Logo extends StatelessWidget {
                         textAlign: TextAlign.center,
                         style: TextStyle(
                             fontWeight: FontWeight.bold,
-                            fontFamily: 'NanumSquareRound',
                             fontSize: 15,
                             color: value.get(AniProps.color))),
                   ])),
