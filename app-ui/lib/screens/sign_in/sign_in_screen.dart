@@ -1,10 +1,12 @@
 import 'dart:async';
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_web_auth/flutter_web_auth.dart';
 import 'package:hashchecker/api.dart';
 import 'package:hashchecker/constants.dart';
 import 'package:hashchecker/models/token.dart';
 import 'package:hashchecker/screens/hall/hall_screen.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 
 import 'components/kakao_sign_in_button.dart';
@@ -69,26 +71,78 @@ class _SignInScreenState extends State<SignInScreen> {
   }
 
   Future<void> naverLoginPressed() async {
-    try {
-      final url = Uri.parse(
-          'http://ec2-3-37-85-236.ap-northeast-2.compute.amazonaws.com:8080/oauth2/authorization/naver?redirect_uri=$kAppUrlScheme');
+    final url =
+        Uri.parse('${getApi(API.NAVER_LOGIN)}?redirect_uri=$kAppUrlScheme');
 
-      final result = await FlutterWebAuth.authenticate(
-          url: url.toString(), callbackUrlScheme: kAppUrlScheme);
+    final result = await FlutterWebAuth.authenticate(
+        url: url.toString(), callbackUrlScheme: kAppUrlScheme);
 
-      final accessToken = Uri.parse(result).queryParameters['token'];
+    final accessToken = Uri.parse(result).queryParameters['token'];
 
-      if (accessToken != null) {
-        context.read<Token>().token = accessToken;
-        Navigator.of(context).push(_routeToHallScreen());
-      } else
-        throw Exception;
-    } catch (e) {
-      showLoginFailDialog();
-    }
+    context.read<Token>().token = accessToken;
+
+    Navigator.of(context).push(_routeToHallScreen());
   }
 
-  Future<void> kakaoLoginPressed() async {}
+  Future<void> kakaoLoginPressed() async {
+    final url =
+        Uri.parse('${getApi(API.KAKAO_LOGIN)}?redirect_uri=$kAppUrlScheme');
+
+    final result = await FlutterWebAuth.authenticate(
+        url: url.toString(), callbackUrlScheme: kAppUrlScheme);
+
+    final accessToken = Uri.parse(result).queryParameters['token'];
+
+    context.read<Token>().token = accessToken;
+
+    Navigator.of(context).push(_routeToHallScreen());
+
+    /* LOGOUT TEST CODE
+    var dio = Dio();
+    dio.options.headers['Authorization'] = 'Bearer $accessToken';
+
+    final response = await dio.get('$baseUrl/logout');
+
+    print(response.data);
+    */
+  }
+
+  Future<void> createStore() async {
+    var dio = Dio();
+    dio.options.headers['Authorization'] =
+        'Bearer ${context.read<Token>().token!}';
+
+    final getUserInfoResponse = await dio.get(getApi(API.GET_USER_INFO));
+
+    final id = getUserInfoResponse.data['id'];
+
+    dio.options.contentType = 'multipart/form-data';
+
+    final ImagePicker _imagePicker = ImagePicker();
+    final XFile? image =
+        await _imagePicker.pickImage(source: ImageSource.gallery);
+
+    var storeData = FormData.fromMap({
+      'name': 'yjyoon_store',
+      'category': 1,
+      'city': '서울',
+      'country': '광진구',
+      'town': '광장동',
+      'roadCode': '000000000000',
+      'road': '아차산로 549',
+      'zipCode': '04983',
+      'description': '상세 설명',
+      'images': [
+        await MultipartFile.fromFile(image!.path),
+      ]
+    });
+
+    final createStoreResponse = await dio.post(
+        getApi(API.CREATE_STORE, parameter: id.toString()),
+        data: storeData);
+
+    print(createStoreResponse.data);
+  }
 
   void showLoginFailDialog() {
     showDialog(
