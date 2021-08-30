@@ -1,10 +1,12 @@
 package com.rocketdan.serviceserver.service;
 
+import com.rocketdan.serviceserver.Exception.resource.NoAuthorityToResourceException;
 import com.rocketdan.serviceserver.app.dto.event.EventListResponseDto;
 import com.rocketdan.serviceserver.app.dto.store.StoreListResponseDto;
 import com.rocketdan.serviceserver.app.dto.store.StoreResponseDto;
 import com.rocketdan.serviceserver.app.dto.store.StoreSaveRequestDto;
 import com.rocketdan.serviceserver.app.dto.store.StoreUpdateRequestDto;
+import com.rocketdan.serviceserver.config.auth.UserIdValidCheck;
 import com.rocketdan.serviceserver.domain.store.Store;
 import com.rocketdan.serviceserver.domain.store.StoreRepository;
 import com.rocketdan.serviceserver.domain.user.User;
@@ -25,22 +27,33 @@ public class StoreService {
 
     private final ImageManagerService imageManagerService;
 
+    private final UserIdValidCheck userIdValidCheck;
+
     @Transactional
-    public Long save(Long user_id, StoreSaveRequestDto requestDto, List<String> images) {
+    public Long save(Long user_id, StoreSaveRequestDto requestDto, org.springframework.security.core.userdetails.User principal) throws NoAuthorityToResourceException {
         User linkedUser = userRepository.findById(user_id).orElseThrow(() -> new IllegalArgumentException("해당 유저가 없습니다. id=" + user_id));
-        Store savedStore = requestDto.toEntity(images);
+
+        // valid 하지 않으면 exception 발생
+        userIdValidCheck.userIdValidCheck(linkedUser.getUserId(), principal);
+
+        List<String> imgPaths = imageManagerService.upload("image/store", requestDto.getImages());
+        Store savedStore = requestDto.toEntity(imgPaths);
         savedStore.setUser(linkedUser);
 
         return storeRepository.save(savedStore).getId();
     }
 
     @Transactional
-    public Long update(Long id, StoreUpdateRequestDto requestDto, List<String> images) {
+    public Long update(Long id, StoreUpdateRequestDto requestDto, org.springframework.security.core.userdetails.User principal) throws NoAuthorityToResourceException {
         Store store = storeRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("해당 가게가 없습니다. id=" + id));
 
-        imageManagerService.delete(store.getImages());
+        // valid 하지 않으면 exception 발생
+        userIdValidCheck.userIdValidCheck(store.getUser().getUserId(), principal);
 
-        store.update(requestDto.getName(), requestDto.getCategory(), requestDto.getAddress(), requestDto.getDescription(), images);
+        imageManagerService.delete(store.getImages());
+        List<String> imgPaths = imageManagerService.upload("image/store", requestDto.getImages());
+
+        store.update(requestDto.getName(), requestDto.getCategory(), requestDto.getAddress(), requestDto.getDescription(), imgPaths);
         return id;
     }
 
@@ -67,8 +80,12 @@ public class StoreService {
                 .collect(Collectors.toList());
     }
 
-    public void softDelete(Long id) {
+    public void softDelete(Long id, org.springframework.security.core.userdetails.User principal) throws NoAuthorityToResourceException {
         Store store = storeRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("해당 가게가 없습니다. id=" + id));
+
+        // valid 하지 않으면 exception 발생
+        userIdValidCheck.userIdValidCheck(store.getUser().getUserId(), principal);
+
         storeRepository.delete(store);
     }
 }
