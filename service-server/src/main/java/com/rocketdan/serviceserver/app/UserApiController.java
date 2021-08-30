@@ -26,4 +26,10 @@ public class UserApiController {
         org.springframework.security.core.userdetails.User principal = (org.springframework.security.core.userdetails.User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         return userService.findByUserId(principal.getUsername());
     }
+
+    @DeleteMapping("/me")
+    public void delete() {
+        org.springframework.security.core.userdetails.User principal = (org.springframework.security.core.userdetails.User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        userService.delete(principal.getUsername());;
+    }
 }
