@@ -8,6 +8,7 @@ import com.rocketdan.serviceserver.domain.user.Role;
 import com.rocketdan.serviceserver.oauth.filter.TokenAuthenticationFilter;
 import com.rocketdan.serviceserver.oauth.handler.OAuth2AuthenticationFailureHandler;
 import com.rocketdan.serviceserver.oauth.handler.OAuth2AuthenticationSuccessHandler;
+import com.rocketdan.serviceserver.oauth.handler.RedirectingLogoutSuccessHandler;
 import com.rocketdan.serviceserver.oauth.handler.TokenAccessDeniedHandler;
 import com.rocketdan.serviceserver.oauth.repository.OAuth2AuthorizationRequestBasedOnCookieRepository;
 import com.rocketdan.serviceserver.oauth.service.CustomUserDetailsService;
@@ -78,6 +79,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                     .antMatchers("/api/**/admin/**").hasAnyAuthority(Role.ADMIN.getCode())
                     // 나머지는 인증된 사용자만 접근 허용
                     .anyRequest().authenticated()
+                .and()
+                    .logout()
+                    .logoutSuccessHandler(redirectingLogoutSuccessHandler())
                 .and()
                     // oauth2 기능 설정
                     .oauth2Login()
@@ -160,6 +164,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Bean
     public OAuth2AuthenticationFailureHandler oAuth2AuthenticationFailureHandler() {
         return new OAuth2AuthenticationFailureHandler(oAuth2AuthorizationRequestBasedOnCookieRepository());
+    }
+
+    /*
+    * Logout 성공 핸들러
+    * */
+    @Bean
+    public RedirectingLogoutSuccessHandler redirectingLogoutSuccessHandler() {
+        return new RedirectingLogoutSuccessHandler();
     }
 
     /*
