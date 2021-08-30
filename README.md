@@ -1,6 +1,6 @@
 <div align="center">
 
-![intro](/readme/introduction.gif)
+![introduction](/uploads/f71ae089b5cdccbca4534857ebafe958/introduction.gif)
 
 ### **SW 마에스트로 12기 로켓단 팀 SSODA**
 
@@ -21,7 +21,7 @@
 
 # 소개
 
-![main](/readme/main.png)
+![main](/uploads/64cbb6e007cd19d678480a785c9d3a25/image.png)
 
 <h3 align="center">
 
@@ -44,12 +44,12 @@ SSODA는 그동안 소상공인들이 오프라인에서 수동으로 진행하�
 # 서비스
 
 - 핵심 기능
-![features](/readme/features.png)
+![features](/uploads/312a35aab00584c7918d065438bdc2bf/image.png)
 
 <br>
 
 - 서비스 시나리오
-![scenario](/readme/scenario.png)
+![scenario](/uploads/d925bb2f387762dbda52b34b6d957de6/image.png)
 
 - 추후 추가 예정
 
@@ -58,12 +58,12 @@ SSODA는 그동안 소상공인들이 오프라인에서 수동으로 진행하�
 # 개발
 
 - 시스템 구성도
-![system](/readme/system.png)
+![system](/uploads/8e04ccf339d30c40e5fbb83d79e2595e/image.png)
 
 <br>
 
 - 피지컬 아키텍쳐
-![architecture](/readme/architecture.png)
+![architecture](/uploads/40661cec737bf5cbf81973a9e72fcbd6/image.png)
 
 - 추후 추가 예정
 
