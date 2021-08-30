@@ -8,6 +8,7 @@ import com.rocketdan.serviceserver.Exception.join.JoinEventFailedException;
 import com.rocketdan.serviceserver.Exception.auth.CustomAuthenticationException;
 import com.rocketdan.serviceserver.Exception.auth.CustomJwtRuntimeException;
 import com.rocketdan.serviceserver.Exception.auth.LoginFailedException;
+import com.rocketdan.serviceserver.Exception.resource.NoAuthorityToResourceException;
 import com.rocketdan.serviceserver.core.CommonResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -123,6 +124,8 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(response, HttpStatus.FORBIDDEN);
     }
 
+    // Analysis server
+
     @ExceptionHandler(AnalysisServerErrorException.class)
     protected ResponseEntity<CommonResponse> handleAnalysisServerErrorException(AnalysisServerErrorException e) {
 
@@ -135,6 +138,22 @@ public class GlobalExceptionHandler {
                 .build();
 
         return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    // resource
+
+    @ExceptionHandler(NoAuthorityToResourceException.class)
+    protected ResponseEntity<CommonResponse> handleNoAuthorityToResourceException(NoAuthorityToResourceException e) {
+
+        log.info("handleNoAuthorityToResourceException", e);
+
+        CommonResponse response = CommonResponse.builder()
+                .code(ErrorCode.NO_AUTHORITY.getCode())
+                .message(ErrorCode.NO_AUTHORITY.getMessage())
+                .status(ErrorCode.NO_AUTHORITY.getStatus())
+                .build();
+
+        return new ResponseEntity<>(response, HttpStatus.FORBIDDEN);
     }
 
 }

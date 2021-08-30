@@ -14,8 +14,11 @@ public enum ErrorCode {
     // 이벤트 참여
     DUPLICATE_POST_URL(403, "EVENT_JOIN001", "DUPLICATE_POST_URL."),
     JOIN_EVENT_FAILED(403, "EVENT_JOIN002", "JOIN_EVENT_FAILED."),
+    // Analysis server
+    ANALYSIS_SERVER_ERROR(500, "ANALYSIS001", "ANALYSIS_SERVER_ERROR."),
+    // 불법적인 리소스 접근
+    NO_AUTHORITY(403, "AUTHORITY001", "NO_AUTHORITY_TO_RESOURCE.");
 
-    ANALYSIS_SERVER_ERROR(500, "ANALYSIS001", "ANALYSIS_SERVER_ERROR.");
 
     private final String code;
     private final String message;

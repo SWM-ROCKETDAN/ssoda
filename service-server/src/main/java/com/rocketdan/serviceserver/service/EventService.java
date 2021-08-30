@@ -1,11 +1,13 @@
 package com.rocketdan.serviceserver.service;
 
+import com.rocketdan.serviceserver.Exception.resource.NoAuthorityToResourceException;
 import com.rocketdan.serviceserver.app.dto.event.EventListResponseDto;
 import com.rocketdan.serviceserver.app.dto.event.EventResponseDto;
 import com.rocketdan.serviceserver.app.dto.event.hashtag.HashtagEventResponseDto;
 import com.rocketdan.serviceserver.app.dto.event.hashtag.HashtagEventSaveRequest;
 import com.rocketdan.serviceserver.app.dto.event.hashtag.HashtagEventUpdateRequest;
 import com.rocketdan.serviceserver.app.dto.reward.RewardResponseDto;
+import com.rocketdan.serviceserver.config.auth.UserIdValidCheck;
 import com.rocketdan.serviceserver.domain.event.Event;
 import com.rocketdan.serviceserver.domain.event.EventRepository;
 import com.rocketdan.serviceserver.domain.event.type.Hashtag;
@@ -13,8 +15,6 @@ import com.rocketdan.serviceserver.domain.store.Store;
 import com.rocketdan.serviceserver.domain.store.StoreRepository;
 import com.rocketdan.serviceserver.s3.service.ImageManagerService;
 import lombok.RequiredArgsConstructor;
-import org.hibernate.annotations.SQLDelete;
-import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -29,21 +29,33 @@ public class EventService {
 
     private final ImageManagerService imageManagerService;
 
+    private final UserIdValidCheck userIdValidCheck;
+
     @Transactional
-    public Long saveHashtagEvent(Long store_id, HashtagEventSaveRequest requestDto, List<String> imgPaths) {
+    public Long saveHashtagEvent(Long store_id, HashtagEventSaveRequest requestDto, org.springframework.security.core.userdetails.User principal) throws NoAuthorityToResourceException {
         Store linkedStore = storeRepository.findById(store_id).orElseThrow(() -> new IllegalArgumentException("해당 가게가 없습니다. id=" + store_id));
+
+        // valid 하지 않으면 exception 발생
+        userIdValidCheck.userIdValidCheck(linkedStore.getUser().getUserId(), principal);
+
+        List<String> imgPaths = imageManagerService.upload("image/event", requestDto.getImages());
         Event savedEvent = requestDto.toEntity(imgPaths);
         savedEvent.setStore(linkedStore);
+
         savedEvent.updateStatus();
 
         return eventRepository.save(savedEvent).getId();
     }
 
     @Transactional
-    public Long updateHashtagEvent(Long id, HashtagEventUpdateRequest requestDto, List<String> imgPaths) {
-        Hashtag event = (Hashtag) eventRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("해당 이벤트가 없거나, 삭제되었습니다. id=" + id));
+    public Long updateHashtagEvent(Long id, HashtagEventUpdateRequest requestDto, org.springframework.security.core.userdetails.User principal) throws NoAuthorityToResourceException {
+        Hashtag event = (Hashtag) eventRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("해당 이벤트가 없습니다. id=" + id));
+
+        // valid 하지 않으면 exception 발생
+        userIdValidCheck.userIdValidCheck(event.getStore().getUser().getUserId(), principal);
 
         imageManagerService.delete(event.getImages());
+        List<String> imgPaths = imageManagerService.upload("image/event", requestDto.getImages());
 
         event.update(requestDto.getTitle(), requestDto.getStatus(), requestDto.getStartDate(), requestDto.getFinishDate(), imgPaths,
                 requestDto.getHashtags(), requestDto.getRequirements(), requestDto.getTemplate());
@@ -80,8 +92,12 @@ public class EventService {
                 .collect(Collectors.toList());
     }
 
-    public void softDelete(Long id) {
+    public void softDelete(Long id, org.springframework.security.core.userdetails.User principal) throws NoAuthorityToResourceException  {
         Event event = eventRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("해당 이벤트가 없습니다. id=" + id));
+
+        // valid 하지 않으면 exception 발생
+        userIdValidCheck.userIdValidCheck(event.getStore().getUser().getUserId(), principal);
+
         eventRepository.delete(event);
     }
 }

@@ -3,7 +3,10 @@ package com.rocketdan.serviceserver.service;
 
 import com.rocketdan.serviceserver.Exception.analysis.AnalysisServerErrorException;
 import com.rocketdan.serviceserver.Exception.join.JoinEventFailedException;
+import com.rocketdan.serviceserver.Exception.resource.NoAuthorityToResourceException;
 import com.rocketdan.serviceserver.config.AnalysisServerConfig;
+import com.rocketdan.serviceserver.config.auth.UserIdValidCheck;
+import com.rocketdan.serviceserver.s3.service.ImageManagerService;
 import com.rocketdan.serviceserver.web.dto.reward.RewardLevelResponseDto;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -26,9 +29,19 @@ public class RewardService {
 
     private final AnalysisServerConfig analysisServerConfig;
 
+    private final ImageManagerService imageManagerService;
+
+    private final UserIdValidCheck userIdValidCheck;
+
     @Transactional
-    public Long save(Long event_id, RewardSaveRequestDto requestDto, String imgPath) {
+    public Long save(Long event_id, RewardSaveRequestDto requestDto, org.springframework.security.core.userdetails.User principal) throws NoAuthorityToResourceException {
         Event linkedEvent = eventRepository.findById(event_id).orElseThrow(() -> new IllegalArgumentException("해당 이벤트가 없습니다. id=" + event_id));
+
+        // valid 하지 않으면 exception 발생
+        userIdValidCheck.userIdValidCheck(linkedEvent.getStore().getUser().getUserId(), principal);
+
+        String imgPath = imageManagerService.upload("image/reward", requestDto.getImage());
+
         Reward savedReward = requestDto.toEntity(imgPath);
         savedReward.setEvent(linkedEvent);
 

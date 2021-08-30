@@ -1,11 +1,13 @@
 package com.rocketdan.serviceserver.app;
 
+import com.rocketdan.serviceserver.Exception.resource.NoAuthorityToResourceException;
 import com.rocketdan.serviceserver.app.dto.event.EventListResponseDto;
 import com.rocketdan.serviceserver.app.dto.event.hashtag.HashtagEventSaveRequest;
 import com.rocketdan.serviceserver.app.dto.store.StoreListResponseDto;
 import com.rocketdan.serviceserver.app.dto.store.StoreResponseDto;
 import com.rocketdan.serviceserver.app.dto.store.StoreSaveRequestDto;
 import com.rocketdan.serviceserver.app.dto.store.StoreUpdateRequestDto;
+import com.rocketdan.serviceserver.core.auth.LoginUser;
 import com.rocketdan.serviceserver.s3.service.ImageManagerService;
 import com.rocketdan.serviceserver.service.StoreService;
 import lombok.RequiredArgsConstructor;
@@ -18,7 +20,6 @@ import java.util.List;
 @RequestMapping("/api/v1/stores")
 public class StoreApiController {
     private final StoreService storeService;
-    private final ImageManagerService imageManagerService;
 
     @GetMapping
     public List<StoreListResponseDto> retrieveAllStores() {
@@ -36,19 +37,17 @@ public class StoreApiController {
     }
 
     @PostMapping("/users/{user_id}")
-    public Long save(@PathVariable Long user_id, @ModelAttribute StoreSaveRequestDto store) {
-        List<String> imgPaths = imageManagerService.upload("image/store", store.getImages());
-        return storeService.save(user_id, store, imgPaths);
+    public Long save(@PathVariable Long user_id, @ModelAttribute StoreSaveRequestDto store, @LoginUser org.springframework.security.core.userdetails.User principal) throws NoAuthorityToResourceException {
+        return storeService.save(user_id, store, principal);
     }
 
     @PutMapping("/{id}")
-    public Long update(@PathVariable Long id, @ModelAttribute StoreUpdateRequestDto requestDto) {
-        List<String> imgPaths = imageManagerService.upload("image/store", requestDto.getImages());
-        return storeService.update(id, requestDto, imgPaths);
+    public Long update(@PathVariable Long id, @ModelAttribute StoreUpdateRequestDto requestDto, @LoginUser org.springframework.security.core.userdetails.User principal) throws NoAuthorityToResourceException {
+        return storeService.update(id, requestDto, principal);
     }
 
     @DeleteMapping("/{id}")
-    public void delete(@PathVariable Long id) {
-        storeService.softDelete(id);
+    public void delete(@PathVariable Long id, @LoginUser org.springframework.security.core.userdetails.User principal) throws NoAuthorityToResourceException  {
+        storeService.softDelete(id, principal);
     }
 }
