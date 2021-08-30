@@ -70,7 +70,7 @@ class _StoreReportScreenState extends State<StoreReportScreen> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                '레포트 요약',
+                '리포트 요약',
                 style: TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: 24,
@@ -84,7 +84,7 @@ class _StoreReportScreenState extends State<StoreReportScreen> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    '이벤트 별 레포트',
+                    '이벤트 별 리포트',
                     style: TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 24,
@@ -100,7 +100,10 @@ class _StoreReportScreenState extends State<StoreReportScreen> {
                       ),
                       iconSize: 24,
                       elevation: 0,
-                      style: TextStyle(color: kDefaultFontColor, fontSize: 13),
+                      style: TextStyle(
+                        color: kDefaultFontColor,
+                        fontSize: 13,
+                      ),
                       underline: Container(
                         height: 0,
                         color: kDefaultFontColor,
@@ -131,7 +134,7 @@ class _StoreReportScreenState extends State<StoreReportScreen> {
                 children: AnimationConfiguration.toStaggeredList(
                     duration: const Duration(milliseconds: 500),
                     childAnimationBuilder: (widget) => SlideAnimation(
-                          horizontalOffset: 120.0,
+                          horizontalOffset: 100,
                           child: FadeInAnimation(
                             child: widget,
                           ),

@@ -10,22 +10,22 @@ class PandaBarButton extends StatefulWidget {
   final Color? selectedColor;
   final Color? unselectedColor;
 
-  const PandaBarButton({
-    Key? key,
-    this.isSelected = false,
-    this.icon = Icons.dashboard,
-    this.selectedColor,
-    this.unselectedColor,
-    this.title = '',
-    this.onTap
-  }) : super(key: key);
+  const PandaBarButton(
+      {Key? key,
+      this.isSelected = false,
+      this.icon = Icons.dashboard,
+      this.selectedColor,
+      this.unselectedColor,
+      this.title = '',
+      this.onTap})
+      : super(key: key);
 
   @override
   _PandaBarButtonState createState() => _PandaBarButtonState();
 }
 
-class _PandaBarButtonState extends State<PandaBarButton> with SingleTickerProviderStateMixin {
-
+class _PandaBarButtonState extends State<PandaBarButton>
+    with SingleTickerProviderStateMixin {
   late AnimationController animationController;
   late Animation<double> animation;
 

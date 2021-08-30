@@ -44,6 +44,8 @@ class _EventTitleState extends State<EventTitle> {
               onChanged: (_) {
                 widget.event.title = _eventTitleController.value.text.trim();
               },
+              maxLines: 1,
+              maxLength: 25,
               style: TextStyle(
                   fontWeight: FontWeight.bold,
                   fontSize: 20,

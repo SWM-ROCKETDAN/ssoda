@@ -65,7 +65,7 @@ class _HallScreenState extends State<HallScreen> {
           PandaBarButtonData(
               id: TabPage.REPORT,
               icon: Icons.description_rounded,
-              title: '레포트'),
+              title: '리포트'),
           PandaBarButtonData(
               id: TabPage.MORE, icon: Icons.more_horiz_rounded, title: '더보기'),
         ],
@@ -75,19 +75,21 @@ class _HallScreenState extends State<HallScreen> {
           });
         },
       ),
-      body: PageTransitionSwitcher(
-        transitionBuilder: (
-          Widget child,
-          Animation<double> animation,
-          Animation<double> secondaryAnimation,
-        ) {
-          return FadeThroughTransition(
-            animation: animation,
-            secondaryAnimation: secondaryAnimation,
-            child: child,
-          );
-        },
-        child: pageMap[currentPage],
+      body: SafeArea(
+        child: PageTransitionSwitcher(
+          transitionBuilder: (
+            Widget child,
+            Animation<double> animation,
+            Animation<double> secondaryAnimation,
+          ) {
+            return FadeThroughTransition(
+              animation: animation,
+              secondaryAnimation: secondaryAnimation,
+              child: child,
+            );
+          },
+          child: pageMap[currentPage],
+        ),
       ),
     );
   }

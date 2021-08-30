@@ -28,8 +28,12 @@ class CreateEventButton extends StatelessWidget {
         onPressed: () async {
           var dio = Dio();
 
+          dio.options.headers['Authorization'] =
+              'Bearer ${context.read<Token>().token!}';
+
+          final storeId = await _getUserStoreId(context.read<Token>().token!);
+
           dio.options.contentType = 'multipart/form-data';
-          dio.options.headers['x-auth-token'] = context.read<Token>().token!;
 
           var eventData = FormData.fromMap({
             'title': event.title,
@@ -46,8 +50,9 @@ class CreateEventButton extends StatelessWidget {
             'template': event.template.id
           });
 
-          var eventResponse = await dio
-              .post(getApi(API.CREATE_EVENT, parameter: "1"), data: eventData);
+          var eventResponse = await dio.post(
+              getApi(API.CREATE_EVENT, parameter: storeId),
+              data: eventData);
 
           if (eventResponse.statusCode != 200) print('이벤트 생성 오류');
           var rewardsData = FormData();
@@ -92,5 +97,18 @@ class CreateEventButton extends StatelessWidget {
                     borderRadius: BorderRadius.circular(27.0)))),
       ),
     );
+  }
+
+  Future<String> _getUserStoreId(String token) async {
+    var dio = Dio();
+
+    dio.options.headers['Authorization'] = 'Bearer $token';
+    dio.options.contentType = 'application/json';
+
+    final response = await dio.get(getApi(API.GET_USER_STORE));
+
+    print(response.data);
+
+    return response.data[0]['id'].toString();
   }
 }

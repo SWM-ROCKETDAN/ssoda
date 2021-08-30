@@ -1,27 +1,12 @@
 import 'dart:async';
-import 'dart:convert';
-import 'dart:io';
-
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_web_auth/flutter_web_auth.dart';
 import 'package:hashchecker/api.dart';
 import 'package:hashchecker/constants.dart';
-import 'package:hashchecker/models/address.dart';
-import 'package:hashchecker/models/event.dart';
-import 'package:hashchecker/models/period.dart';
-import 'package:hashchecker/models/reward.dart';
-import 'package:hashchecker/models/reward_category.dart';
-import 'package:hashchecker/models/store.dart';
-import 'package:hashchecker/models/template.dart';
 import 'package:hashchecker/models/token.dart';
-import 'package:hashchecker/models/user_social_account.dart';
-import 'package:hashchecker/screens/create_event/create_event_step/create_event_step_screen.dart';
+import 'package:hashchecker/screens/hall/hall_screen.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:kakao_flutter_sdk/auth.dart';
-import 'package:kakao_flutter_sdk/user.dart';
-import 'package:kakao_flutter_sdk/common.dart';
-import 'package:flutter_naver_login/flutter_naver_login.dart';
-import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
 
 import 'components/kakao_sign_in_button.dart';
@@ -35,34 +20,33 @@ class SignInScreen extends StatefulWidget {
 }
 
 class _SignInScreenState extends State<SignInScreen> {
-  String? strstr;
-  String? xAuthToken;
-  String? userId;
-  List<String> imageList = [];
-
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
 
     return Scaffold(
-      body: SafeArea(
-        child: Padding(
-            padding: const EdgeInsets.fromLTRB(20, 20, 20, 30),
-            child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Expanded(
-                    child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text('${userId}\n'),
-                          Text('${xAuthToken}\n'),
-                          Text('$strstr'),
-                          Text('${imageList.length}'),
-                        ]),
-                  ),
-                  Column(
+      body: Container(
+          padding: const EdgeInsets.fromLTRB(20, 0, 20, 16),
+          child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Expanded(
+                  child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Image.asset('assets/images/sign_in/hello.png'),
+                        Text('시작하기',
+                            style: TextStyle(
+                                fontSize: 12.0, color: kLiteFontColor)),
+                        SizedBox(height: kDefaultPadding / 2),
+                        Text('안녕하세요, 사장님',
+                            style: TextStyle(
+                                fontSize: 26.0, fontWeight: FontWeight.bold)),
+                      ]),
+                ),
+                Container(
+                  child: Column(
                     children: [
                       NaverSignInButton(
                         size: size,
@@ -73,122 +57,91 @@ class _SignInScreenState extends State<SignInScreen> {
                         size: size,
                         signIn: kakaoLoginPressed,
                       ),
-                      ElevatedButton(
-                          onPressed: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => CreateEventStepScreen(),
-                              ),
-                            );
-                          },
-                          child: Text('이벤트 생성 Step')),
-                      ElevatedButton(
-                          onPressed: () async {
-                            var dio = Dio();
-                            Response response;
-                            response = await dio.get(
-                                'http://54.180.141.90:8080/api/v1/report/events/13/');
-                            print(response.data.toString());
-                          },
-                          child: Text('영모 요청'))
+                      SizedBox(height: kDefaultPadding / 3 * 2),
+                      Text('로그인 할 플랫폼을 선택해주세요!',
+                          style:
+                              TextStyle(fontSize: 12.0, color: kLiteFontColor)),
                     ],
                   ),
-                ])),
-      ),
+                  decoration:
+                      BoxDecoration(borderRadius: BorderRadius.circular(12)),
+                ),
+              ])),
     );
   }
 
   Future<void> naverLoginPressed() async {
-    // try login
-    NaverLoginResult loginResult = await FlutterNaverLogin.logIn();
+    final url =
+        Uri.parse('${getApi(API.NAVER_LOGIN)}?redirect_uri=$kAppUrlScheme');
 
-    // on login success
-    if (loginResult.status == NaverLoginStatus.loggedIn) {
-      // get token
-      NaverAccessToken token = await FlutterNaverLogin.currentAccessToken;
+    final result = await FlutterWebAuth.authenticate(
+        url: url.toString(), callbackUrlScheme: kAppUrlScheme);
 
-      // get account info
-      NaverAccountResult account = await FlutterNaverLogin.currentAccount();
+    final accessToken = Uri.parse(result).queryParameters['token'];
 
-      // authorize to spring server with user account info
-      signIn(UserSocialAccount(
-          name: account.name,
-          email: account.email,
-          image: account.profileImage));
+    context.read<Token>().token = accessToken;
 
-      // on login error
-    } else if (loginResult.status == NaverLoginStatus.error) {
-      showLoginFailDialog();
-    }
-  }
-
-  Future<void> naverLogoutPressed() async {
-    FlutterNaverLogin.logOut();
+    Navigator.of(context).push(_routeToHallScreen());
   }
 
   Future<void> kakaoLoginPressed() async {
-    try {
-      // check if is kakaotalk installed
-      final installed = await isKakaoTalkInstalled();
+    final url =
+        Uri.parse('${getApi(API.KAKAO_LOGIN)}?redirect_uri=$kAppUrlScheme');
 
-      final String authCode;
+    final result = await FlutterWebAuth.authenticate(
+        url: url.toString(), callbackUrlScheme: kAppUrlScheme);
 
-      // login & get auth code via kakaotalk app
-      if (installed) {
-        await UserApi.instance.loginWithKakaoTalk();
+    final accessToken = Uri.parse(result).queryParameters['token'];
 
-        authCode = await AuthCodeClient.instance.requestWithTalk();
+    context.read<Token>().token = accessToken;
 
-        // login & get auth code kakao web
-      } else {
-        await UserApi.instance.loginWithKakaoAccount();
+    Navigator.of(context).push(_routeToHallScreen());
 
-        authCode = await AuthCodeClient.instance.request();
-      }
+    /* LOGOUT TEST CODE
+    var dio = Dio();
+    dio.options.headers['Authorization'] = 'Bearer $accessToken';
 
-      // get token
-      AccessTokenResponse token =
-          await AuthApi.instance.issueAccessToken(authCode);
+    final response = await dio.get('$baseUrl/logout');
 
-      // get account info
-      User user = await UserApi.instance.me();
-
-      // if email isn't connected to kakao account
-      if (user.kakaoAccount!.email == null) {
-        showLoginFailDialog();
-        return;
-      }
-
-      // authorize to spring server with user account info
-      signIn(UserSocialAccount(
-          name: user.kakaoAccount!.profile!.nickname,
-          email: user.kakaoAccount!.email!,
-          image: user.kakaoAccount!.profile!.profileImageUrl!));
-    } catch (e) {
-      showLoginFailDialog();
-    }
+    print(response.data);
+    */
   }
 
-  Future<void> signIn(UserSocialAccount account) async {
-    final response = await http.post(Uri.parse(getApi(API.LOGIN)),
-        body: jsonEncode(account.toJson()),
-        headers: {
-          "Accept": "application/json",
-          "content-type": "application/json"
-        });
+  Future<void> createStore() async {
+    var dio = Dio();
+    dio.options.headers['Authorization'] =
+        'Bearer ${context.read<Token>().token!}';
 
-    if (response.statusCode == 200) {
-      setState(() {
-        xAuthToken = response.headers['x-auth-token']!;
-        userId = jsonDecode(response.body)['message']!;
-      });
+    final getUserInfoResponse = await dio.get(getApi(API.GET_USER_INFO));
 
-      // global accessToken with provider
-      context.read<Token>().token = xAuthToken;
-    } else {
-      showLoginFailDialog();
-    }
+    final id = getUserInfoResponse.data['id'];
+
+    dio.options.contentType = 'multipart/form-data';
+
+    final ImagePicker _imagePicker = ImagePicker();
+    final XFile? image =
+        await _imagePicker.pickImage(source: ImageSource.gallery);
+
+    var storeData = FormData.fromMap({
+      'name': 'yjyoon_store',
+      'category': 1,
+      'city': '서울',
+      'country': '광진구',
+      'town': '광장동',
+      'roadCode': '000000000000',
+      'road': '아차산로 549',
+      'zipCode': '04983',
+      'description': '상세 설명',
+      'images': [
+        await MultipartFile.fromFile(image!.path),
+      ]
+    });
+
+    final createStoreResponse = await dio.post(
+        getApi(API.CREATE_STORE, parameter: id.toString()),
+        data: storeData);
+
+    print(createStoreResponse.data);
   }
 
   void showLoginFailDialog() {
@@ -220,4 +173,22 @@ class _SignInScreenState extends State<SignInScreen> {
             shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(15))));
   }
+}
+
+Route _routeToHallScreen() {
+  return PageRouteBuilder(
+    pageBuilder: (context, animation, secondaryAnimation) => const HallScreen(),
+    transitionsBuilder: (context, animation, secondaryAnimation, child) {
+      const begin = Offset(1.0, 0.0);
+      const end = Offset.zero;
+      const curve = Curves.ease;
+
+      var tween = Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+
+      return SlideTransition(
+        position: animation.drive(tween),
+        child: child,
+      );
+    },
+  );
 }
