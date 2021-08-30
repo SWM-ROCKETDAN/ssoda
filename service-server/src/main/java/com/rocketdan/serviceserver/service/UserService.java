@@ -31,4 +31,9 @@ public class UserService {
 
         return new UserResponseDto(entity);
     }
+
+    public void delete(String userId) {
+        User user = userRepository.findByUserId(userId).orElseThrow(() -> new IllegalArgumentException("해당 유저가 없습니다. userId=" + userId));
+        userRepository.delete(user);
+    }
 }
