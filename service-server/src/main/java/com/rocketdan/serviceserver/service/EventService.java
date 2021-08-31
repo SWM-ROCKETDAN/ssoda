@@ -54,7 +54,7 @@ public class EventService {
         // valid 하지 않으면 exception 발생
         userIdValidCheck.userIdValidCheck(event.getStore().getUser().getUserId(), principal);
 
-        imageManagerService.delete(event.getImages());
+        imageManagerService.delete(event.getImagePaths());
         List<String> imgPaths = imageManagerService.upload("image/event", requestDto.getImages());
 
         event.update(requestDto.getTitle(), requestDto.getStatus(), requestDto.getStartDate(), requestDto.getFinishDate(), imgPaths,

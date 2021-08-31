@@ -10,7 +10,7 @@ public class RewardResponseDto {
     private Integer level;
     private Integer category;
     private String name;
-    private String image;
+    private String imagePath;
     private Integer price;
     private Integer count;
 
@@ -18,7 +18,7 @@ public class RewardResponseDto {
         this.level = entity.getLevel();
         this.category = entity.getCategory();
         this.name = entity.getName();
-        this.image = entity.getImage();
+        this.imagePath = entity.getImagePath();
         this.price = entity.getPrice();
         this.count = entity.getCount();
     }

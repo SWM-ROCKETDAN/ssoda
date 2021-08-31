@@ -6,8 +6,6 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.ColumnDefault;
-import org.hibernate.annotations.SQLDelete;
-import org.hibernate.annotations.Where;
 
 import javax.persistence.*;
 
@@ -33,7 +31,7 @@ public class Reward {
     @Column(nullable = false)
     private String name;
 
-    private String image;
+    private String imagePath;
 
     @Column(nullable = false)
     private Integer price;
@@ -51,12 +49,12 @@ public class Reward {
 //    private Boolean deleted = false;
 
     @Builder
-    public Reward(Event event, Integer level, Integer category, String name, String image, Integer price, Integer count) {
+    public Reward(Event event, Integer level, Integer category, String name, String imagePath, Integer price, Integer count) {
         this.event = event;
         this.level = level;
         this.category = category;
         this.name = name;
-        this.image = image;
+        this.imagePath = imagePath;
         this.price = price;
         this.count = count;
     }

@@ -16,7 +16,7 @@ public class EventListResponseDto {
     private Date startDate;
     @JsonFormat(shape=JsonFormat.Shape.STRING, pattern="yyyy-MM-dd'T'HH:mm:ss")
     private Date finishDate;
-    private List<String> images;
+    private List<String> imagePaths;
     private String type;
 
     public EventListResponseDto(Event entity) {
@@ -25,7 +25,7 @@ public class EventListResponseDto {
         this.status = entity.getStatus();
         this.startDate = entity.getStartDate();
         this.finishDate = entity.getFinishDate();
-        this.images = List.copyOf(entity.getImages());
+        this.imagePaths = List.copyOf(entity.getImagePaths());
         this.type = entity.getType();
     }
 }

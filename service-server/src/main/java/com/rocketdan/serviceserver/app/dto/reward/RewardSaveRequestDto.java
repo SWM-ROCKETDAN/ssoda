@@ -21,12 +21,12 @@ public class RewardSaveRequestDto {
 
     private List<RewardSaveRequestDto> rewards;
 
-    public Reward toEntity(String image) {
+    public Reward toEntity(String imagePath) {
         return Reward.builder()
                 .level(level)
                 .category(category)
                 .name(name)
-                .image(image)
+                .imagePath(imagePath)
                 .price(price)
                 .count(count)
                 .build();

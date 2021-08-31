@@ -4,9 +4,6 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.rocketdan.serviceserver.domain.reward.Reward;
 import com.rocketdan.serviceserver.domain.store.Store;
 import lombok.*;
-import org.hibernate.annotations.ColumnDefault;
-import org.hibernate.annotations.SQLDelete;
-import org.hibernate.annotations.Where;
 
 import javax.persistence.*;
 import java.util.*;
@@ -42,7 +39,7 @@ public abstract class Event {
     // 이벤트 이미지 배열
     @ElementCollection
     @Column(nullable = false)
-    private List<String> images;
+    private List<String> imagePaths;
 
     // 이벤트 보상 목록
     @OneToMany(cascade = CascadeType.REMOVE)
@@ -57,12 +54,12 @@ public abstract class Event {
 //    @Column(nullable = false)
 //    private Boolean deleted = false;
 
-    public Event(String title, Integer status, Date startDate, Date finishDate, List<String> images, List<Reward> rewards, Store store) {
+    public Event(String title, Integer status, Date startDate, Date finishDate, List<String> imagePaths, List<Reward> rewards, Store store) {
         this.title = title;
         this.status = status;
         this.startDate = startDate;
         this.finishDate = finishDate;
-        this.images = images;
+        this.imagePaths = imagePaths;
         this.rewards = rewards;
         this.store = store;
     }
@@ -108,7 +105,7 @@ public abstract class Event {
         Optional.ofNullable(status).ifPresent(none -> this.status = status);
         Optional.ofNullable(startDate).ifPresent(none -> this.startDate = startDate);
         this.finishDate = finishDate;
-        Optional.ofNullable(images).ifPresent(none -> this.images = images);
+        Optional.ofNullable(images).ifPresent(none -> this.imagePaths = images);
     }
 
     public String getType() {
