@@ -4,7 +4,6 @@ import com.rocketdan.serviceserver.Exception.resource.NoAuthorityToResourceExcep
 import com.rocketdan.serviceserver.app.dto.reward.RewardResponseDto;
 import com.rocketdan.serviceserver.app.dto.reward.RewardSaveRequestDto;
 import com.rocketdan.serviceserver.core.auth.LoginUser;
-import com.rocketdan.serviceserver.s3.service.ImageManagerService;
 import com.rocketdan.serviceserver.service.RewardService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;

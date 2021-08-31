@@ -1,6 +1,5 @@
 package com.rocketdan.serviceserver.app;
 
-import com.rocketdan.serviceserver.Exception.auth.CustomJwtRuntimeException;
 import com.rocketdan.serviceserver.Exception.auth.token.CustomAccessTokenException;
 import com.rocketdan.serviceserver.Exception.auth.token.CustomRefreshTokenException;
 import com.rocketdan.serviceserver.Exception.auth.token.NoExpiredTokenYetException;

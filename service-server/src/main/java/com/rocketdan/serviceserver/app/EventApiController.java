@@ -7,7 +7,6 @@ import com.rocketdan.serviceserver.app.dto.event.hashtag.HashtagEventSaveRequest
 import com.rocketdan.serviceserver.app.dto.event.hashtag.HashtagEventUpdateRequest;
 import com.rocketdan.serviceserver.app.dto.reward.RewardResponseDto;
 import com.rocketdan.serviceserver.core.auth.LoginUser;
-import com.rocketdan.serviceserver.s3.service.ImageManagerService;
 import com.rocketdan.serviceserver.service.EventService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
