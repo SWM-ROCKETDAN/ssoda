@@ -18,13 +18,15 @@ public class StoreUpdateRequestDto {
     private Address address;
     private String description;
     private List<MultipartFile> images;
+    private MultipartFile logoImage;
 
     @Builder
-    public StoreUpdateRequestDto(String name, Integer category, Address address, String description, List<MultipartFile> images) {
+    public StoreUpdateRequestDto(String name, Integer category, Address address, String description, List<MultipartFile> images, MultipartFile logoImage) {
         this.name = name;
         this.category = category;
         this.address = address;
         this.description = description;
         this.images = images;
+        this.logoImage = logoImage;
     }
 }

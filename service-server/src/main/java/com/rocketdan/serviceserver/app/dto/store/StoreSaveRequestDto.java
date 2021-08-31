@@ -19,23 +19,26 @@ public class StoreSaveRequestDto {
     private Address address;
     private String description;
     private List<MultipartFile> images;
+    private MultipartFile logoImage;
 
     @Builder
-    public StoreSaveRequestDto(String name, Integer category, Address address, String description, List<MultipartFile> images) {
+    public StoreSaveRequestDto(String name, Integer category, Address address, String description, List<MultipartFile> images, MultipartFile logoImage) {
         this.name = name;
         this.category = category;
         this.address = address;
         this.description = description;
         this.images = images;
+        this.logoImage = logoImage;
     }
 
-    public Store toEntity(List<String> images) {
+    public Store toEntity(List<String> imagePaths, String logoImagePath) {
         return Store.builder()
                 .name(name)
                 .category(category)
                 .address(address)
                 .description(description)
-                .images(images)
+                .imagePaths(imagePaths)
+                .logoImagePath(logoImagePath)
                 .build();
     }
 }

@@ -36,8 +36,12 @@ public class StoreService {
         // valid 하지 않으면 exception 발생
         userIdValidCheck.userIdValidCheck(linkedUser.getUserId(), principal);
 
+        // 이미지
         List<String> imgPaths = imageManagerService.upload("image/store", requestDto.getImages());
-        Store savedStore = requestDto.toEntity(imgPaths);
+        String logoImgPath = imageManagerService.upload("image/store/logo", requestDto.getLogoImage());
+        Store savedStore = requestDto.toEntity(imgPaths, logoImgPath);
+
+        // link user
         savedStore.setUser(linkedUser);
 
         return storeRepository.save(savedStore).getId();
@@ -50,10 +54,15 @@ public class StoreService {
         // valid 하지 않으면 exception 발생
         userIdValidCheck.userIdValidCheck(store.getUser().getUserId(), principal);
 
-        imageManagerService.delete(store.getImages());
-        List<String> imgPaths = imageManagerService.upload("image/store", requestDto.getImages());
+        // 이미지
+        imageManagerService.delete(store.getImagePaths());
+        imageManagerService.delete(store.getLogoImagePath());
 
-        store.update(requestDto.getName(), requestDto.getCategory(), requestDto.getAddress(), requestDto.getDescription(), imgPaths);
+        List<String> imgPaths = imageManagerService.upload("image/store", requestDto.getImages());
+        String logoImgPath = imageManagerService.upload("image/store/logo", requestDto.getLogoImage());
+
+        store.update(requestDto.getName(), requestDto.getCategory(), requestDto.getAddress(), requestDto.getDescription(), imgPaths, logoImgPath);
+
         return id;
     }
 

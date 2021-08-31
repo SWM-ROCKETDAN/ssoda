@@ -5,7 +5,6 @@ import com.rocketdan.serviceserver.domain.store.Address;
 import com.rocketdan.serviceserver.domain.store.Store;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -18,8 +17,9 @@ public class StoreResponseDto {
     private Integer category;
     private Address address;
     private String description;
-    private List<String> images;
-    private List<Long> event_ids;
+    private List<String> imagePaths;
+    private String logoImagePath;
+    private List<Long> eventIds;
 
     public StoreResponseDto(Store entity) {
         this.id = entity.getId();
@@ -27,7 +27,8 @@ public class StoreResponseDto {
         this.category = entity.getCategory();
         this.address = entity.getAddress();
         this.description = entity.getDescription();
-        this.images = List.copyOf(entity.getImages());
-        this.event_ids = entity.getEvents().stream().map(Event::getId).collect(Collectors.toList());
+        this.imagePaths = List.copyOf(entity.getImagePaths());
+        this.logoImagePath = entity.getLogoImagePath();
+        this.eventIds = entity.getEvents().stream().map(Event::getId).collect(Collectors.toList());
     }
 }
