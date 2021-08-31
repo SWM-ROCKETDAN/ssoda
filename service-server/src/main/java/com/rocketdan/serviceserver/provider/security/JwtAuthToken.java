@@ -29,6 +29,12 @@ public class JwtAuthToken implements AuthToken<Claims> {
         this.token = createJwtAuthToken(id, role, expiredDate).get();
     }
 
+    JwtAuthToken(String id, Date expiredDate, Key key) {
+        this.key = key;
+        this.token = createJwtAuthToken(id, expiredDate).get();
+    }
+
+
     @Override
     public boolean validate() {
         return getData() != null;
@@ -57,12 +63,34 @@ public class JwtAuthToken implements AuthToken<Claims> {
         }
     }
 
-    // 로그인 요청 및 JWT 토큰을 생성
+    public Claims getExpiredData() {
+        try {
+            Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token).getBody();
+        } catch (ExpiredJwtException e) {
+            log.info("Expired JWT token.");
+            return e.getClaims();
+        }
+        return null;
+    }
+
+
+        // 로그인 요청 및 JWT 토큰을 생성
     private Optional<String> createJwtAuthToken(String id, String role, Date expiredDate) {
 
         var token = Jwts.builder()
                 .setSubject(id)
                 .claim(AUTHORITIES_KEY, role)
+                .signWith(key, SignatureAlgorithm.HS256)
+                .setExpiration(expiredDate) // 토큰 만료 시간 지정
+                .compact();
+
+        return Optional.ofNullable(token);
+    }
+
+    private Optional<String> createJwtAuthToken(String id, Date expiredDate) {
+
+        var token = Jwts.builder()
+                .setSubject(id)
                 .signWith(key, SignatureAlgorithm.HS256)
                 .setExpiration(expiredDate) // 토큰 만료 시간 지정
                 .compact();

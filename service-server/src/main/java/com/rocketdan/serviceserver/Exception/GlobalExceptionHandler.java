@@ -1,11 +1,14 @@
 package com.rocketdan.serviceserver.Exception;
 
+import com.rocketdan.serviceserver.Exception.auth.token.CustomAccessTokenException;
+import com.rocketdan.serviceserver.Exception.auth.token.CustomRefreshTokenException;
+import com.rocketdan.serviceserver.Exception.auth.token.NoExpiredTokenYetException;
 import com.rocketdan.serviceserver.Exception.file.FileConvertException;
 import com.rocketdan.serviceserver.Exception.file.FileUploadException;
 import com.rocketdan.serviceserver.Exception.analysis.AnalysisServerErrorException;
 import com.rocketdan.serviceserver.Exception.join.DuplicateUrlException;
 import com.rocketdan.serviceserver.Exception.join.JoinEventFailedException;
-import com.rocketdan.serviceserver.Exception.auth.CustomAuthenticationException;
+import com.rocketdan.serviceserver.Exception.auth.token.CustomAuthenticationException;
 import com.rocketdan.serviceserver.Exception.auth.CustomJwtRuntimeException;
 import com.rocketdan.serviceserver.Exception.auth.LoginFailedException;
 import com.rocketdan.serviceserver.Exception.resource.NoAuthorityToResourceException;
@@ -62,6 +65,48 @@ public class GlobalExceptionHandler {
                 .build();
 
         return new ResponseEntity<>(response, HttpStatus.UNAUTHORIZED);
+    }
+
+    @ExceptionHandler(CustomAccessTokenException.class)
+    protected ResponseEntity<CommonResponse> handleCustomAccessTokenException(CustomAccessTokenException e) {
+
+        log.info("handleCustomAccessTokenException", e);
+
+        CommonResponse response = CommonResponse.builder()
+                .code(ErrorCode.INVALID_ACCESS_TOKEN.getCode())
+                .message(ErrorCode.INVALID_ACCESS_TOKEN.getMessage())
+                .status(ErrorCode.INVALID_ACCESS_TOKEN.getStatus())
+                .build();
+
+        return new ResponseEntity<>(response, HttpStatus.UNAUTHORIZED);
+    }
+
+    @ExceptionHandler(CustomRefreshTokenException.class)
+    protected ResponseEntity<CommonResponse> handleCustomRefreshTokenException(CustomRefreshTokenException e) {
+
+        log.info("handleCustomRefreshTokenException", e);
+
+        CommonResponse response = CommonResponse.builder()
+                .code(ErrorCode.INVALID_REFRESH_TOKEN.getCode())
+                .message(ErrorCode.INVALID_REFRESH_TOKEN.getMessage())
+                .status(ErrorCode.INVALID_REFRESH_TOKEN.getStatus())
+                .build();
+
+        return new ResponseEntity<>(response, HttpStatus.UNAUTHORIZED);
+    }
+
+    @ExceptionHandler(NoExpiredTokenYetException.class)
+    protected ResponseEntity<CommonResponse> handleNoExpiredTokenYetException(NoExpiredTokenYetException e) {
+
+        log.info("handleNoExpiredTokenYetException", e);
+
+        CommonResponse response = CommonResponse.builder()
+                .code(ErrorCode.NO_EXPIRED_TOKEN_YET.getCode())
+                .message(ErrorCode.NO_EXPIRED_TOKEN_YET.getMessage())
+                .status(ErrorCode.NO_EXPIRED_TOKEN_YET.getStatus())
+                .build();
+
+        return new ResponseEntity<>(response, HttpStatus.FORBIDDEN);
     }
 
     // file 처리

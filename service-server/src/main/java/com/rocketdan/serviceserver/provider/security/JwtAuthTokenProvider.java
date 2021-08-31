@@ -33,6 +33,11 @@ public class JwtAuthTokenProvider implements AuthTokenProvider<JwtAuthToken> {
     }
 
     @Override
+    public JwtAuthToken createAuthToken(String id, Date expiredDate) {
+        return new JwtAuthToken(id, expiredDate, key);
+    }
+
+    @Override
     public JwtAuthToken convertAuthToken(String token) {
         return new JwtAuthToken(token, key);
     }

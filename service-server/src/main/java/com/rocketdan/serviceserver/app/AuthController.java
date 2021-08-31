@@ -1,10 +1,21 @@
 package com.rocketdan.serviceserver.app;
 
+import com.rocketdan.serviceserver.Exception.auth.CustomJwtRuntimeException;
+import com.rocketdan.serviceserver.Exception.auth.token.CustomAccessTokenException;
+import com.rocketdan.serviceserver.Exception.auth.token.CustomRefreshTokenException;
+import com.rocketdan.serviceserver.Exception.auth.token.NoExpiredTokenYetException;
 import com.rocketdan.serviceserver.app.dto.user.LoginRequestDto;
+import com.rocketdan.serviceserver.config.properties.AppProperties;
 import com.rocketdan.serviceserver.core.CommonResponse;
+import com.rocketdan.serviceserver.domain.user.Role;
 import com.rocketdan.serviceserver.domain.user.UserPrincipal;
+import com.rocketdan.serviceserver.domain.user.UserRefreshToken;
+import com.rocketdan.serviceserver.domain.user.UserRefreshTokenRepository;
 import com.rocketdan.serviceserver.provider.security.JwtAuthToken;
 import com.rocketdan.serviceserver.provider.security.JwtAuthTokenProvider;
+import com.rocketdan.serviceserver.utils.CookieUtil;
+import com.rocketdan.serviceserver.utils.HeaderUtil;
+import io.jsonwebtoken.Claims;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
@@ -12,16 +23,15 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
 import java.util.Date;
+import java.util.Optional;
+
+import static com.rocketdan.serviceserver.oauth.repository.OAuth2AuthorizationRequestBasedOnCookieRepository.REFRESH_TOKEN;
 
 // /auth 라는 Path는 스프링 시큐리티 컨텍스트 내에 존재하는 인증절차를 거쳐 통과해야한다.
 @RestController
@@ -29,13 +39,12 @@ import java.util.Date;
 @RequiredArgsConstructor
 public class AuthController {
 
-//    private final AppProperties appProperties;
+    private final AppProperties appProperties;
     private final JwtAuthTokenProvider jwtAuthTokenProvider;
     private final AuthenticationManager authenticationManager;
-//    private final UserRefreshTokenRepository userRefreshTokenRepository;
+    private final UserRefreshTokenRepository userRefreshTokenRepository;
 
     private final static long THREE_DAYS_MSEC = 259200000;
-    private final static String REFRESH_TOKEN = "refresh_token";
 
     @PostMapping("/login")
     public ResponseEntity<CommonResponse> login(
@@ -53,33 +62,32 @@ public class AuthController {
         String userId = loginRequestDto.getId();
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
-        Date expiredDate = Date.from(LocalDateTime.now().plusMinutes(THREE_DAYS_MSEC).atZone(ZoneId.systemDefault()).toInstant());
+        Date now = new Date();
 
         JwtAuthToken accessToken = jwtAuthTokenProvider.createAuthToken(
                 userId,
                 ((UserPrincipal) authentication.getPrincipal()).getRole().getCode(),
-                expiredDate);
+                new Date(now.getTime() + appProperties.getAuth().getTokenExpiry()));
 
-//        long refreshTokenExpiry = appProperties.getAuth().getRefreshTokenExpiry();
-//        AuthToken refreshToken = tokenProvider.createAuthToken(
-//                appProperties.getAuth().getTokenSecret(),
-//                new Date(now.getTime() + refreshTokenExpiry)
-//        );
+        long refreshTokenExpiry = appProperties.getAuth().getRefreshTokenExpiry();
+        JwtAuthToken refreshToken = jwtAuthTokenProvider.createAuthToken(
+                appProperties.getAuth().getTokenSecret(),
+                new Date(now.getTime() + refreshTokenExpiry)
+        );
 
         // userId refresh token 으로 DB 확인
-//        UserRefreshToken userRefreshToken = userRefreshTokenRepository.findByUserId(userId);
-//        if (userRefreshToken == null) {
-//            // 없는 경우 새로 등록
-//            userRefreshToken = new UserRefreshToken(userId, refreshToken.getToken());
-//            userRefreshTokenRepository.saveAndFlush(userRefreshToken);
-//        } else {
-//            // DB에 refresh 토큰 업데이트
-//            userRefreshToken.setRefreshToken(refreshToken.getToken());
-//        }
+        Optional<UserRefreshToken> userRefreshToken = userRefreshTokenRepository.findByUserId(userId);
+        if (userRefreshToken.isEmpty()) {
+            // 없는 경우 새로 등록
+            userRefreshTokenRepository.saveAndFlush(new UserRefreshToken(userId, refreshToken.getToken()));
+        } else {
+            // DB에 refresh 토큰 업데이트
+            userRefreshToken.get().setRefreshToken(refreshToken.getToken());
+        }
 
-//        int cookieMaxAge = (int) refreshTokenExpiry / 60;
-//        CookieUtil.deleteCookie(request, response, REFRESH_TOKEN);
-//        CookieUtil.addCookie(response, REFRESH_TOKEN, refreshToken.getToken(), cookieMaxAge);
+        int cookieMaxAge = (int) refreshTokenExpiry / 60;
+        CookieUtil.deleteCookie(request, response, REFRESH_TOKEN);
+        CookieUtil.addCookie(response, REFRESH_TOKEN, refreshToken.getToken(), cookieMaxAge);
 
         // auth-token을 헤더에 전달
         HttpHeaders responseHeaders = new HttpHeaders();
@@ -91,73 +99,82 @@ public class AuthController {
                         .code("LOGIN_SUCCESS")
                         .status(200)
                         .message(userId)
-//                        .message(optionalLoginDto.get().getId().toString())
                         .build()
                 );
     }
-/*
+
     @GetMapping("/refresh")
-    public ApiResponse refreshToken (HttpServletRequest request, HttpServletResponse response) {
+    public ResponseEntity<CommonResponse>  refreshToken (HttpServletRequest request, HttpServletResponse response) {
         // access token 확인
         String accessToken = HeaderUtil.getAccessToken(request);
-        AuthToken authToken = tokenProvider.convertAuthToken(accessToken);
+        JwtAuthToken authToken = jwtAuthTokenProvider.convertAuthToken(accessToken);
         if (!authToken.validate()) {
-            return ApiResponse.invalidAccessToken();
+            throw new CustomAccessTokenException();
         }
 
         // expired access token 인지 확인
-        Claims claims = authToken.getExpiredTokenClaims();
+        Claims claims = authToken.getExpiredData();
         if (claims == null) {
-            return ApiResponse.notExpiredTokenYet();
+            throw new NoExpiredTokenYetException();
         }
 
         String userId = claims.getSubject();
-        RoleType roleType = RoleType.of(claims.get("role", String.class));
+        Role role = Role.of(claims.get("role", String.class));
 
         // refresh token
         String refreshToken = CookieUtil.getCookie(request, REFRESH_TOKEN)
                 .map(Cookie::getValue)
                 .orElse((null));
-        AuthToken authRefreshToken = tokenProvider.convertAuthToken(refreshToken);
+        JwtAuthToken authRefreshToken = jwtAuthTokenProvider.convertAuthToken(refreshToken);
 
         if (authRefreshToken.validate()) {
-            return ApiResponse.invalidRefreshToken();
+            throw new CustomRefreshTokenException();
         }
 
         // userId refresh token 으로 DB 확인
-        UserRefreshToken userRefreshToken = userRefreshTokenRepository.findByUserIdAndRefreshToken(userId, refreshToken);
-        if (userRefreshToken == null) {
-            return ApiResponse.invalidRefreshToken();
+        Optional<UserRefreshToken> userRefreshToken = userRefreshTokenRepository.findByUserIdAndRefreshToken(userId, refreshToken);
+        if (userRefreshToken.isEmpty()) {
+            throw new CustomRefreshTokenException();
         }
 
         Date now = new Date();
-        AuthToken newAccessToken = tokenProvider.createAuthToken(
+        JwtAuthToken newAccessToken = jwtAuthTokenProvider.createAuthToken(
                 userId,
-                roleType.getCode(),
+                role.getCode(),
                 new Date(now.getTime() + appProperties.getAuth().getTokenExpiry())
         );
 
-        long validTime = authRefreshToken.getTokenClaims().getExpiration().getTime() - now.getTime();
+        long validTime = authRefreshToken.getData().getExpiration().getTime() - now.getTime();
 
         // refresh 토큰 기간이 3일 이하로 남은 경우, refresh 토큰 갱신
         if (validTime <= THREE_DAYS_MSEC) {
             // refresh 토큰 설정
             long refreshTokenExpiry = appProperties.getAuth().getRefreshTokenExpiry();
 
-            authRefreshToken = tokenProvider.createAuthToken(
+            authRefreshToken = jwtAuthTokenProvider.createAuthToken(
                     appProperties.getAuth().getTokenSecret(),
                     new Date(now.getTime() + refreshTokenExpiry)
             );
 
             // DB에 refresh 토큰 업데이트
-            userRefreshToken.setRefreshToken(authRefreshToken.getToken());
+            userRefreshToken.get().setRefreshToken(authRefreshToken.getToken());
 
             int cookieMaxAge = (int) refreshTokenExpiry / 60;
             CookieUtil.deleteCookie(request, response, REFRESH_TOKEN);
             CookieUtil.addCookie(response, REFRESH_TOKEN, authRefreshToken.getToken(), cookieMaxAge);
         }
 
-        return ApiResponse.success("token", newAccessToken.getToken());
-    }*/
+        HttpHeaders responseHeaders = new HttpHeaders();
+        responseHeaders.set("token", newAccessToken.getToken());
+
+        return ResponseEntity.ok()
+                .headers(responseHeaders)
+                .body(CommonResponse.builder()
+                        .code("ISSUE_TOKEN_SUCCESS")
+                        .status(200)
+                        .message(userId)
+                        .build()
+                );
+    }
 }
 

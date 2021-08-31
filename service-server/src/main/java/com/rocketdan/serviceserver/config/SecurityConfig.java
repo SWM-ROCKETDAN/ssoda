@@ -5,6 +5,7 @@ import com.rocketdan.serviceserver.config.auth.CustomOAuth2UserService;
 import com.rocketdan.serviceserver.config.properties.AppProperties;
 import com.rocketdan.serviceserver.config.properties.CorsProperties;
 import com.rocketdan.serviceserver.domain.user.Role;
+import com.rocketdan.serviceserver.domain.user.UserRefreshTokenRepository;
 import com.rocketdan.serviceserver.oauth.filter.TokenAuthenticationFilter;
 import com.rocketdan.serviceserver.oauth.handler.OAuth2AuthenticationFailureHandler;
 import com.rocketdan.serviceserver.oauth.handler.OAuth2AuthenticationSuccessHandler;
@@ -30,7 +31,6 @@ import org.springframework.web.cors.CorsUtils;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import java.util.Arrays;
-import java.util.List;
 
 @Configuration
 @RequiredArgsConstructor
@@ -42,7 +42,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private final CustomUserDetailsService userDetailsService;
     private final CustomOAuth2UserService oAuth2UserService;
     private final TokenAccessDeniedHandler tokenAccessDeniedHandler;
-//    private final UserRefreshTokenRepository userRefreshTokenRepository;
+    private final UserRefreshTokenRepository userRefreshTokenRepository;
 
     /*
      * UserDetailsService 설정
@@ -139,21 +139,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     /*
      * Oauth 인증 성공 핸들러
      * */
-//    @Bean
-//    public OAuth2AuthenticationSuccessHandler oAuth2AuthenticationSuccessHandler() {
-//        return new OAuth2AuthenticationSuccessHandler(
-//                tokenProvider,
-//                appProperties,
-//                userRefreshTokenRepository,
-//                oAuth2AuthorizationRequestBasedOnCookieRepository()
-//        );
-//    }
     @Bean
     public OAuth2AuthenticationSuccessHandler oAuth2AuthenticationSuccessHandler() {
         return new OAuth2AuthenticationSuccessHandler(
                 jwtAuthTokenProvider,
                 appProperties,
-//                userRefreshTokenRepository,
+                userRefreshTokenRepository,
                 oAuth2AuthorizationRequestBasedOnCookieRepository()
         );
     }
