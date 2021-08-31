@@ -4,10 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_web_auth/flutter_web_auth.dart';
 import 'package:hashchecker/api.dart';
 import 'package:hashchecker/constants.dart';
-import 'package:hashchecker/models/token.dart';
 import 'package:hashchecker/screens/hall/hall_screen.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:provider/provider.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 import 'components/kakao_sign_in_button.dart';
 import 'components/naver_sign_in_button.dart';
@@ -70,49 +69,47 @@ class _SignInScreenState extends State<SignInScreen> {
     );
   }
 
-  Future<void> naverLoginPressed() async {
-    final url =
-        Uri.parse('${getApi(API.NAVER_LOGIN)}?redirect_uri=$kAppUrlScheme');
-
-    final result = await FlutterWebAuth.authenticate(
-        url: url.toString(), callbackUrlScheme: kAppUrlScheme);
-
-    final accessToken = Uri.parse(result).queryParameters['token'];
-
-    context.read<Token>().token = accessToken;
-
-    Navigator.of(context).push(_routeToHallScreen());
+  void naverLoginPressed() {
+    signIn(getApi(API.NAVER_LOGIN));
   }
 
-  Future<void> kakaoLoginPressed() async {
-    final url =
-        Uri.parse('${getApi(API.KAKAO_LOGIN)}?redirect_uri=$kAppUrlScheme');
+  void kakaoLoginPressed() {
+    signIn(getApi(API.KAKAO_LOGIN));
+  }
 
-    final result = await FlutterWebAuth.authenticate(
-        url: url.toString(), callbackUrlScheme: kAppUrlScheme);
+  Future<void> signIn(String api) async {
+    final storage = new FlutterSecureStorage();
+    try {
+      // open login page & redirect auth code to back-end
+      final url = Uri.parse('$api?redirect_uri=$kAppUrlScheme');
 
-    final accessToken = Uri.parse(result).queryParameters['token'];
+      // get callback data from back-end
+      final result = await FlutterWebAuth.authenticate(
+          url: url.toString(), callbackUrlScheme: kAppUrlScheme);
 
-    context.read<Token>().token = accessToken;
+      // parsing accessToken & refreshToken from callback data
+      final accessToken = Uri.parse(result).queryParameters['access-token'];
+      final refreshToken = Uri.parse(result).queryParameters['refresh-token'];
 
-    Navigator.of(context).push(_routeToHallScreen());
+      // save tokens on secure storage
+      await storage.write(key: 'ACCESS_TOKEN', value: accessToken);
+      await storage.write(key: 'REFRESH_TOKEN', value: refreshToken);
+    } catch (e) {
+      showLoginFailDialog(e.toString());
+    }
 
-    /* LOGOUT TEST CODE
-    var dio = Dio();
-    dio.options.headers['Authorization'] = 'Bearer $accessToken';
-
-    final response = await dio.get('$baseUrl/logout');
-
-    print(response.data);
-    */
+    createStore();
+    //Navigator.of(context).push(_routeToHallScreen());
   }
 
   Future<void> createStore() async {
-    var dio = Dio();
-    dio.options.headers['Authorization'] =
-        'Bearer ${context.read<Token>().token!}';
+    var dio = await authDio();
+
+    print('get auth dio complete');
 
     final getUserInfoResponse = await dio.get(getApi(API.GET_USER_INFO));
+
+    print('get user info complete');
 
     final id = getUserInfoResponse.data['id'];
 
@@ -132,19 +129,21 @@ class _SignInScreenState extends State<SignInScreen> {
       'road': '아차산로 549',
       'zipCode': '04983',
       'description': '상세 설명',
+      'logoImage': await MultipartFile.fromFile(image!.path),
       'images': [
-        await MultipartFile.fromFile(image!.path),
+        await MultipartFile.fromFile(image.path),
       ]
     });
 
-    final createStoreResponse = await dio.post(
-        getApi(API.CREATE_STORE, parameter: id.toString()),
-        data: storeData);
+    final createStoreResponse = await dio
+        .post(getApi(API.CREATE_STORE, suffix: '/$id'), data: storeData);
+
+    print('save store complete');
 
     print(createStoreResponse.data);
   }
 
-  void showLoginFailDialog() {
+  void showLoginFailDialog(String errMsg) {
     showDialog(
         context: context,
         builder: (context) => AlertDialog(
@@ -157,7 +156,7 @@ class _SignInScreenState extends State<SignInScreen> {
               child: Column(children: [
                 Text("로그인 도중 오류가 발생하였습니다.", style: TextStyle(fontSize: 14)),
                 SizedBox(height: kDefaultPadding / 5),
-                Text("네트워크 연결 상태를 확인해주세요.", style: TextStyle(fontSize: 14)),
+                Text(errMsg, style: TextStyle(fontSize: 14)),
               ]),
             ),
             contentPadding: const EdgeInsets.fromLTRB(15, 15, 15, 5),

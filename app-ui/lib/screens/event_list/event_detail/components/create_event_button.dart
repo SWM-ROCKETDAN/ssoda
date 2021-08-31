@@ -2,9 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:hashchecker/api.dart';
 import 'package:hashchecker/models/event.dart';
-import 'package:hashchecker/models/token.dart';
 import 'package:hashchecker/screens/create_event/show_qrcode/show_qrcode_screen.dart';
-import 'package:provider/provider.dart';
 import 'package:intl/intl.dart';
 
 class CreateEventButton extends StatelessWidget {
@@ -23,10 +21,9 @@ class CreateEventButton extends StatelessWidget {
               color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold),
         ),
         onPressed: () async {
-          var dio = Dio();
+          var dio = await authDio();
 
           dio.options.contentType = 'multipart/form-data';
-          dio.options.headers['x-auth-token'] = context.read<Token>().token!;
 
           var eventData = FormData.fromMap({
             'title': event.title,
@@ -44,7 +41,7 @@ class CreateEventButton extends StatelessWidget {
           });
 
           var eventResponse = await dio
-              .post(getApi(API.CREATE_EVENT, parameter: "1"), data: eventData);
+              .post(getApi(API.CREATE_EVENT, suffix: '/1'), data: eventData);
 
           if (eventResponse.statusCode != 200) print('이벤트 생성 오류');
           var rewardsData = FormData();
@@ -66,8 +63,7 @@ class CreateEventButton extends StatelessWidget {
           }
 
           var rewardsResponse = await dio.post(
-              getApi(API.CREATE_REWARDS,
-                  parameter: eventResponse.data.toString()),
+              getApi(API.CREATE_REWARDS, suffix: '/${eventResponse.data}'),
               data: rewardsData);
 
           if (rewardsResponse.statusCode != 200) print('보상 생성 오류');
