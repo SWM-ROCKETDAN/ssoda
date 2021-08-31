@@ -46,6 +46,7 @@ public class Store {
     private List<String> imagePaths;
 
     // 가게 로고 이미지
+    @Column(nullable = false)
     private String logoImagePath;
 
     // 가게에서 개설한 이벤트 목록

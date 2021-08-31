@@ -1,6 +1,7 @@
 package com.rocketdan.serviceserver.domain.store;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -9,7 +10,6 @@ import javax.persistence.Embeddable;
 
 @Embeddable
 @Getter
-@AllArgsConstructor
 @NoArgsConstructor
 public class Address {
     // 시도명
@@ -30,4 +30,14 @@ public class Address {
 
     // 우편 번호
     private String zipCode;
+
+    @Builder
+    public Address(String city, String country, String town, String roadCode, String road, String zipCode) {
+        this.city = city;
+        this.country = country;
+        this.town = town;
+        this.roadCode = roadCode;
+        this.road = road;
+        this.zipCode = zipCode;
+    }
 }

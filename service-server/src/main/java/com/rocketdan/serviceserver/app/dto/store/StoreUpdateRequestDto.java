@@ -15,18 +15,36 @@ import java.util.List;
 public class StoreUpdateRequestDto {
     private String name;
     private Integer category;
-    private Address address;
     private String description;
     private List<MultipartFile> images;
     private MultipartFile logoImage;
 
+    // 주소
+    private String city;
+    private String country;
+    private String town;
+    private String roadCode;
+    private String road;
+    private String zipCode;
+
+    private Address address;
+
     @Builder
-    public StoreUpdateRequestDto(String name, Integer category, Address address, String description, List<MultipartFile> images, MultipartFile logoImage) {
+    public StoreUpdateRequestDto(String name, Integer category, String description, List<MultipartFile> images, MultipartFile logoImage,
+                                 String city, String country, String town, String roadCode, String road, String zipCode) {
         this.name = name;
         this.category = category;
-        this.address = address;
         this.description = description;
         this.images = images;
         this.logoImage = logoImage;
+
+        this.address = Address.builder()
+                .city(city)
+                .country(country)
+                .town(town)
+                .roadCode(roadCode)
+                .road(road)
+                .zipCode(zipCode)
+                .build();
     }
 }
