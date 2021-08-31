@@ -37,6 +37,7 @@ dependencies:
   introduction_screen: ^2.1.0
   flutter_web_auth: ^0.3.0
   flutter_secure_storage: ^4.2.1
+  dio_cookie_manager: ^2.0.0
     
 dev_dependencies:
   flutter_test:
