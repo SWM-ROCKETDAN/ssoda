@@ -1,4 +1,4 @@
-package com.rocketdan.serviceserver.Exception.auth;
+package com.rocketdan.serviceserver.Exception.auth.token;
 
 import com.rocketdan.serviceserver.Exception.ErrorCode;
 

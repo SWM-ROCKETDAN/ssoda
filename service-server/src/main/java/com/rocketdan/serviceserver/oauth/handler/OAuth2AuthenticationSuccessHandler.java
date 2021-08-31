@@ -3,6 +3,8 @@ package com.rocketdan.serviceserver.oauth.handler;
 import com.rocketdan.serviceserver.config.properties.AppProperties;
 import com.rocketdan.serviceserver.domain.user.Provider;
 import com.rocketdan.serviceserver.domain.user.Role;
+import com.rocketdan.serviceserver.domain.user.UserRefreshToken;
+import com.rocketdan.serviceserver.domain.user.UserRefreshTokenRepository;
 import com.rocketdan.serviceserver.oauth.info.OAuth2UserInfo;
 import com.rocketdan.serviceserver.oauth.info.OAuth2UserInfoFactory;
 import com.rocketdan.serviceserver.oauth.repository.OAuth2AuthorizationRequestBasedOnCookieRepository;
@@ -31,6 +33,7 @@ import java.util.Date;
 import java.util.Optional;
 
 import static com.rocketdan.serviceserver.oauth.repository.OAuth2AuthorizationRequestBasedOnCookieRepository.REDIRECT_URI_PARAM_COOKIE_NAME;
+import static com.rocketdan.serviceserver.oauth.repository.OAuth2AuthorizationRequestBasedOnCookieRepository.REFRESH_TOKEN;
 
 @Component
 @RequiredArgsConstructor
@@ -38,10 +41,9 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
 
     private final JwtAuthTokenProvider jwtAuthTokenProvider;
     private final AppProperties appProperties;
-//    private final UserRefreshTokenRepository userRefreshTokenRepository;
+    private final UserRefreshTokenRepository userRefreshTokenRepository;
     private final OAuth2AuthorizationRequestBasedOnCookieRepository authorizationRequestRepository;
 
-    private final static long THIRTY_MINUTE_MSEC = 1800000;
     private final static String SUCCESS_COMMAND = "://success";
 
     @Override
@@ -68,46 +70,41 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
         String targetUrl = redirectUri.orElse(getDefaultTargetUrl());
 
         OAuth2AuthenticationToken authToken = (OAuth2AuthenticationToken) authentication;
-        Provider providerType = Provider.valueOf(authToken.getAuthorizedClientRegistrationId().toUpperCase());
+        Provider provider = Provider.valueOf(authToken.getAuthorizedClientRegistrationId().toUpperCase());
 
         OidcUser user = ((OidcUser) authentication.getPrincipal());
-        OAuth2UserInfo userInfo = OAuth2UserInfoFactory.getOAuth2UserInfo(providerType, user.getAttributes());
+        OAuth2UserInfo userInfo = OAuth2UserInfoFactory.getOAuth2UserInfo(provider, user.getAttributes());
         Collection<? extends GrantedAuthority> authorities = ((OidcUser) authentication.getPrincipal()).getAuthorities();
 
-        Role roleType = hasAuthority(authorities, Role.ADMIN.getCode()) ? Role.ADMIN : Role.USER;
+        Role role = hasAuthority(authorities, Role.ADMIN.getCode()) ? Role.ADMIN : Role.USER;
 
-        Date expiredDate = Date.from(LocalDateTime.now().plusMinutes(THIRTY_MINUTE_MSEC).atZone(ZoneId.systemDefault()).toInstant());
+        Date now = new Date();
 
         JwtAuthToken accessToken = jwtAuthTokenProvider.createAuthToken(
                 userInfo.getId(),
-                roleType.getCode(),
-                expiredDate
+                role.getCode(),
+                new Date(now.getTime() + appProperties.getAuth().getTokenExpiry())
         );
 
         // refresh 토큰 설정
-//        long refreshTokenExpiry = appProperties.getAuth().getRefreshTokenExpiry();
-//
-//        AuthToken refreshToken = tokenProvider.createAuthToken(
-//                appProperties.getAuth().getTokenSecret(),
-//                new Date(now.getTime() + refreshTokenExpiry)
-//        );
+        long refreshTokenExpiry = appProperties.getAuth().getRefreshTokenExpiry();
+
+        JwtAuthToken refreshToken = jwtAuthTokenProvider.createAuthToken(
+                appProperties.getAuth().getTokenSecret(),
+                new Date(now.getTime() + refreshTokenExpiry)
+        );
 
         // DB 저장
-//        UserRefreshToken userRefreshToken = userRefreshTokenRepository.findByUserId(userInfo.getId());
-//        if (userRefreshToken != null) {
-//            userRefreshToken.setRefreshToken(refreshToken.getToken());
-//        } else {
-//            userRefreshToken = new UserRefreshToken(userInfo.getId(), refreshToken.getToken());
-//            userRefreshTokenRepository.saveAndFlush(userRefreshToken);
-//        }
-
-//        int cookieMaxAge = (int) refreshTokenExpiry / 60;
-//
-//        CookieUtil.deleteCookie(request, response, REFRESH_TOKEN);
-//        CookieUtil.addCookie(response, REFRESH_TOKEN, refreshToken.getToken(), cookieMaxAge);
+        Optional<UserRefreshToken> userRefreshToken = userRefreshTokenRepository.findByUserId(userInfo.getId());
+        if (userRefreshToken.isPresent()) {
+            userRefreshToken.get().setRefreshToken(refreshToken.getToken());
+        } else {
+            userRefreshTokenRepository.saveAndFlush(new UserRefreshToken(userInfo.getId(), refreshToken.getToken()));
+        }
 
         return UriComponentsBuilder.fromUriString(targetUrl + SUCCESS_COMMAND)
-                .queryParam("token", accessToken.getToken())
+                .queryParam("access-token", accessToken.getToken())
+                .queryParam("refresh-token", refreshToken.getToken())
                 .build().toUriString();
     }
 

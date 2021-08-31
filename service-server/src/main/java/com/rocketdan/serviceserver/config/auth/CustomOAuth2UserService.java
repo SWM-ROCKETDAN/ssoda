@@ -1,6 +1,6 @@
 package com.rocketdan.serviceserver.config.auth;
 
-import com.rocketdan.serviceserver.Exception.auth.CustomAuthenticationException;
+import com.rocketdan.serviceserver.Exception.auth.token.CustomAuthenticationException;
 import com.rocketdan.serviceserver.Exception.auth.LoginFailedException;
 import com.rocketdan.serviceserver.domain.user.*;
 import com.rocketdan.serviceserver.oauth.info.OAuth2UserInfo;

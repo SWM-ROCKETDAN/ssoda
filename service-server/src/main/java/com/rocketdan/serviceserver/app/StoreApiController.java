@@ -2,13 +2,11 @@ package com.rocketdan.serviceserver.app;
 
 import com.rocketdan.serviceserver.Exception.resource.NoAuthorityToResourceException;
 import com.rocketdan.serviceserver.app.dto.event.EventListResponseDto;
-import com.rocketdan.serviceserver.app.dto.event.hashtag.HashtagEventSaveRequest;
 import com.rocketdan.serviceserver.app.dto.store.StoreListResponseDto;
 import com.rocketdan.serviceserver.app.dto.store.StoreResponseDto;
 import com.rocketdan.serviceserver.app.dto.store.StoreSaveRequestDto;
 import com.rocketdan.serviceserver.app.dto.store.StoreUpdateRequestDto;
 import com.rocketdan.serviceserver.core.auth.LoginUser;
-import com.rocketdan.serviceserver.s3.service.ImageManagerService;
 import com.rocketdan.serviceserver.service.StoreService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
