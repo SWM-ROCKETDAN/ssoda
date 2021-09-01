@@ -56,13 +56,17 @@ public class StoreService {
         userIdValidCheck.userIdValidCheck(store.getUser().getUserId(), principal);
 
         // 이미지
-        imageManagerService.delete(store.getImagePaths());
+        imageManagerService.delete(requestDto.getDeleteImagePaths());
         imageManagerService.delete(store.getLogoImagePath());
 
-        List<String> imgPaths = imageManagerService.upload("image/store", requestDto.getImages());
+        List<String> imgPaths = imageManagerService.upload("image/store", requestDto.getNewImages());
+        List<String> prevImgPaths = store.getImagePaths();
+        requestDto.getDeleteImagePaths().forEach(prevImgPaths::remove);
+        imgPaths.addAll(prevImgPaths);
+
         String logoImgPath = imageManagerService.upload("image/store/logo", requestDto.getLogoImage());
 
-        store.update(requestDto.getName(), requestDto.getCategory(), requestDto.getAddress(), requestDto.getDescription(), imgPaths, logoImgPath);
+        store.update(requestDto.getName(), requestDto.getCategory(), requestDto.addressToEntity(), requestDto.getDescription(), imgPaths, logoImgPath);
 
         return id;
     }
