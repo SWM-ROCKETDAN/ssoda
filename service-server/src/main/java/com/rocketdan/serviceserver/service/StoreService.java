@@ -7,7 +7,6 @@ import com.rocketdan.serviceserver.app.dto.store.StoreResponseDto;
 import com.rocketdan.serviceserver.app.dto.store.StoreSaveRequestDto;
 import com.rocketdan.serviceserver.app.dto.store.StoreUpdateRequestDto;
 import com.rocketdan.serviceserver.config.auth.UserIdValidCheck;
-import com.rocketdan.serviceserver.domain.store.Address;
 import com.rocketdan.serviceserver.domain.store.Store;
 import com.rocketdan.serviceserver.domain.store.StoreRepository;
 import com.rocketdan.serviceserver.domain.user.User;
