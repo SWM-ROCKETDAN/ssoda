@@ -12,7 +12,6 @@ import com.rocketdan.serviceserver.domain.user.UserRefreshToken;
 import com.rocketdan.serviceserver.domain.user.UserRefreshTokenRepository;
 import com.rocketdan.serviceserver.provider.security.JwtAuthToken;
 import com.rocketdan.serviceserver.provider.security.JwtAuthTokenProvider;
-import com.rocketdan.serviceserver.utils.CookieUtil;
 import com.rocketdan.serviceserver.utils.HeaderUtil;
 import io.jsonwebtoken.Claims;
 import lombok.RequiredArgsConstructor;
@@ -24,13 +23,10 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.Date;
 import java.util.Optional;
-
-import static com.rocketdan.serviceserver.oauth.repository.OAuth2AuthorizationRequestBasedOnCookieRepository.REFRESH_TOKEN;
 
 // /auth 라는 Path는 스프링 시큐리티 컨텍스트 내에 존재하는 인증절차를 거쳐 통과해야한다.
 @RestController
@@ -84,13 +80,10 @@ public class AuthController {
             userRefreshToken.get().setRefreshToken(refreshToken.getToken());
         }
 
-        int cookieMaxAge = (int) refreshTokenExpiry / 60;
-        CookieUtil.deleteCookie(request, response, REFRESH_TOKEN);
-        CookieUtil.addCookie(response, REFRESH_TOKEN, refreshToken.getToken(), cookieMaxAge);
-
         // auth-token을 헤더에 전달
         HttpHeaders responseHeaders = new HttpHeaders();
-        responseHeaders.set("token", accessToken.getToken());
+        responseHeaders.set("access-token", accessToken.getToken());
+        responseHeaders.set("refresh-token", refreshToken.getToken());
 
         return ResponseEntity.ok()
                 .headers(responseHeaders)
@@ -121,11 +114,8 @@ public class AuthController {
         Role role = Role.of(claims.get("role", String.class));
 
         // refresh token
-        String refreshToken = CookieUtil.getCookie(request, REFRESH_TOKEN)
-                .map(Cookie::getValue)
-                .orElse((null));
+        String refreshToken = HeaderUtil.getRefreshToken(request);
         JwtAuthToken authRefreshToken = jwtAuthTokenProvider.convertAuthToken(refreshToken);
-
         if (authRefreshToken.validate()) {
             throw new CustomRefreshTokenException();
         }
@@ -157,14 +147,11 @@ public class AuthController {
 
             // DB에 refresh 토큰 업데이트
             userRefreshToken.get().setRefreshToken(authRefreshToken.getToken());
-
-            int cookieMaxAge = (int) refreshTokenExpiry / 60;
-            CookieUtil.deleteCookie(request, response, REFRESH_TOKEN);
-            CookieUtil.addCookie(response, REFRESH_TOKEN, authRefreshToken.getToken(), cookieMaxAge);
         }
 
         HttpHeaders responseHeaders = new HttpHeaders();
-        responseHeaders.set("token", newAccessToken.getToken());
+        responseHeaders.set("access-token", newAccessToken.getToken());
+        responseHeaders.set("refresh-token", authRefreshToken.getToken());
 
         return ResponseEntity.ok()
                 .headers(responseHeaders)
