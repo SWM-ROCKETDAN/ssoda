@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:hashchecker/constants.dart';
+import 'package:hashchecker/screens/create_store/create_store_screen.dart';
 import 'package:hashchecker/screens/hall/hall_screen.dart';
 import 'package:hashchecker/screens/on_boarding/on_boarding_screen.dart';
 import 'package:hashchecker/screens/splash/splash_screen.dart';
@@ -39,7 +40,7 @@ class MyApp extends StatelessWidget {
                   visualDensity: VisualDensity.adaptivePlatformDensity,
                   scaffoldBackgroundColor: kScaffoldBackgroundColor,
                   accentColor: kShadowColor),
-              home: OnBoardingScreen());
+              home: CreateStoreScreen());
         }
       },
     );
