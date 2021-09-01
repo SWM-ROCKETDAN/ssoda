@@ -51,5 +51,6 @@ flutter:
     - assets/images/splash/
     - assets/images/event_list/
     - assets/images/on_boarding/
+    - assets/images/create_store/
           
   uses-material-design: true
