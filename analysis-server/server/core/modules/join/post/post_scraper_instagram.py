@@ -1,8 +1,8 @@
 from bs4 import BeautifulSoup
 from urllib.request import urlopen
-from ..proxy import get_proxy_url
-from ..time import get_now_time
-from ..time import parse_from_str_time_to_date_time
+from server.core.modules.assist.proxy import get_proxy_url
+from server.core.modules.assist.time import get_now_date
+from server.core.modules.assist.time import parse_from_str_time_to_date_time
 from server.core.modules.static.common import Type
 from server.core.modules.static.common import Status
 from ._post import get_default_post
@@ -74,7 +74,7 @@ def scrap_post(url):
         'upload_date': upload,
         'private_date': None,
         'delete_data': None,
-        'update_date': get_now_time(),
+        'update_date': get_now_date(),
     }
 
     return post

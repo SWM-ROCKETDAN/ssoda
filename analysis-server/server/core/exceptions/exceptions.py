@@ -74,7 +74,16 @@ class UserUpdateDontButOK(CustomException):
 
 
 # 클라이언트 에러
-class PostIsPrivate(APIException):
+class Http404(CustomException):
+    default_detail = 'Not found'
+    status_code = 404
+    default_code = 'CLIENT_ERROR_001'
+
+    def __init__(self, data=None):
+        super().__init__(data)
+
+
+class PostIsPrivate(CustomException):
     default_detail = 'Post is private'
     status_code = 406
     default_code = 'CLIENT_ERROR_001'
@@ -83,7 +92,7 @@ class PostIsPrivate(APIException):
         super().__init__(data)
 
 
-class PostIsDeleted(APIException):
+class PostIsDeleted(CustomException):
     default_detail = 'Post is deleted'
     status_code = 406
     default_code = 'CLIENT_ERROR_002'
@@ -92,7 +101,7 @@ class PostIsDeleted(APIException):
         super().__init__(data)
 
 
-class PostIsDiffHashtag(APIException):
+class PostIsDiffHashtag(CustomException):
     default_detail = 'Post is different hashtag'
     status_code = 406
     default_code = 'CLIENT_ERROR_003'
@@ -102,7 +111,7 @@ class PostIsDiffHashtag(APIException):
 
 
 # 서버 에러
-class ProxyFailed(APIException):
+class ProxyFailed(CustomException):
     default_detail = 'Proxy is failed'
     status_code = 500
     default_code = 'SERVER_ERROR_001'
@@ -111,7 +120,7 @@ class ProxyFailed(APIException):
         super().__init__(data)
 
 
-class ScrapFailed(APIException):
+class ScrapFailed(CustomException):
     default_detail = 'Scrap is failed'
     status_code = 500
     default_code = 'SERVER_ERROR_002'
@@ -120,7 +129,7 @@ class ScrapFailed(APIException):
         super().__init__(data)
 
 
-class PostUpdateFailed(APIException):
+class PostUpdateFailed(CustomException):
     default_detail = 'Post update failed'
     status_code = 500
     default_code = 'SERVER_ERROR_003'

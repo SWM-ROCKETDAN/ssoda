@@ -1,4 +1,4 @@
-# This is an auto-generated Django model module.
+# This is an auto-generated Django model modules.
 # You'll have to do the following manually to clean this up:
 #   * Rearrange models' order
 #   * Make sure each model has one field with primary_key=True
@@ -213,9 +213,26 @@ class StoreImages(models.Model):
         db_table = 'store_images'
 
 
+class User(models.Model):
+    id = models.BigAutoField(primary_key=True)
+    email = models.CharField(max_length=255, blank=True, null=True)
+    name = models.CharField(max_length=255)
+    picture = models.CharField(max_length=255, blank=True, null=True)
+    role = models.CharField(max_length=255)
+    created_date = models.DateTimeField()
+    modified_date = models.DateTimeField()
+    password = models.CharField(max_length=255)
+    provider = models.CharField(max_length=255)
+    user_id = models.CharField(max_length=255)
+
+    class Meta:
+        managed = False
+        db_table = 'user'
+
+
 class JoinPost(models.Model):
     id = models.BigAutoField(primary_key=True)
-    event = models.ForeignKey(Event, related_name='event', on_delete=models.CASCADE)
+    event = models.ForeignKey(Event, related_name='event', on_delete=models.DO_NOTHING)
     reward = models.ForeignKey(Reward, related_name='reward', on_delete=models.DO_NOTHING, blank=True, null=True)
     sns_id = models.CharField(max_length=255, blank=True, null=True)
     url = models.CharField(max_length=255)
@@ -229,6 +246,7 @@ class JoinPost(models.Model):
     private_date = models.DateTimeField(blank=True, null=True)
     delete_date = models.DateTimeField(blank=True, null=True)
     update_date = models.DateTimeField(blank=True, null=True)
+    reward_date = models.DateTimeField(blank=True, null=True)
 
     class Meta:
         db_table = 'join_post'
@@ -247,3 +265,11 @@ class JoinUser(models.Model):
 
     class Meta:
         db_table = 'join_user'
+
+
+class TaskJoinPost(models.Model):
+    id = models.BigAutoField(primary_key=True)
+    join_post = models.ForeignKey(JoinPost, related_name='join_post', on_delete=models.DO_NOTHING)
+
+    class Meta:
+        db_table = 'task_join_post'
