@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:hashchecker/constants.dart';
+import 'package:hashchecker/models/address.dart';
 import 'package:hashchecker/models/store_category.dart';
 import 'package:hashchecker/screens/create_store/components/store_category.dart';
 import 'package:hashchecker/screens/create_store/components/store_logo.dart';
 import 'package:image_picker/image_picker.dart';
 
+import 'components/create_store_button.dart';
 import 'components/store_image.dart';
 import 'components/store_location.dart';
 import 'components/store_name.dart';
@@ -21,6 +23,9 @@ class _CreateStoreScreenState extends State<CreateStoreScreen> {
   List<String> _storeImageList = [];
   StoreCategory _storeCategory = StoreCategory.RESTAURANT;
   TextEditingController _storeNameController = TextEditingController();
+  Address? _storeAddress;
+  TextEditingController _storeZipCodeController = TextEditingController();
+  TextEditingController _storeAddressController = TextEditingController();
 
   Future<void> _setLogoImage() async {
     final ImagePicker _imagePicker = ImagePicker();
@@ -56,6 +61,15 @@ class _CreateStoreScreenState extends State<CreateStoreScreen> {
     });
   }
 
+  void _setAddress(Address address) {
+    _storeAddress = address;
+    setState(() {
+      _storeZipCodeController.text = address.zipCode;
+      _storeAddressController.text =
+          '${address.city} ${address.country} ${address.road} ${address.building}';
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -85,37 +99,25 @@ class _CreateStoreScreenState extends State<CreateStoreScreen> {
                     StoreCate(
                         setCategory: _setCategory, category: _storeCategory),
                     SizedBox(height: kDefaultPadding),
-                    StoreLocation(),
-                    SizedBox(height: kDefaultPadding),
                     StoreImage(
                         getImageFromGallery: _addStoreImage,
                         deleteImage: _deleteStoreImage,
                         imageList: _storeImageList),
+                    SizedBox(height: kDefaultPadding),
+                    StoreLocation(
+                        setAddress: _setAddress,
+                        zipCodeController: _storeZipCodeController,
+                        addressController: _storeAddressController),
                   ],
                 ),
               ),
             ),
-            SizedBox(
-              width: MediaQuery.of(context).size.width,
-              height: 50,
-              child: ElevatedButton(
-                onPressed: () {},
-                child: Text(
-                  '등록하기',
-                  style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold),
-                ),
-                style: ButtonStyle(
-                    shadowColor: MaterialStateProperty.all<Color>(kShadowColor),
-                    backgroundColor:
-                        MaterialStateProperty.all<Color>(kThemeColor),
-                    shape: MaterialStateProperty.all<OutlinedBorder>(
-                        RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(27.0)))),
-              ),
-            ),
+            CreateStoreButton(
+                logo: _logoPath,
+                imageList: _storeImageList,
+                category: _storeCategory,
+                name: _storeNameController.value.text.trim(),
+                address: _storeAddress),
           ],
         ),
       ),

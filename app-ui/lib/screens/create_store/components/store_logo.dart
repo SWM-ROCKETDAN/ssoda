@@ -40,8 +40,8 @@ class StoreLogo extends StatelessWidget {
             : GestureDetector(
                 onTap: getImageFromGallery,
                 child: Container(
-                    height: 75,
-                    width: 75,
+                    height: 80,
+                    width: 80,
                     decoration: BoxDecoration(
                         shape: BoxShape.circle,
                         image: DecorationImage(
@@ -49,7 +49,9 @@ class StoreLogo extends StatelessWidget {
                             fit: BoxFit.cover))),
               ),
         SizedBox(height: kDefaultPadding / 3 * 2),
-        Text('가게 로고 등록', style: TextStyle(color: kLiteFontColor, fontSize: 12)),
+        if (logoPath == null)
+          Text('가게 로고 등록',
+              style: TextStyle(color: kLiteFontColor, fontSize: 12)),
       ],
     );
   }
