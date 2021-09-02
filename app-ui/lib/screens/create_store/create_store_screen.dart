@@ -23,11 +23,11 @@ class _CreateStoreScreenState extends State<CreateStoreScreen> {
   String? _logoPath;
   List<String> _storeImageList = [];
   StoreCategory _storeCategory = StoreCategory.RESTAURANT;
-  TextEditingController _storeNameController = TextEditingController();
+  String? _storeName;
   Address? _storeAddress;
   TextEditingController _storeZipCodeController = TextEditingController();
   TextEditingController _storeAddressController = TextEditingController();
-  TextEditingController _storeDescriptionController = TextEditingController();
+  String? _storeDescription;
 
   Future<void> _setLogoImage() async {
     final ImagePicker _imagePicker = ImagePicker();
@@ -60,6 +60,18 @@ class _CreateStoreScreenState extends State<CreateStoreScreen> {
   void _setCategory(StoreCategory category) {
     setState(() {
       _storeCategory = category;
+    });
+  }
+
+  void _setName(String name) {
+    setState(() {
+      _storeName = name;
+    });
+  }
+
+  void _setDescription(String description) {
+    setState(() {
+      _storeDescription = description;
     });
   }
 
@@ -96,7 +108,7 @@ class _CreateStoreScreenState extends State<CreateStoreScreen> {
                         getImageFromGallery: _setLogoImage,
                         logoPath: _logoPath),
                     SizedBox(height: kDefaultPadding * 1.5),
-                    StoreName(textEditingController: _storeNameController),
+                    StoreName(setName: _setName),
                     SizedBox(height: kDefaultPadding),
                     StoreCate(
                         setCategory: _setCategory, category: _storeCategory),
@@ -111,8 +123,7 @@ class _CreateStoreScreenState extends State<CreateStoreScreen> {
                         zipCodeController: _storeZipCodeController,
                         addressController: _storeAddressController),
                     SizedBox(height: kDefaultPadding),
-                    StoreDescription(
-                        textEditingController: _storeDescriptionController),
+                    StoreDescription(setDescription: _setDescription),
                   ],
                 ),
               ),
@@ -121,9 +132,9 @@ class _CreateStoreScreenState extends State<CreateStoreScreen> {
                 logo: _logoPath,
                 imageList: _storeImageList,
                 category: _storeCategory,
-                name: _storeNameController.value.text.trim(),
+                name: _storeName,
                 address: _storeAddress,
-                description: _storeDescriptionController.value.text.trim()),
+                description: _storeDescription),
           ],
         ),
       ),

@@ -1,16 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:hashchecker/constants.dart';
 
-class StoreName extends StatefulWidget {
-  final textEditingController;
-  const StoreName({Key? key, required this.textEditingController})
-      : super(key: key);
+class StoreName extends StatelessWidget {
+  final setName;
+  const StoreName({Key? key, required this.setName}) : super(key: key);
 
-  @override
-  _StoreNameState createState() => _StoreNameState();
-}
-
-class _StoreNameState extends State<StoreName> {
   @override
   Widget build(BuildContext context) {
     return Row(
@@ -22,11 +16,13 @@ class _StoreNameState extends State<StoreName> {
             style: TextStyle(fontSize: 14, color: kDefaultFontColor),
             cursorColor: kThemeColor,
             keyboardType: TextInputType.text,
-            controller: widget.textEditingController,
+            onChanged: (string) {
+              setName(string);
+            },
             decoration: InputDecoration(
                 counterText: "",
                 focusedBorder: OutlineInputBorder(
-                  borderSide: BorderSide(color: kDefaultFontColor, width: 1.2),
+                  borderSide: BorderSide(color: kThemeColor, width: 1.2),
                 ),
                 enabledBorder: OutlineInputBorder(
                   borderSide: BorderSide(color: kLiteFontColor, width: 1),

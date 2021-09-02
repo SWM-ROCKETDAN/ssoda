@@ -29,8 +29,7 @@ class StoreLocation extends StatelessWidget {
                 controller: zipCodeController,
                 decoration: InputDecoration(
                     focusedBorder: OutlineInputBorder(
-                      borderSide:
-                          BorderSide(color: kDefaultFontColor, width: 1.2),
+                      borderSide: BorderSide(color: kThemeColor, width: 1.2),
                     ),
                     enabledBorder: OutlineInputBorder(
                       borderSide: BorderSide(color: kLiteFontColor, width: 1),
@@ -91,8 +90,7 @@ class StoreLocation extends StatelessWidget {
                 controller: addressController,
                 decoration: InputDecoration(
                     focusedBorder: OutlineInputBorder(
-                      borderSide:
-                          BorderSide(color: kDefaultFontColor, width: 1.2),
+                      borderSide: BorderSide(color: kThemeColor, width: 1.2),
                     ),
                     enabledBorder: OutlineInputBorder(
                       borderSide: BorderSide(color: kLiteFontColor, width: 1),

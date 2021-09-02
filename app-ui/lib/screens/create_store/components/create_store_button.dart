@@ -58,12 +58,13 @@ class CreateStoreButton extends StatelessWidget {
 
   void _createPreview() {
     Store store = Store(
-        name: name!,
+        name: name!.trim(),
         category: category,
         address: address!,
-        description: description!,
+        description: description!.trim(),
         images: imageList,
         logoImage: logo!);
+    print(store.name);
   }
 
   bool _checkStoreValidation(BuildContext context) {
@@ -77,7 +78,7 @@ class CreateStoreButton extends StatelessWidget {
               style: TextStyle(fontSize: 14, color: kDefaultFontColor)));
       return false;
     }
-    if (name == null || name == "") {
+    if (name == null || name!.trim() == "") {
       context.showFlashBar(
           barType: FlashBarType.error,
           icon: const Icon(Icons.error_outline_rounded),
@@ -107,7 +108,7 @@ class CreateStoreButton extends StatelessWidget {
               style: TextStyle(fontSize: 14, color: kDefaultFontColor)));
       return false;
     }
-    if (description == null) {
+    if (description == null || description!.trim() == "") {
       context.showFlashBar(
           barType: FlashBarType.error,
           icon: const Icon(Icons.error_outline_rounded),
@@ -132,7 +133,7 @@ class CreateStoreButton extends StatelessWidget {
                       color: kDefaultFontColor),
                   textAlign: TextAlign.center),
             ),
-            content: Text("쏘다에 우리가게를 등록했어요!\n이제 이벤트를 만들어볼까요?",
+            content: Text("쏘다에 우리가게가 등록되었습니다\n이제 이벤트를 만들어볼까요?",
                 textAlign: TextAlign.center,
                 style: TextStyle(fontSize: 14, color: kDefaultFontColor)),
             contentPadding: const EdgeInsets.fromLTRB(15, 15, 15, 5),
