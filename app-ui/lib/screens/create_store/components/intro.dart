@@ -1,10 +1,10 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:hashchecker/constants.dart';
-import 'package:hashchecker/screens/create_store/components/input_store_info.dart';
+import 'package:hashchecker/screens/create_store/create_store_screen.dart';
 
-class Intro extends StatelessWidget {
-  const Intro({
+class CreateStoreIntro extends StatelessWidget {
+  const CreateStoreIntro({
     Key? key,
   }) : super(key: key);
 
@@ -63,7 +63,7 @@ class Intro extends StatelessWidget {
 Route _routeToInputStoreInfoScreen() {
   return PageRouteBuilder(
     pageBuilder: (context, animation, secondaryAnimation) =>
-        const InputStoreInfoScreen(),
+        const CreateStoreScreen(),
     transitionsBuilder: (context, animation, secondaryAnimation, child) {
       const begin = Offset(1.0, 0.0);
       const end = Offset.zero;

@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:hashchecker/constants.dart';
 
 class StoreName extends StatelessWidget {
-  const StoreName({
-    Key? key,
-  }) : super(key: key);
+  final textEditingController;
+  const StoreName({Key? key, required this.textEditingController})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -16,6 +16,7 @@ class StoreName extends StatelessWidget {
           child: TextField(
             style: TextStyle(fontSize: 14, color: kDefaultFontColor),
             keyboardType: TextInputType.text,
+            controller: textEditingController,
             decoration: InputDecoration(
                 focusedBorder: OutlineInputBorder(
                   borderSide: BorderSide(color: kThemeColor, width: 1.2),
