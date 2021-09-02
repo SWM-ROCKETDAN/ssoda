@@ -178,12 +178,12 @@ class HashtagRequirements(models.Model):
 class Reward(models.Model):
     category = models.IntegerField(blank=True, null=True)
     count = models.IntegerField(blank=True, null=True)
-    image = models.CharField(max_length=255, blank=True, null=True)
     name = models.CharField(max_length=255)
     price = models.IntegerField(blank=True, null=True)
     level = models.BigIntegerField(blank=True, null=True)
     used_count = models.IntegerField(blank=True, null=True)
     event = models.ForeignKey(Event, related_name='rewards', on_delete=models.DO_NOTHING, blank=True, null=True)
+    image_path = models.CharField(max_length=255, blank=True, null=True)
 
     class Meta:
         db_table = 'reward'
