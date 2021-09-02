@@ -11,7 +11,6 @@ from core.modules.join.post.post_scraper import PostScraper
 from core.modules.join.user.user_scraper import UserScraper
 from core.modules.join.reward.reward_calculator import RewardCalculator
 from core.exceptions import exceptions
-from core.modules.join.post.post_scraper_instagram import scrap_post
 
 
 # JoinPost PUT 요청

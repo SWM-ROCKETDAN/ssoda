@@ -4,7 +4,7 @@ from server.core.modules.static.scrap import Scrap
 from server.core.exceptions import exceptions
 from . import post_scraper_instagram
 from . import post_scraper_facebook
-from ..time import get_interval_day_from_now_time_to_target_time
+from server.core.modules.assist.time import get_interval_day_from_now_time_to_target_time
 
 module_handlers = {
     Type.INSTAGRAM: post_scraper_instagram,
