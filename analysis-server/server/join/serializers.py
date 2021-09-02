@@ -117,6 +117,21 @@ class JoinPostUpdateSerializer(serializers.ModelSerializer):
         model = JoinPost
         fields = '__all__'
 
+    def to_representation(self, instance):
+        representation = super().to_representation(instance)
+        # 이벤트 해시태그 리스트
+        event_hashtags = []
+        event_hashtag_hashtag_hashtags = representation.get('event').get('hashtag').get('hashtag_hashtags')
+        if event_hashtag_hashtag_hashtags is not None:
+            for event_hashtag in event_hashtag_hashtag_hashtags:
+                event_hashtags.append(event_hashtag['hashtags'])
+        representation['event']['hashtag']['hashtag_hashtags'] = event_hashtags
+
+        # 게시물 해시태그 리스트
+        representation['hashtags'] = representation['hashtags'].split(',')
+
+        return representation
+
 
 class JoinPostSerializer(serializers.ModelSerializer):
     class Meta:
