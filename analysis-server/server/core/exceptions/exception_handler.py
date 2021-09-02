@@ -15,13 +15,15 @@ def custom_exception_handler(exc, context):
         exceptions.RewardCalculateOK.__name__: parse_custom_exception,
         exceptions.EventReportCalculateOK.__name__: parse_custom_exception,
         exceptions.StoreReportCalculateOK.__name__: parse_custom_exception,
-        exceptions.PostUpdateDontButOK.__name__: parse_custom_exception,
+        exceptions.PostIsAlreadyCalculatedRewardAndOK.__name__: parse_custom_exception,
         exceptions.UserUpdateDontButOK.__name__: parse_custom_exception,
 
         # Client Error
         exceptions.PostIsPrivate.__name__: parse_custom_exception,
         exceptions.PostIsDeleted.__name__: parse_custom_exception,
         exceptions.PostIsDiffHashtag.__name__: parse_custom_exception,
+        exceptions.PostIsAlreadyRewarded.__name__: parse_custom_exception,
+        exceptions.PostEventIsNotOK.__name__: parse_custom_exception,
 
         # Server Error
         exceptions.ProxyFailed.__name__: parse_custom_exception,
@@ -35,7 +37,9 @@ def custom_exception_handler(exc, context):
 
     response = exception_handler(exc, context)
     exception_class = exc.__class__.__name__
-
+    print(exception_class)
+    print(exc)
+    print(response)
     # Handler 함수 적용
     if exception_class in handlers:
         response = handlers[exception_class](response, exc)

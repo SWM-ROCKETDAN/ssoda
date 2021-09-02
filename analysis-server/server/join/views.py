@@ -7,6 +7,7 @@ from .serializers import JoinPostSerializer
 from .serializers import JoinUserSerializer
 from .serializers import ThisJoinSerializer
 from .serializers import OtherJoinSerializer
+from .serializers import JoinPostUpdateSerializer
 from core.modules.join.post.post_scraper import PostScraper
 from core.modules.join.user.user_scraper import UserScraper
 from core.modules.join.reward.reward_calculator import RewardCalculator
@@ -18,13 +19,15 @@ class JoinPostView(APIView):
     def put(self, request, pk):
         # Join Post 가져오기
         join_post = get_object_or_404(JoinPost, pk=pk)
+        join_post_update_serializer = JoinPostUpdateSerializer(join_post)
+        raise exceptions.PostUpdateOk({'test': join_post_update_serializer.data})
         join_post_serializer = JoinPostSerializer(join_post)
         post_scraper = PostScraper(join_post_serializer.data)
         scraped_post = post_scraper.get_scraped_post()
         join_post_serializer = JoinPostSerializer(join_post, scraped_post, partial=True)
         if join_post_serializer.is_valid():
             join_post_serializer.save()
-            raise exceptions.PostUpdateOk()
+            raise exceptions.PostUpdateOk({join_post_serializer.data})
         raise exceptions.PostUpdateFailed()
 
 
