@@ -109,6 +109,15 @@ class OtherJoinSerializer(ThisJoinSerializer):
         exclude = ['reward']
 
 
+class JoinPostUpdateSerializer(serializers.ModelSerializer):
+    event = EventSerializer()
+    reward = RewardSerializer()
+
+    class Meta:
+        model = JoinPost
+        fields = '__all__'
+
+
 class JoinPostSerializer(serializers.ModelSerializer):
     class Meta:
         model = JoinPost
