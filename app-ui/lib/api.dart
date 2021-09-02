@@ -60,19 +60,17 @@ Future<Dio> authDio() async {
       final refreshToken = await storage.read(key: 'REFRESH_TOKEN');
 
       var refreshDio = Dio();
-      // var cookieJar = CookieJar();
 
       // setting refreshDio options
-      // refreshDio.interceptors.add(CookieManager(cookieJar));
       refreshDio.options.headers['Authorization'] = 'Bearer $accessToken';
-      refreshDio.options.headers['refresh_token'] = '$refreshToken';
+      refreshDio.options.headers['refresh_token'] = 'Bearer $refreshToken';
 
       // get refreshToken
       final refreshResponse = await refreshDio.get(getApi(API.REFRESH));
 
       // parsing tokens
-      final newAccessToken = refreshResponse.headers['token']![0];
-      final newRefreshToken = refreshResponse.headers['refresh_token']![0];
+      final newAccessToken = refreshResponse.headers['access-token']![0];
+      final newRefreshToken = refreshResponse.headers['refresh-token']![0];
 
       // update dio request headers token
       error.requestOptions.headers['Authorization'] = 'Bearer $newAccessToken';
