@@ -7,6 +7,7 @@ import 'package:hashchecker/screens/create_store/components/store_logo.dart';
 import 'package:image_picker/image_picker.dart';
 
 import 'components/create_store_button.dart';
+import 'components/store_description.dart';
 import 'components/store_image.dart';
 import 'components/store_location.dart';
 import 'components/store_name.dart';
@@ -26,6 +27,7 @@ class _CreateStoreScreenState extends State<CreateStoreScreen> {
   Address? _storeAddress;
   TextEditingController _storeZipCodeController = TextEditingController();
   TextEditingController _storeAddressController = TextEditingController();
+  TextEditingController _storeDescriptionController = TextEditingController();
 
   Future<void> _setLogoImage() async {
     final ImagePicker _imagePicker = ImagePicker();
@@ -93,7 +95,7 @@ class _CreateStoreScreenState extends State<CreateStoreScreen> {
                     StoreLogo(
                         getImageFromGallery: _setLogoImage,
                         logoPath: _logoPath),
-                    SizedBox(height: kDefaultPadding * 2),
+                    SizedBox(height: kDefaultPadding * 1.5),
                     StoreName(textEditingController: _storeNameController),
                     SizedBox(height: kDefaultPadding),
                     StoreCate(
@@ -108,6 +110,9 @@ class _CreateStoreScreenState extends State<CreateStoreScreen> {
                         setAddress: _setAddress,
                         zipCodeController: _storeZipCodeController,
                         addressController: _storeAddressController),
+                    SizedBox(height: kDefaultPadding),
+                    StoreDescription(
+                        textEditingController: _storeDescriptionController),
                   ],
                 ),
               ),
@@ -117,7 +122,8 @@ class _CreateStoreScreenState extends State<CreateStoreScreen> {
                 imageList: _storeImageList,
                 category: _storeCategory,
                 name: _storeNameController.value.text.trim(),
-                address: _storeAddress),
+                address: _storeAddress,
+                description: _storeDescriptionController.value.text.trim()),
           ],
         ),
       ),

@@ -29,7 +29,8 @@ class StoreLocation extends StatelessWidget {
                 controller: zipCodeController,
                 decoration: InputDecoration(
                     focusedBorder: OutlineInputBorder(
-                      borderSide: BorderSide(color: kThemeColor, width: 1.2),
+                      borderSide:
+                          BorderSide(color: kDefaultFontColor, width: 1.2),
                     ),
                     enabledBorder: OutlineInputBorder(
                       borderSide: BorderSide(color: kLiteFontColor, width: 1),
@@ -68,11 +69,13 @@ class StoreLocation extends StatelessWidget {
               },
               child: Text(
                 '주소 검색',
-                style: TextStyle(fontSize: 13),
+                style: TextStyle(fontSize: 13, fontWeight: FontWeight.w600),
               ),
               style: ButtonStyle(
-                  backgroundColor: MaterialStateProperty.all<Color>(
-                      kDefaultFontColor.withOpacity(0.85))),
+                  overlayColor:
+                      MaterialStateProperty.all<Color>(Colors.white24),
+                  backgroundColor:
+                      MaterialStateProperty.all<Color>(kThemeColor)),
             ),
           ],
         ),
@@ -88,7 +91,8 @@ class StoreLocation extends StatelessWidget {
                 controller: addressController,
                 decoration: InputDecoration(
                     focusedBorder: OutlineInputBorder(
-                      borderSide: BorderSide(color: kThemeColor, width: 1.2),
+                      borderSide:
+                          BorderSide(color: kDefaultFontColor, width: 1.2),
                     ),
                     enabledBorder: OutlineInputBorder(
                       borderSide: BorderSide(color: kLiteFontColor, width: 1),

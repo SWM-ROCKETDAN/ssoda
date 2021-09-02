@@ -2,8 +2,10 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:hashchecker/constants.dart';
 import 'package:hashchecker/models/address.dart';
+import 'package:hashchecker/models/store.dart';
 import 'package:hashchecker/models/store_category.dart';
 import 'package:hashchecker/screens/hall/hall_screen.dart';
+import 'package:flash/flash.dart';
 
 class CreateStoreButton extends StatelessWidget {
   final String? logo;
@@ -11,13 +13,15 @@ class CreateStoreButton extends StatelessWidget {
   final StoreCategory category;
   final String? name;
   final Address? address;
+  final String? description;
   const CreateStoreButton(
       {Key? key,
       required this.logo,
       required this.imageList,
       required this.category,
       required this.name,
-      required this.address})
+      required this.address,
+      required this.description})
       : super(key: key);
 
   @override
@@ -27,19 +31,24 @@ class CreateStoreButton extends StatelessWidget {
       height: 50,
       child: ElevatedButton(
         onPressed: () async {
-          if (_checkStoreValidation()) {
+          if (_checkStoreValidation(context)) {
+            _createPreview();
             await _showDoneDialog(context);
             Navigator.of(context).push(_routeToHallScreen());
           }
         },
         child: Text(
-          '등록하기',
+          '다음',
           style: TextStyle(
-              color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold),
+              color: kThemeColor, fontSize: 16, fontWeight: FontWeight.bold),
         ),
         style: ButtonStyle(
+            elevation: MaterialStateProperty.all<double>(12),
+            overlayColor:
+                MaterialStateProperty.all<Color>(kThemeColor.withOpacity(0.1)),
             shadowColor: MaterialStateProperty.all<Color>(kShadowColor),
-            backgroundColor: MaterialStateProperty.all<Color>(kThemeColor),
+            backgroundColor:
+                MaterialStateProperty.all<Color>(kScaffoldBackgroundColor),
             shape: MaterialStateProperty.all<OutlinedBorder>(
                 RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(27.0)))),
@@ -47,17 +56,65 @@ class CreateStoreButton extends StatelessWidget {
     );
   }
 
-  bool _checkStoreValidation() {
+  void _createPreview() {
+    Store store = Store(
+        name: name!,
+        category: category,
+        address: address!,
+        description: description!,
+        images: imageList,
+        logoImage: logo!);
+  }
+
+  bool _checkStoreValidation(BuildContext context) {
     if (logo == null) {
-      return false;
-    }
-    if (imageList.length == 0) {
+      context.showFlashBar(
+          barType: FlashBarType.error,
+          icon: const Icon(Icons.error_outline_rounded),
+          duration: const Duration(seconds: 3),
+          backgroundColor: Colors.white,
+          content: Text('가게 로고를 등록해주세요!',
+              style: TextStyle(fontSize: 14, color: kDefaultFontColor)));
       return false;
     }
     if (name == null || name == "") {
+      context.showFlashBar(
+          barType: FlashBarType.error,
+          icon: const Icon(Icons.error_outline_rounded),
+          duration: const Duration(seconds: 3),
+          backgroundColor: Colors.white,
+          content: Text('가게 이름을 입력해주세요!',
+              style: TextStyle(fontSize: 14, color: kDefaultFontColor)));
+      return false;
+    }
+    if (imageList.length == 0) {
+      context.showFlashBar(
+          barType: FlashBarType.error,
+          icon: const Icon(Icons.error_outline_rounded),
+          duration: const Duration(seconds: 3),
+          backgroundColor: Colors.white,
+          content: Text('가게 이미지를 최소 1개 등록해주세요!',
+              style: TextStyle(fontSize: 14, color: kDefaultFontColor)));
       return false;
     }
     if (address == null) {
+      context.showFlashBar(
+          barType: FlashBarType.error,
+          icon: const Icon(Icons.error_outline_rounded),
+          duration: const Duration(seconds: 3),
+          backgroundColor: Colors.white,
+          content: Text('가게 주소를 입력해주세요!',
+              style: TextStyle(fontSize: 14, color: kDefaultFontColor)));
+      return false;
+    }
+    if (description == null) {
+      context.showFlashBar(
+          barType: FlashBarType.error,
+          icon: const Icon(Icons.error_outline_rounded),
+          duration: const Duration(seconds: 3),
+          backgroundColor: Colors.white,
+          content: Text('가게 소개를 입력해주세요!',
+              style: TextStyle(fontSize: 14, color: kDefaultFontColor)));
       return false;
     }
     return true;

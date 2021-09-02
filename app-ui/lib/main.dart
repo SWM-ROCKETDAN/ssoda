@@ -7,6 +7,8 @@ import 'package:hashchecker/screens/hall/hall_screen.dart';
 import 'package:hashchecker/screens/on_boarding/on_boarding_screen.dart';
 import 'package:hashchecker/screens/splash/splash_screen.dart';
 
+import 'screens/create_store/components/intro.dart';
+
 void main() {
   SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
       statusBarColor: Colors.transparent,
@@ -40,7 +42,7 @@ class MyApp extends StatelessWidget {
                   visualDensity: VisualDensity.adaptivePlatformDensity,
                   scaffoldBackgroundColor: kScaffoldBackgroundColor,
                   accentColor: kShadowColor),
-              home: CreateStoreScreen());
+              home: CreateStoreIntroScreen());
         }
       },
     );

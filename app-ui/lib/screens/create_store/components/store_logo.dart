@@ -22,20 +22,18 @@ class StoreLogo extends StatelessWidget {
                   child: Center(
                     child: Icon(
                       Icons.add,
-                      color: kLiteFontColor,
+                      color: Colors.white,
                       size: 32,
                     ),
                   ),
                   style: ButtonStyle(
-                      side: MaterialStateProperty.all<BorderSide>(
-                          BorderSide(color: kLiteFontColor)),
-                      shape: MaterialStateProperty.all<OutlinedBorder>(
-                          CircleBorder()),
-                      backgroundColor: MaterialStateProperty.all<Color>(
-                          kScaffoldBackgroundColor),
-                      overlayColor:
-                          MaterialStateProperty.all<Color>(kShadowColor),
-                      elevation: MaterialStateProperty.all<double>(0)),
+                    shape: MaterialStateProperty.all<OutlinedBorder>(
+                        CircleBorder()),
+                    backgroundColor:
+                        MaterialStateProperty.all<Color>(kThemeColor),
+                    overlayColor:
+                        MaterialStateProperty.all<Color>(Colors.white24),
+                  ),
                 ))
             : GestureDetector(
                 onTap: getImageFromGallery,

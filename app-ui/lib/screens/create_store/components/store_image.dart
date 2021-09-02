@@ -27,7 +27,7 @@ class StoreImage extends StatelessWidget {
               ? Row(
                   children: [
                     buildAddButton(),
-                    SizedBox(width: kDefaultPadding),
+                    SizedBox(width: kDefaultPadding / 3 * 2),
                     Text('가게 이미지 등록',
                         style: TextStyle(color: kLiteFontColor, fontSize: 12))
                   ],
@@ -60,23 +60,19 @@ class StoreImage extends StatelessWidget {
         height: 48,
         width: 48,
         child: ElevatedButton(
-          onPressed: getImageFromGallery,
-          child: Center(
-            child: Icon(
-              Icons.add,
-              color: kLiteFontColor,
-              size: 24,
+            onPressed: getImageFromGallery,
+            child: Center(
+              child: Icon(
+                Icons.add,
+                color: Colors.white,
+                size: 24,
+              ),
             ),
-          ),
-          style: ButtonStyle(
-              padding: MaterialStateProperty.all<EdgeInsetsGeometry>(
-                  const EdgeInsets.all(0)),
-              side: MaterialStateProperty.all<BorderSide>(
-                  BorderSide(color: kLiteFontColor)),
-              backgroundColor:
-                  MaterialStateProperty.all<Color>(kScaffoldBackgroundColor),
-              overlayColor: MaterialStateProperty.all<Color>(kShadowColor),
-              elevation: MaterialStateProperty.all<double>(0)),
-        ));
+            style: ButtonStyle(
+                padding: MaterialStateProperty.all<EdgeInsetsGeometry>(
+                    const EdgeInsets.all(0)),
+                backgroundColor: MaterialStateProperty.all<Color>(kThemeColor),
+                overlayColor:
+                    MaterialStateProperty.all<Color>(Colors.white24))));
   }
 }

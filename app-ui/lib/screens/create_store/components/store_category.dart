@@ -28,7 +28,7 @@ class StoreCate extends StatelessWidget {
                           style: TextStyle(
                               color:
                                   storeCategoryList[index].category == category
-                                      ? kDefaultFontColor.withOpacity(0.85)
+                                      ? kThemeColor
                                       : kLiteFontColor),
                         ),
                         avatar: CircleAvatar(
@@ -40,14 +40,14 @@ class StoreCate extends StatelessWidget {
                             ),
                             backgroundColor:
                                 storeCategoryList[index].category == category
-                                    ? kDefaultFontColor.withOpacity(0.85)
+                                    ? kThemeColor
                                     : kLiteFontColor),
                         backgroundColor: kScaffoldBackgroundColor,
                         shape: RoundedRectangleBorder(
                             side: BorderSide(
                                 color: storeCategoryList[index].category ==
                                         category
-                                    ? kDefaultFontColor.withOpacity(0.85)
+                                    ? kThemeColor
                                     : kLiteFontColor),
                             borderRadius: BorderRadius.circular(24))),
                   ))))
