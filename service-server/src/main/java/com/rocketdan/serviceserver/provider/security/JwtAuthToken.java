@@ -47,20 +47,16 @@ public class JwtAuthToken implements AuthToken<Claims> {
             return Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token).getBody();
         } catch (SecurityException e) {
             log.info("Invalid JWT signature.");
-            throw new CustomJwtRuntimeException();
         } catch (MalformedJwtException e) {
             log.info("Invalid JWT token.");
-            throw new CustomJwtRuntimeException();
         } catch (ExpiredJwtException e) {
             log.info("Expired JWT token.");
-            throw new CustomJwtRuntimeException();
         } catch (UnsupportedJwtException e) {
             log.info("Unsupported JWT token.");
-            throw new CustomJwtRuntimeException();
         } catch (IllegalArgumentException e) {
             log.info("JWT token compact of handler are invalid.");
-            throw new CustomJwtRuntimeException();
         }
+        return null;
     }
 
     public Claims getExpiredData() {
