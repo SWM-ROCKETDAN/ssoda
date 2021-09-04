@@ -2,6 +2,12 @@ import 'package:flutter/material.dart';
 
 enum StoreCategory { RESTAURANT, CAFE, ETC }
 
+Map<StoreCategory, String> storeCategoryToString = {
+  StoreCategory.RESTAURANT: '식당',
+  StoreCategory.CAFE: '카페',
+  StoreCategory.ETC: '기타'
+};
+
 class StoreCategoryTile {
   final String name;
   final StoreCategory category;

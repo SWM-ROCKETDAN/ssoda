@@ -4,17 +4,19 @@ import 'package:hashchecker/constants.dart';
 import 'package:hashchecker/models/address.dart';
 import 'package:hashchecker/models/store.dart';
 import 'package:hashchecker/models/store_category.dart';
+import 'package:hashchecker/screens/create_store/components/store_preview.dart';
 import 'package:hashchecker/screens/hall/hall_screen.dart';
 import 'package:flash/flash.dart';
+import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 
-class CreateStoreButton extends StatelessWidget {
+class NextButton extends StatelessWidget {
   final String? logo;
   final List<String> imageList;
   final StoreCategory category;
   final String? name;
   final Address? address;
   final String? description;
-  const CreateStoreButton(
+  const NextButton(
       {Key? key,
       required this.logo,
       required this.imageList,
@@ -32,9 +34,12 @@ class CreateStoreButton extends StatelessWidget {
       child: ElevatedButton(
         onPressed: () async {
           if (_checkStoreValidation(context)) {
-            _createPreview();
-            await _showDoneDialog(context);
-            Navigator.of(context).push(_routeToHallScreen());
+            Store store = _createPreview();
+            showBarModalBottomSheet(
+              expand: true,
+              context: context,
+              builder: (context) => StorePreviewModal(store: store),
+            );
           }
         },
         child: Text(
@@ -56,15 +61,14 @@ class CreateStoreButton extends StatelessWidget {
     );
   }
 
-  void _createPreview() {
-    Store store = Store(
+  Store _createPreview() {
+    return Store(
         name: name!.trim(),
         category: category,
         address: address!,
         description: description!.trim(),
         images: imageList,
         logoImage: logo!);
-    print(store.name);
   }
 
   bool _checkStoreValidation(BuildContext context) {

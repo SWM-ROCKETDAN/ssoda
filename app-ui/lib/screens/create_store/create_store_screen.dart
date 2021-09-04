@@ -6,7 +6,7 @@ import 'package:hashchecker/screens/create_store/components/store_category.dart'
 import 'package:hashchecker/screens/create_store/components/store_logo.dart';
 import 'package:image_picker/image_picker.dart';
 
-import 'components/create_store_button.dart';
+import 'components/next_button.dart';
 import 'components/store_description.dart';
 import 'components/store_image.dart';
 import 'components/store_location.dart';
@@ -128,7 +128,7 @@ class _CreateStoreScreenState extends State<CreateStoreScreen> {
                 ),
               ),
             ),
-            CreateStoreButton(
+            NextButton(
                 logo: _logoPath,
                 imageList: _storeImageList,
                 category: _storeCategory,

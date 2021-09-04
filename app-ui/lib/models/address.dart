@@ -17,4 +17,8 @@ class Address {
       required this.zipCode,
       required this.latitude,
       required this.longitude});
+
+  String getFullAddress() {
+    return '${this.city} ${this.country} ${this.road} ${this.building}';
+  }
 }
