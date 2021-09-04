@@ -64,8 +64,8 @@ class PostIsAlreadyCalculatedRewardAndOK(CustomException):
         super().__init__(data)
 
 
-class UserUpdateDontButOK(CustomException):
-    default_detail = 'User update dont but ok'
+class UserRecentlyUpdateAndOK(CustomException):
+    default_detail = 'User recently update and ok'
     status_code = 200
     default_code = 'OK_007'
 

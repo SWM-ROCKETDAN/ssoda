@@ -133,6 +133,18 @@ class JoinPostUpdateSerializer(serializers.ModelSerializer):
         return representation
 
 
+class JoinRewardSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = JoinPost
+        fields = '__all__'
+
+    def to_representation(self, instance):
+        representation = super().to_representation(instance)
+
+
+        return representation
+
+
 class JoinPostSerializer(serializers.ModelSerializer):
     class Meta:
         model = JoinPost

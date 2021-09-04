@@ -1,11 +1,8 @@
-import pprint
-
 from server.core.modules.static.common import Type
 from server.core.modules.static.common import Status
 from server.core.modules.assist.time import get_now_date
 from server.core.modules.assist.time import get_days_from_now_date_by_day_delta
 import random
-from datetime import datetime
 
 
 def get_random_time_from_date_time(date_time):
@@ -17,16 +14,20 @@ def get_random_time_from_date_time(date_time):
     return date_time
 
 
-def get_test_join_post(date_time):
+def get_random_int_from_start_to_end(start, end):
+    return random.randrange(start, end)
+
+
+def get_test_join_post(date_time, event_id, reward_id, sns_id):
     test_join_post = {
-        'event': 53,
-        'reward': None,
-        'sns_id': 'test',
+        'event': event_id,
+        'reward': reward_id,
+        'sns_id': sns_id,
         'url': 'test-url',
         'type': Type.INSTAGRAM,
         'status': Status.PUBLIC,
-        'like_count': 100,
-        'comment_count': 100,
+        'like_count': get_random_int_from_start_to_end(0, 100),
+        'comment_count': get_random_int_from_start_to_end(0, 100),
         'hashtags': 'test, hashtag',
         'create_date': get_now_date(),
         'upload_date': get_now_date(),
@@ -36,14 +37,20 @@ def get_test_join_post(date_time):
     return test_join_post
 
 
-def get_test_join_posts(day_delta, try_count):
-    days = get_days_from_now_date_by_day_delta(day_delta)
-    test_join_posts = []
-    for day in days:
-        for i in range(try_count):
-            test_join_posts.append(get_test_join_post(day))
+class PostTester:
+    def __init__(self, day_delta, try_count, event_id, reward_id, sns_id):
+        self.day_delta = day_delta
+        self.try_count = try_count
+        self.event_id = event_id
+        self.reward_id = reward_id
+        self.sns_id = sns_id
 
-    return test_join_posts
+    def get_test_join_posts(self):
+        days = get_days_from_now_date_by_day_delta(self.day_delta)
+        test_join_posts = []
+        for day in days:
+            for i in range(self.try_count):
+                test_join_post = get_test_join_post(day, self.event_id, self.reward_id, self.sns_id)
+                test_join_posts.append(test_join_post)
 
-
-# get_test_join_posts(2, 10)
+        return test_join_posts

@@ -16,7 +16,7 @@ def custom_exception_handler(exc, context):
         exceptions.EventReportCalculateOK.__name__: parse_custom_exception,
         exceptions.StoreReportCalculateOK.__name__: parse_custom_exception,
         exceptions.PostIsAlreadyCalculatedRewardAndOK.__name__: parse_custom_exception,
-        exceptions.UserUpdateDontButOK.__name__: parse_custom_exception,
+        exceptions.UserRecentlyUpdateAndOK.__name__: parse_custom_exception,
 
         # Client Error
         exceptions.PostIsPrivate.__name__: parse_custom_exception,
@@ -80,10 +80,13 @@ def parse_django_exception(response, exc):
 
 # 정의되지 않은 Exception Handler 함수
 def parse_unknown_exception(response, exc):
-    response.data['message'] = response.data['detail']
-    response.data['status'] = response.status_code
-    response.data['code'] = 'SERVER_ERROR_999'
-    response.data['data'] = {}
-    response.data.pop('detail', 1)
+    if response is None:
+        print(exc)
+    else:
+        response.data['message'] = response.data['detail']
+        response.data['status'] = response.status_code
+        response.data['code'] = 'SERVER_ERROR_999'
+        response.data['data'] = {}
+        response.data.pop('detail', 1)
 
     return response
