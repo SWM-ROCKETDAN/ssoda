@@ -39,21 +39,6 @@ class _HallScreenState extends State<HallScreen> {
           child: Image.asset('assets/images/appbar_logo.png'),
           height: kToolbarHeight * 0.75,
         ),
-        /* 
-        // STORE LOGO ON TOPRIGHT APPBAR
-        actions: [
-          Container(
-            margin: const EdgeInsets.only(right: 15),
-            height: kToolbarHeight * 0.75,
-            width: kToolbarHeight * 0.75,
-            decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                image: DecorationImage(
-                    image: AssetImage('assets/images/store_logo_sample.jpg'),
-                    fit: BoxFit.cover)),
-          )
-        ],
-        */
       ),
       bottomNavigationBar: PandaBar(
         backgroundColor: Colors.white,

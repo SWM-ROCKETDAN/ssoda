@@ -66,17 +66,17 @@ class StorePreviewModal extends StatelessWidget {
             ),
             Positioned(
                 bottom: 0,
-                right: size.width * 0.3,
-                left: size.width * 0.3,
+                right: size.width * 0.4,
+                left: size.width * 0.4,
                 child: Container(
                     height: size.width * 0.2,
                     width: size.width * 0.2,
                     decoration: BoxDecoration(
                         boxShadow: [
                           BoxShadow(
-                              blurRadius: 25,
-                              spreadRadius: 10,
-                              offset: Offset(0, -5),
+                              blurRadius: 1,
+                              spreadRadius: 1,
+                              offset: Offset(0, 0),
                               color: kDefaultFontColor.withOpacity(0.2))
                         ],
                         color: kShadowColor,
@@ -101,7 +101,8 @@ class StorePreviewModal extends StatelessWidget {
               minFontSize: 12,
             ),
             SizedBox(width: kDefaultPadding / 3),
-            Icon(Icons.local_cafe_rounded, size: 18),
+            Icon(Icons.local_cafe_rounded,
+                size: 18, color: kDefaultFontColor.withOpacity(0.85)),
           ],
         ),
         SizedBox(height: kDefaultPadding / 2),
