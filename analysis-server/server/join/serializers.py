@@ -5,6 +5,7 @@ from core.models import HashtagHashtags
 from core.models import Hashtag
 from core.models import JoinUser
 from core.models import JoinPost
+from copy import deepcopy
 
 
 class HashtagHashtagsSerializer(serializers.ModelSerializer):
@@ -109,7 +110,7 @@ class OtherJoinSerializer(ThisJoinSerializer):
         exclude = ['reward']
 
 
-class JoinPostUpdateSerializer(serializers.ModelSerializer):
+class JoinPostScrapSerializer(serializers.ModelSerializer):
     event = EventSerializer()
     reward = RewardSerializer()
 
@@ -117,23 +118,62 @@ class JoinPostUpdateSerializer(serializers.ModelSerializer):
         model = JoinPost
         fields = '__all__'
 
+    # 해시태그 리스트 파싱
     def to_representation(self, instance):
         representation = super().to_representation(instance)
-        # 이벤트 해시태그 리스트
         event_hashtags = []
         event_hashtag_hashtag_hashtags = representation.get('event').get('hashtag').get('hashtag_hashtags')
         if event_hashtag_hashtag_hashtags is not None:
             for event_hashtag in event_hashtag_hashtag_hashtags:
                 event_hashtags.append(event_hashtag['hashtags'])
         representation['event']['hashtag']['hashtag_hashtags'] = event_hashtags
-
-        # 게시물 해시태그 리스트
         representation['hashtags'] = representation['hashtags'].split(',')
 
         return representation
 
 
-class JoinRewardSerializer(serializers.ModelSerializer):
+class JoinUserScrapSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = JoinUser
+        fields = '__all__'
+
+
+class JoinRewardPostSerializer(serializers.ModelSerializer):
+    # event = EventSerializer()
+    # reward = RewardSerializer()
+
+    class Meta:
+        model = JoinPost
+        fields = '__all__'
+
+    # def to_representation(self, instance):
+    #     representation = super().to_representation(instance)
+    #     # 해시태그 파싱
+    #     event_hashtags = []
+    #     event_hashtag_hashtag_hashtags = representation.get('event').get('hashtag').get('hashtag_hashtags')
+    #     if event_hashtag_hashtag_hashtags is not None:
+    #         for event_hashtag in event_hashtag_hashtag_hashtags:
+    #             event_hashtags.append(event_hashtag['hashtags'])
+    #
+    #     representation['event_hashtags'] = event_hashtags
+    #     representation['hashtags'] = representation['hashtags'].split(',')
+    #
+    #     # JOIN join_user
+    #     join_user = JoinUser.objects.get(sns_id=representation['sns_id'], type=representation['type'])
+    #     join_user_serializer = JoinUserSerializer(join_user)
+    #     representation['follow_count'] = join_user_serializer.data['follow_count']
+    #
+    #     # JOIN prev_join_post
+    #     prev_join_post = JoinPost.objects.filter(sns_id=representation['sns_id'], type=representation['type']).exclude(
+    #         id=representation['id'])
+    #     join_post_serializer = JoinPostSerializer(data=prev_join_post, many=True)
+    #     join_post_serializer.is_valid()
+    #     representation['prev_posts'] = join_post_serializer.data
+    #
+    #     return representation
+
+
+class JoinRewardCalculateSerializer(JoinRewardPostSerializer):
     class Meta:
         model = JoinPost
         fields = '__all__'
@@ -141,6 +181,15 @@ class JoinRewardSerializer(serializers.ModelSerializer):
     def to_representation(self, instance):
         representation = super().to_representation(instance)
 
+        # this_post 파싱
+        this_post = deepcopy(representation)
+        representation = {'this_post': this_post}
+
+        # JOIN other_post
+        other_posts = JoinPost.objects.all()
+        join_post_serializer = JoinRewardPostSerializer(data=other_posts, many=True)
+        join_post_serializer.is_valid()
+        representation['other_posts'] = join_post_serializer.data
 
         return representation
 

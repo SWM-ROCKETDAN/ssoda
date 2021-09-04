@@ -7,7 +7,9 @@ from .serializers import JoinPostSerializer
 from .serializers import JoinUserSerializer
 from .serializers import ThisJoinSerializer
 from .serializers import OtherJoinSerializer
-from .serializers import JoinPostUpdateSerializer
+from .serializers import JoinPostScrapSerializer
+from .serializers import JoinUserScrapSerializer
+from .serializers import JoinRewardCalculateSerializer
 from core.modules.join.post.post_scraper import PostScraper
 from core.modules.join.user.user_scraper import UserScraper
 from core.modules.join.reward.reward_calculator import RewardCalculator
@@ -19,7 +21,7 @@ class JoinPostView(APIView):
     def put(self, request, pk):
         # Join Post 가져오기
         join_post = get_object_or_404(JoinPost, pk=pk)
-        join_post_update_serializer = JoinPostUpdateSerializer(join_post)
+        join_post_update_serializer = JoinPostScrapSerializer(join_post)
         raise exceptions.PostUpdateOk({'test': join_post_update_serializer.data})
         join_post_serializer = JoinPostSerializer(join_post)
         post_scraper = PostScraper(join_post_serializer.data)
@@ -36,7 +38,8 @@ class JoinUserView(APIView):
     def put(self, request, pk):
         # Join User 가져오기
         join_user = get_object_or_404(JoinUser, pk=pk)
-        join_user_serializer = JoinUserSerializer(join_user)
+        join_user_update_serializer = JoinUserScrapSerializer(join_user)
+        raise exceptions.UserUpdateOk({'test': join_user_update_serializer.data})
         user_scraper = UserScraper(join_user_serializer.data)
         scraped_user = user_scraper.get_scraped_user()
         join_user_serializer = JoinUserSerializer(join_user, scraped_user, partial=True)
@@ -57,3 +60,15 @@ class JoinRewardView(APIView):
         reward_calculator = RewardCalculator(this_join_serializer.data, other_join_serializer.data)
         this_reward_id = reward_calculator.get_this_reward_id()
         raise exceptions.RewardCalculateOK({'reward_id': this_reward_id})
+
+# class JoinRewardView(APIView):
+#     def get(self, request, pk):
+#         join_post = get_object_or_404(JoinPost, pk=pk)
+#         join_reward_calculate_serializer = JoinRewardCalculateSerializer(join_post)
+#         raise exceptions.RewardCalculateOK(join_reward_calculate_serializer.data)
+#         join_posts = get_list_or_404(JoinPost)
+#         other_join_serializer = OtherJoinSerializer(data=join_posts, many=True)
+#         other_join_serializer.is_valid()
+#         reward_calculator = RewardCalculator(this_join_serializer.data, other_join_serializer.data)
+#         this_reward_id = reward_calculator.get_this_reward_id()
+#         raise exceptions.RewardCalculateOK({'reward_id': this_reward_id})

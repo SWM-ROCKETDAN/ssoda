@@ -45,7 +45,7 @@ class PostScraper:
         """
         # 이벤트가 삭제되었다면 PostEventIsNotOK 에러
         join_post_event_delete_flag = self.join_post.get('event').get('delete_flag')
-        if join_post_event_delete_flag is True:
+        if not check_post_event_is_ok(join_post_event_delete_flag):
             raise exceptions.PostEventIsNotOK()
 
         # 리워드를 이미 받았다면 PostIsAlreadyRewarded 에러
