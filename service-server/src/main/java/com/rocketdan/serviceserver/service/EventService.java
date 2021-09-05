@@ -56,6 +56,9 @@ public class EventService {
 
         imageManagerService.delete(event.getImagePaths());
         List<String> imgPaths = imageManagerService.upload("image/event", requestDto.getImages());
+        List<String> prevImgPaths = event.getImagePaths();
+        requestDto.getDeleteImagePaths().forEach(prevImgPaths::remove);
+        imgPaths.addAll(prevImgPaths);
 
         event.update(requestDto.getTitle(), requestDto.getStatus(), requestDto.getStartDate(), requestDto.getFinishDate(), imgPaths,
                 requestDto.getHashtags(), requestDto.getRequirements(), requestDto.getTemplate());

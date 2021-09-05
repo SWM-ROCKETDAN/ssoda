@@ -17,13 +17,18 @@ public class EventUpdateRequestDto {
     private Date startDate;
     @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
     private Date finishDate;
-    private List<MultipartFile> images;
 
-    public EventUpdateRequestDto(String title, Integer status, Date startDate, Date finishDate, List<MultipartFile> images) {
+    private List<MultipartFile> images;
+    private List<MultipartFile> newImages;
+    private List<String> deleteImagePaths;
+
+    public EventUpdateRequestDto(String title, Integer status, Date startDate, Date finishDate, List<MultipartFile> images, List<MultipartFile> newImages, List<String> deleteImagePaths) {
         this.title = title;
         this.status = status;
         this.startDate = startDate;
         this.finishDate = finishDate;
         this.images = images;
+        this.newImages = newImages;
+        this.deleteImagePaths = deleteImagePaths;
     }
 }
