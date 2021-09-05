@@ -128,7 +128,7 @@ class _CreateStoreScreenState extends State<CreateStoreScreen> {
                 ),
               ),
             ),
-            NextButton(
+            CreateButton(
                 logo: _logoPath,
                 imageList: _storeImageList,
                 category: _storeCategory,

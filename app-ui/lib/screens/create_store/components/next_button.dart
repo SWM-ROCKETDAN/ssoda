@@ -4,19 +4,17 @@ import 'package:hashchecker/constants.dart';
 import 'package:hashchecker/models/address.dart';
 import 'package:hashchecker/models/store.dart';
 import 'package:hashchecker/models/store_category.dart';
-import 'package:hashchecker/screens/create_store/components/store_preview.dart';
 import 'package:hashchecker/screens/hall/hall_screen.dart';
 import 'package:flash/flash.dart';
-import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 
-class NextButton extends StatelessWidget {
+class CreateButton extends StatelessWidget {
   final String? logo;
   final List<String> imageList;
   final StoreCategory category;
   final String? name;
   final Address? address;
   final String? description;
-  const NextButton(
+  const CreateButton(
       {Key? key,
       required this.logo,
       required this.imageList,
@@ -34,16 +32,11 @@ class NextButton extends StatelessWidget {
       child: ElevatedButton(
         onPressed: () async {
           if (_checkStoreValidation(context)) {
-            Store store = _createPreview();
-            showBarModalBottomSheet(
-              expand: true,
-              context: context,
-              builder: (context) => StorePreviewModal(store: store),
-            );
+            _showCreateStoreDialog(context);
           }
         },
         child: Text(
-          '다음',
+          '등록하기',
           style: TextStyle(
               color: kThemeColor, fontSize: 16, fontWeight: FontWeight.bold),
         ),
@@ -61,7 +54,7 @@ class NextButton extends StatelessWidget {
     );
   }
 
-  Store _createPreview() {
+  Store _createStore() {
     return Store(
         name: name!.trim(),
         category: category,
@@ -125,6 +118,63 @@ class NextButton extends StatelessWidget {
     return true;
   }
 
+  Future<void> _showCreateStoreDialog(BuildContext context) async {
+    showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+            title: Center(
+              child: Text('우리가게 등록',
+                  style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 18,
+                      color: kDefaultFontColor),
+                  textAlign: TextAlign.center),
+            ),
+            content: IntrinsicHeight(
+              child: Column(children: [
+                Text("이대로 등록하시겠습니까?",
+                    style: TextStyle(fontSize: 14, color: kDefaultFontColor)),
+                SizedBox(height: kDefaultPadding / 5),
+                Text("(가게 정보는 마이페이지에서\n언제든지 수정할 수 있습니다)",
+                    style: TextStyle(fontSize: 14, color: kDefaultFontColor)),
+              ]),
+            ),
+            contentPadding: const EdgeInsets.fromLTRB(15, 15, 15, 5),
+            actions: [
+              Center(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    TextButton(
+                      onPressed: () async {
+                        _createStore();
+                        Navigator.of(context).pop();
+                        await _showDoneDialog(context);
+                      },
+                      child: Text('예',
+                          style: TextStyle(color: Colors.white, fontSize: 13)),
+                      style: ButtonStyle(
+                          backgroundColor:
+                              MaterialStateProperty.all<Color>(kThemeColor)),
+                    ),
+                    ElevatedButton(
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                      },
+                      child: Text('아니오',
+                          style: TextStyle(color: Colors.white, fontSize: 13)),
+                      style: ButtonStyle(
+                          backgroundColor:
+                              MaterialStateProperty.all<Color>(kThemeColor)),
+                    ),
+                  ],
+                ),
+              )
+            ],
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(15))));
+  }
+
   Future<void> _showDoneDialog(BuildContext context) async {
     await showDialog(
         context: context,
@@ -145,7 +195,7 @@ class NextButton extends StatelessWidget {
               Center(
                 child: ElevatedButton(
                   onPressed: () {
-                    Navigator.of(context).pop();
+                    Navigator.of(context).push(_routeToHallScreen());
                   },
                   child: Text('확인', style: TextStyle(fontSize: 13)),
                   style: ButtonStyle(
