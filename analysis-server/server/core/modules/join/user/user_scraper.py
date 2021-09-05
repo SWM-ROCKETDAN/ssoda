@@ -31,6 +31,6 @@ class UserScraper:
         # 유저 업데이트가 최근에 업데이트 되었다면, UserRecentlyUpdateAndOK 에러
         update_date = self.join_user.get('update_date')
         if check_user_is_recently_scraped(update_date):
-            raise exceptions.UserRecentlyUpdateAndOK
+            raise exceptions.UserRecentlyUpdateAndOK()
 
         return True
