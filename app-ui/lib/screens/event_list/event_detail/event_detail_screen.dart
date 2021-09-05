@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:hashchecker/constants.dart';
 import 'package:hashchecker/models/event.dart';
 import 'package:hashchecker/models/event_list_item.dart';
 import 'package:hashchecker/models/period.dart';
 import 'package:hashchecker/models/reward.dart';
 import 'package:hashchecker/models/reward_category.dart';
 import 'package:hashchecker/models/template.dart';
+import 'package:hashchecker/screens/event_list/components/event_options_modal.dart';
+import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'components/body.dart';
 
 class EventDetailScreen extends StatefulWidget {
@@ -58,6 +61,28 @@ class _EventDetailScreenState extends State<EventDetailScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(body: Body(event: event));
+    return Scaffold(
+        appBar: AppBar(
+          backgroundColor: kScaffoldBackgroundColor,
+          leading: IconButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              icon: Icon(Icons.arrow_back_ios_new_rounded),
+              color: kDefaultFontColor),
+          actions: [
+            IconButton(
+                onPressed: () => showMaterialModalBottomSheet(
+                    backgroundColor: Colors.transparent,
+                    expand: false,
+                    context: context,
+                    builder: (context) => EventOptionsModal(
+                        eventId: widget.eventListItem.id,
+                        eventStatus: widget.eventListItem.status,
+                        isAlreadyInPreview: true)),
+                icon: Icon(Icons.more_vert_rounded, color: kDefaultFontColor))
+          ],
+        ),
+        body: Body(event: event));
   }
 }

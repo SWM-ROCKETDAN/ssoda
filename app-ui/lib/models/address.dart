@@ -2,24 +2,23 @@ class Address {
   final String city;
   final String country;
   final String town;
-  final String roadCode;
   final String road;
+  final String building;
   final String zipCode;
+  final double? latitude;
+  final double? longitude;
 
   Address(
       {required this.city,
       required this.country,
       required this.town,
-      required this.roadCode,
       required this.road,
-      required this.zipCode});
+      required this.building,
+      required this.zipCode,
+      required this.latitude,
+      required this.longitude});
 
-  Map<String, dynamic> toJson() => {
-        'city': city,
-        'country': country,
-        'town': town,
-        'roadCode': roadCode,
-        'road': road,
-        'zipCode': zipCode
-      };
+  String getFullAddress() {
+    return '${this.city} ${this.country} ${this.road} ${this.building}';
+  }
 }

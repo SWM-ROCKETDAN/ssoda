@@ -1,6 +1,7 @@
 import 'event.dart';
 
 class EventListItem {
+  final int id;
   final String title;
   final String startDate;
   final String finishDate;
@@ -8,7 +9,8 @@ class EventListItem {
   final EventStatus status;
 
   EventListItem(
-      {required this.title,
+      {required this.id,
+      required this.title,
       required this.startDate,
       required this.finishDate,
       required this.thumbnail,

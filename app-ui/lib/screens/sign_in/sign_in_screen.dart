@@ -56,6 +56,18 @@ class _SignInScreenState extends State<SignInScreen> {
                         size: size,
                         signIn: kakaoLoginPressed,
                       ),
+                      ElevatedButton(
+                          onPressed: () async {
+                            var dio = await authDio();
+
+                            print('get auth dio complete');
+
+                            final getUserInfoResponse =
+                                await dio.get(getApi(API.GET_USER_INFO));
+
+                            print(getUserInfoResponse.data);
+                          },
+                          child: Text('getUser 요청')),
                       SizedBox(height: kDefaultPadding / 3 * 2),
                       Text('로그인 할 플랫폼을 선택해주세요!',
                           style:
@@ -98,7 +110,13 @@ class _SignInScreenState extends State<SignInScreen> {
       showLoginFailDialog(e.toString());
     }
 
-    createStore();
+    var dio = await authDio();
+
+    print('get auth dio complete');
+
+    final getUserInfoResponse = await dio.get(getApi(API.GET_USER_INFO));
+
+    print(getUserInfoResponse.data);
     //Navigator.of(context).push(_routeToHallScreen());
   }
 
