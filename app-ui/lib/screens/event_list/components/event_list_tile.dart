@@ -8,6 +8,8 @@ import 'package:hashchecker/screens/event_list/components/event_edit_modal.dart'
 import 'package:hashchecker/screens/event_list/event_detail/event_detail_screen.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 
+import 'event_options_modal.dart';
+
 class EventListTile extends StatelessWidget {
   const EventListTile({
     Key? key,
@@ -145,16 +147,20 @@ class EventListTile extends StatelessWidget {
                                                   color: kShadowColor
                                                       .withOpacity(0.6)),
                                               GestureDetector(
-                                                onTap: () {
-                                                  showEventDeleteDialog(
-                                                      context);
-                                                },
+                                                onTap: () =>
+                                                    showMaterialModalBottomSheet(
+                                                        backgroundColor:
+                                                            Colors.transparent,
+                                                        expand: false,
+                                                        context: context,
+                                                        builder: (context) =>
+                                                            EventOptionsModal()),
                                                 child: Container(
                                                   padding:
                                                       const EdgeInsets.fromLTRB(
                                                           8, 4, 0, 4),
                                                   child: Icon(
-                                                      Icons.delete_rounded,
+                                                      Icons.more_vert_rounded,
                                                       color: Colors.blueGrey,
                                                       size: 18),
                                                 ),
