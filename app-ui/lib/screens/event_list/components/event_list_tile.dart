@@ -59,6 +59,14 @@ class EventListTile extends StatelessWidget {
                                 MaterialStateProperty.all<Color>(kShadowColor),
                             borderRadius: BorderRadius.circular(12),
                             onTap: openContainer,
+                            onLongPress: () => showMaterialModalBottomSheet(
+                                backgroundColor: Colors.transparent,
+                                expand: false,
+                                context: context,
+                                builder: (context) => EventOptionsModal(
+                                    eventId: eventList[index].id,
+                                    eventStatus: eventList[index].status,
+                                    isAlreadyInPreview: false)),
                             child: Padding(
                               padding: const EdgeInsets.fromLTRB(0, 10, 15, 10),
                               child: Row(
@@ -130,7 +138,10 @@ class EventListTile extends StatelessWidget {
                                                   expand: true,
                                                   context: context,
                                                   builder: (context) =>
-                                                      EventEditModal(),
+                                                      EventEditModal(
+                                                    eventId:
+                                                        eventList[index].id,
+                                                  ),
                                                 ),
                                                 child: Container(
                                                   padding:
@@ -154,7 +165,17 @@ class EventListTile extends StatelessWidget {
                                                         expand: false,
                                                         context: context,
                                                         builder: (context) =>
-                                                            EventOptionsModal()),
+                                                            EventOptionsModal(
+                                                                eventId:
+                                                                    eventList[
+                                                                            index]
+                                                                        .id,
+                                                                eventStatus:
+                                                                    eventList[
+                                                                            index]
+                                                                        .status,
+                                                                isAlreadyInPreview:
+                                                                    false)),
                                                 child: Container(
                                                   padding:
                                                       const EdgeInsets.fromLTRB(
@@ -204,62 +225,5 @@ class EventListTile extends StatelessWidget {
                     )),
               ])),
     );
-  }
-
-  void showEventDeleteDialog(BuildContext context) {
-    showDialog(
-        context: context,
-        builder: (context) => AlertDialog(
-            title: Center(
-              child: Text('이벤트 삭제',
-                  style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 18,
-                      color: kDefaultFontColor),
-                  textAlign: TextAlign.center),
-            ),
-            content: IntrinsicHeight(
-              child: Column(children: [
-                Text("이벤트 삭제 시 이벤트가",
-                    style: TextStyle(fontSize: 14, color: kDefaultFontColor)),
-                SizedBox(height: kDefaultPadding / 5),
-                Text("즉시 종료되며 복구할 수 없습니다.",
-                    style: TextStyle(fontSize: 14, color: kDefaultFontColor)),
-                SizedBox(height: kDefaultPadding / 5),
-                Text("그래도 삭제하시겠습니까?",
-                    style: TextStyle(fontSize: 14, color: kDefaultFontColor)),
-              ]),
-            ),
-            contentPadding: const EdgeInsets.fromLTRB(15, 15, 15, 5),
-            actions: [
-              Center(
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    TextButton(
-                      onPressed: () {
-                        Navigator.of(context).pop();
-                      },
-                      child: Text('삭제',
-                          style: TextStyle(color: Colors.redAccent.shade400)),
-                      style: ButtonStyle(
-                          overlayColor: MaterialStateProperty.all<Color>(
-                              Colors.redAccent.shade400.withOpacity(0.1))),
-                    ),
-                    ElevatedButton(
-                      onPressed: () {
-                        Navigator.of(context).pop();
-                      },
-                      child: Text('취소'),
-                      style: ButtonStyle(
-                          backgroundColor: MaterialStateProperty.all<Color>(
-                              Colors.redAccent.shade400)),
-                    ),
-                  ],
-                ),
-              )
-            ],
-            shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(15))));
   }
 }

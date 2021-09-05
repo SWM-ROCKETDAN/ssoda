@@ -7,11 +7,13 @@ import 'package:hashchecker/models/requires.dart';
 import 'package:hashchecker/models/reward.dart';
 import 'package:hashchecker/models/reward_category.dart';
 import 'package:hashchecker/models/template.dart';
+import 'package:hashchecker/screens/hall/hall_screen.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 
 class EventEditModal extends StatefulWidget {
-  const EventEditModal({Key? key}) : super(key: key);
+  final int eventId;
+  const EventEditModal({Key? key, required this.eventId}) : super(key: key);
 
   @override
   _EventEditModalState createState() => _EventEditModalState();
@@ -203,7 +205,10 @@ class _EventEditModalState extends State<EventEditModal> {
                     Center(
                       child: ElevatedButton(
                         onPressed: () {
-                          Navigator.of(context).pop();
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => HallScreen()));
                         },
                         child: Text('확인', style: TextStyle(fontSize: 13)),
                         style: ButtonStyle(

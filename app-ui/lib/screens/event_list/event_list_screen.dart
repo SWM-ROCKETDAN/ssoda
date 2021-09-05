@@ -56,36 +56,42 @@ class _EventListScreenState extends State<EventListScreen> {
 
     eventList = [
       EventListItem(
+          id: -1,
           title: '우리가게 SNS 해시태그 이벤트',
           startDate: '2021-04-14',
           finishDate: '2021-04-14',
           thumbnail: 'assets/images/event1.jpg',
           status: EventStatus.PROCEEDING),
       EventListItem(
+          id: -1,
           title: '오픈기념 아메리카노 이벤트',
           startDate: '2021-09-23',
           finishDate: '2021-11-05',
           thumbnail: 'assets/images/store1.jpg',
           status: EventStatus.WAITING),
       EventListItem(
+          id: -1,
           title: '우리가게 9월 한정 쿠폰 이벤트',
           startDate: '2021-09-01',
           finishDate: '2021-09-30',
           thumbnail: 'assets/images/event2.jpg',
           status: EventStatus.ENDED),
       EventListItem(
+          id: -1,
           title: '우리가게 SNS 해시태그 이벤트',
           startDate: '2021-04-14',
           finishDate: '2021-04-14',
           thumbnail: 'assets/images/event1.jpg',
           status: EventStatus.PROCEEDING),
       EventListItem(
+          id: -1,
           title: '오픈기념 아메리카노 이벤트',
           startDate: '2021-09-23',
           finishDate: '2021-11-05',
           thumbnail: 'assets/images/store1.jpg',
           status: EventStatus.WAITING),
       EventListItem(
+          id: -1,
           title: '우리가게 9월 한정 쿠폰 이벤트',
           startDate: '2021-09-01',
           finishDate: '2021-09-30',

@@ -30,6 +30,7 @@ class _StoreReportScreenState extends State<StoreReportScreen> {
 
   final numberDisplay = createDisplay();
 
+  late List<int> eventIdList; // 추후 이벤트 별 보고서를 이벤트 id 를 통해 요청해야함
   late List<EventReportItem> eventReportList;
   late StoreReportOverview storeReportOverview;
 
@@ -57,6 +58,8 @@ class _StoreReportScreenState extends State<StoreReportScreen> {
 
     storeReportOverview = StoreReportOverview(
         guestPrice: 7.13, joinCount: 62345, likeCount: 8201543);
+
+    eventIdList = [-1, -1];
   }
 
   @override
@@ -142,6 +145,7 @@ class _StoreReportScreenState extends State<StoreReportScreen> {
                     children: List.generate(
                       eventReportList.length,
                       (index) => EventReportCard(
+                          eventId: eventIdList[index],
                           index: index,
                           size: size,
                           eventReportList: eventReportList,
