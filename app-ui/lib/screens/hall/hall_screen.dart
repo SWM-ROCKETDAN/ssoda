@@ -39,6 +39,19 @@ class _HallScreenState extends State<HallScreen> {
           child: Image.asset('assets/images/appbar_logo.png'),
           height: kToolbarHeight * 0.75,
         ),
+        actions: [
+          Container(
+              height: kToolbarHeight * 0.5,
+              width: kToolbarHeight * 0.5,
+              decoration: BoxDecoration(
+                  color: kShadowColor,
+                  shape: BoxShape.circle,
+                  image: DecorationImage(
+                      image: AssetImage('assets/images/store_logo_2.jpg'),
+                      fit: BoxFit.contain))),
+          Icon(Icons.arrow_drop_down_rounded, color: kDefaultFontColor),
+          SizedBox(width: kDefaultPadding / 2)
+        ],
       ),
       bottomNavigationBar: PandaBar(
         backgroundColor: Colors.white,
