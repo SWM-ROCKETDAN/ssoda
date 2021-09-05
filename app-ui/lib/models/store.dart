@@ -1,24 +1,19 @@
+import 'package:hashchecker/models/store_category.dart';
 import 'address.dart';
 
 class Store {
   final String name;
-  final int category;
+  final StoreCategory category;
   final Address address;
   final String description;
   final List<String> images;
+  final String logoImage;
 
   Store(
       {required this.name,
       required this.category,
       required this.address,
       required this.description,
-      required this.images});
-
-  Map<String, dynamic> toJson() => {
-        'name': name,
-        'category': category,
-        'address': address,
-        'description': description,
-        'images': images,
-      };
+      required this.images,
+      required this.logoImage});
 }

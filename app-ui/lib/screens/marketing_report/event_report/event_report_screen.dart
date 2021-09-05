@@ -9,12 +9,9 @@ import 'components/total_report.dart';
 import 'components/weekly_report.dart';
 
 class EventReportScreen extends StatefulWidget {
-  const EventReportScreen(
-      {Key? key, required this.indexForHero, required this.eventThumbnail})
-      : super(key: key);
+  const EventReportScreen({Key? key, required this.eventId}) : super(key: key);
 
-  final int indexForHero;
-  final String eventThumbnail; // it will be set api & initState
+  final int eventId;
   @override
   _EventReportScreenState createState() => _EventReportScreenState();
 }
@@ -81,20 +78,18 @@ class _EventReportScreenState extends State<EventReportScreen> {
                           )
                         ]),
                     background: Stack(children: <Widget>[
-                      Hero(
-                          tag: 'reportThumbnail${widget.indexForHero}',
-                          child: Container(
-                            decoration: BoxDecoration(
-                              color: Colors.transparent,
-                              image: DecorationImage(
-                                fit: BoxFit.cover,
-                                image: AssetImage(
-                                  widget.eventThumbnail,
-                                ),
-                              ),
+                      Container(
+                        decoration: BoxDecoration(
+                          color: Colors.transparent,
+                          image: DecorationImage(
+                            fit: BoxFit.cover,
+                            image: AssetImage(
+                              'assets/images/event1.jpg', // eventId를 통해 첫번째 이미지 표시
                             ),
-                            height: size.height * 0.4,
-                          )),
+                          ),
+                        ),
+                        height: size.height * 0.4,
+                      ),
                       Container(
                         height: size.height * 0.4,
                         decoration: BoxDecoration(

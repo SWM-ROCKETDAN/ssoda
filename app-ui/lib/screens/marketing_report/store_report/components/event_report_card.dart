@@ -10,12 +10,14 @@ import 'package:hashchecker/models/event_report_item.dart';
 class EventReportCard extends StatelessWidget {
   const EventReportCard({
     Key? key,
+    required this.eventId,
     required this.index,
     required this.size,
     required this.eventReportList,
     required this.numberDisplay,
   }) : super(key: key);
 
+  final int eventId;
   final int index;
   final Size size;
   final List<EventReportItem> eventReportList;
@@ -41,8 +43,7 @@ class EventReportCard extends StatelessWidget {
                 closedElevation: 0,
                 transitionType: ContainerTransitionType.fade,
                 openBuilder: (context, _) => EventReportScreen(
-                      indexForHero: index,
-                      eventThumbnail: eventReportList[index].thumbnail,
+                      eventId: eventId,
                     ),
                 closedBuilder: (context, openContainer) => InkWell(
                       highlightColor: kShadowColor,

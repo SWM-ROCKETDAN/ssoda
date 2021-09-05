@@ -16,8 +16,6 @@ class HeaderWithImages extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final double _statusBarHeight =
-        MediaQuery.of(context).padding.top.toDouble();
     return Container(
       height: size.height * 0.4,
       child: Stack(children: [
@@ -34,58 +32,6 @@ class HeaderWithImages extends StatelessWidget {
                       child: Image.asset(item!,
                           fit: BoxFit.cover, height: size.height * 0.4 - 15)))
                   .toList(),
-            )),
-        Positioned(
-            top: 0,
-            left: 0,
-            right: 0,
-            child: Container(
-              height: size.height * 0.4,
-              decoration: BoxDecoration(
-                  color: Colors.white,
-                  gradient: LinearGradient(
-                      begin: FractionalOffset.center,
-                      end: FractionalOffset.topCenter,
-                      colors: [
-                        Colors.transparent.withOpacity(0.0),
-                        Colors.black.withOpacity(0.6),
-                      ],
-                      stops: [
-                        0.0,
-                        1.0
-                      ])),
-              child: Align(
-                alignment: Alignment.topRight,
-                child: Container(
-                  padding:
-                      const EdgeInsets.fromLTRB(0, kToolbarHeight / 2, 5, 0),
-                  child: IntrinsicHeight(
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: [
-                        IconButton(
-                            onPressed: () {
-                              Navigator.pop(context);
-                              showBarModalBottomSheet(
-                                expand: true,
-                                context: context,
-                                builder: (context) => EventEditModal(),
-                              );
-                            },
-                            icon: Icon(Icons.edit,
-                                color: Colors.white.withOpacity(0.8))),
-                        SizedBox(width: kDefaultPadding / 3),
-                        IconButton(
-                            onPressed: () {
-                              showEventDeleteDialog(context);
-                            },
-                            icon: Icon(Icons.delete,
-                                color: Colors.white.withOpacity(0.8)))
-                      ],
-                    ),
-                  ),
-                ),
-              ),
             )),
         Positioned(
             bottom: 14,

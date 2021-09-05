@@ -1,5 +1,3 @@
-import 'package:hashchecker/models/requires.dart';
-
 import 'reward.dart';
 import 'period.dart';
 import 'template.dart';
