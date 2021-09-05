@@ -39,7 +39,7 @@ class _EventListScreenState extends State<EventListScreen> {
   void initState() {
     super.initState();
     store = Store(
-        name: '우리가게 광나루역점',
+        name: '스타벅스 광나루역점',
         category: StoreCategory.RESTAURANT,
         address: Address(
             city: '서울시',
@@ -51,8 +51,12 @@ class _EventListScreenState extends State<EventListScreen> {
             latitude: 0,
             longitude: 0),
         description: '안녕하세요 우리가게 광나루역점입니다.',
-        images: ['assets/images/store1.jpg', 'assets/images/event1.jpg'],
-        logoImage: 'assets/images/store_logo_sample.jpg');
+        images: [
+          'assets/images/store4.jpg',
+          'assets/images/store3.jpg',
+          'assets/images/store2.jpg'
+        ],
+        logoImage: 'assets/images/store_logo_2.jpg');
 
     eventList = [
       EventListItem(
@@ -60,7 +64,7 @@ class _EventListScreenState extends State<EventListScreen> {
           title: '우리가게 SNS 해시태그 이벤트',
           startDate: '2021-04-14',
           finishDate: '2021-04-14',
-          thumbnail: 'assets/images/event1.jpg',
+          thumbnail: 'assets/images/event4.jpg',
           status: EventStatus.PROCEEDING),
       EventListItem(
           id: -1,
@@ -74,28 +78,28 @@ class _EventListScreenState extends State<EventListScreen> {
           title: '우리가게 9월 한정 쿠폰 이벤트',
           startDate: '2021-09-01',
           finishDate: '2021-09-30',
-          thumbnail: 'assets/images/event2.jpg',
+          thumbnail: 'assets/images/event1.jpg',
           status: EventStatus.ENDED),
       EventListItem(
           id: -1,
           title: '우리가게 SNS 해시태그 이벤트',
           startDate: '2021-04-14',
           finishDate: '2021-04-14',
-          thumbnail: 'assets/images/event1.jpg',
+          thumbnail: 'assets/images/event2.jpg',
           status: EventStatus.PROCEEDING),
       EventListItem(
           id: -1,
           title: '오픈기념 아메리카노 이벤트',
           startDate: '2021-09-23',
           finishDate: '2021-11-05',
-          thumbnail: 'assets/images/store1.jpg',
+          thumbnail: 'assets/images/event4.jpg',
           status: EventStatus.WAITING),
       EventListItem(
           id: -1,
           title: '우리가게 9월 한정 쿠폰 이벤트',
           startDate: '2021-09-01',
           finishDate: '2021-09-30',
-          thumbnail: 'assets/images/event2.jpg',
+          thumbnail: 'assets/images/store1.jpg',
           status: EventStatus.ENDED),
     ];
   }

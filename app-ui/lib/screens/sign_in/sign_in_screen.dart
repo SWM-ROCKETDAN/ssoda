@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_web_auth/flutter_web_auth.dart';
 import 'package:hashchecker/api.dart';
 import 'package:hashchecker/constants.dart';
+import 'package:hashchecker/screens/create_store/components/intro.dart';
 import 'package:hashchecker/screens/hall/hall_screen.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
@@ -114,10 +115,7 @@ class _SignInScreenState extends State<SignInScreen> {
 
     print('get auth dio complete');
 
-    final getUserInfoResponse = await dio.get(getApi(API.GET_USER_INFO));
-
-    print(getUserInfoResponse.data);
-    //Navigator.of(context).push(_routeToHallScreen());
+    Navigator.of(context).push(_routeToCreateStoreScreen());
   }
 
   Future<void> createStore() async {
@@ -192,9 +190,10 @@ class _SignInScreenState extends State<SignInScreen> {
   }
 }
 
-Route _routeToHallScreen() {
+Route _routeToCreateStoreScreen() {
   return PageRouteBuilder(
-    pageBuilder: (context, animation, secondaryAnimation) => const HallScreen(),
+    pageBuilder: (context, animation, secondaryAnimation) =>
+        const CreateStoreIntroScreen(),
     transitionsBuilder: (context, animation, secondaryAnimation, child) {
       const begin = Offset(1.0, 0.0);
       const end = Offset.zero;
