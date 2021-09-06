@@ -16,9 +16,9 @@ public class HashtagEventUpdateRequest extends EventUpdateRequestDto {
     private Integer template;
 
     @Builder
-    public HashtagEventUpdateRequest(String title, Integer status, @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss") Date startDate, @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss") Date finishDate, List<MultipartFile> images,
+    public HashtagEventUpdateRequest(String title, Integer status, @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss") Date startDate, @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss") Date finishDate, List<MultipartFile> images, List<MultipartFile> newImages, List<String> deleteImagePaths,
                                      List<String> hashtags, List<Boolean> requirements, Integer template) {
-        super(title, status, startDate, finishDate, images);
+        super(title, status, startDate, finishDate, images, newImages, deleteImagePaths);
         this.hashtags = hashtags;
         this.requirements = requirements;
         this.template = template;
