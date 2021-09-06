@@ -6,6 +6,9 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.ColumnDefault;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.Where;
 
 import javax.persistence.*;
 import java.util.List;
@@ -14,8 +17,8 @@ import java.util.Optional;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-//@SQLDelete(sql = "UPDATE store SET deleted = true WHERE id = ?")
-//@Where(clause = "deleted = false")
+@SQLDelete(sql = "UPDATE store SET deleted = true WHERE id = ?")
+@Where(clause = "deleted = false")
 public class Store {
     // 가게 id
     @Id
@@ -53,9 +56,9 @@ public class Store {
     @OneToMany(mappedBy = "store", cascade = CascadeType.REMOVE)
     private List<Event> events;
 
-//    @ColumnDefault("false")
-//    @Column(nullable = false)
-//    private Boolean deleted = false;
+    @ColumnDefault("false")
+    @Column(nullable = false)
+    private Boolean deleted = false;
 
     @Builder
     public Store(String name, User user, Integer category, Address address, String description, List<String> imagePaths, String logoImagePath, List<Event> events) {

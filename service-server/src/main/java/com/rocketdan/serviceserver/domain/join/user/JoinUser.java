@@ -15,6 +15,8 @@ import java.util.Date;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@SQLDelete(sql = "UPDATE join_user SET deleted = true WHERE id = ?")
+@Where(clause = "deleted = false")
 public class JoinUser {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -36,11 +38,11 @@ public class JoinUser {
     private Date createDate;
 
     private Date updateDate;
-/*
+
     @ColumnDefault("false")
     @Column(nullable = false)
     private Boolean deleted = false;
-*/
+
     @Builder
     public JoinUser(String snsId, String url, Integer type, Integer status, Integer followCount, Integer postCount, Date createDate, Date updateDate) {
         this.snsId = snsId;
