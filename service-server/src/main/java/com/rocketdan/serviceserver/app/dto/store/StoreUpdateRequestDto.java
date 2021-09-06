@@ -27,13 +27,16 @@ public class StoreUpdateRequestDto {
     private String city;
     private String country;
     private String town;
-    private String roadCode;
     private String road;
     private String zipCode;
+    private String buildingCode;
+    private Double latitude;
+    private Double longitude;
+
 
     @Builder
     public StoreUpdateRequestDto(String name, Integer category, String description, List<MultipartFile> images, List<MultipartFile> newImages, List<String> deleteImagePaths, MultipartFile logoImage,
-                                 String city, String country, String town, String roadCode, String road, String zipCode) {
+                                 String city, String country, String town, String road, String zipCode, String buildingCode, Double latitude, Double longitude) {
         this.name = name;
         this.category = category;
         this.description = description;
@@ -41,12 +44,15 @@ public class StoreUpdateRequestDto {
         this.newImages = newImages;
         this.deleteImagePaths = deleteImagePaths;
         this.logoImage = logoImage;
+
         this.city = city;
         this.country = country;
         this.town = town;
-        this.roadCode = roadCode;
         this.road = road;
         this.zipCode = zipCode;
+        this.buildingCode = buildingCode;
+        this.latitude = latitude;
+        this.longitude = longitude;
     }
 
     public Address addressToEntity() {
@@ -54,9 +60,11 @@ public class StoreUpdateRequestDto {
                 .city(city)
                 .country(country)
                 .town(town)
-                .roadCode(roadCode)
                 .road(road)
                 .zipCode(zipCode)
+                .buildingCode(buildingCode)
+                .latitude(latitude)
+                .longitude(longitude)
                 .build();
     }
 }
