@@ -110,7 +110,10 @@ public class AuthController {
         // refresh token
         String refreshToken = HeaderUtil.getRefreshToken(request);
         JwtAuthToken authRefreshToken = jwtAuthTokenProvider.convertAuthToken(refreshToken);
-        if (!authRefreshToken.validate()) {
+
+        try {
+            authRefreshToken.validate();
+        } catch (ExpiredJwtException e) {
             throw new CustomRefreshTokenException();
         }
 
