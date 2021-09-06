@@ -34,7 +34,6 @@ public class JwtAuthToken implements AuthToken<Claims> {
         this.token = createJwtAuthToken(id, expiredDate).get();
     }
 
-
     @Override
     public boolean validate() {
         return getData() != null;
@@ -53,7 +52,7 @@ public class JwtAuthToken implements AuthToken<Claims> {
             throw new CustomJwtRuntimeException();
         } catch (ExpiredJwtException e) {
             log.info("Expired JWT token.");
-            throw new CustomJwtRuntimeException();
+            throw e;
         } catch (UnsupportedJwtException e) {
             log.info("Unsupported JWT token.");
             throw new CustomJwtRuntimeException();
@@ -74,7 +73,7 @@ public class JwtAuthToken implements AuthToken<Claims> {
     }
 
 
-        // 로그인 요청 및 JWT 토큰을 생성
+    // 로그인 요청 및 JWT 토큰을 생성
     private Optional<String> createJwtAuthToken(String id, String role, Date expiredDate) {
 
         var token = Jwts.builder()

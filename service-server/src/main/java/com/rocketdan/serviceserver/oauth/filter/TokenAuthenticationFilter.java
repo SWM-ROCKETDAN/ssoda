@@ -1,8 +1,11 @@
 package com.rocketdan.serviceserver.oauth.filter;
 
+import com.rocketdan.serviceserver.Exception.auth.CustomJwtRuntimeException;
+import com.rocketdan.serviceserver.Exception.auth.token.CustomAccessTokenException;
 import com.rocketdan.serviceserver.provider.security.JwtAuthToken;
 import com.rocketdan.serviceserver.provider.security.JwtAuthTokenProvider;
 import com.rocketdan.serviceserver.utils.HeaderUtil;
+import io.jsonwebtoken.ExpiredJwtException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
@@ -15,7 +18,6 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.Arrays;
 import java.util.List;
 
 @Slf4j
@@ -50,9 +52,16 @@ public class TokenAuthenticationFilter extends OncePerRequestFilter {
         String tokenStr = HeaderUtil.getAccessToken(request);
         JwtAuthToken token = jwtAuthTokenProvider.convertAuthToken(tokenStr);
 
-        if (token.validate()) {
-            Authentication authentication = jwtAuthTokenProvider.getAuthentication(token);
-            SecurityContextHolder.getContext().setAuthentication(authentication);
+        try {
+            if (token.validate()) {
+                Authentication authentication = jwtAuthTokenProvider.getAuthentication(token);
+                SecurityContextHolder.getContext().setAuthentication(authentication);
+            }
+        } catch (ExpiredJwtException e) {
+            String refreshApiPath = "/api/v1/auth/refresh";
+            if (!path.equals(refreshApiPath)) {
+                throw new CustomJwtRuntimeException();
+            }
         }
 
         filterChain.doFilter(request, response);
