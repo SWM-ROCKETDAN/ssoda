@@ -1,5 +1,6 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
+import 'package:hashchecker/api.dart';
 import 'package:hashchecker/constants.dart';
 import 'package:hashchecker/models/event.dart';
 import 'package:hashchecker/screens/event_list/components/event_edit_modal.dart';
@@ -29,7 +30,7 @@ class HeaderWithImages extends StatelessWidget {
                   enlargeCenterPage: false),
               items: event.images
                   .map((item) => Center(
-                      child: Image.asset(item!,
+                      child: Image.network('$s3Url$item',
                           fit: BoxFit.cover, height: size.height * 0.4 - 15)))
                   .toList(),
             )),

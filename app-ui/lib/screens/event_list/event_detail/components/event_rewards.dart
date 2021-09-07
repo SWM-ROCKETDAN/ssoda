@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:hashchecker/api.dart';
 import 'package:hashchecker/constants.dart';
 import 'package:hashchecker/models/event.dart';
-import 'dart:io';
 
 class EventRewards extends StatelessWidget {
   const EventRewards({
@@ -25,8 +25,8 @@ class EventRewards extends StatelessWidget {
         child: ListView.separated(
           itemBuilder: (context, index) => ClipRRect(
             borderRadius: BorderRadius.circular(8.0),
-            child: Image.asset(
-              event.rewardList[index]!.imgPath,
+            child: Image.network(
+              '$s3Url${event.rewardList[index]!.imgPath}',
               fit: BoxFit.cover,
               width: 130,
             ),
