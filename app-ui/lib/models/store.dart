@@ -16,4 +16,18 @@ class Store {
       required this.description,
       required this.images,
       required this.logoImage});
+
+  factory Store.fromJson(Map<String, dynamic> json) {
+    var imagesFromJson = json['imagePaths'];
+
+    List<String> imagesList = imagesFromJson.cast<String>();
+
+    return Store(
+        name: json['name'],
+        category: StoreCategory.values[json['category']],
+        address: Address.fromJson(json['address']),
+        description: json['description'],
+        images: imagesList,
+        logoImage: json['logoImagePath']);
+  }
 }

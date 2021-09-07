@@ -21,4 +21,16 @@ class Address {
   String getFullAddress() {
     return '${this.city} ${this.country} ${this.road} ${this.building}';
   }
+
+  factory Address.fromJson(Map<String, dynamic> json) {
+    return Address(
+        city: json['city'],
+        country: json['country'],
+        town: json['town'],
+        road: json['road'],
+        building: json['buildingCode'],
+        zipCode: json['zipCode'],
+        latitude: json['latitude'],
+        longitude: json['longitude']);
+  }
 }

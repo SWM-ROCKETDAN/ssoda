@@ -29,7 +29,7 @@ class Reward {
   factory Reward.fromJson(Map<String, dynamic> json) {
     return Reward(
         name: json['name'],
-        imgPath: json['image'],
+        imgPath: json['imagePath'],
         category: RewardCategory.values[json['category']],
         price: json['price'],
         count: json['count'],
