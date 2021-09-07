@@ -25,10 +25,9 @@ public class JoinUserService {
 
     private final AnalysisServerConfig analysisServerConfig;
 
-    @Transactional
     public Long save(Long joinPostId) {
         JoinPost linkedJoinPost = joinPostRepository.findById(joinPostId).orElseThrow(() -> new IllegalArgumentException("해당 게시글이 없습니다. id=" + joinPostId));
-        System.out.println(linkedJoinPost.getUrl()+" "+linkedJoinPost.getSnsId()+" "+ linkedJoinPost.getType());
+
         // 같은 snsId, type을 가진 join user 가 존재할 경우 저장하지 않고 리턴
         Optional<JoinUser> joinUser = joinUserRepository.findBySnsIdAndType(linkedJoinPost.getSnsId(), linkedJoinPost.getType());
         if (joinUser.isPresent()) {

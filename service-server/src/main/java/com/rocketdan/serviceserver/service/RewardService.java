@@ -56,7 +56,7 @@ public class RewardService {
 
     // analysis-server에 put 요청
     public RewardLevelResponseDto getRewardId(Long joinPostId) {
-        return analysisServerConfig.webClient().get() // PUT method
+        return analysisServerConfig.webClient().get() // GET method
                 .uri("/api/v1/join/rewards/" + joinPostId + "/") // baseUrl 이후 uri
                 .retrieve() // client message 전송
                 .onStatus(HttpStatus::is4xxClientError, clientResponse -> Mono.error(JoinEventFailedException::new))

@@ -54,6 +54,8 @@ public class JoinPost {
 
     private Integer rewardsLevel;
 
+    private Date rewardDate;
+
     @ColumnDefault("false")
     @Column(nullable = false)
     private Boolean deleted = false;

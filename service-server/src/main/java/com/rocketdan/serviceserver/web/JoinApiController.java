@@ -1,6 +1,5 @@
 package com.rocketdan.serviceserver.web;
 
-import com.rocketdan.serviceserver.Exception.join.JoinEventFailedException;
 import com.rocketdan.serviceserver.app.dto.reward.RewardResponseDto;
 import com.rocketdan.serviceserver.core.CommonResponse;
 import com.rocketdan.serviceserver.service.JoinPostService;
@@ -10,6 +9,7 @@ import com.rocketdan.serviceserver.web.dto.reward.RewardLevelRequestDto;
 import com.rocketdan.serviceserver.web.dto.reward.RewardLevelResponseDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 @Slf4j
@@ -21,6 +21,7 @@ public class JoinApiController {
     private final JoinUserService joinUserService;
     private final RewardService rewardService;
 
+    @Transactional
     @PostMapping("/events/{event_id}")
     public RewardResponseDto joinEventAndRetrieveReward(@PathVariable Long event_id, @RequestBody RewardLevelRequestDto requestDto) {
         // (1) join_post 저장
@@ -28,20 +29,12 @@ public class JoinApiController {
 
         // (2) analysis-server에 join_post update 요청
         CommonResponse putJoinPostResponse = joinPostService.putJoinPost(joinPostId);
-        if (!putJoinPostResponse.getCode().equals("SUCCESS_001")) {
-            log.error("Analysis server return ERROR CODE : " + putJoinPostResponse.getCode());
-            throw new JoinEventFailedException();
-        }
 
         // (3) join_post의 snsId, type, createDate를 join_user에 저장
         Long joinUserId = joinUserService.save(joinPostId);
 
         // (4) analysis-server에 join_user update 요청
         CommonResponse putJoinUserResponse = joinUserService.putJoinUser(joinUserId);
-        if (!putJoinUserResponse.getCode().equals("SUCCESS_002")) {
-            log.error("Analysis server return ERROR CODE : " + putJoinPostResponse.getCode());
-            throw new JoinEventFailedException();
-        }
 
         // (5) analysis-server에 reward level 요청
         RewardLevelResponseDto rewardLevelResponseDto = rewardService.getRewardId(joinPostId);
