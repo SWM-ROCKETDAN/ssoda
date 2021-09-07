@@ -30,8 +30,11 @@ class _InputRewardInfoScreenState extends State<InputRewardInfoScreen> {
 
   Future _getImageFromGallery() async {
     final ImagePicker _imagePicker = ImagePicker();
-    final XFile? image =
-        await _imagePicker.pickImage(source: ImageSource.gallery);
+    final XFile? image = await _imagePicker.pickImage(
+        source: ImageSource.gallery,
+        maxHeight: 800,
+        maxWidth: 800,
+        imageQuality: 75);
     if (image != null) {
       setState(() {
         _imagePath = image.path;

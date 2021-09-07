@@ -363,23 +363,20 @@ class _EventEditModalState extends State<EventEditModal> {
                           Image.asset(event.images[index]!, fit: BoxFit.cover),
                       borderRadius: BorderRadius.circular(16),
                     ),
-                    if (event.images.last == null &&
-                            event.images.length == index + 2 ||
-                        event.images.length == index + 1)
-                      Positioned(
-                          right: 10,
-                          top: 10,
-                          child: GestureDetector(
-                            onTap: () {
-                              setState(() {
-                                if (event.images.last == null)
-                                  event.images.removeLast();
-                                event.images[index] = null;
-                              });
-                            },
-                            child: Icon(Icons.cancel_rounded,
-                                size: 28, color: Colors.white.withOpacity(0.9)),
-                          ))
+                    Positioned(
+                        right: 10,
+                        top: 10,
+                        child: GestureDetector(
+                          onTap: () {
+                            setState(() {
+                              if (event.images.last == null)
+                                event.images.removeLast();
+                              event.images[index] = null;
+                            });
+                          },
+                          child: Icon(Icons.cancel_rounded,
+                              size: 28, color: Colors.white.withOpacity(0.9)),
+                        ))
                   ]),
                 )).cast<Widget>().toList(),
     ));

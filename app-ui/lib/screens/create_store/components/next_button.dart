@@ -1,5 +1,7 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:hashchecker/api.dart';
 import 'package:hashchecker/constants.dart';
 import 'package:hashchecker/models/address.dart';
 import 'package:hashchecker/models/store.dart';
@@ -52,16 +54,6 @@ class CreateButton extends StatelessWidget {
                     borderRadius: BorderRadius.circular(27.0)))),
       ),
     );
-  }
-
-  Store _createStore() {
-    return Store(
-        name: name!.trim(),
-        category: category,
-        address: address!,
-        description: description!.trim(),
-        images: imageList,
-        logoImage: logo!);
   }
 
   bool _checkStoreValidation(BuildContext context) {
@@ -118,6 +110,38 @@ class CreateButton extends StatelessWidget {
     return true;
   }
 
+  Future<void> _createStore() async {
+    var dio = await authDio();
+
+    final getUserInfoResponse = await dio.get(getApi(API.GET_USER_INFO));
+
+    final id = getUserInfoResponse.data['id'];
+
+    dio.options.contentType = 'multipart/form-data';
+
+    var storeData = FormData.fromMap({
+      'name': name!.trim(),
+      'category': category.index,
+      'description': description!.trim(),
+      'images': List.generate(imageList.length,
+          (index) => MultipartFile.fromFileSync(imageList[index])),
+      'logoImage': await MultipartFile.fromFile(logo!),
+      'city': address!.city,
+      'country': address!.country,
+      'town': address!.town,
+      'road': address!.road,
+      'buildingCode': address!.building,
+      'zipCode': address!.zipCode,
+      'latitude': address!.latitude,
+      'longitude': address!.longitude
+    });
+
+    final createStoreResponse = await dio
+        .post(getApi(API.CREATE_STORE, suffix: '/$id'), data: storeData);
+
+    print(createStoreResponse.data);
+  }
+
   Future<void> _showCreateStoreDialog(BuildContext context) async {
     showDialog(
         context: context,
@@ -135,7 +159,7 @@ class CreateButton extends StatelessWidget {
                 Text("이대로 등록하시겠습니까?",
                     style: TextStyle(fontSize: 14, color: kDefaultFontColor)),
                 SizedBox(height: kDefaultPadding / 5),
-                Text("(가게 정보는 마이페이지에서\n언제든지 수정할 수 있습니다)",
+                Text("(가게 정보는 마이페이지에서\n다시 수정할 수 있습니다)",
                     style: TextStyle(fontSize: 14, color: kDefaultFontColor)),
               ]),
             ),
@@ -147,7 +171,7 @@ class CreateButton extends StatelessWidget {
                   children: [
                     TextButton(
                       onPressed: () async {
-                        _createStore();
+                        await _createStore();
                         Navigator.of(context).pop();
                         await _showDoneDialog(context);
                       },

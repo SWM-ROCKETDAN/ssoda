@@ -31,8 +31,11 @@ class _CreateStoreScreenState extends State<CreateStoreScreen> {
 
   Future<void> _setLogoImage() async {
     final ImagePicker _imagePicker = ImagePicker();
-    final XFile? image =
-        await _imagePicker.pickImage(source: ImageSource.gallery);
+    final XFile? image = await _imagePicker.pickImage(
+        source: ImageSource.gallery,
+        maxHeight: 400,
+        maxWidth: 400,
+        imageQuality: 75);
     if (image != null) {
       setState(() {
         _logoPath = image.path;
@@ -42,8 +45,11 @@ class _CreateStoreScreenState extends State<CreateStoreScreen> {
 
   Future<void> _addStoreImage() async {
     final ImagePicker _imagePicker = ImagePicker();
-    final XFile? image =
-        await _imagePicker.pickImage(source: ImageSource.gallery);
+    final XFile? image = await _imagePicker.pickImage(
+        source: ImageSource.gallery,
+        maxHeight: 1280,
+        maxWidth: 1280,
+        imageQuality: 75);
     if (image != null) {
       setState(() {
         _storeImageList.add(image.path);
