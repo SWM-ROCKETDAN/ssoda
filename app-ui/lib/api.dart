@@ -1,6 +1,4 @@
 import 'package:dio/dio.dart';
-import 'package:dio_cookie_manager/dio_cookie_manager.dart';
-import 'package:cookie_jar/cookie_jar.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart' as fss;
 
 const baseUrl =
@@ -9,14 +7,20 @@ const baseUrl =
 const eventJoinUrl =
     'http://ec2-13-124-246-123.ap-northeast-2.compute.amazonaws.com';
 
+const s3Url = 'https://hashchecker-bucket.s3.ap-northeast-2.amazonaws.com/';
+
 enum API {
   NAVER_LOGIN,
   KAKAO_LOGIN,
   LOGOUT,
   REFRESH,
   GET_USER_INFO,
-  GET_USER_STORE,
+  GET_USER_STORES,
+  GET_EVENT,
   GET_ALL_EVENTS,
+  GET_STORE,
+  GET_EVENTS_OF_STORE,
+  GET_REWARD_OF_EVENT,
   CREATE_STORE,
   CREATE_EVENT,
   CREATE_REWARDS
@@ -28,8 +32,12 @@ Map<API, String> apiMap = {
   API.LOGOUT: '/logout',
   API.REFRESH: '/api/v1/auth/refresh',
   API.GET_USER_INFO: '/api/v1/users/me',
-  API.GET_USER_STORE: '/api/v1/users/me/stores',
+  API.GET_USER_STORES: '/api/v1/users/me/stores',
+  API.GET_EVENT: '/api/v1/events', // '/{event_id}'
   API.GET_ALL_EVENTS: '/api/v1/events',
+  API.GET_STORE: '/api/v1/stores',
+  API.GET_EVENTS_OF_STORE: '/api/v1/stores', // '/{id}/events'
+  API.GET_REWARD_OF_EVENT: '/api/v1/events', // '/{id}/rewards'
   API.CREATE_STORE: '/api/v1/stores/users',
   API.CREATE_EVENT: '/api/v1/events/hashtag/stores',
   API.CREATE_REWARDS: '/api/v1/rewards/events'
@@ -56,8 +64,6 @@ Future<Dio> authDio() async {
   }, onError: (error, handler) async {
     // when accessToken expired
     if (error.response?.statusCode == 401) {
-      print(error.response!.data);
-      print('401!');
       // request refreshing with refreshToken
       final accessToken = await storage.read(key: 'ACCESS_TOKEN');
       final refreshToken = await storage.read(key: 'REFRESH_TOKEN');
@@ -76,28 +82,20 @@ Future<Dio> authDio() async {
       refreshDio.options.headers['Authorization'] = 'Bearer $accessToken';
       refreshDio.options.headers['refresh_token'] = 'Bearer $refreshToken';
 
-      print('accessToken: $accessToken \n refreshToken: $refreshToken');
-      print('refresh dio complete');
       // get refreshToken
-
       final refreshResponse = await refreshDio.get(getApi(API.REFRESH));
 
       // parsing tokens
       final newAccessToken = refreshResponse.headers['access-token']![0];
       final newRefreshToken = refreshResponse.headers['refresh-token']![0];
 
-      print(
-          'newAccessToken: $newAccessToken \n newRefreshToken: $newRefreshToken');
       // update dio request headers token
       error.requestOptions.headers['Authorization'] = 'Bearer $newAccessToken';
-
-      print(error.requestOptions.headers);
 
       // udpate secure storage token data
       await storage.write(key: 'ACCESS_TOKEN', value: newAccessToken);
       await storage.write(key: 'REFRESH_TOKEN', value: newRefreshToken);
 
-      print('write new refresh complete');
       // create clonedRequest to request again
       final clonedRequest = await dio.request(error.requestOptions.path,
           options: Options(
@@ -106,7 +104,6 @@ Future<Dio> authDio() async {
           data: error.requestOptions.data,
           queryParameters: error.requestOptions.queryParameters);
 
-      print('create cloned request complete');
       return handler.resolve(clonedRequest);
     }
     return handler.next(error);
