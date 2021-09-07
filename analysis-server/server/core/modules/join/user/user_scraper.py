@@ -32,5 +32,4 @@ class UserScraper:
         update_date = self.join_user.get('update_date')
         if check_user_is_recently_scraped(update_date):
             raise exceptions.UserRecentlyUpdateAndOK()
-
         return True
