@@ -1,6 +1,7 @@
 import 'package:animations/animations.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
+import 'package:hashchecker/api.dart';
 import 'package:hashchecker/constants.dart';
 import 'package:hashchecker/models/event.dart';
 import 'package:hashchecker/models/event_list_item.dart';
@@ -13,18 +14,16 @@ import 'event_options_modal.dart';
 class EventListTile extends StatelessWidget {
   const EventListTile({
     Key? key,
-    required this.index,
+    required this.eventListItem,
     required this.size,
-    required this.eventList,
     required Map<EventStatus, String> statusStringMap,
     required Map<EventStatus, Color> statusColorMap,
   })  : _statusStringMap = statusStringMap,
         _statusColorMap = statusColorMap,
         super(key: key);
 
+  final eventListItem;
   final Size size;
-  final int index;
-  final List<EventListItem> eventList;
   final Map<EventStatus, String> _statusStringMap;
   final Map<EventStatus, Color> _statusColorMap;
 
@@ -42,8 +41,8 @@ class EventListTile extends StatelessWidget {
               borderRadius: BorderRadius.all(Radius.circular(12))),
           closedElevation: 0,
           transitionType: ContainerTransitionType.fade,
-          openBuilder: (context, _) =>
-              EventDetailScreen(eventListItem: eventList[index]),
+          openBuilder: (context, _) => EventDetailScreen(
+              eventId: eventListItem.id, eventStatus: eventListItem.status),
           closedBuilder: (context, openContainer) => Stack(children: [
                 Positioned(
                     bottom: 15,
@@ -64,8 +63,8 @@ class EventListTile extends StatelessWidget {
                                 expand: false,
                                 context: context,
                                 builder: (context) => EventOptionsModal(
-                                    eventId: eventList[index].id,
-                                    eventStatus: eventList[index].status,
+                                    eventId: eventListItem.id,
+                                    eventStatus: eventListItem.status,
                                     isAlreadyInPreview: false)),
                             child: Padding(
                               padding: const EdgeInsets.fromLTRB(0, 10, 15, 10),
@@ -82,7 +81,7 @@ class EventListTile extends StatelessWidget {
                                           CrossAxisAlignment.end,
                                       children: [
                                         AutoSizeText(
-                                          eventList[index].title,
+                                          eventListItem.title,
                                           style: TextStyle(
                                             fontSize: 13,
                                             color: kDefaultFontColor,
@@ -94,7 +93,7 @@ class EventListTile extends StatelessWidget {
                                         ),
                                         SizedBox(height: kDefaultPadding / 3),
                                         Text(
-                                            '${eventList[index].startDate} ~ ${eventList[index].finishDate}',
+                                            '${eventListItem.startDate} ~ ${eventListItem.finishDate}',
                                             style: TextStyle(
                                                 color: kLiteFontColor,
                                                 fontSize: 11)),
@@ -112,15 +111,13 @@ class EventListTile extends StatelessWidget {
                                                         0, 4, 8, 4),
                                                 child: Text(
                                                     _statusStringMap[
-                                                        eventList[index]
-                                                            .status]!,
+                                                        eventListItem.status]!,
                                                     style: TextStyle(
                                                         fontSize: 12,
                                                         color: _statusColorMap[
-                                                            eventList[index]
+                                                            eventListItem
                                                                 .status],
-                                                        fontWeight: eventList[
-                                                                        index]
+                                                        fontWeight: eventListItem
                                                                     .status ==
                                                                 EventStatus
                                                                     .PROCEEDING
@@ -139,8 +136,7 @@ class EventListTile extends StatelessWidget {
                                                   context: context,
                                                   builder: (context) =>
                                                       EventEditModal(
-                                                    eventId:
-                                                        eventList[index].id,
+                                                    eventId: eventListItem.id,
                                                   ),
                                                 ),
                                                 child: Container(
@@ -160,19 +156,17 @@ class EventListTile extends StatelessWidget {
                                               GestureDetector(
                                                 onTap: () =>
                                                     showMaterialModalBottomSheet(
-                                                        backgroundColor:
-                                                            Colors.transparent,
+                                                        backgroundColor: Colors
+                                                            .transparent,
                                                         expand: false,
                                                         context: context,
                                                         builder: (context) =>
                                                             EventOptionsModal(
                                                                 eventId:
-                                                                    eventList[
-                                                                            index]
+                                                                    eventListItem
                                                                         .id,
                                                                 eventStatus:
-                                                                    eventList[
-                                                                            index]
+                                                                    eventListItem
                                                                         .status,
                                                                 isAlreadyInPreview:
                                                                     false)),
@@ -215,8 +209,8 @@ class EventListTile extends StatelessWidget {
                     child: Container(
                       child: ClipRRect(
                         borderRadius: BorderRadius.all(Radius.circular(12)),
-                        child: Image.asset(
-                          eventList[index].thumbnail,
+                        child: Image.network(
+                          '$s3Url${eventListItem.thumbnail}',
                           width: size.width * 0.37,
                           height: 100,
                           fit: BoxFit.cover,
