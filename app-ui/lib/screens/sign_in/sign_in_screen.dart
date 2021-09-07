@@ -57,18 +57,6 @@ class _SignInScreenState extends State<SignInScreen> {
                         size: size,
                         signIn: kakaoLoginPressed,
                       ),
-                      ElevatedButton(
-                          onPressed: () async {
-                            var dio = await authDio();
-
-                            print('get auth dio complete');
-
-                            final getUserInfoResponse =
-                                await dio.get(getApi(API.GET_USER_INFO));
-
-                            print(getUserInfoResponse.data);
-                          },
-                          child: Text('getUser 요청')),
                       SizedBox(height: kDefaultPadding / 3 * 2),
                       Text('로그인 할 플랫폼을 선택해주세요!',
                           style:
@@ -111,52 +99,7 @@ class _SignInScreenState extends State<SignInScreen> {
       showLoginFailDialog(e.toString());
     }
 
-    var dio = await authDio();
-
-    print('get auth dio complete');
-
     Navigator.of(context).push(_routeToCreateStoreScreen());
-  }
-
-  Future<void> createStore() async {
-    var dio = await authDio();
-
-    print('get auth dio complete');
-
-    final getUserInfoResponse = await dio.get(getApi(API.GET_USER_INFO));
-
-    print('get user info complete');
-
-    final id = getUserInfoResponse.data['id'];
-
-    dio.options.contentType = 'multipart/form-data';
-
-    final ImagePicker _imagePicker = ImagePicker();
-    final XFile? image =
-        await _imagePicker.pickImage(source: ImageSource.gallery);
-
-    var storeData = FormData.fromMap({
-      'name': 'yjyoon_store',
-      'category': 1,
-      'city': '서울',
-      'country': '광진구',
-      'town': '광장동',
-      'roadCode': '000000000000',
-      'road': '아차산로 549',
-      'zipCode': '04983',
-      'description': '상세 설명',
-      'logoImage': await MultipartFile.fromFile(image!.path),
-      'images': [
-        await MultipartFile.fromFile(image.path),
-      ]
-    });
-
-    final createStoreResponse = await dio
-        .post(getApi(API.CREATE_STORE, suffix: '/$id'), data: storeData);
-
-    print('save store complete');
-
-    print(createStoreResponse.data);
   }
 
   void showLoginFailDialog(String errMsg) {
