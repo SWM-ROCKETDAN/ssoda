@@ -8,7 +8,6 @@ class Reward {
   final int level;
   final RewardCategory category;
 
-  String get getImgPath => imgPath;
   Reward(
       {required this.name,
       required this.imgPath,

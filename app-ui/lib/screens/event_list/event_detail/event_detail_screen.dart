@@ -75,8 +75,6 @@ class _EventDetailScreenState extends State<EventDetailScreen> {
 
     final fetchedRewardList = getRewardListResponse.data;
 
-    print(fetchedRewardList);
-
     List<Reward> rewardList = List.generate(fetchedRewardList.length,
         (index) => Reward.fromJson(fetchedRewardList[index]));
 

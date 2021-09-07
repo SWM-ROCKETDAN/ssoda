@@ -1,5 +1,6 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
+import 'package:hashchecker/api.dart';
 import 'package:hashchecker/constants.dart';
 import 'package:hashchecker/models/event.dart';
 import 'package:hashchecker/models/period.dart';
@@ -20,50 +21,53 @@ class EventEditModal extends StatefulWidget {
 }
 
 class _EventEditModalState extends State<EventEditModal> {
-  late Event event;
+  late Future<Event> event;
   late TextEditingController _eventTitleController;
   TextEditingController _hashtagcontroller = TextEditingController();
   DateRangePickerController _startDatePickerController =
       DateRangePickerController();
   DateRangePickerController _finishDatePickerController =
       DateRangePickerController();
+
+  Future<List<Reward>> _fetchRewardListData() async {
+    var dio = await authDio();
+
+    final getRewardListResponse = await dio.get(
+        getApi(API.GET_REWARD_OF_EVENT, suffix: '/${widget.eventId}/rewards'));
+
+    final fetchedRewardList = getRewardListResponse.data;
+
+    print(fetchedRewardList);
+
+    List<Reward> rewardList = List.generate(fetchedRewardList.length,
+        (index) => Reward.fromJson(fetchedRewardList[index]));
+
+    return rewardList;
+  }
+
+  Future<Event> _fetchEventData() async {
+    List<Reward> _rewardList = await _fetchRewardListData();
+
+    var dio = await authDio();
+
+    final getEventResponse =
+        await dio.get(getApi(API.GET_EVENT, suffix: '/${widget.eventId}'));
+
+    final fetchedEvent = getEventResponse.data;
+
+    Event event = Event.fromJson(fetchedEvent);
+    event.rewardList = _rewardList;
+
+    if (event.images.length < 3) event.images.add(null);
+    _eventTitleController = TextEditingController(text: event.title);
+
+    return event;
+  }
+
   @override
   void initState() {
     super.initState();
-    event = Event(
-        title: '우리가게 SNS 해시태그 이벤트',
-        rewardList: [
-          Reward(
-              name: '콜라',
-              imgPath: 'assets/images/reward1.jpg',
-              price: 123,
-              count: 123,
-              level: 1,
-              category: RewardCategory.DRINK),
-          Reward(
-              name: '샌드위치',
-              imgPath: 'assets/images/reward2.jpg',
-              price: 123,
-              count: 123,
-              level: 2,
-              category: RewardCategory.FOOD),
-          Reward(
-              name: '런치 쿠폰',
-              imgPath: 'assets/images/reward3.jpg',
-              price: 123,
-              count: 123,
-              level: 3,
-              category: RewardCategory.COUPON)
-        ],
-        hashtagList: ['우리가게', '강남', '맛집', '샌드위치', '이벤트'],
-        period: Period(DateTime.now(), null, null),
-        images: ['assets/images/event1.jpg', 'assets/images/event2.jpg'],
-        requireList: [true, false, true, true, false, false],
-        template: Template(0));
-
-    if (event.images.length < 3) event.images.add(null);
-
-    _eventTitleController = TextEditingController(text: event.title);
+    event = _fetchEventData();
   }
 
   @override
@@ -139,48 +143,58 @@ class _EventEditModalState extends State<EventEditModal> {
                       borderRadius: BorderRadius.circular(15))));
           return shouldClose;
         },
-        child: Container(
-            child: SingleChildScrollView(
-          child: Padding(
-            padding: const EdgeInsets.all(20),
-            child: Container(
-                child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Section(text: '대표 이미지'),
-                SizedBox(height: kDefaultPadding),
-                buildEventImageEdit(context, size),
-                SizedBox(height: kDefaultPadding),
-                Section(text: '이벤트 제목'),
-                buildEventTitleEdit(),
-                SizedBox(height: kDefaultPadding * 2.5),
-                Section(text: '이벤트 상품'),
-                SizedBox(height: kDefaultPadding),
-                buildEventRewardEdit(),
-                SizedBox(height: kDefaultPadding * 2.5),
-                Section(text: '필수 해시태그'),
-                SizedBox(height: kDefaultPadding / 3),
-                buildEventHashtagEdit(context),
-                SizedBox(height: kDefaultPadding * 2),
-                Section(text: '세부 요청사항'),
-                SizedBox(height: kDefaultPadding),
-                buildEventRequireEdit(size),
-                SizedBox(height: kDefaultPadding * 2.5),
-                Section(text: '이벤트 기간'),
-                SizedBox(height: kDefaultPadding / 2.5),
-                buildEventPeriodEdit(context, size),
-                buildEventPermanentSelection(),
-                SizedBox(height: kDefaultPadding),
-                buildConfirmButton(size, context)
-              ],
-            )),
-          ),
-        )),
+        child: FutureBuilder<Event>(
+            future: event,
+            builder: (context, snapshot) {
+              if (snapshot.hasData) {
+                return Container(
+                    child: SingleChildScrollView(
+                  child: Padding(
+                    padding: const EdgeInsets.all(20),
+                    child: Container(
+                        child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Section(text: '대표 이미지'),
+                        SizedBox(height: kDefaultPadding),
+                        buildEventImageEdit(context, size, snapshot.data!),
+                        SizedBox(height: kDefaultPadding),
+                        Section(text: '이벤트 제목'),
+                        buildEventTitleEdit(snapshot.data!),
+                        SizedBox(height: kDefaultPadding * 2.5),
+                        Section(text: '이벤트 상품'),
+                        SizedBox(height: kDefaultPadding),
+                        buildEventRewardEdit(snapshot.data!),
+                        SizedBox(height: kDefaultPadding * 2.5),
+                        Section(text: '필수 해시태그'),
+                        SizedBox(height: kDefaultPadding / 3),
+                        buildEventHashtagEdit(context, snapshot.data!),
+                        SizedBox(height: kDefaultPadding * 2),
+                        Section(text: '세부 요청사항'),
+                        SizedBox(height: kDefaultPadding),
+                        buildEventRequireEdit(size, snapshot.data!),
+                        SizedBox(height: kDefaultPadding * 2.5),
+                        Section(text: '이벤트 기간'),
+                        SizedBox(height: kDefaultPadding / 2.5),
+                        buildEventPeriodEdit(context, size, snapshot.data!),
+                        buildEventPermanentSelection(snapshot.data!),
+                        SizedBox(height: kDefaultPadding),
+                        buildConfirmButton(size, context, snapshot.data!)
+                      ],
+                    )),
+                  ),
+                ));
+              } else if (snapshot.hasError) {
+                return Text('${snapshot.error}');
+              }
+
+              return Center(child: const CircularProgressIndicator());
+            }),
       ),
     );
   }
 
-  SizedBox buildConfirmButton(Size size, BuildContext context) {
+  SizedBox buildConfirmButton(Size size, BuildContext context, Event event) {
     return SizedBox(
       width: size.width,
       height: 45,
@@ -238,7 +252,7 @@ class _EventEditModalState extends State<EventEditModal> {
     );
   }
 
-  Container buildEventRequireEdit(Size size) {
+  Container buildEventRequireEdit(Size size, Event event) {
     return Container(
       child: Center(
         child: Wrap(
@@ -315,7 +329,7 @@ class _EventEditModalState extends State<EventEditModal> {
     );
   }
 
-  Container buildEventImageEdit(BuildContext context, Size size) {
+  Container buildEventImageEdit(BuildContext context, Size size, Event event) {
     return Container(
         child: CarouselSlider(
       options: CarouselOptions(
@@ -333,7 +347,7 @@ class _EventEditModalState extends State<EventEditModal> {
                   width: MediaQuery.of(context).size.width * 0.6,
                   child: TextButton(
                     onPressed: () {
-                      _getImageFromGallery(context, index);
+                      _getImageFromGallery(context, index, event);
                     },
                     child: Center(
                         child: Icon(
@@ -355,12 +369,12 @@ class _EventEditModalState extends State<EventEditModal> {
                 )
               : GestureDetector(
                   onTap: () {
-                    _getImageFromGallery(context, index);
+                    _getImageFromGallery(context, index, event);
                   },
                   child: Stack(children: [
                     ClipRRect(
-                      child:
-                          Image.asset(event.images[index]!, fit: BoxFit.cover),
+                      child: Image.network('$s3Url${event.images[index]}',
+                          fit: BoxFit.cover),
                       borderRadius: BorderRadius.circular(16),
                     ),
                     Positioned(
@@ -382,7 +396,7 @@ class _EventEditModalState extends State<EventEditModal> {
     ));
   }
 
-  Row buildEventPermanentSelection() {
+  Row buildEventPermanentSelection(Event event) {
     return Row(
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
@@ -420,7 +434,7 @@ class _EventEditModalState extends State<EventEditModal> {
     );
   }
 
-  Row buildEventPeriodEdit(BuildContext context, Size size) {
+  Row buildEventPeriodEdit(BuildContext context, Size size, Event event) {
     return Row(
       children: [
         ElevatedButton(
@@ -636,7 +650,7 @@ class _EventEditModalState extends State<EventEditModal> {
     );
   }
 
-  Wrap buildEventHashtagEdit(BuildContext context) {
+  Wrap buildEventHashtagEdit(BuildContext context, Event event) {
     return Wrap(
         alignment: WrapAlignment.start,
         crossAxisAlignment: WrapCrossAlignment.center,
@@ -666,7 +680,7 @@ class _EventEditModalState extends State<EventEditModal> {
                             ),
                           );
                         } else
-                          _showHashtagInputDialog(context);
+                          _showHashtagInputDialog(context, event);
                       }),
                 )
               : Chip(
@@ -696,7 +710,7 @@ class _EventEditModalState extends State<EventEditModal> {
         ));
   }
 
-  Container buildEventRewardEdit() {
+  Container buildEventRewardEdit(Event event) {
     return Container(
         height: 96,
         child: ListView.separated(
@@ -734,8 +748,8 @@ class _EventEditModalState extends State<EventEditModal> {
                       child: Stack(children: [
                         ClipRRect(
                           borderRadius: BorderRadius.circular(8.0),
-                          child: Image.asset(
-                            event.rewardList[index]!.imgPath,
+                          child: Image.network(
+                            '$s3Url${event.rewardList[index]!.imgPath}',
                             fit: BoxFit.cover,
                             width: 91,
                             height: 96,
@@ -790,7 +804,7 @@ class _EventEditModalState extends State<EventEditModal> {
                   )));
   }
 
-  SizedBox buildEventTitleEdit() {
+  SizedBox buildEventTitleEdit(Event event) {
     return SizedBox(
       height: 40,
       child: TextField(
@@ -811,7 +825,8 @@ class _EventEditModalState extends State<EventEditModal> {
     );
   }
 
-  Future<void> _showHashtagInputDialog(BuildContext context) async {
+  Future<void> _showHashtagInputDialog(
+      BuildContext context, Event event) async {
     _hashtagcontroller = TextEditingController();
     return showDialog(
         context: context,
@@ -838,7 +853,7 @@ class _EventEditModalState extends State<EventEditModal> {
                         ),
                         onSubmitted: (_) {
                           setState(() {
-                            errMsg = _checkHashtag(context);
+                            errMsg = _checkHashtag(context, event);
                           });
                           if (errMsg == null) Navigator.pop(context);
                         },
@@ -857,7 +872,7 @@ class _EventEditModalState extends State<EventEditModal> {
                     child: ElevatedButton(
                         onPressed: () {
                           setState(() {
-                            errMsg = _checkHashtag(context);
+                            errMsg = _checkHashtag(context, event);
                           });
                           if (errMsg == null) Navigator.pop(context);
                         },
@@ -874,7 +889,7 @@ class _EventEditModalState extends State<EventEditModal> {
         });
   }
 
-  String? _checkHashtag(BuildContext context) {
+  String? _checkHashtag(BuildContext context, Event event) {
     final validChar = RegExp(r'^[a-zA-Z0-9ㄱ-ㅎㅏ-ㅣ가-힣]+$');
 
     if (_hashtagcontroller.value.text.trim().isEmpty) return '해시태그를 입력해주세요';
@@ -894,7 +909,8 @@ class _EventEditModalState extends State<EventEditModal> {
     return null;
   }
 
-  Future _getImageFromGallery(BuildContext context, int index) async {
+  Future _getImageFromGallery(
+      BuildContext context, int index, Event event) async {
     final ImagePicker _imagePicker = ImagePicker();
     final XFile? image =
         await _imagePicker.pickImage(source: ImageSource.gallery);
