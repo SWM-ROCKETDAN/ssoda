@@ -93,8 +93,8 @@ class CreateEventButton extends StatelessWidget {
 
     dio.options.contentType = 'application/json';
 
-    final response = await dio.get(getApi(API.GET_USER_STORE));
+    final response = await dio.get(getApi(API.GET_USER_STORES));
 
-    return response.data[0]['id'].toString();
+    return response.data.last['id'].toString();
   }
 }

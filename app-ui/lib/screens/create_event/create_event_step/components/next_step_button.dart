@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hashchecker/models/event.dart';
 import 'package:hashchecker/screens/create_event/event_preview/event_preview_screen.dart';
-import 'package:provider/provider.dart';
 import 'package:hashchecker/constants.dart';
 
 class NextStepButton extends StatelessWidget {
