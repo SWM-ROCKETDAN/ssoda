@@ -57,6 +57,7 @@ class _SignInScreenState extends State<SignInScreen> {
                         size: size,
                         signIn: kakaoLoginPressed,
                       ),
+                      ElevatedButton(onPressed: () {}, child: Text('테스트 코드')),
                       SizedBox(height: kDefaultPadding / 3 * 2),
                       Text('로그인 할 플랫폼을 선택해주세요!',
                           style:
@@ -135,8 +136,7 @@ class _SignInScreenState extends State<SignInScreen> {
 
 Route _routeToCreateStoreScreen() {
   return PageRouteBuilder(
-    pageBuilder: (context, animation, secondaryAnimation) =>
-        const CreateStoreIntroScreen(),
+    pageBuilder: (context, animation, secondaryAnimation) => const HallScreen(),
     transitionsBuilder: (context, animation, secondaryAnimation, child) {
       const begin = Offset(1.0, 0.0);
       const end = Offset.zero;
