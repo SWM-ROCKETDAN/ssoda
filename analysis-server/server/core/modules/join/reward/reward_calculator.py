@@ -72,7 +72,6 @@ class RewardCalculator:
         try:
             # 리워드 점수 계산 후 저장
             self.save_reward_point()
-
             # 리워드 점수 랭킹과 리워드 랭킹 리스트 얻기
             this_reward_point_rank = self.get_this_reward_point_rank()
             reward_ranks = self.get_reward_ranks()
@@ -84,6 +83,6 @@ class RewardCalculator:
                 if this_reward_point_rank < 0:
                     break
         except Exception as e:
-            raise exceptions.RewardCalculateFailed
+            raise exceptions.RewardCalculateFailed()
 
         return this_reward_id

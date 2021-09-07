@@ -16,7 +16,7 @@ from core.exceptions import exceptions
 
 
 # JoinPost PUT 요청
-class JoinPostView(APIView):
+class JoinPostsView(APIView):
     def put(self, request, pk):
         # Join Post 가져오기
         join_post = get_object_or_404(JoinPost, pk=pk)
@@ -33,7 +33,7 @@ class JoinPostView(APIView):
 
 
 # JoinUser PUT 요청
-class JoinUserView(APIView):
+class JoinUsersView(APIView):
     def put(self, request, pk):
         # Join User 가져오기
         join_user = get_object_or_404(JoinUser, pk=pk)
@@ -49,7 +49,7 @@ class JoinUserView(APIView):
 
 
 # Reward GET 요청
-class JoinRewardView(APIView):
+class JoinRewardsView(APIView):
     def get(self, request, pk):
         join_post = get_object_or_404(JoinPost, pk=pk)
         join_reward_this_post_serializer = JoinRewardThisPostSerializer(join_post)
