@@ -10,11 +10,13 @@ import com.rocketdan.serviceserver.domain.join.user.JoinUser;
 import com.rocketdan.serviceserver.domain.join.user.JoinUserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.retry.annotation.Retryable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import reactor.core.publisher.Mono;
 
 import java.util.Date;
+import java.util.Objects;
 import java.util.Optional;
 
 @RequiredArgsConstructor
@@ -44,12 +46,13 @@ public class JoinUserService {
     }
 
     // analysis-server에 put 요청
+    @Retryable(maxAttempts = 2, value = AnalysisServerErrorException.class)
     public CommonResponse putJoinUser(Long joinUserId) {
        return analysisServerConfig.webClient().put() // PUT method
                 .uri("/api/v1/join/users/" + joinUserId + "/") // baseUrl 이후 uri
                 .retrieve() // client message 전송
-                .onStatus(HttpStatus::is4xxClientError, clientResponse -> Mono.error(JoinEventFailedException::new))
-                .onStatus(HttpStatus::is5xxServerError, clientResponse -> Mono.error(AnalysisServerErrorException::new))
+                .onStatus(HttpStatus::is4xxClientError, clientResponse -> Mono.error(new JoinEventFailedException(Objects.requireNonNull(clientResponse.bodyToMono(CommonResponse.class).block()))))
+                .onStatus(HttpStatus::is5xxServerError, clientResponse -> Mono.error(new AnalysisServerErrorException(Objects.requireNonNull(clientResponse.bodyToMono(CommonResponse.class).block()))))
                 .bodyToMono(CommonResponse.class) // body type
                 .block(); // await
     }

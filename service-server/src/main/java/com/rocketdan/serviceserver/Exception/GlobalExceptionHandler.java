@@ -170,11 +170,11 @@ public class GlobalExceptionHandler {
 
         CommonResponse response = CommonResponse.builder()
                 .code(ErrorCode.JOIN_EVENT_FAILED.getCode())
-                .message(ErrorCode.JOIN_EVENT_FAILED.getMessage())
+                .message(e.getMessage())
                 .status(ErrorCode.JOIN_EVENT_FAILED.getStatus())
                 .build();
 
-        return new ResponseEntity<>(response, HttpStatus.FORBIDDEN);
+        return new ResponseEntity<>(response, HttpStatus.NOT_ACCEPTABLE);
     }
 
     @ExceptionHandler(JoinDifferentEventException.class)
@@ -188,7 +188,7 @@ public class GlobalExceptionHandler {
                 .status(ErrorCode.JOIN_DIFFERENT_EVENT.getStatus())
                 .build();
 
-        return new ResponseEntity<>(response, HttpStatus.FORBIDDEN);
+        return new ResponseEntity<>(response, HttpStatus.NOT_ACCEPTABLE);
     }
 
     @ExceptionHandler(JoinInvalidEventException.class)
@@ -202,7 +202,7 @@ public class GlobalExceptionHandler {
                 .status(ErrorCode.JOIN_INVALID_EVENT.getStatus())
                 .build();
 
-        return new ResponseEntity<>(response, HttpStatus.FORBIDDEN);
+        return new ResponseEntity<>(response, HttpStatus.NOT_ACCEPTABLE);
     }
 
     /*
@@ -216,7 +216,7 @@ public class GlobalExceptionHandler {
 
         CommonResponse response = CommonResponse.builder()
                 .code(ErrorCode.ANALYSIS_SERVER_ERROR.getCode())
-                .message(ErrorCode.ANALYSIS_SERVER_ERROR.getMessage())
+                .message(e.getMessage())
                 .status(ErrorCode.ANALYSIS_SERVER_ERROR.getStatus())
                 .build();
 

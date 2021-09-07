@@ -14,6 +14,7 @@ import com.rocketdan.serviceserver.domain.join.post.JoinPostRepository;
 import lombok.RequiredArgsConstructor;
 
 import org.springframework.http.HttpStatus;
+import org.springframework.retry.annotation.Retryable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import reactor.core.publisher.Mono;
@@ -58,12 +59,13 @@ public class JoinPostService {
         return joinPostRepository.save(savedJoinPost).getId();
     }
 
+    @Retryable(maxAttempts = 2, value = AnalysisServerErrorException.class)
     public CommonResponse putJoinPost(Long joinPostId) {
         return analysisServerConfig.webClient().put() // PUT method
                 .uri("/api/v1/join/posts/" + joinPostId + "/") // baseUrl 이후 uri
                 .retrieve() // client message 전송
-                .onStatus(HttpStatus::is4xxClientError, clientResponse -> Mono.error(JoinEventFailedException::new))
-                .onStatus(HttpStatus::is5xxServerError, clientResponse -> Mono.error(AnalysisServerErrorException::new))
+                .onStatus(HttpStatus::is4xxClientError, clientResponse -> Mono.error(new JoinEventFailedException(Objects.requireNonNull(clientResponse.bodyToMono(CommonResponse.class).block()))))
+                .onStatus(HttpStatus::is5xxServerError, clientResponse -> Mono.error(new AnalysisServerErrorException(Objects.requireNonNull(clientResponse.bodyToMono(CommonResponse.class).block()))))
                 .bodyToMono(CommonResponse.class) // body type
                 .block(); // await
     }
