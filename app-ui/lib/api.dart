@@ -46,39 +46,58 @@ Future<Dio> authDio() async {
   var dio = Dio();
 
   final storage = new fss.FlutterSecureStorage();
-  final accessToken = await storage.read(key: 'ACCESS_TOKEN');
 
   dio.interceptors.clear();
-  dio.interceptors.add(InterceptorsWrapper(onRequest: (options, handler) {
+  dio.interceptors.add(InterceptorsWrapper(onRequest: (options, handler) async {
+    final accessToken = await storage.read(key: 'ACCESS_TOKEN');
     // request with accessToken
     options.headers['Authorization'] = 'Bearer $accessToken';
     return handler.next(options);
   }, onError: (error, handler) async {
     // when accessToken expired
     if (error.response?.statusCode == 401) {
+      print(error.response!.data);
+      print('401!');
       // request refreshing with refreshToken
+      final accessToken = await storage.read(key: 'ACCESS_TOKEN');
       final refreshToken = await storage.read(key: 'REFRESH_TOKEN');
 
       var refreshDio = Dio();
+      refreshDio.interceptors.clear();
+      refreshDio.interceptors
+          .add(InterceptorsWrapper(onError: (error, handler) async {
+        if (error.response?.statusCode == 401) {
+          print('로그인이 만료되었습니다. 다시 해주세용');
+        }
+        return handler.next(error);
+      }));
 
       // setting refreshDio options
       refreshDio.options.headers['Authorization'] = 'Bearer $accessToken';
       refreshDio.options.headers['refresh_token'] = 'Bearer $refreshToken';
 
+      print('accessToken: $accessToken \n refreshToken: $refreshToken');
+      print('refresh dio complete');
       // get refreshToken
+
       final refreshResponse = await refreshDio.get(getApi(API.REFRESH));
 
       // parsing tokens
       final newAccessToken = refreshResponse.headers['access-token']![0];
       final newRefreshToken = refreshResponse.headers['refresh-token']![0];
 
+      print(
+          'newAccessToken: $newAccessToken \n newRefreshToken: $newRefreshToken');
       // update dio request headers token
       error.requestOptions.headers['Authorization'] = 'Bearer $newAccessToken';
+
+      print(error.requestOptions.headers);
 
       // udpate secure storage token data
       await storage.write(key: 'ACCESS_TOKEN', value: newAccessToken);
       await storage.write(key: 'REFRESH_TOKEN', value: newRefreshToken);
 
+      print('write new refresh complete');
       // create clonedRequest to request again
       final clonedRequest = await dio.request(error.requestOptions.path,
           options: Options(
@@ -87,6 +106,7 @@ Future<Dio> authDio() async {
           data: error.requestOptions.data,
           queryParameters: error.requestOptions.queryParameters);
 
+      print('create cloned request complete');
       return handler.resolve(clonedRequest);
     }
     return handler.next(error);
