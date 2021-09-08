@@ -26,7 +26,7 @@ class JoinPostsView(APIView):
         join_post_serializer = JoinPostSerializer(join_post, scraped_post, partial=True)
         if join_post_serializer.is_valid():
             join_post_serializer.save()
-            raise exceptions.PostUpdateOk({join_post_serializer.data})
+            raise exceptions.PostUpdateOk()
         raise exceptions.PostUpdateFailed()
 
 
@@ -56,4 +56,7 @@ class JoinRewardsView(APIView):
         reward_calculator = RewardCalculator(join_reward_this_post_serializer.data,
                                              join_reward_other_post_serializer.data)
         this_reward_id = reward_calculator.get_this_reward_id()
+        join_post_serializer = JoinPostSerializer(join_post, {'reward': this_reward_id}, partial=True)
+        if join_post_serializer.is_valid():
+            join_post_serializer.save()
         raise exceptions.RewardCalculateOK({'reward_id': this_reward_id})
