@@ -53,3 +53,11 @@ def check_post_status_is_deleted(post_status):
     if post_status != Status.DELETED:
         return False
     return True
+
+
+def check_post_upload_date_is_ok_from_event_start_date(post_upload_date, event_start_date):
+    if post_upload_date is None or event_start_date is None:
+        return False
+    if post_upload_date < event_start_date:
+        return False
+    return True

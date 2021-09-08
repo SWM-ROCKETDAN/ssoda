@@ -1,4 +1,5 @@
 from rest_framework.views import exception_handler
+from django.http import JsonResponse
 from . import exceptions
 
 
@@ -24,6 +25,7 @@ def custom_exception_handler(exc, context):
         exceptions.PostIsDiffHashtag.__name__: parse_custom_exception,
         exceptions.PostIsAlreadyRewarded.__name__: parse_custom_exception,
         exceptions.PostEventIsNotOK.__name__: parse_custom_exception,
+        exceptions.PostUploadIsFasterThanEventStart.__name__: parse_custom_exception,
 
         # Server Error
         exceptions.ProxyFailed.__name__: parse_custom_exception,
@@ -45,7 +47,6 @@ def custom_exception_handler(exc, context):
         response = handlers[exception_class](response, exc)
     else:
         response = parse_unknown_exception(response, exc)
-
     return response
 
 
@@ -56,7 +57,6 @@ def parse_custom_exception(response, exc):
     response.data['status'] = exc.status_code
     response.data['code'] = exc.default_code
     response.data['data'] = exc.data
-
     return response
 
 
@@ -74,19 +74,17 @@ def parse_django_exception(response, exc):
         response.data['status'] = django_exception[exception_class].status_code
         response.data['code'] = django_exception[exception_class].default_code
         response.data['data'] = {}
-
     return response
 
 
 # 정의되지 않은 Exception Handler 함수
 def parse_unknown_exception(response, exc):
-    if response is None:
-        print(exc)
-    else:
-        response.data['message'] = response.data['detail']
-        response.data['status'] = response.status_code
-        response.data['code'] = 'SERVER_ERROR_999'
-        response.data['data'] = {}
-        response.data.pop('detail', 1)
+    unknown_error = {
+        'message': 'Error is Not defined',
+        'status': 500,
+        'code': 'SERVER_ERROR_999',
+        'data': {}
+    }
+    response = JsonResponse(unknown_error, status=500)
 
     return response

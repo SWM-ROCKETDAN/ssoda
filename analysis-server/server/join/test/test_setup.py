@@ -3,15 +3,13 @@ from rest_framework.test import APITestCase
 from core.models import Event
 from core.models import JoinPost
 from ..serializers import JoinPostSerializer
-from ..serializers import EventSerializer
+from .test_serializer import EventSerializer
 # from core.serializers import EventSerializer
 from datetime import datetime
 
 
 class TestSetUp(APITestCase):
     def setUp(self) -> None:
-        print(EventSerializer.data)
-
         event = {
             'etype': 'hashtag',
             'status': 1,
@@ -19,37 +17,42 @@ class TestSetUp(APITestCase):
             'finish_date': datetime(2022, 9, 1),
             'title': 'test hashtag event',
             'store': None,
-            'rewards': [
-                {
-                    'category': 0,
-                    'count': 100,
-                    'name': '콜라',
-                    'price': 500,
-                    'level': 1,
-                    'used_count': 0,
-                },
-                {
-                    'category': 1,
-                    'count': 1000,
-                    'name': '샌드위치',
-                    'price': 2000,
-                    'level': 2,
-                    'used_count': 0,
-                }
-            ],
-            'hashtag': {
-                'hashtag_hashtags': [
-                    {
-
-                    }
-                ]
-
-            }
+            'deleted': None,
+            # 'rewards': [
+            #     {
+            #         'category': 0,
+            #         'count': 100,
+            #         'name': '콜라',
+            #         'price': 500,
+            #         'level': 1,
+            #         'used_count': 0,
+            #     },
+            #     {
+            #         'category': 1,
+            #         'count': 1000,
+            #         'name': '샌드위치',
+            #         'price': 2000,
+            #         'level': 2,
+            #         'used_count': 0,
+            #     }
+            # ],
+            # 'hashtag': {
+            #     'hashtag_hashtags': [
+            #         {
+            #             'hashtags': 'test'
+            #         },
+            #         {
+            #             'hashtags': 'hashtag'
+            #         }
+            #     ]
+            # }
         }
         event_serializer = EventSerializer(data=event)
-        self.assertEqual(event_serializer.is_valid(), True)
+
+        # self.assertEqual(event_serializer.is_valid(), True)
         if event_serializer.is_valid():
             event_serializer.save()
+        event_serializer.errors()
 
         join_post = {
             'event': 1,

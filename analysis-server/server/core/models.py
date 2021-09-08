@@ -130,6 +130,7 @@ class Event(models.Model):
     status = models.IntegerField()
     title = models.CharField(max_length=255)
     store = models.ForeignKey('Store', models.DO_NOTHING, blank=True, null=True)
+    deleted = models.BooleanField(null=True, default=False)
 
     class Meta:
         db_table = 'event'
@@ -184,6 +185,7 @@ class Reward(models.Model):
     used_count = models.IntegerField(blank=True, null=True)
     event = models.ForeignKey(Event, related_name='rewards', on_delete=models.DO_NOTHING, blank=True, null=True)
     image_path = models.CharField(max_length=255, blank=True, null=True)
+    deleted = models.BooleanField(null=True, default=False)
 
     class Meta:
         db_table = 'reward'
@@ -200,6 +202,7 @@ class Store(models.Model):
     category = models.IntegerField()
     description = models.TextField(blank=True, null=True)
     name = models.CharField(max_length=255)
+    deleted = models.BooleanField(null=True, default=False)
 
     class Meta:
         db_table = 'store'
@@ -247,6 +250,7 @@ class JoinPost(models.Model):
     delete_date = models.DateTimeField(blank=True, null=True)
     update_date = models.DateTimeField(blank=True, null=True)
     reward_date = models.DateTimeField(blank=True, null=True)
+    deleted = models.BooleanField(null=True, default=False)
 
     class Meta:
         db_table = 'join_post'
@@ -262,6 +266,7 @@ class JoinUser(models.Model):
     post_count = models.IntegerField(blank=True, null=True, default=0)
     create_date = models.DateTimeField()
     update_date = models.DateTimeField(blank=True, null=True)
+    deleted = models.BooleanField(null=True, default=False)
 
     class Meta:
         db_table = 'join_user'

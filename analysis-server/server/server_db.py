@@ -130,6 +130,7 @@ class Event(models.Model):
     status = models.IntegerField()
     title = models.CharField(max_length=255)
     store = models.ForeignKey('Store', models.DO_NOTHING, blank=True, null=True)
+    deleted = models.TextField()  # This field type is a guess.
 
     class Meta:
         managed = False
@@ -202,6 +203,7 @@ class JoinPost(models.Model):
     reward = models.ForeignKey('Reward', models.DO_NOTHING, blank=True, null=True)
     rewards_level = models.IntegerField(blank=True, null=True)
     reward_date = models.DateTimeField(blank=True, null=True)
+    deleted = models.TextField()  # This field type is a guess.
 
     class Meta:
         managed = False
@@ -218,6 +220,7 @@ class JoinUser(models.Model):
     post_count = models.IntegerField(blank=True, null=True)
     create_date = models.DateTimeField()
     update_date = models.DateTimeField(blank=True, null=True)
+    deleted = models.TextField()  # This field type is a guess.
 
     class Meta:
         managed = False
@@ -234,6 +237,7 @@ class Reward(models.Model):
     used_count = models.IntegerField()
     event = models.ForeignKey(Event, models.DO_NOTHING, blank=True, null=True)
     image_path = models.CharField(max_length=255, blank=True, null=True)
+    deleted = models.TextField()  # This field type is a guess.
 
     class Meta:
         managed = False
@@ -242,18 +246,20 @@ class Reward(models.Model):
 
 class Store(models.Model):
     id = models.BigAutoField(primary_key=True)
-    city = models.CharField(max_length=255, blank=True, null=True)
-    country = models.CharField(max_length=255, blank=True, null=True)
-    road = models.CharField(max_length=255, blank=True, null=True)
-    road_code = models.CharField(max_length=12, blank=True, null=True)
-    town = models.CharField(max_length=255, blank=True, null=True)
-    zip_code = models.CharField(max_length=255, blank=True, null=True)
+    city = models.CharField(max_length=255)
+    country = models.CharField(max_length=255)
+    road = models.CharField(max_length=255)
+    town = models.CharField(max_length=255)
+    zip_code = models.CharField(max_length=255)
+    latitude = models.FloatField(blank=True, null=True)
+    longitude = models.FloatField(blank=True, null=True)
     category = models.IntegerField()
     description = models.TextField(blank=True, null=True)
     name = models.CharField(max_length=255)
     user = models.ForeignKey('User', models.DO_NOTHING, blank=True, null=True)
-    user_user_seq = models.BigIntegerField(blank=True, null=True)
     logo_image_path = models.CharField(max_length=255)
+    building_code = models.CharField(max_length=255)
+    deleted = models.TextField()  # This field type is a guess.
 
     class Meta:
         managed = False

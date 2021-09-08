@@ -36,7 +36,7 @@ class HashtagSerializer(serializers.ModelSerializer):
 class RewardSerializer(serializers.ModelSerializer):
     class Meta:
         model = Reward
-        fields = ['id', 'count', 'level', 'used_count']
+        fields = ['id', 'count', 'level', 'used_count', 'deleted']
 
 
 class EventSerializer(serializers.ModelSerializer):
@@ -59,17 +59,17 @@ class JoinPostScrapSerializer(serializers.ModelSerializer):
     # 해시태그 리스트 파싱
     def to_representation(self, instance):
         representation = super().to_representation(instance)
+        # 해시태그 파싱
         try:
             event_hashtags = []
             event_hashtag_hashtag_hashtags = representation.get('event').get('hashtag').get('hashtag_hashtags')
             if event_hashtag_hashtag_hashtags is not None:
                 for event_hashtag in event_hashtag_hashtag_hashtags:
                     event_hashtags.append(event_hashtag['hashtags'])
-            representation['event']['hashtag']['hashtag_hashtags'] = event_hashtags
+            representation['event_hashtags'] = event_hashtags
         except Exception as e:
-            representation['event'] = {'hashtag': {'hashtag_hashtags': []}}
+            representation['event_hashtags'] = []
         representation['hashtags'] = representation['hashtags'].split(',')
-
         return representation
 
 

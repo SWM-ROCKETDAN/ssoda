@@ -128,6 +128,15 @@ class PostEventIsNotOK(CustomException):
         super().__init__(data)
 
 
+class PostUploadIsFasterThanEventStart(CustomException):
+    default_detail = 'Post upload is faster than event start'
+    status_code = 406
+    default_code = 'CLIENT_ERROR_007'
+
+    def __init__(self, data=None):
+        super().__init__(data)
+
+
 # 서버 에러
 class ProxyFailed(CustomException):
     default_detail = 'Proxy is failed'

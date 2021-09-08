@@ -40,8 +40,8 @@ class RewardSerializer(serializers.ModelSerializer):
 
 
 class EventSerializer(serializers.ModelSerializer):
-    hashtag = HashtagSerializer()
-    rewards = RewardSerializer(many=True)
+    # hashtag = HashtagSerializer()
+    # rewards = RewardSerializer(many=True)
 
     class Meta:
         model = Event
