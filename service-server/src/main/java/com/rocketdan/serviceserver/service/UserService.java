@@ -5,7 +5,6 @@ import com.rocketdan.serviceserver.app.dto.user.UserResponseDto;
 import com.rocketdan.serviceserver.domain.user.User;
 import com.rocketdan.serviceserver.domain.user.UserRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
