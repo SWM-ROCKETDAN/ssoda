@@ -224,7 +224,7 @@ class _EventEditModalState extends State<EventEditModal> {
       'hashtags': event.hashtagList,
       'requirements': event.requireList,
       'template': event.template.id,
-      'status': 0
+      'status': event.status!.index
     });
 
     final updateEventResponse = await dio.put(
