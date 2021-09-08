@@ -1,4 +1,4 @@
-final templateName = ['기본', '기본', '기본'];
+final templateNameList = ['기본'];
 
 class Template {
   int _id;
@@ -9,3 +9,7 @@ class Template {
 
   Template(this._id);
 }
+
+final List<String> templateThumbnailList = [
+  'assets/images/create_event_step_help/draft.png',
+];
