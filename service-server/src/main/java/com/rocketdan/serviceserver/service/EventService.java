@@ -18,6 +18,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -38,10 +39,19 @@ public class EventService {
         // valid 하지 않으면 exception 발생
         userIdValidCheck.userIdValidCheck(linkedStore.getUser().getUserId(), principal);
 
-        List<String> imgPaths = imageManagerService.upload("image/event", requestDto.getImages());
+        // 이미지
+        List<String> imgPaths = new ArrayList<>();
+
+        if (requestDto.getImages().get(0).getSize() != 0) {
+            imgPaths = imageManagerService.upload("image/event", requestDto.getImages());
+        }
+
         Event savedEvent = requestDto.toEntity(imgPaths);
+
+        // link store
         savedEvent.setStore(linkedStore);
 
+        // status update
         savedEvent.updateStatus();
 
         return eventRepository.save(savedEvent).getId();
@@ -54,11 +64,22 @@ public class EventService {
         // valid 하지 않으면 exception 발생
         userIdValidCheck.userIdValidCheck(event.getStore().getUser().getUserId(), principal);
 
-        imageManagerService.delete(event.getImagePaths());
-        List<String> imgPaths = imageManagerService.upload("image/event", requestDto.getNewImages());
+        // 이미지
+        List<String> imgPaths = new ArrayList<>();
         List<String> prevImgPaths = event.getImagePaths();
-        requestDto.getDeleteImagePaths().forEach(prevImgPaths::remove);
-        imgPaths.addAll(prevImgPaths);
+
+        if (!requestDto.getDeleteImagePaths().isEmpty()) {
+            imageManagerService.delete(requestDto.getDeleteImagePaths());
+        }
+
+        if (requestDto.getNewImages().get(0).getSize() != 0) {
+            imgPaths = imageManagerService.upload("image/event", requestDto.getNewImages());
+        }
+
+        if (!prevImgPaths.isEmpty()) {
+            requestDto.getDeleteImagePaths().forEach(prevImgPaths::remove);
+            imgPaths.addAll(prevImgPaths);
+        }
 
         event.update(requestDto.getTitle(), requestDto.getStatus(), requestDto.getStartDate(), requestDto.getFinishDate(), imgPaths,
                 requestDto.getHashtags(), requestDto.getRequirements(), requestDto.getTemplate());
