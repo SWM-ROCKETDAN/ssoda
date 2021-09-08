@@ -25,6 +25,7 @@ class JoinPostsView(APIView):
         post_scraper = PostScraper(join_post_update_serializer.data)
         scraped_post = post_scraper.get_scraped_post()
         join_post_serializer = JoinPostSerializer(join_post, scraped_post, partial=True)
+        print(scraped_post)
         if join_post_serializer.is_valid():
             join_post_serializer.save()
             raise exceptions.PostUpdateOk({join_post_serializer.data})

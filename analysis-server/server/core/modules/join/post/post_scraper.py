@@ -26,10 +26,11 @@ class PostScraper:
     # 스크랩 된 게시물 가져오기
     def get_scraped_post(self):
         self.check_post_before_scrap_post()
-        post_type = self.join_post['type']
+        post_type = 0
         if post_type in scrap_handlers:
             try:
                 self.scraped_post = scrap_handlers[post_type](self.join_post['url'])
+                print(self.scraped_post)
             except Exception as e:
                 raise exceptions.ScrapFailed()
             else:

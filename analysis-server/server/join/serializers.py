@@ -69,7 +69,10 @@ class JoinPostScrapSerializer(serializers.ModelSerializer):
             representation['event_hashtags'] = event_hashtags
         except Exception as e:
             representation['event_hashtags'] = []
-        representation['hashtags'] = representation['hashtags'].split(',')
+        try:
+            representation['hashtags'] = representation['hashtags'].split(',')
+        except Exception as e:
+            representation['hashtags'] = []
         return representation
 
 

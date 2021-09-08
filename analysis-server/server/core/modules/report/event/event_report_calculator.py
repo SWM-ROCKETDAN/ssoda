@@ -1,3 +1,5 @@
+import pprint
+
 from .calculator_report import get_exposure_count
 from .calculator_report import get_participate_count
 from .calculator_report import get_public_post_count
@@ -73,7 +75,7 @@ def get_report_dict(_event, _event_joins):
                     report_dict['month'][upload_month][key] = calculator(event_join)
                 else:
                     report_dict['month'][upload_month][key] += calculator(event_join)
-
+    print(report_dict)
     return report_dict
 
 
