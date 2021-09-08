@@ -1,9 +1,12 @@
 import 'dart:io';
+
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
+import 'package:hashchecker/api.dart';
 import 'package:hashchecker/constants.dart';
 import 'package:hashchecker/models/store.dart';
+import 'package:hashchecker/models/store_category.dart';
 
 class StoreHeader extends StatelessWidget {
   final Store store;
@@ -28,8 +31,8 @@ class StoreHeader extends StatelessWidget {
                 .map((item) => Container(
                       child: Center(
                           child: Stack(children: [
-                        Image.asset(
-                          item,
+                        Image.network(
+                          '$s3Url$item',
                           fit: BoxFit.cover,
                           width: size.width,
                         ),
@@ -66,7 +69,7 @@ class StoreHeader extends StatelessWidget {
                       color: kShadowColor,
                       shape: BoxShape.circle,
                       image: DecorationImage(
-                          image: AssetImage(store.logoImage),
+                          image: NetworkImage('$s3Url${store.logoImage}'),
                           fit: BoxFit.cover))))
         ]),
       ),
@@ -85,8 +88,8 @@ class StoreHeader extends StatelessWidget {
             minFontSize: 12,
           ),
           SizedBox(width: kDefaultPadding / 3),
-          Icon(Icons.local_cafe_rounded,
-              size: 18, color: kDefaultFontColor.withOpacity(0.85)),
+          Icon(storeCategoryIconMap[store.category],
+              size: 18, color: kDefaultFontColor.withOpacity(0.75)),
         ],
       ),
       SizedBox(height: kDefaultPadding / 2),

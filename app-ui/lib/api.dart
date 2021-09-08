@@ -1,6 +1,4 @@
 import 'package:dio/dio.dart';
-import 'package:dio_cookie_manager/dio_cookie_manager.dart';
-import 'package:cookie_jar/cookie_jar.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart' as fss;
 
 const baseUrl =
@@ -9,17 +7,24 @@ const baseUrl =
 const eventJoinUrl =
     'http://ec2-13-124-246-123.ap-northeast-2.compute.amazonaws.com';
 
+const s3Url = 'https://hashchecker-bucket.s3.ap-northeast-2.amazonaws.com/';
+
 enum API {
   NAVER_LOGIN,
   KAKAO_LOGIN,
   LOGOUT,
   REFRESH,
   GET_USER_INFO,
-  GET_USER_STORE,
+  GET_USER_STORES,
+  GET_EVENT,
   GET_ALL_EVENTS,
+  GET_STORE,
+  GET_EVENTS_OF_STORE,
+  GET_REWARD_OF_EVENT,
   CREATE_STORE,
   CREATE_EVENT,
-  CREATE_REWARDS
+  CREATE_REWARDS,
+  UPDATE_EVENT
 }
 
 Map<API, String> apiMap = {
@@ -28,11 +33,16 @@ Map<API, String> apiMap = {
   API.LOGOUT: '/logout',
   API.REFRESH: '/api/v1/auth/refresh',
   API.GET_USER_INFO: '/api/v1/users/me',
-  API.GET_USER_STORE: '/api/v1/users/me/stores',
+  API.GET_USER_STORES: '/api/v1/users/me/stores',
+  API.GET_EVENT: '/api/v1/events', // '/{event_id}'
   API.GET_ALL_EVENTS: '/api/v1/events',
+  API.GET_STORE: '/api/v1/stores',
+  API.GET_EVENTS_OF_STORE: '/api/v1/stores', // '/{id}/events'
+  API.GET_REWARD_OF_EVENT: '/api/v1/events', // '/{id}/rewards'
   API.CREATE_STORE: '/api/v1/stores/users',
   API.CREATE_EVENT: '/api/v1/events/hashtag/stores',
-  API.CREATE_REWARDS: '/api/v1/rewards/events'
+  API.CREATE_REWARDS: '/api/v1/rewards/events',
+  API.UPDATE_EVENT: '/api/v1/events/hashtag' // '/{event_id}'
 };
 
 String getApi(API apiType, {String? suffix}) {
@@ -46,10 +56,10 @@ Future<Dio> authDio() async {
   var dio = Dio();
 
   final storage = new fss.FlutterSecureStorage();
-  final accessToken = await storage.read(key: 'ACCESS_TOKEN');
 
   dio.interceptors.clear();
-  dio.interceptors.add(InterceptorsWrapper(onRequest: (options, handler) {
+  dio.interceptors.add(InterceptorsWrapper(onRequest: (options, handler) async {
+    final accessToken = await storage.read(key: 'ACCESS_TOKEN');
     // request with accessToken
     options.headers['Authorization'] = 'Bearer $accessToken';
     return handler.next(options);
@@ -57,9 +67,18 @@ Future<Dio> authDio() async {
     // when accessToken expired
     if (error.response?.statusCode == 401) {
       // request refreshing with refreshToken
+      final accessToken = await storage.read(key: 'ACCESS_TOKEN');
       final refreshToken = await storage.read(key: 'REFRESH_TOKEN');
 
       var refreshDio = Dio();
+      refreshDio.interceptors.clear();
+      refreshDio.interceptors
+          .add(InterceptorsWrapper(onError: (error, handler) async {
+        if (error.response?.statusCode == 401) {
+          print('로그인이 만료되었습니다. 다시 해주세용');
+        }
+        return handler.next(error);
+      }));
 
       // setting refreshDio options
       refreshDio.options.headers['Authorization'] = 'Bearer $accessToken';

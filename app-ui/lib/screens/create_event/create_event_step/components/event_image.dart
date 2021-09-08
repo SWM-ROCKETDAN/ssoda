@@ -122,8 +122,11 @@ class _EventImageState extends State<EventImage> {
 
   Future _getImageFromGallery(BuildContext context, int index) async {
     final ImagePicker _imagePicker = ImagePicker();
-    final XFile? image =
-        await _imagePicker.pickImage(source: ImageSource.gallery);
+    final XFile? image = await _imagePicker.pickImage(
+        source: ImageSource.gallery,
+        maxHeight: 1280,
+        maxWidth: 1280,
+        imageQuality: 75);
     setState(() {
       if (widget.event.images[index] == null && widget.event.images.length < 3)
         widget.event.images.add(null);

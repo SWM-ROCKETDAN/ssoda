@@ -47,7 +47,6 @@ class CreateEventButton extends StatelessWidget {
               getApi(API.CREATE_EVENT, suffix: '/$storeId'),
               data: eventData);
 
-          if (eventResponse.statusCode != 200) print('이벤트 생성 오류');
           var rewardsData = FormData();
 
           for (int i = 0; i < event.rewardList.length; i++) {
@@ -69,8 +68,6 @@ class CreateEventButton extends StatelessWidget {
           var rewardsResponse = await dio.post(
               getApi(API.CREATE_REWARDS, suffix: '/${eventResponse.data}'),
               data: rewardsData);
-
-          if (rewardsResponse.statusCode != 200) print('보상 생성 오류');
 
           Navigator.push(
             context,
@@ -96,8 +93,8 @@ class CreateEventButton extends StatelessWidget {
 
     dio.options.contentType = 'application/json';
 
-    final response = await dio.get(getApi(API.GET_USER_STORE));
+    final response = await dio.get(getApi(API.GET_USER_STORES));
 
-    return response.data[0]['id'].toString();
+    return response.data.last['id'].toString();
   }
 }

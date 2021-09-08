@@ -1,10 +1,13 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:hashchecker/api.dart';
 import 'package:hashchecker/constants.dart';
 import 'package:hashchecker/models/address.dart';
 import 'package:hashchecker/models/event.dart';
 import 'package:hashchecker/models/event_list_item.dart';
 import 'package:hashchecker/models/store.dart';
 import 'package:hashchecker/models/store_category.dart';
+import 'package:hashchecker/screens/event_list/components/event_list.dart';
 import 'package:hashchecker/screens/event_list/components/store_header.dart';
 import 'components/empty.dart';
 import 'components/event_list_tile.dart';
@@ -18,8 +21,8 @@ class EventListScreen extends StatefulWidget {
 }
 
 class _EventListScreenState extends State<EventListScreen> {
-  late Store store;
-  late List<EventListItem> eventList;
+  late Future<Store> store;
+  late Future<List<EventListItem>> eventList;
   final _eventSortDropdownItemList = ['최신 등록 순', '빠른 종료 순', '가나다 순'];
   final _statusFilterString = ['전체', '진행 중', '대기 중', '종료'];
   final _statusStringMap = {
@@ -38,66 +41,8 @@ class _EventListScreenState extends State<EventListScreen> {
   @override
   void initState() {
     super.initState();
-    store = Store(
-        name: '우리가게 광나루역점',
-        category: StoreCategory.RESTAURANT,
-        address: Address(
-            city: '서울시',
-            country: '광진구',
-            town: '광장동',
-            road: '아차산로',
-            building: '549',
-            zipCode: '04983',
-            latitude: 0,
-            longitude: 0),
-        description: '안녕하세요 우리가게 광나루역점입니다.',
-        images: ['assets/images/store1.jpg', 'assets/images/event1.jpg'],
-        logoImage: 'assets/images/store_logo_sample.jpg');
-
-    eventList = [
-      EventListItem(
-          id: -1,
-          title: '우리가게 SNS 해시태그 이벤트',
-          startDate: '2021-04-14',
-          finishDate: '2021-04-14',
-          thumbnail: 'assets/images/event1.jpg',
-          status: EventStatus.PROCEEDING),
-      EventListItem(
-          id: -1,
-          title: '오픈기념 아메리카노 이벤트',
-          startDate: '2021-09-23',
-          finishDate: '2021-11-05',
-          thumbnail: 'assets/images/store1.jpg',
-          status: EventStatus.WAITING),
-      EventListItem(
-          id: -1,
-          title: '우리가게 9월 한정 쿠폰 이벤트',
-          startDate: '2021-09-01',
-          finishDate: '2021-09-30',
-          thumbnail: 'assets/images/event2.jpg',
-          status: EventStatus.ENDED),
-      EventListItem(
-          id: -1,
-          title: '우리가게 SNS 해시태그 이벤트',
-          startDate: '2021-04-14',
-          finishDate: '2021-04-14',
-          thumbnail: 'assets/images/event1.jpg',
-          status: EventStatus.PROCEEDING),
-      EventListItem(
-          id: -1,
-          title: '오픈기념 아메리카노 이벤트',
-          startDate: '2021-09-23',
-          finishDate: '2021-11-05',
-          thumbnail: 'assets/images/store1.jpg',
-          status: EventStatus.WAITING),
-      EventListItem(
-          id: -1,
-          title: '우리가게 9월 한정 쿠폰 이벤트',
-          startDate: '2021-09-01',
-          finishDate: '2021-09-30',
-          thumbnail: 'assets/images/event2.jpg',
-          status: EventStatus.ENDED),
-    ];
+    store = _fetchStoreData();
+    eventList = _fetchEventListData();
   }
 
   @override
@@ -111,8 +56,18 @@ class _EventListScreenState extends State<EventListScreen> {
           toolbarHeight: 0,
           expandedHeight: size.width / 16 * 9 * 1.65,
           backgroundColor: kScaffoldBackgroundColor,
-          flexibleSpace:
-              FlexibleSpaceBar(background: StoreHeader(store: store)),
+          flexibleSpace: FlexibleSpaceBar(
+              background: FutureBuilder<Store>(
+                  future: store,
+                  builder: (context, snapshot) {
+                    if (snapshot.hasData) {
+                      return StoreHeader(store: snapshot.data!);
+                    } else if (snapshot.hasError) {
+                      return Text('${snapshot.error}');
+                    }
+
+                    return Center(child: const CircularProgressIndicator());
+                  })),
           floating: false,
           elevation: 0,
         ),
@@ -218,47 +173,59 @@ class _EventListScreenState extends State<EventListScreen> {
                 ))),
         SliverList(
             delegate: SliverChildBuilderDelegate(
-                (context, index) => eventList.isEmpty
-                    ? Empty()
-                    : Column(children: [
-                        Column(
-                          children: [
-                            SizedBox(height: kDefaultPadding),
-                            AnimationLimiter(
-                              child: Column(
-                                  children:
-                                      AnimationConfiguration.toStaggeredList(
-                                duration: const Duration(milliseconds: 500),
-                                childAnimationBuilder: (widget) =>
-                                    SlideAnimation(
-                                  horizontalOffset: 75,
-                                  child: FadeInAnimation(
-                                    child: widget,
-                                  ),
-                                ),
-                                children: List.generate(
-                                  eventList.length,
-                                  (index) => (_selectedStatusFilter == 0 ||
-                                          _statusStringMap[
-                                                  eventList[index].status] ==
-                                              _statusFilterString[
-                                                  _selectedStatusFilter])
-                                      ? EventListTile(
-                                          size: size,
-                                          index: index,
-                                          eventList: eventList,
-                                          statusStringMap: _statusStringMap,
-                                          statusColorMap: _statusColorMap)
-                                      : Container(),
-                                ),
-                              )),
-                            )
-                          ],
-                        ),
-                      ]),
+                (context, index) => FutureBuilder<List<EventListItem>>(
+                    future: eventList,
+                    builder: (context, snapshot) {
+                      if (snapshot.hasData) {
+                        return EventList(
+                            size: size,
+                            eventList: snapshot.data,
+                            selectedStatusFilter: _selectedStatusFilter,
+                            statusStringMap: _statusStringMap,
+                            statusFilterString: _statusFilterString,
+                            statusColorMap: _statusColorMap);
+                      } else if (snapshot.hasError) {
+                        return Text('${snapshot.error}');
+                      }
+
+                      return Center(child: const CircularProgressIndicator());
+                    }),
                 childCount: 1))
       ],
     ));
+  }
+
+  Future<Store> _fetchStoreData() async {
+    var dio = await authDio();
+
+    final getUserStoresResponse = await dio.get(getApi(API.GET_USER_STORES));
+
+    final storeId = getUserStoresResponse.data.last['id'];
+
+    final getStoreResponse =
+        await dio.get(getApi(API.GET_STORE, suffix: '/$storeId'));
+
+    final fetchedStore = getStoreResponse.data;
+
+    return Store.fromJson(fetchedStore);
+  }
+
+  Future<List<EventListItem>> _fetchEventListData() async {
+    var dio = await authDio();
+
+    final getUserStoresResponse = await dio.get(getApi(API.GET_USER_STORES));
+
+    final storeId = getUserStoresResponse.data.last['id'];
+
+    final getEventListResponse = await dio
+        .get(getApi(API.GET_EVENTS_OF_STORE, suffix: '/$storeId/events'));
+
+    final fetchedEventList = getEventListResponse.data;
+
+    List<EventListItem> eventList = List.generate(fetchedEventList.length,
+        (index) => EventListItem.fromJson(fetchedEventList[index]));
+
+    return eventList;
   }
 }
 

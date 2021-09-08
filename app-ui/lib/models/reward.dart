@@ -8,7 +8,6 @@ class Reward {
   final int level;
   final RewardCategory category;
 
-  String get getImgPath => imgPath;
   Reward(
       {required this.name,
       required this.imgPath,
@@ -29,7 +28,7 @@ class Reward {
   factory Reward.fromJson(Map<String, dynamic> json) {
     return Reward(
         name: json['name'],
-        imgPath: json['image'],
+        imgPath: json['imagePath'],
         category: RewardCategory.values[json['category']],
         price: json['price'],
         count: json['count'],

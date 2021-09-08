@@ -22,35 +22,33 @@ void main() {
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    /*return 
-    FutureBuilder(
+    return FutureBuilder(
       future: Init.instance.initialize(),
       builder: (context, AsyncSnapshot snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return MaterialApp(home: SplashScreen());
-        } else {*/
-    return MaterialApp(
-        debugShowCheckedModeBanner: false,
-        title: 'SSODA',
-        localizationsDelegates: [
-          GlobalMaterialLocalizations.delegate,
-          GlobalWidgetsLocalizations.delegate,
-        ],
-        supportedLocales: [
-          const Locale('ko'),
-        ],
-        locale: const Locale('ko'),
-        theme: ThemeData(
-            primarySwatch: _createMaterialColor(kThemeColor),
-            visualDensity: VisualDensity.adaptivePlatformDensity,
-            scaffoldBackgroundColor: kScaffoldBackgroundColor,
-            accentColor: kShadowColor),
-        home: CreateStoreScreen());
-  }
-  /*
+        } else {
+          return MaterialApp(
+              debugShowCheckedModeBanner: false,
+              title: 'SSODA',
+              localizationsDelegates: [
+                GlobalMaterialLocalizations.delegate,
+                GlobalWidgetsLocalizations.delegate,
+              ],
+              supportedLocales: [
+                const Locale('ko'),
+              ],
+              locale: const Locale('ko'),
+              theme: ThemeData(
+                  primarySwatch: _createMaterialColor(kThemeColor),
+                  visualDensity: VisualDensity.adaptivePlatformDensity,
+                  scaffoldBackgroundColor: kScaffoldBackgroundColor,
+                  accentColor: kShadowColor),
+              home: OnBoardingScreen());
+        }
       },
     );
-  }*/
+  }
 
   MaterialColor _createMaterialColor(Color color) {
     List<double> strengths = [.05];

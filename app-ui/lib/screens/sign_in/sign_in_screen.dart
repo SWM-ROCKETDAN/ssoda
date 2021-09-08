@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_web_auth/flutter_web_auth.dart';
 import 'package:hashchecker/api.dart';
 import 'package:hashchecker/constants.dart';
+import 'package:hashchecker/screens/create_store/components/intro.dart';
 import 'package:hashchecker/screens/hall/hall_screen.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
@@ -56,18 +57,7 @@ class _SignInScreenState extends State<SignInScreen> {
                         size: size,
                         signIn: kakaoLoginPressed,
                       ),
-                      ElevatedButton(
-                          onPressed: () async {
-                            var dio = await authDio();
-
-                            print('get auth dio complete');
-
-                            final getUserInfoResponse =
-                                await dio.get(getApi(API.GET_USER_INFO));
-
-                            print(getUserInfoResponse.data);
-                          },
-                          child: Text('getUser 요청')),
+                      ElevatedButton(onPressed: () {}, child: Text('테스트 코드')),
                       SizedBox(height: kDefaultPadding / 3 * 2),
                       Text('로그인 할 플랫폼을 선택해주세요!',
                           style:
@@ -110,55 +100,7 @@ class _SignInScreenState extends State<SignInScreen> {
       showLoginFailDialog(e.toString());
     }
 
-    var dio = await authDio();
-
-    print('get auth dio complete');
-
-    final getUserInfoResponse = await dio.get(getApi(API.GET_USER_INFO));
-
-    print(getUserInfoResponse.data);
-    //Navigator.of(context).push(_routeToHallScreen());
-  }
-
-  Future<void> createStore() async {
-    var dio = await authDio();
-
-    print('get auth dio complete');
-
-    final getUserInfoResponse = await dio.get(getApi(API.GET_USER_INFO));
-
-    print('get user info complete');
-
-    final id = getUserInfoResponse.data['id'];
-
-    dio.options.contentType = 'multipart/form-data';
-
-    final ImagePicker _imagePicker = ImagePicker();
-    final XFile? image =
-        await _imagePicker.pickImage(source: ImageSource.gallery);
-
-    var storeData = FormData.fromMap({
-      'name': 'yjyoon_store',
-      'category': 1,
-      'city': '서울',
-      'country': '광진구',
-      'town': '광장동',
-      'roadCode': '000000000000',
-      'road': '아차산로 549',
-      'zipCode': '04983',
-      'description': '상세 설명',
-      'logoImage': await MultipartFile.fromFile(image!.path),
-      'images': [
-        await MultipartFile.fromFile(image.path),
-      ]
-    });
-
-    final createStoreResponse = await dio
-        .post(getApi(API.CREATE_STORE, suffix: '/$id'), data: storeData);
-
-    print('save store complete');
-
-    print(createStoreResponse.data);
+    Navigator.of(context).push(_routeToCreateStoreScreen());
   }
 
   void showLoginFailDialog(String errMsg) {
@@ -192,7 +134,7 @@ class _SignInScreenState extends State<SignInScreen> {
   }
 }
 
-Route _routeToHallScreen() {
+Route _routeToCreateStoreScreen() {
   return PageRouteBuilder(
     pageBuilder: (context, animation, secondaryAnimation) => const HallScreen(),
     transitionsBuilder: (context, animation, secondaryAnimation, child) {
