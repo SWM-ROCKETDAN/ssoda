@@ -1,3 +1,5 @@
+import pprint
+
 from server.core.modules.static.common import Type
 from server.core.exceptions import exceptions
 from . import post_scraper_instagram
@@ -35,6 +37,7 @@ class PostScraper:
                 raise exceptions.ScrapFailed()
             else:
                 self.check_post_after_scrap_post()
+            pprint.pprint(self.scraped_post)
             return self.scraped_post
 
     # 스크랩 하기 전 게시물 검사
@@ -64,6 +67,8 @@ class PostScraper:
             return True
 
     def check_post_after_scrap_post(self):
+        pprint.pprint(self.scraped_post)
+        pprint.pprint(self.join_post)
         """
             에러 리스트
             1. Client-Error 게시물이 비공개다.
@@ -73,26 +78,26 @@ class PostScraper:
         """
 
         # 게시물이 비공개면 PostIsPrivate 에러
-        join_post_status = self.join_post['status']
+        join_post_status = self.scraped_post['status']
         if check_post_status_is_private(join_post_status):
             raise exceptions.PostIsPrivate()
 
         # 게시물이 삭제되었으면 PostIsDeleted 에러
-        join_post_status = self.join_post['status']
+        join_post_status = self.scraped_post['status']
         if check_post_status_is_deleted(join_post_status):
             raise exceptions.PostIsDeleted()
 
         # 게시물 해시태그가 일치하지 않으면 PostIsDiffHashtag 에러
-        join_post_hashtags = self.join_post['hashtags']
+        join_post_hashtags = self.scraped_post['hashtags'].split(',')
         join_post_event_hashtags = self.join_post['event_hashtags']
         if not check_match_post_hashtags_with_event_hashtags(join_post_hashtags, join_post_event_hashtags):
             raise exceptions.PostIsDiffHashtag()
 
         # 게시물 업로드 날짜가 이벤트 시작 날짜보다 빠를때 PostUploadIsFastThanEventStart 에러
-        join_post_upload_date = self.join_post['upload_date']
+        join_post_upload_date = self.scraped_post['upload_date']
         join_post_event_start_date = self.join_post['event']['start_date']
         if not check_post_upload_date_is_ok_from_event_start_date(join_post_upload_date, join_post_event_start_date):
-            raise exceptions.PostUploadIsFastThanEventStart()
+            raise exceptions.PostUploadIsFasterThanEventStart()
 
         # 게시물은 문제가 없다.
         return True

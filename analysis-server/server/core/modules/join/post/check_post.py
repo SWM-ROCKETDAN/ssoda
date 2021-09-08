@@ -1,5 +1,6 @@
 from server.core.modules.static.common import Status
 from server.core.modules.static.common import Type
+from core.modules.assist.time import parse_from_str_time_to_date_time
 
 
 def get_post_type_from_url(post_url):
@@ -68,6 +69,8 @@ def check_post_status_is_deleted(post_status):
 def check_post_upload_date_is_ok_from_event_start_date(post_upload_date, event_start_date):
     if post_upload_date is None or event_start_date is None:
         return False
-    if post_upload_date < event_start_date:
+    post_upload_date = parse_from_str_time_to_date_time(post_upload_date)
+    event_start_date = parse_from_str_time_to_date_time(event_start_date)
+    if post_upload_date.date() < event_start_date.date():
         return False
     return True

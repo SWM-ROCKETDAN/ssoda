@@ -8,7 +8,7 @@ from .calculator_participate import calculate_participate_count
 from .calculator_post import calculate_public_post_count
 from .calculator_post import calculate_private_post_count
 from .calculator_post import calculate_deleted_post_count
-
+from core.modules.assist.time import parse_from_str_time_to_date_time
 
 def parse_from_str_date_to_datetime_date(str_date):
     return datetime.strptime(str_date, '%Y-%m-%dT%H:%M:%S').date()
@@ -16,16 +16,22 @@ def parse_from_str_date_to_datetime_date(str_date):
 
 def get_days_from_start_date_to_now_date(start_date):
     days = []
-    start_date = parse_from_str_date_to_datetime_date(start_date)
+    start_date = parse_from_str_time_to_date_time(start_date).date()
     gap_day = (datetime.now().date() - start_date).days + 1
     for i in range(gap_day):
+        day = start_date + timedelta(days=i)
+        print(day)
         days.append((start_date + timedelta(days=i)))
 
     return days
 
 
 def get_exposure_count(event_join):
-    return calculate_exposure_count(event_join['join_user']['follow_count'], event_join['type'])
+    if event_join.get('join_user') is not None:
+        follow_count = event_join['join_user'].get('follow_count')
+    else:
+        follow_count = 0
+    return calculate_exposure_count(follow_count, event_join['type'])
 
 
 def get_participate_count(event_join):

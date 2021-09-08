@@ -13,7 +13,7 @@ def get_default_post():
         'hashtags': '',
         'upload_date': get_now_date(),
         'private_date': None,
-        'delete_data': None,
+        'delete_date': None,
         'update_date': get_now_date(),
     }
 

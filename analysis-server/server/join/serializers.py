@@ -116,15 +116,6 @@ class JoinRewardThisPostSerializer(serializers.ModelSerializer):
             representation['follow_count'] = join_user_serializer.data['follow_count']
         except Exception as e:
             representation['follow_count'] = 0
-        # Join prev_post : JoinRewardPrevPostSerializer
-        # try:
-        #     join_posts = JoinPost.objects.filter(sns_id=representation['sns_id'], type=representation['type']).exclude(
-        #         id=representation['id'])
-        #     join_post_serializer = JoinPostSerializer(data=join_posts, many=True)
-        #     join_post_serializer.is_valid()
-        #     representation['prev_posts'] = join_post_serializer.data
-        # except Exception as e:
-        #     representation['prev_posts'] = {}
 
         return representation
 

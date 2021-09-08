@@ -6,7 +6,9 @@ K = 1000
 
 def calculate_exposure_count(follow_count, sns_type):
     if follow_count is None:
-        return 0
+        follow_count = 0
+    if sns_type is None:
+        sns_type = Type.INSTAGRAM
 
     exposure_count = 0
     if sns_type == Type.INSTAGRAM:

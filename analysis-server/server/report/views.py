@@ -16,6 +16,7 @@ class ReportEvent(APIView):
     def get(self, request, pk):
         event = get_object_or_404(Event, pk=pk)
         event_report_serializer = EventReportSerializer(event)
+        # raise exceptions.EventReportCalculateOK(event_report_serializer.data['join_posts'])
         event_report_calculator = EventReportCalculator(event_report_serializer.data)
         event_report = event_report_calculator.get_event_report()
         raise exceptions.EventReportCalculateOK(event_report)
