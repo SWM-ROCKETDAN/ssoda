@@ -26,15 +26,19 @@ public class TokenAuthenticationFilter extends OncePerRequestFilter {
 
     private final JwtAuthTokenProvider jwtAuthTokenProvider;
     private final List<String> excludeUrlPatternsGET = List.of("/api/v1/events/**", "/api/v1/stores/**", "**login**", "/favicon.ico");
-    private final List<String> excludeUrlPatternsPOST = List.of("/api/v1/join/**");
+    private final List<String> excludeUrlPatternsPOST = List.of("/api/v1/join/events/**");
+    private final List<String> excludeUrlPatternsPUT = List.of("/api/v1/join/posts/**");
 
     @Override
     protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
         String path = request.getServletPath();
-        if (request.getMethod().equals("GET")) {
-            return excludeUrlPatternsGET.stream().anyMatch(pattern -> new AntPathMatcher().match(pattern, path));
-        } else if (request.getMethod().equals("POST")) {
-            return excludeUrlPatternsPOST.stream().anyMatch(pattern -> new AntPathMatcher().match(pattern, path));
+        switch (request.getMethod()) {
+            case "GET":
+                return excludeUrlPatternsGET.stream().anyMatch(pattern -> new AntPathMatcher().match(pattern, path));
+            case "POST":
+                return excludeUrlPatternsPOST.stream().anyMatch(pattern -> new AntPathMatcher().match(pattern, path));
+            case "PUT":
+                return excludeUrlPatternsPUT.stream().anyMatch(pattern -> new AntPathMatcher().match(pattern, path));
         }
         return false;
     }

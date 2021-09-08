@@ -68,4 +68,9 @@ public class Reward {
             event.getRewards().add(this);
         }
     }
+
+    public Integer increaseUsedCount() {
+        this.usedCount += 1;
+        return this.usedCount;
+    }
 }

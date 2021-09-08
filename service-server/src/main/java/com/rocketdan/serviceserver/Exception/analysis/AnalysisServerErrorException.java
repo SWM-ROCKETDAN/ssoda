@@ -1,6 +1,7 @@
 package com.rocketdan.serviceserver.Exception.analysis;
 
 import com.rocketdan.serviceserver.Exception.ErrorCode;
+import com.rocketdan.serviceserver.core.CommonResponse;
 
 public class AnalysisServerErrorException extends RuntimeException{
 
@@ -10,5 +11,9 @@ public class AnalysisServerErrorException extends RuntimeException{
 
     private AnalysisServerErrorException(String msg){
         super(msg);
+    }
+
+    public AnalysisServerErrorException(CommonResponse commonResponse){
+        super(commonResponse.getMessage());
     }
 }

@@ -1,6 +1,6 @@
 package com.rocketdan.serviceserver.web;
 
-import com.rocketdan.serviceserver.Exception.join.JoinEventFailedException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.rocketdan.serviceserver.app.dto.reward.RewardResponseDto;
 import com.rocketdan.serviceserver.core.CommonResponse;
 import com.rocketdan.serviceserver.service.JoinPostService;
@@ -10,6 +10,7 @@ import com.rocketdan.serviceserver.web.dto.reward.RewardLevelRequestDto;
 import com.rocketdan.serviceserver.web.dto.reward.RewardLevelResponseDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @Slf4j
@@ -28,25 +29,30 @@ public class JoinApiController {
 
         // (2) analysis-server에 join_post update 요청
         CommonResponse putJoinPostResponse = joinPostService.putJoinPost(joinPostId);
-        if (!putJoinPostResponse.getCode().equals("SUCCESS_001")) {
-            log.error("Analysis server return ERROR CODE : " + putJoinPostResponse.getCode());
-            throw new JoinEventFailedException();
-        }
 
         // (3) join_post의 snsId, type, createDate를 join_user에 저장
         Long joinUserId = joinUserService.save(joinPostId);
 
         // (4) analysis-server에 join_user update 요청
         CommonResponse putJoinUserResponse = joinUserService.putJoinUser(joinUserId);
-        if (!putJoinUserResponse.getCode().equals("SUCCESS_002")) {
-            log.error("Analysis server return ERROR CODE : " + putJoinPostResponse.getCode());
-            throw new JoinEventFailedException();
-        }
 
         // (5) analysis-server에 reward level 요청
-        RewardLevelResponseDto rewardLevelResponseDto = rewardService.getRewardId(joinPostId);
-
+        ObjectMapper objectMapper = new ObjectMapper();
+        RewardLevelResponseDto rewardLevelResponse = objectMapper.convertValue(rewardService.getRewardId(joinPostId).getData(), RewardLevelResponseDto.class);
         // (6) reward 찾아 front에 return
-        return rewardService.findById(rewardLevelResponseDto.getReward_id());
+        return rewardService.findById(rewardLevelResponse.getReward_id());
+    }
+
+    @PutMapping("/posts/{post_id}/rewards")
+    public ResponseEntity<CommonResponse> receiveReward(@PathVariable Long post_id) {
+        Integer remainCount = joinPostService.updateReward(post_id);
+
+        return ResponseEntity.ok()
+                .body(CommonResponse.builder()
+                        .code("RECEIVE_REWARD_SUCCESS.")
+                        .status(200)
+                        .message(remainCount.toString())
+                        .build()
+                );
     }
 }

@@ -55,7 +55,7 @@ public class EventService {
         userIdValidCheck.userIdValidCheck(event.getStore().getUser().getUserId(), principal);
 
         imageManagerService.delete(event.getImagePaths());
-        List<String> imgPaths = imageManagerService.upload("image/event", requestDto.getImages());
+        List<String> imgPaths = imageManagerService.upload("image/event", requestDto.getNewImages());
         List<String> prevImgPaths = event.getImagePaths();
         requestDto.getDeleteImagePaths().forEach(prevImgPaths::remove);
         imgPaths.addAll(prevImgPaths);

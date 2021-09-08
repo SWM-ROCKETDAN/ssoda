@@ -17,7 +17,6 @@ public class StoreUpdateRequestDto {
     private Integer category;
     private String description;
 
-    private List<MultipartFile> images;
     private List<MultipartFile> newImages;
     private List<String> deleteImagePaths;
 
@@ -35,12 +34,11 @@ public class StoreUpdateRequestDto {
 
 
     @Builder
-    public StoreUpdateRequestDto(String name, Integer category, String description, List<MultipartFile> images, List<MultipartFile> newImages, List<String> deleteImagePaths, MultipartFile logoImage,
+    public StoreUpdateRequestDto(String name, Integer category, String description, List<MultipartFile> newImages, List<String> deleteImagePaths, MultipartFile logoImage,
                                  String city, String country, String town, String road, String zipCode, String buildingCode, Double latitude, Double longitude) {
         this.name = name;
         this.category = category;
         this.description = description;
-        this.images = images;
         this.newImages = newImages;
         this.deleteImagePaths = deleteImagePaths;
         this.logoImage = logoImage;

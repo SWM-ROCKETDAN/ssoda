@@ -6,11 +6,12 @@ import com.rocketdan.serviceserver.Exception.auth.token.NoExpiredTokenYetExcepti
 import com.rocketdan.serviceserver.Exception.file.FileConvertException;
 import com.rocketdan.serviceserver.Exception.file.FileUploadException;
 import com.rocketdan.serviceserver.Exception.analysis.AnalysisServerErrorException;
-import com.rocketdan.serviceserver.Exception.join.DuplicateUrlException;
+import com.rocketdan.serviceserver.Exception.join.JoinDifferentEventException;
 import com.rocketdan.serviceserver.Exception.join.JoinEventFailedException;
 import com.rocketdan.serviceserver.Exception.auth.token.CustomAuthenticationException;
 import com.rocketdan.serviceserver.Exception.auth.CustomJwtRuntimeException;
 import com.rocketdan.serviceserver.Exception.auth.LoginFailedException;
+import com.rocketdan.serviceserver.Exception.join.JoinInvalidEventException;
 import com.rocketdan.serviceserver.Exception.resource.NoAuthorityToResourceException;
 import com.rocketdan.serviceserver.core.CommonResponse;
 import lombok.extern.slf4j.Slf4j;
@@ -23,7 +24,9 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 @ControllerAdvice
 public class GlobalExceptionHandler {
 
-    // 로그인
+    /*
+    로그인, 리소스 권한
+     */
 
     @ExceptionHandler(CustomAuthenticationException.class)
     protected ResponseEntity<CommonResponse> handleCustomAuthenticationException(CustomAuthenticationException e) {
@@ -109,7 +112,23 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(response, HttpStatus.FORBIDDEN);
     }
 
-    // file 처리
+    @ExceptionHandler(NoAuthorityToResourceException.class)
+    protected ResponseEntity<CommonResponse> handleNoAuthorityToResourceException(NoAuthorityToResourceException e) {
+
+        log.info("handleNoAuthorityToResourceException", e);
+
+        CommonResponse response = CommonResponse.builder()
+                .code(ErrorCode.NO_AUTHORITY.getCode())
+                .message(ErrorCode.NO_AUTHORITY.getMessage())
+                .status(ErrorCode.NO_AUTHORITY.getStatus())
+                .build();
+
+        return new ResponseEntity<>(response, HttpStatus.FORBIDDEN);
+    }
+
+    /*
+    file 처리
+     */
 
     @ExceptionHandler(FileUploadException.class)
     protected ResponseEntity<CommonResponse> handleFileUploadException(FileUploadException e) {
@@ -139,21 +158,9 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
-    // event 참여
-
-    @ExceptionHandler(DuplicateUrlException.class)
-    protected ResponseEntity<CommonResponse> handleDuplicateUrlException(DuplicateUrlException e) {
-
-        log.info("handleDuplicateUrlException", e);
-
-        CommonResponse response = CommonResponse.builder()
-                .code(ErrorCode.DUPLICATE_POST_URL.getCode())
-                .message(ErrorCode.DUPLICATE_POST_URL.getMessage())
-                .status(ErrorCode.DUPLICATE_POST_URL.getStatus())
-                .build();
-
-        return new ResponseEntity<>(response, HttpStatus.FORBIDDEN);
-    }
+    /*
+    event 참여
+     */
 
     @ExceptionHandler(JoinEventFailedException.class)
     protected ResponseEntity<CommonResponse> handleJoinEventFailedException(JoinEventFailedException e) {
@@ -162,14 +169,44 @@ public class GlobalExceptionHandler {
 
         CommonResponse response = CommonResponse.builder()
                 .code(ErrorCode.JOIN_EVENT_FAILED.getCode())
-                .message(ErrorCode.JOIN_EVENT_FAILED.getMessage())
+                .message(e.getMessage())
                 .status(ErrorCode.JOIN_EVENT_FAILED.getStatus())
                 .build();
 
-        return new ResponseEntity<>(response, HttpStatus.FORBIDDEN);
+        return new ResponseEntity<>(response, HttpStatus.NOT_ACCEPTABLE);
     }
 
-    // Analysis server
+    @ExceptionHandler(JoinDifferentEventException.class)
+    protected ResponseEntity<CommonResponse> handleJoinDifferentEventException(JoinDifferentEventException e) {
+
+        log.info("handleJoinDifferentEventException", e);
+
+        CommonResponse response = CommonResponse.builder()
+                .code(ErrorCode.JOIN_DIFFERENT_EVENT.getCode())
+                .message(ErrorCode.JOIN_DIFFERENT_EVENT.getMessage())
+                .status(ErrorCode.JOIN_DIFFERENT_EVENT.getStatus())
+                .build();
+
+        return new ResponseEntity<>(response, HttpStatus.NOT_ACCEPTABLE);
+    }
+
+    @ExceptionHandler(JoinInvalidEventException.class)
+    protected ResponseEntity<CommonResponse> handleJoinInvalidEventException(JoinInvalidEventException e) {
+
+        log.info("handleJoinInvalidEventException", e);
+
+        CommonResponse response = CommonResponse.builder()
+                .code(ErrorCode.JOIN_INVALID_EVENT.getCode())
+                .message(ErrorCode.JOIN_INVALID_EVENT.getMessage())
+                .status(ErrorCode.JOIN_INVALID_EVENT.getStatus())
+                .build();
+
+        return new ResponseEntity<>(response, HttpStatus.NOT_ACCEPTABLE);
+    }
+
+    /*
+    Analysis server
+     */
 
     @ExceptionHandler(AnalysisServerErrorException.class)
     protected ResponseEntity<CommonResponse> handleAnalysisServerErrorException(AnalysisServerErrorException e) {
@@ -178,27 +215,12 @@ public class GlobalExceptionHandler {
 
         CommonResponse response = CommonResponse.builder()
                 .code(ErrorCode.ANALYSIS_SERVER_ERROR.getCode())
-                .message(ErrorCode.ANALYSIS_SERVER_ERROR.getMessage())
+                .message(e.getMessage())
                 .status(ErrorCode.ANALYSIS_SERVER_ERROR.getStatus())
                 .build();
 
         return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
-    // resource
-
-    @ExceptionHandler(NoAuthorityToResourceException.class)
-    protected ResponseEntity<CommonResponse> handleNoAuthorityToResourceException(NoAuthorityToResourceException e) {
-
-        log.info("handleNoAuthorityToResourceException", e);
-
-        CommonResponse response = CommonResponse.builder()
-                .code(ErrorCode.NO_AUTHORITY.getCode())
-                .message(ErrorCode.NO_AUTHORITY.getMessage())
-                .status(ErrorCode.NO_AUTHORITY.getStatus())
-                .build();
-
-        return new ResponseEntity<>(response, HttpStatus.FORBIDDEN);
-    }
 
 }

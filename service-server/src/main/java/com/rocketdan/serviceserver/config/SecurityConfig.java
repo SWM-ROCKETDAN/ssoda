@@ -74,7 +74,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                     .authorizeRequests()
                     .requestMatchers(CorsUtils::isPreFlightRequest).permitAll()
                     .antMatchers(HttpMethod.GET, "/api/v1/events/**", "/api/v1/stores/**", "**login**", "/favicon.ico", "/api/v1/auth/**").permitAll()
-                    .antMatchers(HttpMethod.POST, "/api/v1/join/**").permitAll()
+                    .antMatchers(HttpMethod.POST, "/api/v1/join/events/**").permitAll()
+                    .antMatchers(HttpMethod.PUT, "/api/v1/join/posts/**").permitAll()
                     .antMatchers("/api/v1/**").hasAnyAuthority(Role.USER.getCode())
                     .antMatchers("/api/**/admin/**").hasAnyAuthority(Role.ADMIN.getCode())
                     // 나머지는 인증된 사용자만 접근 허용
