@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:hashchecker_web/constants.dart';
 import 'package:hashchecker_web/models/event.dart';
-import 'package:hashchecker_web/models/reward.dart';
 import 'package:hashchecker_web/screens/event_join/components/event_join_with_url.dart';
 import 'package:loading_overlay/loading_overlay.dart';
 
@@ -16,9 +15,14 @@ import 'event_requirements.dart';
 import 'event_period.dart';
 
 class Body extends StatefulWidget {
-  final Map<String, dynamic> data;
-  final id;
-  const Body({Key? key, required this.data, required this.id})
+  final storeId;
+  final event;
+  final eventId;
+  const Body(
+      {Key? key,
+      required this.storeId,
+      required this.event,
+      required this.eventId})
       : super(key: key);
 
   @override
@@ -30,38 +34,35 @@ class _BodyState extends State<Body> {
 
   @override
   Widget build(BuildContext context) {
-    print(widget.data['rewards']);
     Size size = MediaQuery.of(context).size;
 
     SystemChrome.setApplicationSwitcherDescription(
-        ApplicationSwitcherDescription(
-      label: widget.data['event'].title,
-    ));
+        ApplicationSwitcherDescription(label: widget.event.title));
 
     return LoadingOverlay(
       child: SingleChildScrollView(
           child: Column(
         children: [
-          HeaderWithImages(size: size, data: widget.data),
+          HeaderWithImages(storeId: widget.storeId, event: widget.event),
           SizedBox(height: kDefaultPadding / 4 * 3),
-          EventTitle(data: widget.data),
+          EventTitle(event: widget.event),
           SizedBox(height: kDefaultPadding),
-          EventDescription(data: widget.data),
+          EventDescription(event: widget.event),
           Padding(
             padding: const EdgeInsets.fromLTRB(20, 0, 20, 20),
             child:
                 Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-              Divider(height: kDefaultPadding * 2, thickness: 1.2),
-              EventRewards(data: widget.data),
-              Divider(height: kDefaultPadding * 2, thickness: 1.2),
-              EventHashtags(data: widget.data),
-              Divider(height: kDefaultPadding * 2, thickness: 1.2),
-              EventRequirements(data: widget.data),
-              Divider(height: kDefaultPadding * 2, thickness: 1.2),
-              EventPeriod(data: widget.data),
-              Divider(height: kDefaultPadding * 2, thickness: 1.2),
+              Divider(height: kDefaultPadding * 2, color: kShadowColor),
+              EventRewards(event: widget.event),
+              Divider(height: kDefaultPadding * 2, color: kShadowColor),
+              EventHashtags(event: widget.event),
+              Divider(height: kDefaultPadding * 2, color: kShadowColor),
+              EventPeriod(event: widget.event),
+              Divider(height: kDefaultPadding * 2, color: kShadowColor),
               EventJoinWithUrl(
-                  data: widget.data, id: widget.id, loading: _loading)
+                  event: widget.event,
+                  eventId: widget.eventId,
+                  loading: _loading)
             ]),
           ),
         ],
@@ -84,9 +85,9 @@ class _BodyState extends State<Body> {
                 child: AnimatedTextKit(
                     repeatForever: true,
                     animatedTexts: List.generate(
-                        widget.data['rewards'].length,
+                        widget.event.rewardList.length,
                         (index) => RotateAnimatedText(
-                            widget.data['rewards'][index].name,
+                            widget.event.rewardList[index]!.name,
                             textDirection: TextDirection.rtl,
                             textAlign: TextAlign.center,
                             duration: const Duration(milliseconds: 1000)))),
