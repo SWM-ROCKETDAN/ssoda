@@ -1,4 +1,7 @@
+import 'dart:io';
+
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:hashchecker/api.dart';
 import 'package:hashchecker/constants.dart';
@@ -10,6 +13,7 @@ import 'package:hashchecker/models/reward_category.dart';
 import 'package:hashchecker/models/template.dart';
 import 'package:hashchecker/screens/hall/hall_screen.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:intl/intl.dart';
 import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 
 class EventEditModal extends StatefulWidget {
@@ -28,6 +32,11 @@ class _EventEditModalState extends State<EventEditModal> {
       DateRangePickerController();
   DateRangePickerController _finishDatePickerController =
       DateRangePickerController();
+
+  final NEW_IMAGE_PREFIX = 'HASHCHECKER_NEW_IMAGE';
+
+  List<String> newImages = [];
+  List<String> deletedImagePaths = [];
 
   Future<List<Reward>> _fetchRewardListData() async {
     var dio = await authDio();
@@ -60,6 +69,8 @@ class _EventEditModalState extends State<EventEditModal> {
 
     if (event.images.length < 3) event.images.add(null);
     _eventTitleController = TextEditingController(text: event.title);
+    _startDatePickerController.selectedDate = event.period.startDate;
+    _finishDatePickerController.selectedDate = event.period.finishDate;
 
     return event;
   }
@@ -194,12 +205,42 @@ class _EventEditModalState extends State<EventEditModal> {
     );
   }
 
+  Future<void> _updateEvent(Event event) async {
+    var dio = await authDio();
+
+    dio.options.contentType = 'multipart/form-data';
+
+    var eventData = FormData.fromMap({
+      'title': _eventTitleController.value.text.trim(),
+      'startDate': DateFormat('yyyy-MM-ddTHH:mm:ss')
+          .format(_startDatePickerController.selectedDate!),
+      'finishDate': _finishDatePickerController.selectedDate == null
+          ? null
+          : DateFormat('yyyy-MM-ddTHH:mm:ss')
+              .format(_finishDatePickerController.selectedDate!),
+      'newImages': List.generate(newImages.length,
+          (index) => MultipartFile.fromFileSync(newImages[index])),
+      'deleteImagePaths': deletedImagePaths,
+      'hashtags': event.hashtagList,
+      'requirements': event.requireList,
+      'template': event.template.id,
+      'status': 0
+    });
+
+    final updateEventResponse = await dio.put(
+        getApi(API.UPDATE_EVENT, suffix: '/${widget.eventId}'),
+        data: eventData);
+
+    print(updateEventResponse.data);
+  }
+
   SizedBox buildConfirmButton(Size size, BuildContext context, Event event) {
     return SizedBox(
       width: size.width,
       height: 45,
       child: ElevatedButton(
         onPressed: () async {
+          await _updateEvent(event);
           await showDialog(
               context: context,
               builder: (context) => AlertDialog(
@@ -373,26 +414,37 @@ class _EventEditModalState extends State<EventEditModal> {
                   },
                   child: Stack(children: [
                     ClipRRect(
-                      child: Image.network('$s3Url${event.images[index]}',
-                          fit: BoxFit.cover),
+                      child: event.images[index]!
+                                  .substring(0, NEW_IMAGE_PREFIX.length) ==
+                              NEW_IMAGE_PREFIX
+                          ? Image.file(
+                              File(event.images[index]!
+                                  .substring(NEW_IMAGE_PREFIX.length)),
+                              fit: BoxFit.cover)
+                          : Image.network('$s3Url${event.images[index]}',
+                              fit: BoxFit.cover),
                       borderRadius: BorderRadius.circular(16),
                     ),
-                    Positioned(
-                        right: 10,
-                        top: 10,
-                        child: GestureDetector(
-                          onTap: () {
-                            setState(() {
-                              if (event.images.last == null)
-                                event.images.removeLast();
-                              event.images[index] = null;
-                            });
-                          },
-                          child: Icon(Icons.cancel_rounded,
-                              size: 28, color: Colors.white.withOpacity(0.9)),
-                        ))
-                  ]),
-                )).cast<Widget>().toList(),
+                    if (event.images[index]!
+                            .substring(0, NEW_IMAGE_PREFIX.length) !=
+                        NEW_IMAGE_PREFIX)
+                      Positioned(
+                          right: 10,
+                          top: 10,
+                          child: GestureDetector(
+                            onTap: () {
+                              setState(() {
+                                deletedImagePaths.add(event.images[index]!);
+                                event.images.removeAt(index);
+                                if (event.images.length == 2 &&
+                                    event.images.last != null)
+                                  event.images.add(null);
+                              });
+                            },
+                            child: Icon(Icons.cancel_rounded,
+                                size: 28, color: Colors.white.withOpacity(0.9)),
+                          ))
+                  ]))).cast<Widget>().toList(),
     ));
   }
 
@@ -912,13 +964,20 @@ class _EventEditModalState extends State<EventEditModal> {
   Future _getImageFromGallery(
       BuildContext context, int index, Event event) async {
     final ImagePicker _imagePicker = ImagePicker();
-    final XFile? image =
-        await _imagePicker.pickImage(source: ImageSource.gallery);
-    setState(() {
-      if (event.images[index] == null && event.images.length < 3)
-        event.images.add(null);
-      event.images[index] = image!.path;
-    });
+    final XFile? image = await _imagePicker.pickImage(
+        source: ImageSource.gallery,
+        maxHeight: 1280,
+        maxWidth: 1280,
+        imageQuality: 75);
+    if (image != null) {
+      setState(() {
+        if (event.images[index] == null && event.images.length < 3)
+          event.images.add(null);
+        event.images[index] = '$NEW_IMAGE_PREFIX${image.path}';
+        newImages.add(image.path);
+        print(event.images[index]);
+      });
+    }
   }
 }
 
