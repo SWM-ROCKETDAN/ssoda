@@ -21,11 +21,9 @@ class JoinPostsView(APIView):
         # Join Post 가져오기
         join_post = get_object_or_404(JoinPost, pk=pk)
         join_post_update_serializer = JoinPostScrapSerializer(join_post)
-        # raise exceptions.PostUpdateOk({'test': join_post_update_serializer.data})
         post_scraper = PostScraper(join_post_update_serializer.data)
         scraped_post = post_scraper.get_scraped_post()
         join_post_serializer = JoinPostSerializer(join_post, scraped_post, partial=True)
-        print(scraped_post)
         if join_post_serializer.is_valid():
             join_post_serializer.save()
             raise exceptions.PostUpdateOk({join_post_serializer.data})
@@ -38,7 +36,6 @@ class JoinUsersView(APIView):
         # Join User 가져오기
         join_user = get_object_or_404(JoinUser, pk=pk)
         join_user_update_serializer = JoinUserScrapSerializer(join_user)
-        # raise exceptions.UserUpdateOk({'test': join_user_update_serializer.data})
         user_scraper = UserScraper(join_user_update_serializer.data)
         scraped_user = user_scraper.get_scraped_user()
         join_user_serializer = JoinUserSerializer(join_user, scraped_user, partial=True)

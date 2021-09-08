@@ -9,6 +9,7 @@ from .check_post import check_post_status_is_deleted
 from .check_post import check_match_post_hashtags_with_event_hashtags
 from .check_post import check_post_is_already_rewarded
 from .check_post import check_post_upload_date_is_ok_from_event_start_date
+from .check_post import get_post_type_from_url
 
 scrap_handlers = {
     Type.INSTAGRAM: post_scraper_instagram.scrap_post,
@@ -26,11 +27,10 @@ class PostScraper:
     # 스크랩 된 게시물 가져오기
     def get_scraped_post(self):
         self.check_post_before_scrap_post()
-        post_type = 0
+        post_type = get_post_type_from_url(self.join_post['url'])
         if post_type in scrap_handlers:
             try:
                 self.scraped_post = scrap_handlers[post_type](self.join_post['url'])
-                print(self.scraped_post)
             except Exception as e:
                 raise exceptions.ScrapFailed()
             else:

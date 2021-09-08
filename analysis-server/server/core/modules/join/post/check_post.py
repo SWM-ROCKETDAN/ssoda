@@ -1,4 +1,14 @@
 from server.core.modules.static.common import Status
+from server.core.modules.static.common import Type
+
+
+def get_post_type_from_url(post_url):
+    if 'instagram' in post_url:
+        return Type.INSTAGRAM
+    elif 'facebook' in post_url:
+        return Type.FACEBOOK
+    else:
+        return Type.INSTAGRAM
 
 
 # 게시물의 이벤트가 정상인지 체크
