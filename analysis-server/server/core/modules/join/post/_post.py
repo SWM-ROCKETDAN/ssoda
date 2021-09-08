@@ -1,4 +1,4 @@
-from ..time import get_now_time
+from server.core.modules.assist.time import get_now_date
 import copy
 
 
@@ -11,10 +11,10 @@ def get_default_post():
         'like_count': 0,
         'comment_count': 0,
         'hashtags': '',
-        'upload_date': get_now_time(),
+        'upload_date': get_now_date(),
         'private_date': None,
-        'delete_data': None,
-        'update_date': get_now_time(),
+        'delete_date': None,
+        'update_date': get_now_date(),
     }
 
     return copy.deepcopy(post)

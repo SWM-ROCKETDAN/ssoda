@@ -55,8 +55,8 @@ class StoreReportCalculateOK(CustomException):
         super().__init__(data)
 
 
-class PostUpdateDontButOK(CustomException):
-    default_detail = 'Post update dont but ok'
+class PostIsAlreadyCalculatedRewardAndOK(CustomException):
+    default_detail = 'Post is already calculated reward and ok'
     status_code = 200
     default_code = 'OK_006'
 
@@ -64,8 +64,8 @@ class PostUpdateDontButOK(CustomException):
         super().__init__(data)
 
 
-class UserUpdateDontButOK(CustomException):
-    default_detail = 'User update dont but ok'
+class UserRecentlyUpdateAndOK(CustomException):
+    default_detail = 'User recently update and ok'
     status_code = 200
     default_code = 'OK_007'
 
@@ -74,17 +74,17 @@ class UserUpdateDontButOK(CustomException):
 
 
 # 클라이언트 에러
-class PostIsPrivate(APIException):
-    default_detail = 'Post is private'
-    status_code = 406
+class Http404(CustomException):
+    default_detail = 'Not found'
+    status_code = 404
     default_code = 'CLIENT_ERROR_001'
 
     def __init__(self, data=None):
         super().__init__(data)
 
 
-class PostIsDeleted(APIException):
-    default_detail = 'Post is deleted'
+class PostIsPrivate(CustomException):
+    default_detail = 'Post is private'
     status_code = 406
     default_code = 'CLIENT_ERROR_002'
 
@@ -92,8 +92,8 @@ class PostIsDeleted(APIException):
         super().__init__(data)
 
 
-class PostIsDiffHashtag(APIException):
-    default_detail = 'Post is different hashtag'
+class PostIsDeleted(CustomException):
+    default_detail = 'Post is deleted'
     status_code = 406
     default_code = 'CLIENT_ERROR_003'
 
@@ -101,8 +101,44 @@ class PostIsDiffHashtag(APIException):
         super().__init__(data)
 
 
+class PostIsDiffHashtag(CustomException):
+    default_detail = 'Post is different hashtag'
+    status_code = 406
+    default_code = 'CLIENT_ERROR_004'
+
+    def __init__(self, data=None):
+        super().__init__(data)
+
+
+class PostIsAlreadyRewarded(CustomException):
+    default_detail = 'Post is already rewarded'
+    status_code = 406
+    default_code = 'CLIENT_ERROR_005'
+
+    def __init__(self, data=None):
+        super().__init__(data)
+
+
+class PostEventIsNotOK(CustomException):
+    default_detail = 'Post event is not ok'
+    status_code = 406
+    default_code = 'CLIENT_ERROR_006'
+
+    def __init__(self, data=None):
+        super().__init__(data)
+
+
+class PostUploadIsFasterThanEventStart(CustomException):
+    default_detail = 'Post upload is faster than event start'
+    status_code = 406
+    default_code = 'CLIENT_ERROR_007'
+
+    def __init__(self, data=None):
+        super().__init__(data)
+
+
 # 서버 에러
-class ProxyFailed(APIException):
+class ProxyFailed(CustomException):
     default_detail = 'Proxy is failed'
     status_code = 500
     default_code = 'SERVER_ERROR_001'
@@ -111,7 +147,7 @@ class ProxyFailed(APIException):
         super().__init__(data)
 
 
-class ScrapFailed(APIException):
+class ScrapFailed(CustomException):
     default_detail = 'Scrap is failed'
     status_code = 500
     default_code = 'SERVER_ERROR_002'
@@ -120,7 +156,7 @@ class ScrapFailed(APIException):
         super().__init__(data)
 
 
-class PostUpdateFailed(APIException):
+class PostUpdateFailed(CustomException):
     default_detail = 'Post update failed'
     status_code = 500
     default_code = 'SERVER_ERROR_003'
@@ -129,7 +165,7 @@ class PostUpdateFailed(APIException):
         super().__init__(data)
 
 
-class UserUpdateFailed(APIException):
+class UserUpdateFailed(CustomException):
     default_detail = 'User update failed'
     status_code = 500
     default_code = 'SERVER_ERROR_004'
@@ -138,7 +174,7 @@ class UserUpdateFailed(APIException):
         super().__init__(data)
 
 
-class RewardCalculateFailed(APIException):
+class RewardCalculateFailed(CustomException):
     default_detail = 'Reward calculate failed'
     status_code = 500
     default_code = 'SERVER_ERROR_005'
@@ -147,7 +183,7 @@ class RewardCalculateFailed(APIException):
         super().__init__(data)
 
 
-class EventReportCalculateFailed(APIException):
+class EventReportCalculateFailed(CustomException):
     default_detail = 'Event Report calculate failed'
     status_code = 500
     default_code = 'SERVER_ERROR_006'
@@ -156,7 +192,7 @@ class EventReportCalculateFailed(APIException):
         super().__init__(data)
 
 
-class StoreReportCalculateFailed(APIException):
+class StoreReportCalculateFailed(CustomException):
     default_detail = 'Store Report calculate failed'
     status_code = 500
     default_code = 'SERVER_ERROR_007'

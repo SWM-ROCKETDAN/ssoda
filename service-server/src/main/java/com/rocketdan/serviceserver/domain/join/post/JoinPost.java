@@ -1,11 +1,14 @@
 package com.rocketdan.serviceserver.domain.join.post;
 
 import com.rocketdan.serviceserver.domain.event.Event;
+import com.rocketdan.serviceserver.domain.reward.Reward;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.ColumnDefault;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.Where;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -13,6 +16,8 @@ import java.util.Date;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@SQLDelete(sql = "UPDATE join_post SET deleted = true WHERE id = ?")
+@Where(clause = "deleted = false")
 public class JoinPost {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -20,6 +25,9 @@ public class JoinPost {
 
     @ManyToOne
     private Event event;
+
+    @OneToOne
+    private Reward reward;
 
     private String snsId;
 
@@ -48,14 +56,14 @@ public class JoinPost {
 
     private Date updateDate;
 
-    private Integer rewardsLevel;
-    /*
+    private Date rewardDate;
+
     @ColumnDefault("false")
     @Column(nullable = false)
     private Boolean deleted = false;
-*/
+
     @Builder
-    public JoinPost(Event event, String snsId, String url, Integer type, Integer status, Integer likeCount, Integer commentCount, String hashtags, Date createDate, Date uploadDate, Date privateDate, Date deleteDate, Date updateDate, Integer rewardsLevel) {
+    public JoinPost(Event event, String snsId, String url, Integer type, Integer status, Integer likeCount, Integer commentCount, String hashtags, Date createDate, Date uploadDate, Date privateDate, Date deleteDate, Date updateDate, Reward reward) {
         this.event = event;
         this.snsId = snsId;
         this.url = url;
@@ -69,10 +77,14 @@ public class JoinPost {
         this.privateDate = privateDate;
         this.deleteDate = deleteDate;
         this.updateDate = updateDate;
-        this.rewardsLevel = rewardsLevel;
+        this.reward = reward;
     }
 
     public void setEvent(Event event) {
         this.event = event;
+    }
+
+    public void updateRewardDate(Date rewardDate) {
+        this.rewardDate = rewardDate;
     }
 }

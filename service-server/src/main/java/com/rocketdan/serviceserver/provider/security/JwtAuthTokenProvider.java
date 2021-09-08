@@ -57,7 +57,6 @@ public class JwtAuthTokenProvider implements AuthTokenProvider<JwtAuthToken> {
 
             return new UsernamePasswordAuthenticationToken(principal, authToken, authorities);
         } else {
-            // token valid failed exception
             throw new CustomJwtRuntimeException();
         }
     }

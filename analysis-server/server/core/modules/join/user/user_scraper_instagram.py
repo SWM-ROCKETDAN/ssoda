@@ -1,7 +1,7 @@
 from bs4 import BeautifulSoup
 from urllib.request import urlopen
-from ..proxy import get_proxy_url
-from ..time import get_now_time
+from server.core.modules.assist.proxy import get_proxy_url
+from server.core.modules.assist.time import get_now_date
 from server.core.modules.static.common import Type
 from server.core.modules.static.common import Status
 import re
@@ -31,7 +31,7 @@ def scrap_user(sns_id):
         'status': Status.PUBLIC,
         'follow_count': user_nums[0],
         'post_count': user_nums[2],
-        'update_date': get_now_time()
+        'update_date': get_now_date()
     }
 
     return user

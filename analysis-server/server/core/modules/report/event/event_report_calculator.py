@@ -1,3 +1,5 @@
+import pprint
+
 from .calculator_report import get_exposure_count
 from .calculator_report import get_participate_count
 from .calculator_report import get_public_post_count
@@ -6,8 +8,8 @@ from .calculator_report import get_deleted_post_count
 from .calculator_report import get_like_count
 from .calculator_report import get_comment_count
 from .calculator_report import get_expenditure_count
-from .calculator_report import parse_from_str_date_to_datetime_date
 from .calculator_report import get_days_from_start_date_to_now_date
+from core.modules.assist.time import parse_from_str_time_to_date_time
 from server.core.exceptions import exceptions
 
 calculator_handlers = {
@@ -33,6 +35,7 @@ def get_report_dict(_event, _event_joins):
         'week': {},
         'month': {},
     }
+    print(report_dict)
 
     for term in report_dict.keys():
         if term == 'day':
@@ -48,32 +51,41 @@ def get_report_dict(_event, _event_joins):
                 report_dict[term][month] = {}
         else:
             pass
-
     # day_report_dict 채워넣기
-    for event_join in event_joins:
-        upload_date = parse_from_str_date_to_datetime_date(event_join['upload_date'])
-        upload_day = upload_date
-        upload_week = (upload_date.isocalendar()[0], upload_date.isocalendar()[1])
-        upload_month = upload_date.month
-        if upload_date in report_dict['day']:
-            for key, calculator in calculator_handlers.items():
-                if report_dict['day'][upload_day].get(key) is None:
-                    report_dict['day'][upload_day][key] = calculator(event_join)
-                else:
-                    report_dict['day'][upload_day][key] += calculator(event_join)
-        if upload_week in report_dict['week']:
-            for key, calculator in calculator_handlers.items():
-                if report_dict['week'][upload_week].get(key) is None:
-                    report_dict['week'][upload_week][key] = calculator(event_join)
-                else:
-                    report_dict['week'][upload_week][key] += calculator(event_join)
-        if upload_month in report_dict['month']:
-            for key, calculator in calculator_handlers.items():
-                if report_dict['month'][upload_month].get(key) is None:
-                    report_dict['month'][upload_month][key] = calculator(event_join)
-                else:
-                    report_dict['month'][upload_month][key] += calculator(event_join)
-
+    print(report_dict)
+    print('start!')
+    print(type(event_joins))
+    try:
+        for event_join in event_joins:
+            upload_date = parse_from_str_time_to_date_time(event_join['upload_date']).date()
+            print(upload_date)
+            upload_day = upload_date
+            upload_week = (upload_date.isocalendar()[0], upload_date.isocalendar()[1])
+            upload_month = upload_date.month
+            print(report_dict['day'])
+            if upload_date in report_dict['day']:
+                print('일치하는 날짜가 있어요!')
+                for key, calculator in calculator_handlers.items():
+                    if report_dict['day'][upload_day].get(key) is None:
+                        report_dict['day'][upload_day][key] = calculator(event_join)
+                    else:
+                        report_dict['day'][upload_day][key] += calculator(event_join)
+                print(report_dict['day'])
+            if upload_week in report_dict['week']:
+                for key, calculator in calculator_handlers.items():
+                    if report_dict['week'][upload_week].get(key) is None:
+                        report_dict['week'][upload_week][key] = calculator(event_join)
+                    else:
+                        report_dict['week'][upload_week][key] += calculator(event_join)
+            if upload_month in report_dict['month']:
+                for key, calculator in calculator_handlers.items():
+                    if report_dict['month'][upload_month].get(key) is None:
+                        report_dict['month'][upload_month][key] = calculator(event_join)
+                    else:
+                        report_dict['month'][upload_month][key] += calculator(event_join)
+    except Exception as e:
+        print(e)
+        print('hello error!')
     return report_dict
 
 
@@ -113,6 +125,7 @@ class EventReportCalculator:
         try:
             event_report = get_event_report(self.event, self.event['join_posts'])
         except Exception as e:
+            print(e)
             raise exceptions.EventReportCalculateFailed()
 
         return event_report

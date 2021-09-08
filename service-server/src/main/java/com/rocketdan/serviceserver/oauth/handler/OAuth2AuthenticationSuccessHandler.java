@@ -3,13 +3,12 @@ package com.rocketdan.serviceserver.oauth.handler;
 import com.rocketdan.serviceserver.config.properties.AppProperties;
 import com.rocketdan.serviceserver.domain.user.Provider;
 import com.rocketdan.serviceserver.domain.user.Role;
-import com.rocketdan.serviceserver.domain.user.UserRefreshToken;
-import com.rocketdan.serviceserver.domain.user.UserRefreshTokenRepository;
 import com.rocketdan.serviceserver.oauth.info.OAuth2UserInfo;
 import com.rocketdan.serviceserver.oauth.info.OAuth2UserInfoFactory;
 import com.rocketdan.serviceserver.oauth.repository.OAuth2AuthorizationRequestBasedOnCookieRepository;
 import com.rocketdan.serviceserver.provider.security.JwtAuthToken;
 import com.rocketdan.serviceserver.provider.security.JwtAuthTokenProvider;
+import com.rocketdan.serviceserver.service.UserRefreshTokenService;
 import com.rocketdan.serviceserver.utils.CookieUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
@@ -26,14 +25,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.net.URI;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
 import java.util.Collection;
 import java.util.Date;
 import java.util.Optional;
 
 import static com.rocketdan.serviceserver.oauth.repository.OAuth2AuthorizationRequestBasedOnCookieRepository.REDIRECT_URI_PARAM_COOKIE_NAME;
-import static com.rocketdan.serviceserver.oauth.repository.OAuth2AuthorizationRequestBasedOnCookieRepository.REFRESH_TOKEN;
 
 @Component
 @RequiredArgsConstructor
@@ -41,7 +37,7 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
 
     private final JwtAuthTokenProvider jwtAuthTokenProvider;
     private final AppProperties appProperties;
-    private final UserRefreshTokenRepository userRefreshTokenRepository;
+    private final UserRefreshTokenService userRefreshTokenService;
     private final OAuth2AuthorizationRequestBasedOnCookieRepository authorizationRequestRepository;
 
     private final static String SUCCESS_COMMAND = "://success";
@@ -95,12 +91,7 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
         );
 
         // DB 저장
-        Optional<UserRefreshToken> userRefreshToken = userRefreshTokenRepository.findByUserId(userInfo.getId());
-        if (userRefreshToken.isPresent()) {
-            userRefreshToken.get().setRefreshToken(refreshToken.getToken());
-        } else {
-            userRefreshTokenRepository.saveAndFlush(new UserRefreshToken(userInfo.getId(), refreshToken.getToken()));
-        }
+        userRefreshTokenService.saveOrUpdate(userInfo.getId(), refreshToken.getToken());
 
         return UriComponentsBuilder.fromUriString(targetUrl + SUCCESS_COMMAND)
                 .queryParam("access-token", accessToken.getToken())

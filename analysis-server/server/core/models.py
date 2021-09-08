@@ -1,4 +1,4 @@
-# This is an auto-generated Django model module.
+# This is an auto-generated Django model modules.
 # You'll have to do the following manually to clean this up:
 #   * Rearrange models' order
 #   * Make sure each model has one field with primary_key=True
@@ -130,6 +130,7 @@ class Event(models.Model):
     status = models.IntegerField()
     title = models.CharField(max_length=255)
     store = models.ForeignKey('Store', models.DO_NOTHING, blank=True, null=True)
+    deleted = models.BooleanField(null=True, default=False)
 
     class Meta:
         db_table = 'event'
@@ -178,12 +179,13 @@ class HashtagRequirements(models.Model):
 class Reward(models.Model):
     category = models.IntegerField(blank=True, null=True)
     count = models.IntegerField(blank=True, null=True)
-    image = models.CharField(max_length=255, blank=True, null=True)
     name = models.CharField(max_length=255)
     price = models.IntegerField(blank=True, null=True)
     level = models.BigIntegerField(blank=True, null=True)
     used_count = models.IntegerField(blank=True, null=True)
     event = models.ForeignKey(Event, related_name='rewards', on_delete=models.DO_NOTHING, blank=True, null=True)
+    image_path = models.CharField(max_length=255, blank=True, null=True)
+    deleted = models.BooleanField(null=True, default=False)
 
     class Meta:
         db_table = 'reward'
@@ -200,6 +202,7 @@ class Store(models.Model):
     category = models.IntegerField()
     description = models.TextField(blank=True, null=True)
     name = models.CharField(max_length=255)
+    deleted = models.BooleanField(null=True, default=False)
 
     class Meta:
         db_table = 'store'
@@ -213,9 +216,26 @@ class StoreImages(models.Model):
         db_table = 'store_images'
 
 
+class User(models.Model):
+    id = models.BigAutoField(primary_key=True)
+    email = models.CharField(max_length=255, blank=True, null=True)
+    name = models.CharField(max_length=255)
+    picture = models.CharField(max_length=255, blank=True, null=True)
+    role = models.CharField(max_length=255)
+    created_date = models.DateTimeField()
+    modified_date = models.DateTimeField()
+    password = models.CharField(max_length=255)
+    provider = models.CharField(max_length=255)
+    user_id = models.CharField(max_length=255)
+
+    class Meta:
+        managed = False
+        db_table = 'user'
+
+
 class JoinPost(models.Model):
     id = models.BigAutoField(primary_key=True)
-    event = models.ForeignKey(Event, related_name='event', on_delete=models.CASCADE)
+    event = models.ForeignKey(Event, related_name='event', on_delete=models.DO_NOTHING)
     reward = models.ForeignKey(Reward, related_name='reward', on_delete=models.DO_NOTHING, blank=True, null=True)
     sns_id = models.CharField(max_length=255, blank=True, null=True)
     url = models.CharField(max_length=255)
@@ -229,6 +249,8 @@ class JoinPost(models.Model):
     private_date = models.DateTimeField(blank=True, null=True)
     delete_date = models.DateTimeField(blank=True, null=True)
     update_date = models.DateTimeField(blank=True, null=True)
+    reward_date = models.DateTimeField(blank=True, null=True)
+    deleted = models.BooleanField(null=True, default=False)
 
     class Meta:
         db_table = 'join_post'
@@ -244,6 +266,15 @@ class JoinUser(models.Model):
     post_count = models.IntegerField(blank=True, null=True, default=0)
     create_date = models.DateTimeField()
     update_date = models.DateTimeField(blank=True, null=True)
+    deleted = models.BooleanField(null=True, default=False)
 
     class Meta:
         db_table = 'join_user'
+
+
+class TaskJoinPost(models.Model):
+    id = models.BigAutoField(primary_key=True)
+    join_post = models.ForeignKey(JoinPost, related_name='join_post', on_delete=models.DO_NOTHING)
+
+    class Meta:
+        db_table = 'task_join_post'

@@ -1,5 +1,3 @@
-import 'package:hashchecker/models/requires.dart';
-
 import 'reward.dart';
 import 'period.dart';
 import 'template.dart';
@@ -15,6 +13,7 @@ class Event {
   List<String> hashtagList;
   List<bool> requireList;
   Template template;
+  EventStatus? status;
 
   Event(
       {required this.title,
@@ -23,7 +22,8 @@ class Event {
       required this.period,
       required this.images,
       required this.requireList,
-      required this.template});
+      required this.template,
+      this.status});
 
   Map<String, dynamic> toJson() => {
         'title': title,
@@ -42,17 +42,14 @@ class Event {
     var hashtagsFromJson = json['hashtags'];
     var imagesFromJson = json['images'];
     var requiresFromJson = json['requirements'];
-    var rewardsFromJson = json['rewards'] as List;
 
     List<String> hashtagList = hashtagsFromJson.cast<String>();
     List<String?> images = imagesFromJson.cast<String?>();
     List<bool> requireList = requiresFromJson.cast<bool>();
-    List<Reward?> rewardList =
-        rewardsFromJson.map((i) => Reward.fromJson(i)).toList();
 
     return Event(
         title: json['title'],
-        rewardList: rewardList,
+        rewardList: [], // need additional step to set rewardList
         hashtagList: hashtagList,
         period: Period(
             DateFormat('yyyy-MM-ddTHH:mm:ss').parse(json['startDate']),
@@ -62,6 +59,7 @@ class Event {
             null),
         images: images,
         requireList: requireList,
-        template: Template(json['template']));
+        template: Template(json['template']),
+        status: EventStatus.values[json['status']]);
   }
 }

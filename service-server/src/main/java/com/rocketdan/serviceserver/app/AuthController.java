@@ -1,6 +1,5 @@
 package com.rocketdan.serviceserver.app;
 
-import com.rocketdan.serviceserver.Exception.auth.token.CustomAccessTokenException;
 import com.rocketdan.serviceserver.Exception.auth.token.CustomRefreshTokenException;
 import com.rocketdan.serviceserver.Exception.auth.token.NoExpiredTokenYetException;
 import com.rocketdan.serviceserver.app.dto.user.LoginRequestDto;
@@ -8,13 +7,12 @@ import com.rocketdan.serviceserver.config.properties.AppProperties;
 import com.rocketdan.serviceserver.core.CommonResponse;
 import com.rocketdan.serviceserver.domain.user.Role;
 import com.rocketdan.serviceserver.domain.user.UserPrincipal;
-import com.rocketdan.serviceserver.domain.user.UserRefreshToken;
-import com.rocketdan.serviceserver.domain.user.UserRefreshTokenRepository;
 import com.rocketdan.serviceserver.provider.security.JwtAuthToken;
 import com.rocketdan.serviceserver.provider.security.JwtAuthTokenProvider;
-import com.rocketdan.serviceserver.utils.CookieUtil;
+import com.rocketdan.serviceserver.service.UserRefreshTokenService;
 import com.rocketdan.serviceserver.utils.HeaderUtil;
 import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.ExpiredJwtException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
@@ -24,13 +22,9 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.Date;
-import java.util.Optional;
-
-import static com.rocketdan.serviceserver.oauth.repository.OAuth2AuthorizationRequestBasedOnCookieRepository.REFRESH_TOKEN;
 
 // /auth 라는 Path는 스프링 시큐리티 컨텍스트 내에 존재하는 인증절차를 거쳐 통과해야한다.
 @RestController
@@ -41,7 +35,7 @@ public class AuthController {
     private final AppProperties appProperties;
     private final JwtAuthTokenProvider jwtAuthTokenProvider;
     private final AuthenticationManager authenticationManager;
-    private final UserRefreshTokenRepository userRefreshTokenRepository;
+    private final UserRefreshTokenService userRefreshTokenService;
 
     private final static long THREE_DAYS_MSEC = 259200000;
 
@@ -75,22 +69,12 @@ public class AuthController {
         );
 
         // userId refresh token 으로 DB 확인
-        Optional<UserRefreshToken> userRefreshToken = userRefreshTokenRepository.findByUserId(userId);
-        if (userRefreshToken.isEmpty()) {
-            // 없는 경우 새로 등록
-            userRefreshTokenRepository.saveAndFlush(new UserRefreshToken(userId, refreshToken.getToken()));
-        } else {
-            // DB에 refresh 토큰 업데이트
-            userRefreshToken.get().setRefreshToken(refreshToken.getToken());
-        }
-
-        int cookieMaxAge = (int) refreshTokenExpiry / 60;
-        CookieUtil.deleteCookie(request, response, REFRESH_TOKEN);
-        CookieUtil.addCookie(response, REFRESH_TOKEN, refreshToken.getToken(), cookieMaxAge);
+        userRefreshTokenService.saveOrUpdate(userId, refreshToken.getToken());
 
         // auth-token을 헤더에 전달
         HttpHeaders responseHeaders = new HttpHeaders();
-        responseHeaders.set("token", accessToken.getToken());
+        responseHeaders.set("access-token", accessToken.getToken());
+        responseHeaders.set("refresh-token", refreshToken.getToken());
 
         return ResponseEntity.ok()
                 .headers(responseHeaders)
@@ -103,12 +87,15 @@ public class AuthController {
     }
 
     @GetMapping("/refresh")
-    public ResponseEntity<CommonResponse>  refreshToken (HttpServletRequest request, HttpServletResponse response) {
+    public ResponseEntity<CommonResponse> refreshToken(HttpServletRequest request, HttpServletResponse response) {
         // access token 확인
         String accessToken = HeaderUtil.getAccessToken(request);
         JwtAuthToken authToken = jwtAuthTokenProvider.convertAuthToken(accessToken);
-        if (!authToken.validate()) {
-            throw new CustomAccessTokenException();
+
+        try {
+            authToken.validate();
+        } catch (ExpiredJwtException e) {
+            // ignore
         }
 
         // expired access token 인지 확인
@@ -121,18 +108,12 @@ public class AuthController {
         Role role = Role.of(claims.get("role", String.class));
 
         // refresh token
-        String refreshToken = CookieUtil.getCookie(request, REFRESH_TOKEN)
-                .map(Cookie::getValue)
-                .orElse((null));
+        String refreshToken = HeaderUtil.getRefreshToken(request);
         JwtAuthToken authRefreshToken = jwtAuthTokenProvider.convertAuthToken(refreshToken);
 
-        if (authRefreshToken.validate()) {
-            throw new CustomRefreshTokenException();
-        }
-
-        // userId refresh token 으로 DB 확인
-        Optional<UserRefreshToken> userRefreshToken = userRefreshTokenRepository.findByUserIdAndRefreshToken(userId, refreshToken);
-        if (userRefreshToken.isEmpty()) {
+        try {
+            authRefreshToken.validate();
+        } catch (ExpiredJwtException e) {
             throw new CustomRefreshTokenException();
         }
 
@@ -156,20 +137,17 @@ public class AuthController {
             );
 
             // DB에 refresh 토큰 업데이트
-            userRefreshToken.get().setRefreshToken(authRefreshToken.getToken());
-
-            int cookieMaxAge = (int) refreshTokenExpiry / 60;
-            CookieUtil.deleteCookie(request, response, REFRESH_TOKEN);
-            CookieUtil.addCookie(response, REFRESH_TOKEN, authRefreshToken.getToken(), cookieMaxAge);
+            userRefreshTokenService.update(userId, authRefreshToken.getToken());
         }
 
         HttpHeaders responseHeaders = new HttpHeaders();
-        responseHeaders.set("token", newAccessToken.getToken());
+        responseHeaders.set("access-token", newAccessToken.getToken());
+        responseHeaders.set("refresh-token", authRefreshToken.getToken());
 
         return ResponseEntity.ok()
                 .headers(responseHeaders)
                 .body(CommonResponse.builder()
-                        .code("ISSUE_TOKEN_SUCCESS")
+                        .code("GENERATE_TOKEN_SUCCESS")
                         .status(200)
                         .message(userId)
                         .build()

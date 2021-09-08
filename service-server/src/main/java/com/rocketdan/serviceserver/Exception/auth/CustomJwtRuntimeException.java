@@ -12,4 +12,3 @@ public class CustomJwtRuntimeException extends RuntimeException {
         super(ex);
     }
 }
-

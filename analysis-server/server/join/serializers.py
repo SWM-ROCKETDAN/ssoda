@@ -7,6 +7,18 @@ from core.models import JoinUser
 from core.models import JoinPost
 
 
+class JoinPostSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = JoinPost
+        fields = '__all__'
+
+
+class JoinUserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = JoinUser
+        fields = '__all__'
+
+
 class HashtagHashtagsSerializer(serializers.ModelSerializer):
     class Meta:
         model = HashtagHashtags
@@ -24,7 +36,7 @@ class HashtagSerializer(serializers.ModelSerializer):
 class RewardSerializer(serializers.ModelSerializer):
     class Meta:
         model = Reward
-        fields = ['id', 'count', 'level', 'used_count']
+        fields = ['id', 'count', 'level', 'used_count', 'deleted']
 
 
 class EventSerializer(serializers.ModelSerializer):
@@ -33,89 +45,93 @@ class EventSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Event
-        fields = ['hashtag', 'rewards']
-
-
-class EventHashtagSerializer(serializers.ModelSerializer):
-    hashtag = HashtagSerializer()
-
-    class Meta:
-        model = Event
         fields = '__all__'
 
 
-class ThisJoinSerializer(serializers.ModelSerializer):
-    reward = RewardSerializer()
+class JoinPostScrapSerializer(serializers.ModelSerializer):
     event = EventSerializer()
+    reward = RewardSerializer()
 
     class Meta:
         model = JoinPost
-        fields = [
-            'id',
-            'reward',
-            'event',
-            'sns_id',
-            'type',
-            'status',
-            'like_count',
-            'comment_count',
-            'hashtags',
-            'upload_date',
-            'private_date',
-            'delete_date',
-        ]
+        fields = '__all__'
 
+    # 해시태그 리스트 파싱
     def to_representation(self, instance):
         representation = super().to_representation(instance)
+        # 해시태그 파싱
         try:
-            join_user = JoinUser.objects.get(sns_id=representation['sns_id'], type=representation['type'])
-        except JoinUser.DoesNotExist:
-            join_user = {
-                'follow_count': 0,
-            }
-        join_user_serializer = JoinUserSerializer(join_user)
-        representation['join_user'] = join_user_serializer.data
-
+            event_hashtags = []
+            event_hashtag_hashtag_hashtags = representation.get('event').get('hashtag').get('hashtag_hashtags')
+            if event_hashtag_hashtag_hashtags is not None:
+                for event_hashtag in event_hashtag_hashtag_hashtags:
+                    event_hashtags.append(event_hashtag['hashtags'])
+            representation['event_hashtags'] = event_hashtags
+        except Exception as e:
+            representation['event_hashtags'] = []
         try:
-            prev_posts = JoinPost.objects.filter(sns_id=representation['sns_id'], type=representation['type'])
-        except JoinPost.DoesNotExist:
-            prev_posts = []
-        prev_posts_serializer = JoinPostSerializer(data=prev_posts, many=True)
-        prev_posts_serializer.is_valid()
-
-        like_count, comment_count = 0, 0
-        for prev_post in prev_posts_serializer.data:
-            like_count += prev_post['like_count']
-            comment_count += prev_post['comment_count']
-
-        representation['prev_posts'] = {
-            'like_count': like_count,
-            'comment_count': comment_count,
-        }
-
-        hashtags = []
-        for hashtag_hashtag in representation['event']['hashtag']['hashtag_hashtags']:
-            hashtags.append(hashtag_hashtag['hashtags'])
-
-        representation['event']['hashtag'] = hashtags
+            representation['hashtags'] = representation['hashtags'].split(',')
+        except Exception as e:
+            representation['hashtags'] = []
         return representation
 
 
-class OtherJoinSerializer(ThisJoinSerializer):
-    reward = None
-
-    class Meta:
-        model = JoinPost
-        exclude = ['reward']
-
-
-class JoinPostSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = JoinPost
-        fields = '__all__'
-
-
-class JoinUserSerializer(serializers.ModelSerializer):
+class JoinUserScrapSerializer(serializers.ModelSerializer):
     class Meta:
         model = JoinUser
         fields = '__all__'
+
+
+class JoinRewardThisPostSerializer(serializers.ModelSerializer):
+    event = EventSerializer()
+    reward = RewardSerializer()
+
+    class Meta:
+        model = JoinPost
+        fields = '__all__'
+
+    def to_representation(self, instance):
+        representation = super().to_representation(instance)
+
+        # 해시태그 파싱
+        try:
+            event_hashtags = []
+            event_hashtag_hashtag_hashtags = representation.get('event').get('hashtag').get('hashtag_hashtags')
+            if event_hashtag_hashtag_hashtags is not None:
+                for event_hashtag in event_hashtag_hashtag_hashtags:
+                    event_hashtags.append(event_hashtag['hashtags'])
+            representation['event_hashtags'] = event_hashtags
+        except Exception as e:
+            representation['event_hashtags'] = []
+
+        try:
+            representation['hashtags'] = representation['hashtags'].split(',')
+        except Exception as e:
+            representation['hashtags'] = []
+
+        # JOIN join_user : JoinUserSerializer
+        try:
+            join_user = JoinUser.objects.get(sns_id=representation['sns_id'], type=representation['type'])
+            join_user_serializer = JoinUserSerializer(join_user)
+            representation['follow_count'] = join_user_serializer.data['follow_count']
+        except Exception as e:
+            representation['follow_count'] = 0
+
+        return representation
+
+
+class JoinRewardOtherPostSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = JoinPost
+        fields = '__all__'
+
+    def to_representation(self, instance):
+        representation = super().to_representation(instance)
+        # JOIN join_user
+        try:
+            join_user = JoinUser.objects.get(sns_id=representation['sns_id'], type=representation['type'])
+            join_user_serializer = JoinUserSerializer(join_user)
+            representation['follow_count'] = join_user_serializer.data['follow_count']
+        except Exception as e:
+            representation['follow_count'] = 0
+        return representation

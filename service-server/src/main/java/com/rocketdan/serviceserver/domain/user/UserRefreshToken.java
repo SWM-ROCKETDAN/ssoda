@@ -24,7 +24,7 @@ public class UserRefreshToken {
         this.refreshToken = refreshToken;
     }
 
-    public void setRefreshToken(String refreshToken) {
+    public void updateRefreshToken(String refreshToken) {
         this.refreshToken = refreshToken;
     }
 }

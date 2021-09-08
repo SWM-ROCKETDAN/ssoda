@@ -1,84 +1,75 @@
-import 'dart:convert';
-
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:hashchecker_web/api.dart';
 import 'package:hashchecker_web/models/event.dart';
 import 'package:hashchecker_web/models/reward.dart';
 import 'components/body.dart';
-import 'package:http/http.dart' as http;
 
 class EventJoinScreen extends StatefulWidget {
-  final id;
-  const EventJoinScreen({Key? key, this.id}) : super(key: key);
+  final storeId;
+  final eventId;
+  const EventJoinScreen(
+      {Key? key, required this.storeId, required this.eventId})
+      : super(key: key);
 
   @override
   _EventJoinScreenState createState() => _EventJoinScreenState();
 }
 
 class _EventJoinScreenState extends State<EventJoinScreen> {
-  late Future<Map<String, dynamic>> data;
-
+  late Future<Event> event;
   @override
   void initState() {
     super.initState();
-    data = fetchData();
+    event = _fetchEventData();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: FutureBuilder<Map<String, dynamic>>(
-      future: data,
-      builder: (context, snapshot) {
-        if (snapshot.hasData) {
-          return Body(data: snapshot.data!, id: widget.id);
-        } else if (snapshot.hasError) {
-          return Text('${snapshot.error}');
-        }
+        body: FutureBuilder<Event>(
+            future: event,
+            builder: (context, snapshot) {
+              if (snapshot.hasData) {
+                return Body(
+                    storeId: widget.storeId,
+                    event: snapshot.data!,
+                    eventId: widget.eventId);
+              } else if (snapshot.hasError) {
+                return Text('${snapshot.error}');
+              }
 
-        // By default, show a loading spinner.
-        return Center(child: const CircularProgressIndicator());
-      },
-    ));
+              return Center(child: const CircularProgressIndicator());
+            }));
   }
 
-  Future<Map<String, dynamic>> fetchData() async {
-    Map<String, dynamic> fetchedData = {};
+  Future<List<Reward>> _fetchRewardListData() async {
+    var dio = Dio();
 
-    final eventResponse = await http
-        .get(Uri.parse(getApi(API.GET_EVENT, parameter: widget.id)), headers: {
-      "Access-Control-Allow-Origin": "*",
-      "Access-Control-Allow-Methods": "POST, GET, OPTIONS, PUT, DELETE, HEAD",
-    });
+    final getRewardListResponse = await dio.get(
+        getApi(API.GET_REWARD_OF_EVENT, suffix: '/${widget.eventId}/rewards'));
 
-    if (eventResponse.statusCode == 200) {
-      fetchedData['event'] =
-          Event.fromJson(jsonDecode(utf8.decode(eventResponse.bodyBytes)));
+    final fetchedRewardList = getRewardListResponse.data;
 
-      if (fetchedData['event'].status != EventStatus.PROCEEDING)
-        throw Exception('현재 진행 중이지 않은 이벤트입니다.');
+    List<Reward> rewardList = List.generate(fetchedRewardList.length,
+        (index) => Reward.fromJson(fetchedRewardList[index]));
 
-      final rewardsResponse = await http
-          .get(Uri.parse('$baseUrl/events/${widget.id}/rewards'), headers: {
-        "Access-Control-Allow-Origin": "*",
-        "Access-Control-Allow-Methods": "POST, GET, OPTIONS, PUT, DELETE, HEAD",
-      });
-      if (rewardsResponse.statusCode == 200) {
-        fetchedData['rewards'] = [];
+    return rewardList;
+  }
 
-        List<dynamic> rewards =
-            jsonDecode(utf8.decode(rewardsResponse.bodyBytes));
+  Future<Event> _fetchEventData() async {
+    List<Reward> _rewardList = await _fetchRewardListData();
 
-        for (int i = 0; i < rewards.length; i++) {
-          fetchedData['rewards'].add(Reward.fromJson(rewards[i]));
-        }
+    var dio = Dio();
 
-        return fetchedData;
-      } else {
-        throw Exception('이벤트 상품 정보를 불러올 수 없습니다.');
-      }
-    } else {
-      throw Exception('존재하지 않는 이벤트입니다.');
-    }
+    final getEventResponse =
+        await dio.get(getApi(API.GET_EVENT, suffix: '/${widget.eventId}'));
+
+    final fetchedEvent = getEventResponse.data;
+
+    Event event = Event.fromJson(fetchedEvent);
+    event.rewardList = _rewardList;
+
+    return event;
   }
 }

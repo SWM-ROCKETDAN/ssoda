@@ -4,10 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_web_auth/flutter_web_auth.dart';
 import 'package:hashchecker/api.dart';
 import 'package:hashchecker/constants.dart';
-import 'package:hashchecker/models/token.dart';
+import 'package:hashchecker/screens/create_store/components/intro.dart';
 import 'package:hashchecker/screens/hall/hall_screen.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:provider/provider.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 import 'components/kakao_sign_in_button.dart';
 import 'components/naver_sign_in_button.dart';
@@ -57,6 +57,7 @@ class _SignInScreenState extends State<SignInScreen> {
                         size: size,
                         signIn: kakaoLoginPressed,
                       ),
+                      ElevatedButton(onPressed: () {}, child: Text('테스트 코드')),
                       SizedBox(height: kDefaultPadding / 3 * 2),
                       Text('로그인 할 플랫폼을 선택해주세요!',
                           style:
@@ -70,81 +71,39 @@ class _SignInScreenState extends State<SignInScreen> {
     );
   }
 
-  Future<void> naverLoginPressed() async {
-    final url =
-        Uri.parse('${getApi(API.NAVER_LOGIN)}?redirect_uri=$kAppUrlScheme');
-
-    final result = await FlutterWebAuth.authenticate(
-        url: url.toString(), callbackUrlScheme: kAppUrlScheme);
-
-    final accessToken = Uri.parse(result).queryParameters['token'];
-
-    context.read<Token>().token = accessToken;
-
-    Navigator.of(context).push(_routeToHallScreen());
+  void naverLoginPressed() {
+    signIn(getApi(API.NAVER_LOGIN));
   }
 
-  Future<void> kakaoLoginPressed() async {
-    final url =
-        Uri.parse('${getApi(API.KAKAO_LOGIN)}?redirect_uri=$kAppUrlScheme');
-
-    final result = await FlutterWebAuth.authenticate(
-        url: url.toString(), callbackUrlScheme: kAppUrlScheme);
-
-    final accessToken = Uri.parse(result).queryParameters['token'];
-
-    context.read<Token>().token = accessToken;
-
-    Navigator.of(context).push(_routeToHallScreen());
-
-    /* LOGOUT TEST CODE
-    var dio = Dio();
-    dio.options.headers['Authorization'] = 'Bearer $accessToken';
-
-    final response = await dio.get('$baseUrl/logout');
-
-    print(response.data);
-    */
+  void kakaoLoginPressed() {
+    signIn(getApi(API.KAKAO_LOGIN));
   }
 
-  Future<void> createStore() async {
-    var dio = Dio();
-    dio.options.headers['Authorization'] =
-        'Bearer ${context.read<Token>().token!}';
+  Future<void> signIn(String api) async {
+    final storage = new FlutterSecureStorage();
+    try {
+      // open login page & redirect auth code to back-end
+      final url = Uri.parse('$api?redirect_uri=$kAppUrlScheme');
 
-    final getUserInfoResponse = await dio.get(getApi(API.GET_USER_INFO));
+      // get callback data from back-end
+      final result = await FlutterWebAuth.authenticate(
+          url: url.toString(), callbackUrlScheme: kAppUrlScheme);
 
-    final id = getUserInfoResponse.data['id'];
+      // parsing accessToken & refreshToken from callback data
+      final accessToken = Uri.parse(result).queryParameters['access-token'];
+      final refreshToken = Uri.parse(result).queryParameters['refresh-token'];
 
-    dio.options.contentType = 'multipart/form-data';
+      // save tokens on secure storage
+      await storage.write(key: 'ACCESS_TOKEN', value: accessToken);
+      await storage.write(key: 'REFRESH_TOKEN', value: refreshToken);
+    } catch (e) {
+      showLoginFailDialog(e.toString());
+    }
 
-    final ImagePicker _imagePicker = ImagePicker();
-    final XFile? image =
-        await _imagePicker.pickImage(source: ImageSource.gallery);
-
-    var storeData = FormData.fromMap({
-      'name': 'yjyoon_store',
-      'category': 1,
-      'city': '서울',
-      'country': '광진구',
-      'town': '광장동',
-      'roadCode': '000000000000',
-      'road': '아차산로 549',
-      'zipCode': '04983',
-      'description': '상세 설명',
-      'images': [
-        await MultipartFile.fromFile(image!.path),
-      ]
-    });
-
-    final createStoreResponse = await dio.post(
-        getApi(API.CREATE_STORE, parameter: id.toString()),
-        data: storeData);
-
-    print(createStoreResponse.data);
+    Navigator.of(context).push(_routeToCreateStoreScreen());
   }
 
-  void showLoginFailDialog() {
+  void showLoginFailDialog(String errMsg) {
     showDialog(
         context: context,
         builder: (context) => AlertDialog(
@@ -157,7 +116,7 @@ class _SignInScreenState extends State<SignInScreen> {
               child: Column(children: [
                 Text("로그인 도중 오류가 발생하였습니다.", style: TextStyle(fontSize: 14)),
                 SizedBox(height: kDefaultPadding / 5),
-                Text("네트워크 연결 상태를 확인해주세요.", style: TextStyle(fontSize: 14)),
+                Text(errMsg, style: TextStyle(fontSize: 14)),
               ]),
             ),
             contentPadding: const EdgeInsets.fromLTRB(15, 15, 15, 5),
@@ -175,7 +134,7 @@ class _SignInScreenState extends State<SignInScreen> {
   }
 }
 
-Route _routeToHallScreen() {
+Route _routeToCreateStoreScreen() {
   return PageRouteBuilder(
     pageBuilder: (context, animation, secondaryAnimation) => const HallScreen(),
     transitionsBuilder: (context, animation, secondaryAnimation, child) {

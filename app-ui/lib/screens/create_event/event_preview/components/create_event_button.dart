@@ -1,13 +1,9 @@
-import 'dart:convert';
-
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:hashchecker/api.dart';
 import 'package:hashchecker/constants.dart';
 import 'package:hashchecker/models/event.dart';
-import 'package:hashchecker/models/token.dart';
 import 'package:hashchecker/screens/create_event/show_qrcode/show_qrcode_screen.dart';
-import 'package:provider/provider.dart';
 import 'package:intl/intl.dart';
 
 class CreateEventButton extends StatelessWidget {
@@ -26,12 +22,9 @@ class CreateEventButton extends StatelessWidget {
               color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold),
         ),
         onPressed: () async {
-          var dio = Dio();
+          var dio = await authDio();
 
-          dio.options.headers['Authorization'] =
-              'Bearer ${context.read<Token>().token!}';
-
-          final storeId = await _getUserStoreId(context.read<Token>().token!);
+          final storeId = await _getUserStoreId();
 
           dio.options.contentType = 'multipart/form-data';
 
@@ -51,10 +44,9 @@ class CreateEventButton extends StatelessWidget {
           });
 
           var eventResponse = await dio.post(
-              getApi(API.CREATE_EVENT, parameter: storeId),
+              getApi(API.CREATE_EVENT, suffix: '/$storeId'),
               data: eventData);
 
-          if (eventResponse.statusCode != 200) print('이벤트 생성 오류');
           var rewardsData = FormData();
 
           for (int i = 0; i < event.rewardList.length; i++) {
@@ -74,11 +66,8 @@ class CreateEventButton extends StatelessWidget {
           }
 
           var rewardsResponse = await dio.post(
-              getApi(API.CREATE_REWARDS,
-                  parameter: eventResponse.data.toString()),
+              getApi(API.CREATE_REWARDS, suffix: '/${eventResponse.data}'),
               data: rewardsData);
-
-          if (rewardsResponse.statusCode != 200) print('보상 생성 오류');
 
           Navigator.push(
             context,
@@ -99,16 +88,13 @@ class CreateEventButton extends StatelessWidget {
     );
   }
 
-  Future<String> _getUserStoreId(String token) async {
-    var dio = Dio();
+  Future<String> _getUserStoreId() async {
+    var dio = await authDio();
 
-    dio.options.headers['Authorization'] = 'Bearer $token';
     dio.options.contentType = 'application/json';
 
-    final response = await dio.get(getApi(API.GET_USER_STORE));
+    final response = await dio.get(getApi(API.GET_USER_STORES));
 
-    print(response.data);
-
-    return response.data[0]['id'].toString();
+    return response.data.last['id'].toString();
   }
 }

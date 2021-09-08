@@ -6,14 +6,16 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.ColumnDefault;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.Where;
 
 import javax.persistence.*;
 
 @Entity
 @Getter
 @NoArgsConstructor
-//@SQLDelete(sql = "UPDATE reward SET deleted = true WHERE id = ?")
-//@Where(clause = "deleted = false")
+@SQLDelete(sql = "UPDATE reward SET deleted = true WHERE id = ?")
+@Where(clause = "deleted = false")
 public class Reward {
     @Id
     @JsonIgnore
@@ -44,9 +46,9 @@ public class Reward {
     @Column(nullable = false)
     private Integer usedCount = 0;
 
-//    @ColumnDefault("false")
-//    @Column(nullable = false)
-//    private Boolean deleted = false;
+    @ColumnDefault("false")
+    @Column(nullable = false)
+    private Boolean deleted = false;
 
     @Builder
     public Reward(Event event, Integer level, Integer category, String name, String imagePath, Integer price, Integer count) {
@@ -65,5 +67,10 @@ public class Reward {
         if (!event.getRewards().contains(this)) {
             event.getRewards().add(this);
         }
+    }
+
+    public Integer increaseUsedCount() {
+        this.usedCount += 1;
+        return this.usedCount;
     }
 }

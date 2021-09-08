@@ -48,6 +48,8 @@ INSTALLED_APPS = [
     'core',
     'join',
     'report',
+    'task',
+    'test',
 ]
 
 REST_FRAMEWORK = {

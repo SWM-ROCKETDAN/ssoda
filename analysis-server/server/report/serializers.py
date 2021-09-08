@@ -30,9 +30,17 @@ class ThisJoinSerializer(serializers.ModelSerializer):
     class Meta:
         model = JoinPost
         fields = [
-            'reward', 'event', 'sns_id',
-            'type', 'status', 'like_count', 'comment_count',
-            'hashtags', 'upload_date', 'private_date', 'delete_date',
+            'reward',
+            'event',
+            'sns_id',
+            'type',
+            'status',
+            'like_count',
+            'comment_count',
+            'hashtags',
+            'upload_date',
+            'private_date',
+            'delete_date',
         ]
 
     def to_representation(self, instance):

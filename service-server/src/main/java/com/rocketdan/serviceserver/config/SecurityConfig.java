@@ -5,7 +5,6 @@ import com.rocketdan.serviceserver.config.auth.CustomOAuth2UserService;
 import com.rocketdan.serviceserver.config.properties.AppProperties;
 import com.rocketdan.serviceserver.config.properties.CorsProperties;
 import com.rocketdan.serviceserver.domain.user.Role;
-import com.rocketdan.serviceserver.domain.user.UserRefreshTokenRepository;
 import com.rocketdan.serviceserver.oauth.filter.TokenAuthenticationFilter;
 import com.rocketdan.serviceserver.oauth.handler.OAuth2AuthenticationFailureHandler;
 import com.rocketdan.serviceserver.oauth.handler.OAuth2AuthenticationSuccessHandler;
@@ -14,6 +13,7 @@ import com.rocketdan.serviceserver.oauth.handler.TokenAccessDeniedHandler;
 import com.rocketdan.serviceserver.oauth.repository.OAuth2AuthorizationRequestBasedOnCookieRepository;
 import com.rocketdan.serviceserver.oauth.service.CustomUserDetailsService;
 import com.rocketdan.serviceserver.provider.security.JwtAuthTokenProvider;
+import com.rocketdan.serviceserver.service.UserRefreshTokenService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -42,7 +42,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private final CustomUserDetailsService userDetailsService;
     private final CustomOAuth2UserService oAuth2UserService;
     private final TokenAccessDeniedHandler tokenAccessDeniedHandler;
-    private final UserRefreshTokenRepository userRefreshTokenRepository;
+    private final UserRefreshTokenService userRefreshTokenService;
 
     /*
      * UserDetailsService 설정
@@ -73,8 +73,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                     .authorizeRequests()
                     .requestMatchers(CorsUtils::isPreFlightRequest).permitAll()
-                    .antMatchers(HttpMethod.GET, "/api/v1/events/**", "/api/v1/stores/**", "**login**", "/favicon.ico").permitAll()
-                    .antMatchers(HttpMethod.POST, "/api/v1/join/**").permitAll()
+                    .antMatchers(HttpMethod.GET, "/api/v1/events/**", "/api/v1/stores/**", "**login**", "/favicon.ico", "/api/v1/auth/**").permitAll()
+                    .antMatchers(HttpMethod.POST, "/api/v1/join/events/**").permitAll()
+                    .antMatchers(HttpMethod.PUT, "/api/v1/join/posts/**").permitAll()
                     .antMatchers("/api/v1/**").hasAnyAuthority(Role.USER.getCode())
                     .antMatchers("/api/**/admin/**").hasAnyAuthority(Role.ADMIN.getCode())
                     // 나머지는 인증된 사용자만 접근 허용
@@ -144,7 +145,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         return new OAuth2AuthenticationSuccessHandler(
                 jwtAuthTokenProvider,
                 appProperties,
-                userRefreshTokenRepository,
+                userRefreshTokenService,
                 oAuth2AuthorizationRequestBasedOnCookieRepository()
         );
     }

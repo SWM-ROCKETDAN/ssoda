@@ -1,20 +1,20 @@
-import 'dart:convert';
-
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:hashchecker_web/api.dart';
 import 'package:hashchecker_web/constants.dart';
-import 'package:hashchecker_web/models/event.dart';
 import 'package:hashchecker_web/models/reward.dart';
 import 'package:hashchecker_web/screens/reward_get/reward_get_screen.dart';
-import 'package:http/http.dart' as http;
 
 class EventJoinWithUrl extends StatefulWidget {
-  final Map<String, dynamic> data;
-  final id;
+  final event;
+  final eventId;
   final loading;
   const EventJoinWithUrl(
-      {Key? key, required this.data, required this.id, required this.loading})
+      {Key? key,
+      required this.event,
+      required this.eventId,
+      required this.loading})
       : super(key: key);
 
   @override
@@ -120,29 +120,26 @@ class _EventJoinWithUrlState extends State<EventJoinWithUrl> {
 
     Map<String, dynamic> urlJson = {'url': _urlController.value.text.trim()};
 
-    final response =
-        await http.post(Uri.parse(getApi(API.GET_REWARD, parameter: widget.id)),
-            headers: {
-              "Access-Control-Allow-Origin": "*",
-              "Access-Control-Allow-Methods":
-                  "POST, GET, OPTIONS, PUT, DELETE, HEAD",
-              "Accept": "application/json",
-              "content-type": "application/json"
-            },
-            body: jsonEncode(urlJson));
+    var dio = Dio();
 
-    print(response.body);
+    dio.options.contentType = 'application/json';
+    dio.options.headers['Access-Control-Allow-Origin'] = '*';
+
+    final response = await dio.post(
+        getApi(API.GET_REWARD, suffix: '/${widget.eventId}'),
+        data: urlJson);
+
+    print(response.data);
 
     widget.loading(false);
 
     if (response.statusCode == 200) {
-      Reward reward =
-          Reward.fromJson(jsonDecode(utf8.decode(response.bodyBytes)));
+      Reward reward = Reward.fromJson(response.data);
       Navigator.push(
         context,
         MaterialPageRoute(
           builder: (context) => RewardGetScreen(
-              eventTitle: widget.data['event'].title,
+              eventTitle: widget.event.title,
               rewardName: reward.name,
               rewardImage: reward.imgPath),
         ),

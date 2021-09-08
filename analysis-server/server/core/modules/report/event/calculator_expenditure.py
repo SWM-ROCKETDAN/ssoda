@@ -1,4 +1,4 @@
 def calculate_expenditure_count(price):
     if price is None:
-        return 0
+        price = 0
     return price

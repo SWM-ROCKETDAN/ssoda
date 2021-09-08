@@ -21,7 +21,7 @@ class Empty extends StatelessWidget {
             ),
             Text(
               '먼저 이벤트를 등록해주세요!',
-              style: TextStyle(color: kLiteFontColor),
+              style: TextStyle(color: kLiteFontColor, height: 1.3),
             )
           ],
         ));
