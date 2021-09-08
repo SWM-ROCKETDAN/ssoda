@@ -23,7 +23,8 @@ enum API {
   GET_REWARD_OF_EVENT,
   CREATE_STORE,
   CREATE_EVENT,
-  CREATE_REWARDS
+  CREATE_REWARDS,
+  UPDATE_EVENT
 }
 
 Map<API, String> apiMap = {
@@ -40,7 +41,8 @@ Map<API, String> apiMap = {
   API.GET_REWARD_OF_EVENT: '/api/v1/events', // '/{id}/rewards'
   API.CREATE_STORE: '/api/v1/stores/users',
   API.CREATE_EVENT: '/api/v1/events/hashtag/stores',
-  API.CREATE_REWARDS: '/api/v1/rewards/events'
+  API.CREATE_REWARDS: '/api/v1/rewards/events',
+  API.UPDATE_EVENT: '/api/v1/events/hashtag' // '/{event_id}'
 };
 
 String getApi(API apiType, {String? suffix}) {
