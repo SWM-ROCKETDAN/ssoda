@@ -41,9 +41,16 @@ public class RewardService {
         // valid 하지 않으면 exception 발생
         userIdValidCheck.userIdValidCheck(linkedEvent.getStore().getUser().getUserId(), principal);
 
-        String imgPath = imageManagerService.upload("image/reward", requestDto.getImage());
+        // 이미지
+        String imgPath = null;
+
+        if (!requestDto.getImage().isEmpty()) {
+            imgPath = imageManagerService.upload("image/reward", requestDto.getImage());
+        }
 
         Reward savedReward = requestDto.toEntity(imgPath);
+
+        // link event
         savedReward.setEvent(linkedEvent);
 
         return rewardRepository.save(savedReward).getId();

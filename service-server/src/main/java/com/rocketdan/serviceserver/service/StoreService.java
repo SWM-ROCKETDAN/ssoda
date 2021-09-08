@@ -67,7 +67,6 @@ public class StoreService {
         List<String> imgPaths = new ArrayList<>();
         List<String> prevImgPaths = store.getImagePaths();
 
-
         if (!requestDto.getDeleteImagePaths().isEmpty()) {
             imageManagerService.delete(requestDto.getDeleteImagePaths());
         }
