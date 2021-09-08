@@ -1,28 +1,34 @@
 import 'package:flutter/material.dart';
 import 'package:hashchecker_web/constants.dart';
 import 'package:hashchecker_web/models/event.dart';
-import 'package:hashchecker_web/models/reward.dart';
+import 'package:hashchecker_web/models/requires.dart';
 
 class EventRequirements extends StatelessWidget {
   const EventRequirements({
     Key? key,
-    required this.data,
+    required this.event,
   }) : super(key: key);
 
-  final Map<String, dynamic> data;
+  final Event event;
 
   @override
   Widget build(BuildContext context) {
     return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
       Text('추가 조건',
-          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 17)),
+          style: TextStyle(
+              fontWeight: FontWeight.bold,
+              fontSize: 17,
+              color: kDefaultFontColor)),
       SizedBox(height: kDefaultPadding),
       Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: List.generate(
-              data['event'].requireList.length,
-              (index) => data['event'].requireList[index]
-                  ? Text('$index번째 요청사항\n')
+              event.requireList.length,
+              (index) => event.requireList[index]
+                  ? Text(
+                      '• ${requireSingleLineStringList[index]}\n',
+                      style: TextStyle(color: kDefaultFontColor),
+                    )
                   : Container()))
     ]);
   }

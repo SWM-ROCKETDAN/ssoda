@@ -1,5 +1,3 @@
-import 'package:hashchecker_web/models/reward_category.dart';
-
 import 'reward.dart';
 import 'period.dart';
 import 'template.dart';
@@ -8,24 +6,37 @@ import 'package:intl/intl.dart';
 enum EventStatus { WAITING, PROCEEDING, ENDED }
 
 class Event {
-  final String title;
-  final Period period;
-  final List<String?> images;
-  final List<String> hashtagList;
-  final List<bool> requireList;
-  final Template template;
-  final EventStatus status;
-  final int storeId;
+  String title;
+  List<Reward?> rewardList;
+  Period period;
+  List<String?> images;
+  List<String> hashtagList;
+  List<bool> requireList;
+  Template template;
+  EventStatus? status;
 
   Event(
       {required this.title,
+      required this.rewardList,
       required this.hashtagList,
       required this.period,
       required this.images,
       required this.requireList,
       required this.template,
-      required this.status,
-      required this.storeId});
+      this.status});
+
+  Map<String, dynamic> toJson() => {
+        'title': title,
+        'startDate': DateFormat('yyyy-MM-ddTHH:mm:ss').format(period.startDate),
+        'finishDate': period.finishDate == null
+            ? null
+            : DateFormat('yyyy-MM-ddTHH:mm:ss').format(period.finishDate!),
+        'images': images,
+        'rewards': rewardList,
+        'hashtags': hashtagList,
+        'requirements': requireList,
+        'template': template.id
+      };
 
   factory Event.fromJson(Map<String, dynamic> json) {
     var hashtagsFromJson = json['hashtags'];
@@ -38,16 +49,17 @@ class Event {
 
     return Event(
         title: json['title'],
+        rewardList: [], // need additional step to set rewardList
         hashtagList: hashtagList,
         period: Period(
             DateFormat('yyyy-MM-ddTHH:mm:ss').parse(json['startDate']),
             json['finishDate'] == null
                 ? null
-                : DateFormat('yyyy-MM-ddTHH:mm:ss').parse(json['finishDate'])),
+                : DateFormat('yyyy-MM-ddTHH:mm:ss').parse(json['finishDate']),
+            null),
         images: images,
         requireList: requireList,
-        status: EventStatus.values[json['status']],
-        storeId: json['store_id'],
-        template: Template(json['template']));
+        template: Template(json['template']),
+        status: EventStatus.values[json['status']]);
   }
 }

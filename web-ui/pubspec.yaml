@@ -21,6 +21,9 @@ dependencies:
   url_strategy: ^0.2.0
   loading_overlay: ^0.3.0
   animated_text_kit: ^4.2.1
+  dio: ^4.0.0
+  flutter_staggered_animations: ^1.0.0
+  animations: ^2.0.1
   
 dev_dependencies:
   flutter_test:

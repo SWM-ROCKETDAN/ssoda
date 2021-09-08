@@ -4,14 +4,14 @@ import 'package:hashchecker_web/screens/reward_get/reward_get_screen.dart';
 import 'package:loading_overlay/loading_overlay.dart';
 import 'package:animated_text_kit/animated_text_kit.dart';
 
-class EventListViewScreen extends StatefulWidget {
-  const EventListViewScreen({Key? key}) : super(key: key);
+class SsodaMapScreen extends StatefulWidget {
+  const SsodaMapScreen({Key? key}) : super(key: key);
 
   @override
-  _EventListViewScreenState createState() => _EventListViewScreenState();
+  _SsodaMapScreenState createState() => _SsodaMapScreenState();
 }
 
-class _EventListViewScreenState extends State<EventListViewScreen> {
+class _SsodaMapScreenState extends State<SsodaMapScreen> {
   bool _isLoading = true;
   @override
   Widget build(BuildContext context) {
