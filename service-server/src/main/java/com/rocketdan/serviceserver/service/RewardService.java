@@ -6,6 +6,7 @@ import com.rocketdan.serviceserver.Exception.join.JoinEventFailedException;
 import com.rocketdan.serviceserver.Exception.resource.NoAuthorityToResourceException;
 import com.rocketdan.serviceserver.config.AnalysisServerConfig;
 import com.rocketdan.serviceserver.config.auth.UserIdValidCheck;
+import com.rocketdan.serviceserver.core.CommonResponse;
 import com.rocketdan.serviceserver.s3.service.ImageManagerService;
 import com.rocketdan.serviceserver.web.dto.reward.RewardLevelResponseDto;
 import org.springframework.http.HttpStatus;
@@ -55,13 +56,13 @@ public class RewardService {
     }
 
     // analysis-server에 put 요청
-    public RewardLevelResponseDto getRewardId(Long joinPostId) {
+    public CommonResponse getRewardId(Long joinPostId) {
         return analysisServerConfig.webClient().get() // GET method
                 .uri("/api/v1/join/rewards/" + joinPostId + "/") // baseUrl 이후 uri
                 .retrieve() // client message 전송
                 .onStatus(HttpStatus::is4xxClientError, clientResponse -> Mono.error(JoinEventFailedException::new))
                 .onStatus(HttpStatus::is5xxServerError, clientResponse -> Mono.error(AnalysisServerErrorException::new))
-                .bodyToMono(RewardLevelResponseDto.class) // body type
+                .bodyToMono(CommonResponse.class) // body type
                 .block(); // await
     }
 

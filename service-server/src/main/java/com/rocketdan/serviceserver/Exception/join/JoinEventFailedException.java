@@ -9,7 +9,7 @@ public class JoinEventFailedException extends RuntimeException{
         super(ErrorCode.JOIN_EVENT_FAILED.getMessage());
     }
 
-    private JoinEventFailedException(String msg){
+    public JoinEventFailedException(String msg){
         super(msg);
     }
 

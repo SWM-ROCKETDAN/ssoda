@@ -1,5 +1,6 @@
 package com.rocketdan.serviceserver.web;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.rocketdan.serviceserver.app.dto.reward.RewardResponseDto;
 import com.rocketdan.serviceserver.core.CommonResponse;
 import com.rocketdan.serviceserver.service.JoinPostService;
@@ -9,7 +10,7 @@ import com.rocketdan.serviceserver.web.dto.reward.RewardLevelRequestDto;
 import com.rocketdan.serviceserver.web.dto.reward.RewardLevelResponseDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.transaction.annotation.Transactional;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @Slf4j
@@ -21,7 +22,6 @@ public class JoinApiController {
     private final JoinUserService joinUserService;
     private final RewardService rewardService;
 
-    @Transactional
     @PostMapping("/events/{event_id}")
     public RewardResponseDto joinEventAndRetrieveReward(@PathVariable Long event_id, @RequestBody RewardLevelRequestDto requestDto) {
         // (1) join_post 저장
@@ -37,9 +37,22 @@ public class JoinApiController {
         CommonResponse putJoinUserResponse = joinUserService.putJoinUser(joinUserId);
 
         // (5) analysis-server에 reward level 요청
-        RewardLevelResponseDto rewardLevelResponseDto = rewardService.getRewardId(joinPostId);
-
+        ObjectMapper objectMapper = new ObjectMapper();
+        RewardLevelResponseDto rewardLevelResponse = objectMapper.convertValue(rewardService.getRewardId(joinPostId).getData(), RewardLevelResponseDto.class);
         // (6) reward 찾아 front에 return
-        return rewardService.findById(rewardLevelResponseDto.getReward_id());
+        return rewardService.findById(rewardLevelResponse.getReward_id());
+    }
+
+    @PutMapping("/posts/{post_id}/rewards")
+    public ResponseEntity<CommonResponse> receiveReward(@PathVariable Long post_id) {
+        Integer remainCount = joinPostService.updateReward(post_id);
+
+        return ResponseEntity.ok()
+                .body(CommonResponse.builder()
+                        .code("RECEIVE_REWARD_SUCCESS.")
+                        .status(200)
+                        .message(remainCount.toString())
+                        .build()
+                );
     }
 }

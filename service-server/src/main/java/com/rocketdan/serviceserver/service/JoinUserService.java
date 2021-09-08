@@ -12,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.retry.annotation.Retryable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import reactor.core.publisher.Mono;
 
 import java.util.Date;
@@ -26,6 +27,7 @@ public class JoinUserService {
 
     private final AnalysisServerConfig analysisServerConfig;
 
+    @Transactional
     public Long save(Long joinPostId) {
         JoinPost linkedJoinPost = joinPostRepository.findById(joinPostId).orElseThrow(() -> new IllegalArgumentException("해당 게시글이 없습니다. id=" + joinPostId));
 
@@ -50,8 +52,8 @@ public class JoinUserService {
        return analysisServerConfig.webClient().put() // PUT method
                 .uri("/api/v1/join/users/" + joinUserId + "/") // baseUrl 이후 uri
                 .retrieve() // client message 전송
-                .onStatus(HttpStatus::is4xxClientError, clientResponse -> Mono.error(new JoinEventFailedException(Objects.requireNonNull(clientResponse.bodyToMono(CommonResponse.class).block()))))
-                .onStatus(HttpStatus::is5xxServerError, clientResponse -> Mono.error(new AnalysisServerErrorException(Objects.requireNonNull(clientResponse.bodyToMono(CommonResponse.class).block()))))
+                .onStatus(HttpStatus::is4xxClientError, clientResponse -> clientResponse.bodyToMono(CommonResponse.class).map(JoinEventFailedException::new))
+                .onStatus(HttpStatus::is5xxServerError, clientResponse -> clientResponse.bodyToMono(CommonResponse.class).map(AnalysisServerErrorException::new))
                 .bodyToMono(CommonResponse.class) // body type
                 .block(); // await
     }

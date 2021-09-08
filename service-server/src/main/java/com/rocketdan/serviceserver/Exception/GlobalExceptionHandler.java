@@ -6,7 +6,6 @@ import com.rocketdan.serviceserver.Exception.auth.token.NoExpiredTokenYetExcepti
 import com.rocketdan.serviceserver.Exception.file.FileConvertException;
 import com.rocketdan.serviceserver.Exception.file.FileUploadException;
 import com.rocketdan.serviceserver.Exception.analysis.AnalysisServerErrorException;
-import com.rocketdan.serviceserver.Exception.join.DuplicateUrlException;
 import com.rocketdan.serviceserver.Exception.join.JoinDifferentEventException;
 import com.rocketdan.serviceserver.Exception.join.JoinEventFailedException;
 import com.rocketdan.serviceserver.Exception.auth.token.CustomAuthenticationException;

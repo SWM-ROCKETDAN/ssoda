@@ -10,12 +10,13 @@ import com.rocketdan.serviceserver.domain.event.Event;
 import com.rocketdan.serviceserver.domain.event.EventRepository;
 import com.rocketdan.serviceserver.domain.join.post.JoinPost;
 import com.rocketdan.serviceserver.domain.join.post.JoinPostRepository;
+import com.rocketdan.serviceserver.domain.reward.Reward;
 import lombok.RequiredArgsConstructor;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.retry.annotation.Retryable;
 import org.springframework.stereotype.Service;
-import reactor.core.publisher.Mono;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 import java.util.Objects;
@@ -29,6 +30,7 @@ public class JoinPostService {
 
     private final AnalysisServerConfig analysisServerConfig;
 
+    @Transactional
     public Long save(Long event_id, String url) {
         // (1) URL 중복 검사
         Optional<JoinPost> joinPost = joinPostRepository.findByUrl(url);
@@ -57,13 +59,38 @@ public class JoinPostService {
         return joinPostRepository.save(savedJoinPost).getId();
     }
 
+    @Transactional
+    public Integer updateReward(Long postId) {
+        JoinPost joinPost = joinPostRepository.findById(postId).orElseThrow(() -> new IllegalArgumentException("해당 게시글이 없습니다. id=" + postId));
+
+        if (joinPost.getRewardDate() != null) {
+            throw new JoinEventFailedException("Post is already rewarded");
+        }
+
+        Reward reward = joinPost.getReward();
+
+        // (1) usedCount 감소
+        Integer increasedUsedCount = reward.increaseUsedCount();
+
+        // (2) rewardDate update
+        Date now = new Date();
+        joinPost.updateRewardDate(now);
+
+        // (2) usedCount >= count -> 이벤트 종료
+        if (increasedUsedCount >= reward.getCount()) {
+            joinPost.getEvent().finishStatus();
+        }
+
+        return reward.getCount() - increasedUsedCount;
+    }
+
     @Retryable(maxAttempts = 2, value = AnalysisServerErrorException.class)
     public CommonResponse putJoinPost(Long joinPostId) {
         return analysisServerConfig.webClient().put() // PUT method
                 .uri("/api/v1/join/posts/" + joinPostId + "/") // baseUrl 이후 uri
                 .retrieve() // client message 전송
-                .onStatus(HttpStatus::is4xxClientError, clientResponse -> Mono.error(new JoinEventFailedException(Objects.requireNonNull(clientResponse.bodyToMono(CommonResponse.class).block()))))
-                .onStatus(HttpStatus::is5xxServerError, clientResponse -> Mono.error(new AnalysisServerErrorException(Objects.requireNonNull(clientResponse.bodyToMono(CommonResponse.class).block()))))
+                .onStatus(HttpStatus::is4xxClientError, clientResponse -> clientResponse.bodyToMono(CommonResponse.class).map(JoinEventFailedException::new))
+                .onStatus(HttpStatus::is5xxServerError, clientResponse -> clientResponse.bodyToMono(CommonResponse.class).map(AnalysisServerErrorException::new))
                 .bodyToMono(CommonResponse.class) // body type
                 .block(); // await
     }
