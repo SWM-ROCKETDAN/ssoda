@@ -5,10 +5,11 @@ import 'package:hashchecker/constants.dart';
 import 'package:hashchecker/models/store.dart';
 import 'package:hashchecker/models/store_list_item.dart';
 import 'package:hashchecker/screens/event_list/event_list_screen.dart';
+import 'package:hashchecker/screens/info/info_screen.dart';
 import 'package:hashchecker/screens/marketing_report/store_report/store_report_screen.dart';
 import 'package:hashchecker/widgets/pandabar/pandabar.dart';
 
-enum TabPage { EVENT, STORE, REPORT, MORE }
+enum TabPage { EVENT, REPORT, RANKING, INFO }
 
 class HallScreen extends StatefulWidget {
   const HallScreen({Key? key}) : super(key: key);
@@ -23,11 +24,10 @@ class _HallScreenState extends State<HallScreen> {
 
   final pageMap = {
     TabPage.EVENT: EventListScreen(),
-    TabPage.STORE: Container(
-        color: kScaffoldBackgroundColor, child: Center(child: Text('스토어'))),
     TabPage.REPORT: StoreReportScreen(),
-    TabPage.MORE: Container(
-        color: kScaffoldBackgroundColor, child: Center(child: Text('더보기'))),
+    TabPage.RANKING: Container(
+        color: kScaffoldBackgroundColor, child: Center(child: Text('랭킹'))),
+    TabPage.INFO: InfoScreen(),
   };
 
   @override
@@ -45,10 +45,17 @@ class _HallScreenState extends State<HallScreen> {
         backgroundColor: kScaffoldBackgroundColor,
         shadowColor: kShadowColor,
         elevation: 1,
-        title: Container(
-          padding: const EdgeInsets.only(left: 5),
-          child: Image.asset('assets/images/appbar_logo.png'),
-          height: kToolbarHeight * 0.75,
+        title: GestureDetector(
+          onTap: () {
+            setState(() {
+              currentPage = TabPage.EVENT;
+            });
+          },
+          child: Container(
+            padding: const EdgeInsets.only(left: 5),
+            child: Image.asset('assets/images/appbar_logo.png'),
+            height: kToolbarHeight * 0.75,
+          ),
         ),
         actions: [
           FutureBuilder<List<StoreListItem>>(
@@ -87,13 +94,15 @@ class _HallScreenState extends State<HallScreen> {
           PandaBarButtonData(
               id: TabPage.EVENT, icon: Icons.grid_view_rounded, title: '이벤트'),
           PandaBarButtonData(
-              id: TabPage.STORE, icon: Icons.store_rounded, title: '스토어'),
-          PandaBarButtonData(
               id: TabPage.REPORT,
               icon: Icons.description_rounded,
-              title: '리포트'),
+              title: '보고서'),
           PandaBarButtonData(
-              id: TabPage.MORE, icon: Icons.more_horiz_rounded, title: '더보기'),
+              id: TabPage.RANKING, icon: Icons.star_rounded, title: '랭킹'),
+          PandaBarButtonData(
+              id: TabPage.INFO,
+              icon: Icons.account_circle_rounded,
+              title: '내정보'),
         ],
         onChange: (id) {
           setState(() {
