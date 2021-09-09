@@ -36,6 +36,12 @@ def check_post_is_already_rewarded(post_reward_date):
 # 게시물 해시태그와 이벤트 해시태그가 일치하는지 체크
 def check_match_post_hashtags_with_event_hashtags(post_hashtags, event_hashtags):
     match_count = 0
+    for i in range(len(post_hashtags)):
+        post_hashtags[i] = post_hashtags[i].upper()
+
+    for i in range(len(event_hashtags)):
+        event_hashtags[i] = event_hashtags[i].upper()
+        
     for event_hashtag in event_hashtags:
         if event_hashtag in post_hashtags:
             match_count += 1
