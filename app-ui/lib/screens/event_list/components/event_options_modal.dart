@@ -36,11 +36,17 @@ class EventOptionsModal extends StatelessWidget {
               onTap: () => Navigator.of(context).pop(),
             ),
           ListTile(
+            enabled: _isEnableToEdit(),
             title: Text('이벤트 편집',
                 style: TextStyle(
-                    color: kDefaultFontColor.withOpacity(0.8), fontSize: 15)),
+                    color: _isEnableToEdit()
+                        ? kDefaultFontColor.withOpacity(0.8)
+                        : kLiteFontColor.withOpacity(0.5),
+                    fontSize: 15)),
             leading: Icon(Icons.edit_rounded,
-                color: kDefaultFontColor.withOpacity(0.8)),
+                color: _isEnableToEdit()
+                    ? kDefaultFontColor.withOpacity(0.8)
+                    : kLiteFontColor.withOpacity(0.5)),
             onTap: () => showBarModalBottomSheet(
               expand: true,
               context: context,
@@ -79,12 +85,12 @@ class EventOptionsModal extends StatelessWidget {
             title: Text('이벤트 삭제',
                 style: TextStyle(
                     color: _isEnableToDelete()
-                        ? Colors.redAccent.shade400
+                        ? Colors.red
                         : kLiteFontColor.withOpacity(0.5),
                     fontSize: 15)),
             leading: Icon(Icons.delete_rounded,
                 color: _isEnableToDelete()
-                    ? Colors.redAccent.shade400
+                    ? Colors.red
                     : kLiteFontColor.withOpacity(0.5)),
             onTap: () => _showEventDeleteDialog(context),
           )
@@ -99,6 +105,10 @@ class EventOptionsModal extends StatelessWidget {
 
   bool _isEnableToDelete() {
     return eventStatus == EventStatus.ENDED;
+  }
+
+  bool _isEnableToEdit() {
+    return eventStatus != EventStatus.ENDED;
   }
 
   void _showEventDeleteDialog(BuildContext context) {
@@ -136,11 +146,10 @@ class EventOptionsModal extends StatelessWidget {
                         Navigator.of(context).pop();
                         await _showEventDeleteCompleteDialog(context);
                       },
-                      child: Text('삭제',
-                          style: TextStyle(color: Colors.redAccent.shade400)),
+                      child: Text('삭제', style: TextStyle(color: Colors.red)),
                       style: ButtonStyle(
                           overlayColor: MaterialStateProperty.all<Color>(
-                              Colors.redAccent.shade400.withOpacity(0.1))),
+                              Colors.red.withOpacity(0.1))),
                     ),
                     ElevatedButton(
                       onPressed: () {
@@ -148,8 +157,8 @@ class EventOptionsModal extends StatelessWidget {
                       },
                       child: Text('취소'),
                       style: ButtonStyle(
-                          backgroundColor: MaterialStateProperty.all<Color>(
-                              Colors.redAccent.shade400)),
+                          backgroundColor:
+                              MaterialStateProperty.all<Color>(Colors.red)),
                     ),
                   ],
                 ),

@@ -20,6 +20,7 @@ class SignInScreen extends StatefulWidget {
 }
 
 class _SignInScreenState extends State<SignInScreen> {
+  String? debugStr;
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -43,6 +44,7 @@ class _SignInScreenState extends State<SignInScreen> {
                         Text('안녕하세요, 사장님',
                             style: TextStyle(
                                 fontSize: 26.0, fontWeight: FontWeight.bold)),
+                        Text(debugStr ?? 'null'),
                       ]),
                 ),
                 Container(
@@ -57,7 +59,6 @@ class _SignInScreenState extends State<SignInScreen> {
                         size: size,
                         signIn: kakaoLoginPressed,
                       ),
-                      ElevatedButton(onPressed: () {}, child: Text('테스트 코드')),
                       SizedBox(height: kDefaultPadding / 3 * 2),
                       Text('로그인 할 플랫폼을 선택해주세요!',
                           style:

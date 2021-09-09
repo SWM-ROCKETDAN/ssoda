@@ -385,7 +385,7 @@ class _EventEditModalState extends State<EventEditModal> {
       items: List.generate(
           event.images.length,
           (index) => event.images[index] == null
-              ? Container(
+              ? SizedBox(
                   width: MediaQuery.of(context).size.width * 0.6,
                   child: TextButton(
                     onPressed: () {
