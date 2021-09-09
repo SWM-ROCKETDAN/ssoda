@@ -219,7 +219,7 @@ class CreateButton extends StatelessWidget {
               Center(
                 child: ElevatedButton(
                   onPressed: () {
-                    Navigator.of(context).push(_routeToHallScreen());
+                    Navigator.of(context).push(slidePageRouting(HallScreen()));
                   },
                   child: Text('확인', style: TextStyle(fontSize: 13)),
                   style: ButtonStyle(
@@ -232,25 +232,5 @@ class CreateButton extends StatelessWidget {
             ],
             shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(15))));
-  }
-
-  Route _routeToHallScreen() {
-    return PageRouteBuilder(
-      pageBuilder: (context, animation, secondaryAnimation) =>
-          const HallScreen(),
-      transitionsBuilder: (context, animation, secondaryAnimation, child) {
-        const begin = Offset(1.0, 0.0);
-        const end = Offset.zero;
-        const curve = Curves.ease;
-
-        var tween =
-            Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
-
-        return SlideTransition(
-          position: animation.drive(tween),
-          child: child,
-        );
-      },
-    );
   }
 }

@@ -49,8 +49,7 @@ class ButtonList extends StatelessWidget {
                   height: 45,
                   child: ElevatedButton(
                     onPressed: () {
-                      Navigator.push(context,
-                          MaterialPageRoute(builder: (context) => AppInfo()));
+                      Navigator.push(context, slidePageRouting(AppInfo()));
                     },
                     child: Text('앱 설정',
                         style:

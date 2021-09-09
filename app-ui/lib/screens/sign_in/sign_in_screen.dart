@@ -101,7 +101,7 @@ class _SignInScreenState extends State<SignInScreen> {
       showLoginFailDialog(e.toString());
     }
 
-    Navigator.of(context).push(_routeToCreateStoreScreen());
+    Navigator.of(context).push(slidePageRouting(HallScreen()));
   }
 
   void showLoginFailDialog(String errMsg) {
@@ -133,22 +133,4 @@ class _SignInScreenState extends State<SignInScreen> {
             shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(15))));
   }
-}
-
-Route _routeToCreateStoreScreen() {
-  return PageRouteBuilder(
-    pageBuilder: (context, animation, secondaryAnimation) => const HallScreen(),
-    transitionsBuilder: (context, animation, secondaryAnimation, child) {
-      const begin = Offset(1.0, 0.0);
-      const end = Offset.zero;
-      const curve = Curves.ease;
-
-      var tween = Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
-
-      return SlideTransition(
-        position: animation.drive(tween),
-        child: child,
-      );
-    },
-  );
 }
