@@ -9,7 +9,6 @@ import com.rocketdan.serviceserver.config.AnalysisServerConfig;
 import com.rocketdan.serviceserver.config.auth.UserIdValidCheck;
 import com.rocketdan.serviceserver.core.CommonResponse;
 import com.rocketdan.serviceserver.s3.service.ImageManagerService;
-import com.rocketdan.serviceserver.web.dto.reward.RewardLevelResponseDto;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Mono;
@@ -22,6 +21,9 @@ import com.rocketdan.serviceserver.domain.reward.Reward;
 import com.rocketdan.serviceserver.domain.reward.RewardRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Collections;
+import java.util.List;
 
 @RequiredArgsConstructor
 @Service
@@ -51,15 +53,26 @@ public class RewardService {
     }
 
     @Transactional
-    public Long update(Long event_id, RewardUpdateRequestDto requestDto, org.springframework.security.core.userdetails.User principal) throws NoAuthorityToResourceException {
-        Event linkedEvent = eventRepository.findById(event_id).orElseThrow(() -> new IllegalArgumentException("해당 이벤트가 없습니다. id=" + event_id));
+    public Long update(Long id, RewardUpdateRequestDto requestDto, org.springframework.security.core.userdetails.User principal) throws NoAuthorityToResourceException {
+        Reward reward = rewardRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("해당 리워드가 없습니다. id=" + id));
 
         // valid 하지 않으면 exception 발생
-        userIdValidCheck.userIdValidCheck(linkedEvent.getStore().getUser().getUserId(), principal);
+        userIdValidCheck.userIdValidCheck(reward.getEvent().getStore().getUser().getUserId(), principal);
 
-        String imgPath = imageManagerService.upload("image/reward", requestDto.getImage());
+        // 이미지
+        String imgPath = null;
 
-//        return rewardRepository.save(savedReward).getId();
+        if (reward.getImagePath() != null) {
+            imageManagerService.delete(reward.getImagePath());
+        }
+
+        if (!requestDto.getImage().isEmpty()) {
+            imgPath = imageManagerService.upload("image/reward", requestDto.getImage());
+        }
+
+        reward.update(requestDto.getLevel(), requestDto.getCategory(), requestDto.getName(), imgPath, requestDto.getPrice(), requestDto.getCount());
+
+        return id;
     }
 
     @Transactional(readOnly = true)
@@ -82,5 +95,14 @@ public class RewardService {
     public void softDelete(Long id) {
         Reward reward = rewardRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("해당 리워드가 없습니다. id=" + id));
         rewardRepository.delete(reward);
+    }
+
+    private void sortLevel(List<Reward> rewards) {
+        int level = 1;
+        Collections.sort(rewards);
+
+        for (Reward reward: rewards) {
+            reward.updateLevel(level++);
+        }
     }
 }
