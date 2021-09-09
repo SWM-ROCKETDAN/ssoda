@@ -17,6 +17,7 @@ import com.rocketdan.serviceserver.s3.service.ImageManagerService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -68,8 +69,16 @@ public class EventService {
         List<String> imgPaths = new ArrayList<>();
         List<String> prevImgPaths = event.getImagePaths();
 
+        for (String imagePath : requestDto.getDeleteImagePaths()) {
+            System.out.println(imagePath);
+        }
+
         if (!requestDto.getDeleteImagePaths().isEmpty()) {
             imageManagerService.delete(requestDto.getDeleteImagePaths());
+        }
+
+        for (MultipartFile image : requestDto.getNewImages()) {
+            System.out.println(image);
         }
 
         if (requestDto.getNewImages().get(0).getSize() != 0) {
