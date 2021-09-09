@@ -13,7 +13,7 @@ import com.rocketdan.serviceserver.domain.event.EventRepository;
 import com.rocketdan.serviceserver.domain.event.type.Hashtag;
 import com.rocketdan.serviceserver.domain.store.Store;
 import com.rocketdan.serviceserver.domain.store.StoreRepository;
-import com.rocketdan.serviceserver.s3.service.ImageManagerService;
+import com.rocketdan.serviceserver.s3.service.UpdateImageService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -27,7 +27,7 @@ public class EventService {
     private final EventRepository eventRepository;
     private final StoreRepository storeRepository;
 
-    private final ImageManagerService imageManagerService;
+    private final UpdateImageService updateImageService;
 
     private final UserIdValidCheck userIdValidCheck;
 
@@ -38,10 +38,15 @@ public class EventService {
         // valid 하지 않으면 exception 발생
         userIdValidCheck.userIdValidCheck(linkedStore.getUser().getUserId(), principal);
 
-        List<String> imgPaths = imageManagerService.upload("image/event", requestDto.getImages());
+        // 이미지
+        List<String> imgPaths = updateImageService.uploadNewImages(requestDto.getImages(), "image/event");
+
         Event savedEvent = requestDto.toEntity(imgPaths);
+
+        // link store
         savedEvent.setStore(linkedStore);
 
+        // status update
         savedEvent.updateStatus();
 
         return eventRepository.save(savedEvent).getId();
@@ -54,11 +59,11 @@ public class EventService {
         // valid 하지 않으면 exception 발생
         userIdValidCheck.userIdValidCheck(event.getStore().getUser().getUserId(), principal);
 
-        imageManagerService.delete(event.getImagePaths());
-        List<String> imgPaths = imageManagerService.upload("image/event", requestDto.getNewImages());
-        List<String> prevImgPaths = event.getImagePaths();
-        requestDto.getDeleteImagePaths().forEach(prevImgPaths::remove);
-        imgPaths.addAll(prevImgPaths);
+        // 이미지
+        List<String> imgPaths = updateImageService.uploadNewImages(requestDto.getNewImages(), "image/event");
+        List<String> filteredImgPaths = updateImageService.deleteImagePaths(event.getImagePaths(), requestDto.getDeleteImagePaths());
+
+        imgPaths.addAll(filteredImgPaths);
 
         event.update(requestDto.getTitle(), requestDto.getStatus(), requestDto.getStartDate(), requestDto.getFinishDate(), imgPaths,
                 requestDto.getHashtags(), requestDto.getRequirements(), requestDto.getTemplate());
