@@ -43,7 +43,8 @@ public class EventService {
         // 이미지
         List<String> imgPaths = new ArrayList<>();
 
-        if (requestDto.getImages().get(0).getSize() != 0) {
+        // images에 데이터가 있고, 해당 필드가 존재할 때
+        if (requestDto.getImages().get(0).getSize() != 0 && requestDto.getImages() != null) {
             imgPaths = imageManagerService.upload("image/event", requestDto.getImages());
         }
 
@@ -69,19 +70,13 @@ public class EventService {
         List<String> imgPaths = new ArrayList<>();
         List<String> prevImgPaths = event.getImagePaths();
 
-        for (String imagePath : requestDto.getDeleteImagePaths()) {
-            System.out.println(imagePath);
-        }
-
-        if (!requestDto.getDeleteImagePaths().isEmpty()) {
+        // deletedImagePaths에 데이터가 있고, 해당 필드가 존재할 때
+        if (!requestDto.getDeleteImagePaths().isEmpty() && requestDto.getDeleteImagePaths() != null) {
             imageManagerService.delete(requestDto.getDeleteImagePaths());
         }
 
-        for (MultipartFile image : requestDto.getNewImages()) {
-            System.out.println(image);
-        }
-
-        if (requestDto.getNewImages().get(0).getSize() != 0) {
+        // newImages에 데이터가 있고, 해당 필드가 존재할 때
+        if (requestDto.getNewImages().get(0).getSize() != 0 && requestDto.getNewImages() != null) {
             imgPaths = imageManagerService.upload("image/event", requestDto.getNewImages());
         }
 

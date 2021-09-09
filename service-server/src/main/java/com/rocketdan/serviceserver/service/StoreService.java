@@ -41,10 +41,13 @@ public class StoreService {
         List<String> imgPaths = new ArrayList<>();
         String logoImgPath = null;
 
-        if (requestDto.getImages().get(0).getSize() != 0) {
+        // images에 데이터가 있고, 해당 필드가 존재할 때
+        if (requestDto.getImages().get(0).getSize() != 0 && requestDto.getImages() != null) {
             imgPaths = imageManagerService.upload("image/store", requestDto.getImages());
         }
-        if (!requestDto.getLogoImage().isEmpty()) {
+
+        // logoImage에 데이터가 있고, 해당 필드가 존재할 때
+        if (!requestDto.getLogoImage().isEmpty() && requestDto.getImages() != null) {
             logoImgPath = imageManagerService.upload("image/store/logo", requestDto.getLogoImage());
         }
 
@@ -67,11 +70,13 @@ public class StoreService {
         List<String> imgPaths = new ArrayList<>();
         List<String> prevImgPaths = store.getImagePaths();
 
-        if (!requestDto.getDeleteImagePaths().isEmpty()) {
+        // deletedImagePaths에 데이터가 있고, 해당 필드가 존재할 때
+        if (!requestDto.getDeleteImagePaths().isEmpty() && requestDto.getDeleteImagePaths() != null) {
             imageManagerService.delete(requestDto.getDeleteImagePaths());
         }
 
-        if (requestDto.getNewImages().get(0).getSize() != 0) {
+        // newImages에 데이터가 있고, 해당 필드가 존재할 때
+        if (requestDto.getNewImages().get(0).getSize() != 0 && requestDto.getNewImages() != null) {
             imgPaths = imageManagerService.upload("image/store", requestDto.getNewImages());
         }
 
