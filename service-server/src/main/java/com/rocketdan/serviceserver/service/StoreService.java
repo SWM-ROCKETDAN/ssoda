@@ -11,12 +11,11 @@ import com.rocketdan.serviceserver.domain.store.Store;
 import com.rocketdan.serviceserver.domain.store.StoreRepository;
 import com.rocketdan.serviceserver.domain.user.User;
 import com.rocketdan.serviceserver.domain.user.UserRepository;
-import com.rocketdan.serviceserver.s3.service.ImageManagerService;
+import com.rocketdan.serviceserver.s3.service.UpdateImageService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -26,7 +25,7 @@ public class StoreService {
     private final StoreRepository storeRepository;
     private final UserRepository userRepository;
 
-    private final ImageManagerService imageManagerService;
+    private final UpdateImageService updateImageService;
 
     private final UserIdValidCheck userIdValidCheck;
 
@@ -38,18 +37,8 @@ public class StoreService {
         userIdValidCheck.userIdValidCheck(linkedUser.getUserId(), principal);
 
         // 이미지
-        List<String> imgPaths = new ArrayList<>();
-        String logoImgPath = null;
-
-        // images에 데이터가 있고, 해당 필드가 존재할 때
-        if (requestDto.getImages().get(0).getSize() != 0 && requestDto.getImages() != null) {
-            imgPaths = imageManagerService.upload("image/store", requestDto.getImages());
-        }
-
-        // logoImage에 데이터가 있고, 해당 필드가 존재할 때
-        if (!requestDto.getLogoImage().isEmpty() && requestDto.getImages() != null) {
-            logoImgPath = imageManagerService.upload("image/store/logo", requestDto.getLogoImage());
-        }
+        List<String> imgPaths = updateImageService.uploadNewImages(requestDto.getImages(), "image/store");
+        String logoImgPath = updateImageService.uploadNewImage(requestDto.getLogoImage(), "image/store/logo");
 
         Store savedStore = requestDto.toEntity(imgPaths, logoImgPath);
 
@@ -67,34 +56,14 @@ public class StoreService {
         userIdValidCheck.userIdValidCheck(store.getUser().getUserId(), principal);
 
         // 이미지
-        List<String> imgPaths = new ArrayList<>();
-        List<String> prevImgPaths = store.getImagePaths();
+        List<String> imgPaths = updateImageService.uploadNewImages(requestDto.getNewImages(), "image/store");
+        List<String> filteredImgPaths = updateImageService.deleteImagePaths(store.getImagePaths(), requestDto.getDeleteImagePaths());
 
-        // deletedImagePaths에 데이터가 있고, 해당 필드가 존재할 때
-        if (!requestDto.getDeleteImagePaths().isEmpty() && requestDto.getDeleteImagePaths() != null) {
-            imageManagerService.delete(requestDto.getDeleteImagePaths());
-        }
-
-        // newImages에 데이터가 있고, 해당 필드가 존재할 때
-        if (requestDto.getNewImages().get(0).getSize() != 0 && requestDto.getNewImages() != null) {
-            imgPaths = imageManagerService.upload("image/store", requestDto.getNewImages());
-        }
-
-        if (!prevImgPaths.isEmpty()) {
-            requestDto.getDeleteImagePaths().forEach(prevImgPaths::remove);
-            imgPaths.addAll(prevImgPaths);
-        }
+        imgPaths.addAll(filteredImgPaths);
 
         // logo 이미지
-        String logoImgPath = null;
-
-        if (store.getLogoImagePath() != null) {
-            imageManagerService.delete(store.getLogoImagePath());
-        }
-
-        if (!requestDto.getLogoImage().isEmpty()) {
-            logoImgPath = imageManagerService.upload("image/store/logo", requestDto.getLogoImage());
-        }
+        String logoImgPath = updateImageService.uploadNewImage(requestDto.getLogoImage(), "image/store/logo");
+        updateImageService.deleteImagePath(store.getLogoImagePath());
 
         // update
         store.update(requestDto.getName(), requestDto.getCategory(), requestDto.addressToEntity(), requestDto.getDescription(), imgPaths, logoImgPath);

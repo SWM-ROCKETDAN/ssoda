@@ -8,6 +8,7 @@ import com.rocketdan.serviceserver.config.AnalysisServerConfig;
 import com.rocketdan.serviceserver.config.auth.UserIdValidCheck;
 import com.rocketdan.serviceserver.core.CommonResponse;
 import com.rocketdan.serviceserver.s3.service.ImageManagerService;
+import com.rocketdan.serviceserver.s3.service.UpdateImageService;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Mono;
@@ -30,6 +31,7 @@ public class RewardService {
     private final AnalysisServerConfig analysisServerConfig;
 
     private final ImageManagerService imageManagerService;
+    private final UpdateImageService updateImageService;
 
     private final UserIdValidCheck userIdValidCheck;
 
@@ -41,12 +43,7 @@ public class RewardService {
         userIdValidCheck.userIdValidCheck(linkedEvent.getStore().getUser().getUserId(), principal);
 
         // 이미지
-        String imgPath = null;
-
-        // image에 데이터가 있고, 해당 필드가 존재할 때
-        if (!requestDto.getImage().isEmpty() && requestDto.getImage() != null) {
-            imgPath = imageManagerService.upload("image/reward", requestDto.getImage());
-        }
+        String imgPath = updateImageService.uploadNewImage(requestDto.getImage(), "image/reward");
 
         Reward savedReward = requestDto.toEntity(imgPath);
 
