@@ -45,7 +45,7 @@ class _AppInfoState extends State<AppInfo> {
           ListTile(
             title: Text('오픈소스 라이센스'),
             onTap: () {},
-            trailing: Icon(Icons.navigate_next_rounded),
+            trailing: Icon(Icons.navigate_next_rounded, color: kLiteFontColor),
           ),
           ListTile(title: Text('현재 버전 1.0.0'), onTap: () {})
         ],
