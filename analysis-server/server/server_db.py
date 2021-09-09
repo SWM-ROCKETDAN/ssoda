@@ -130,7 +130,7 @@ class Event(models.Model):
     status = models.IntegerField()
     title = models.CharField(max_length=255)
     store = models.ForeignKey('Store', models.DO_NOTHING, blank=True, null=True)
-    deleted = models.TextField()  # This field type is a guess.
+    deleted = models.IntegerField()
 
     class Meta:
         managed = False
@@ -201,9 +201,9 @@ class JoinPost(models.Model):
     event = models.ForeignKey(Event, models.DO_NOTHING)
     delete_date = models.DateTimeField(blank=True, null=True)
     reward = models.ForeignKey('Reward', models.DO_NOTHING, blank=True, null=True)
-    rewards_level = models.IntegerField(blank=True, null=True)
     reward_date = models.DateTimeField(blank=True, null=True)
-    deleted = models.TextField()  # This field type is a guess.
+    deleted = models.IntegerField()
+    rewards_level = models.IntegerField(blank=True, null=True)
 
     class Meta:
         managed = False
@@ -220,7 +220,7 @@ class JoinUser(models.Model):
     post_count = models.IntegerField(blank=True, null=True)
     create_date = models.DateTimeField()
     update_date = models.DateTimeField(blank=True, null=True)
-    deleted = models.TextField()  # This field type is a guess.
+    deleted = models.IntegerField()
 
     class Meta:
         managed = False
@@ -237,7 +237,7 @@ class Reward(models.Model):
     used_count = models.IntegerField()
     event = models.ForeignKey(Event, models.DO_NOTHING, blank=True, null=True)
     image_path = models.CharField(max_length=255, blank=True, null=True)
-    deleted = models.TextField()  # This field type is a guess.
+    deleted = models.IntegerField()
 
     class Meta:
         managed = False
@@ -257,9 +257,9 @@ class Store(models.Model):
     description = models.TextField(blank=True, null=True)
     name = models.CharField(max_length=255)
     user = models.ForeignKey('User', models.DO_NOTHING, blank=True, null=True)
-    logo_image_path = models.CharField(max_length=255)
+    logo_image_path = models.CharField(max_length=255, blank=True, null=True)
     building_code = models.CharField(max_length=255)
-    deleted = models.TextField()  # This field type is a guess.
+    deleted = models.IntegerField()
 
     class Meta:
         managed = False

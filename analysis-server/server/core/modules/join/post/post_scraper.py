@@ -48,6 +48,7 @@ class PostScraper:
             2. Client-Error 이벤트가 정상적이다. AND 리워드를 이미 받았다.
             3. OK 이벤트가 정상적이다. AND 리워드를 받지 않았다. AND 리워드가 정상적이다.
         """
+
         # 이벤트가 삭제되었다면 PostEventIsNotOK 에러
         join_post_event_deleted = self.join_post['event']['deleted']
         if not check_post_event_is_ok(join_post_event_deleted):
@@ -67,8 +68,6 @@ class PostScraper:
             return True
 
     def check_post_after_scrap_post(self):
-        pprint.pprint(self.scraped_post)
-        pprint.pprint(self.join_post)
         """
             에러 리스트
             1. Client-Error 게시물이 비공개다.
@@ -88,7 +87,10 @@ class PostScraper:
             raise exceptions.PostIsDeleted()
 
         # 게시물 해시태그가 일치하지 않으면 PostIsDiffHashtag 에러
-        join_post_hashtags = self.scraped_post['hashtags'].split(',')
+        if not self.scraped_post['hashtags']:
+            join_post_hashtags = self.scraped_post['hashtags'].split(',')
+        else:
+            join_post_hashtags = []
         join_post_event_hashtags = self.join_post['event_hashtags']
         if not check_match_post_hashtags_with_event_hashtags(join_post_hashtags, join_post_event_hashtags):
             raise exceptions.PostIsDiffHashtag()

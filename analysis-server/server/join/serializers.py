@@ -65,12 +65,17 @@ class JoinPostScrapSerializer(serializers.ModelSerializer):
             event_hashtag_hashtag_hashtags = representation.get('event').get('hashtag').get('hashtag_hashtags')
             if event_hashtag_hashtag_hashtags is not None:
                 for event_hashtag in event_hashtag_hashtag_hashtags:
+                    event_hashtag = event_hashtag.upper()
                     event_hashtags.append(event_hashtag['hashtags'])
             representation['event_hashtags'] = event_hashtags
         except Exception as e:
             representation['event_hashtags'] = []
         try:
-            representation['hashtags'] = representation['hashtags'].split(',')
+            post_hashtags = []
+            for post_hashtag in representation['hashtags'].split(','):
+                post_hashtag = post_hashtag.upper()
+                post_hashtags.append(post_hashtag)
+            representation['hashtags'] = post_hashtags
         except Exception as e:
             representation['hashtags'] = []
         return representation
