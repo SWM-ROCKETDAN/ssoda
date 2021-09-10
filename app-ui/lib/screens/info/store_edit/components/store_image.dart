@@ -110,7 +110,7 @@ class _StoreImageState extends State<StoreImage> {
         imageQuality: 75);
     if (image != null) {
       setState(() {
-        widget.store.images.add(image.path);
+        widget.store.images.add('$NEW_IMAGE_PREFIX${image.path}');
       });
       widget.newImages.add(image.path);
     }
