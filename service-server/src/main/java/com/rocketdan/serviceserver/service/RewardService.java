@@ -9,6 +9,7 @@ import com.rocketdan.serviceserver.config.AnalysisServerConfig;
 import com.rocketdan.serviceserver.config.auth.UserIdValidCheck;
 import com.rocketdan.serviceserver.core.CommonResponse;
 import com.rocketdan.serviceserver.s3.service.ImageManagerService;
+import com.rocketdan.serviceserver.s3.service.UpdateImageService;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Mono;
@@ -34,6 +35,7 @@ public class RewardService {
     private final AnalysisServerConfig analysisServerConfig;
 
     private final ImageManagerService imageManagerService;
+    private final UpdateImageService updateImageService;
 
     private final UserIdValidCheck userIdValidCheck;
 
@@ -44,9 +46,12 @@ public class RewardService {
         // valid 하지 않으면 exception 발생
         userIdValidCheck.userIdValidCheck(linkedEvent.getStore().getUser().getUserId(), principal);
 
-        String imgPath = imageManagerService.upload("image/reward", requestDto.getImage());
+        // 이미지
+        String imgPath = updateImageService.uploadNewImage(requestDto.getImage(), "image/reward");
 
         Reward savedReward = requestDto.toEntity(imgPath);
+
+        // link event
         savedReward.setEvent(linkedEvent);
 
         return rewardRepository.save(savedReward).getId();

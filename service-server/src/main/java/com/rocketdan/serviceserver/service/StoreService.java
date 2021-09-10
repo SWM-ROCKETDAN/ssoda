@@ -11,7 +11,7 @@ import com.rocketdan.serviceserver.domain.store.Store;
 import com.rocketdan.serviceserver.domain.store.StoreRepository;
 import com.rocketdan.serviceserver.domain.user.User;
 import com.rocketdan.serviceserver.domain.user.UserRepository;
-import com.rocketdan.serviceserver.s3.service.ImageManagerService;
+import com.rocketdan.serviceserver.s3.service.UpdateImageService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -25,7 +25,7 @@ public class StoreService {
     private final StoreRepository storeRepository;
     private final UserRepository userRepository;
 
-    private final ImageManagerService imageManagerService;
+    private final UpdateImageService updateImageService;
 
     private final UserIdValidCheck userIdValidCheck;
 
@@ -37,8 +37,9 @@ public class StoreService {
         userIdValidCheck.userIdValidCheck(linkedUser.getUserId(), principal);
 
         // 이미지
-        List<String> imgPaths = imageManagerService.upload("image/store", requestDto.getImages());
-        String logoImgPath = imageManagerService.upload("image/store/logo", requestDto.getLogoImage());
+        List<String> imgPaths = updateImageService.uploadNewImages(requestDto.getImages(), "image/store");
+        String logoImgPath = updateImageService.uploadNewImage(requestDto.getLogoImage(), "image/store/logo");
+
         Store savedStore = requestDto.toEntity(imgPaths, logoImgPath);
 
         // link user
@@ -55,16 +56,16 @@ public class StoreService {
         userIdValidCheck.userIdValidCheck(store.getUser().getUserId(), principal);
 
         // 이미지
-        imageManagerService.delete(requestDto.getDeleteImagePaths());
-        imageManagerService.delete(store.getLogoImagePath());
+        List<String> imgPaths = updateImageService.uploadNewImages(requestDto.getNewImages(), "image/store");
+        List<String> filteredImgPaths = updateImageService.deleteImagePaths(store.getImagePaths(), requestDto.getDeleteImagePaths());
 
-        List<String> imgPaths = imageManagerService.upload("image/store", requestDto.getNewImages());
-        List<String> prevImgPaths = store.getImagePaths();
-        requestDto.getDeleteImagePaths().forEach(prevImgPaths::remove);
-        imgPaths.addAll(prevImgPaths);
+        imgPaths.addAll(filteredImgPaths);
 
-        String logoImgPath = imageManagerService.upload("image/store/logo", requestDto.getLogoImage());
+        // logo 이미지
+        String logoImgPath = updateImageService.uploadNewImage(requestDto.getLogoImage(), "image/store/logo");
+        updateImageService.deleteImagePath(store.getLogoImagePath());
 
+        // update
         store.update(requestDto.getName(), requestDto.getCategory(), requestDto.addressToEntity(), requestDto.getDescription(), imgPaths, logoImgPath);
 
         return id;

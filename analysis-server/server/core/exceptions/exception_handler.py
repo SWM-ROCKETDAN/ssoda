@@ -39,9 +39,9 @@ def custom_exception_handler(exc, context):
 
     response = exception_handler(exc, context)
     exception_class = exc.__class__.__name__
-    print(exception_class)
-    print(exc)
-    print(response)
+    # print(exception_class)
+    # print(exc)
+    # print(response)
     # Handler 함수 적용
     if exception_class in handlers:
         response = handlers[exception_class](response, exc)
