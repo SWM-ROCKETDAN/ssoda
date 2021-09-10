@@ -3,7 +3,6 @@ package com.rocketdan.serviceserver.app;
 import com.rocketdan.serviceserver.Exception.resource.NoAuthorityToResourceException;
 import com.rocketdan.serviceserver.app.dto.reward.RewardResponseDto;
 import com.rocketdan.serviceserver.app.dto.reward.RewardSaveRequestDto;
-import com.rocketdan.serviceserver.app.dto.reward.RewardUpdateRequestDto;
 import com.rocketdan.serviceserver.core.auth.LoginUser;
 import com.rocketdan.serviceserver.service.RewardService;
 import lombok.RequiredArgsConstructor;
@@ -33,11 +32,6 @@ public class RewardApiController {
         }
 
         return reward_ids;
-    }
-
-    @PutMapping("/events/{event_id}")
-    public Long update(@PathVariable Long event_id, @ModelAttribute RewardUpdateRequestDto requestDto, @LoginUser org.springframework.security.core.userdetails.User principal) throws NoAuthorityToResourceException {
-        return rewardService.update(event_id, requestDto, principal);
     }
 
     @DeleteMapping()
