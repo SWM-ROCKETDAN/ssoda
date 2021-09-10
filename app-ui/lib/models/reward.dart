@@ -1,6 +1,7 @@
 import 'reward_category.dart';
 
 class Reward {
+  final int? id;
   final String name;
   final String imgPath;
   final int price;
@@ -9,24 +10,17 @@ class Reward {
   final RewardCategory category;
 
   Reward(
-      {required this.name,
+      {this.id,
+      required this.name,
       required this.imgPath,
       required this.price,
       required this.count,
       required this.level,
       required this.category});
 
-  Map<String, dynamic> toJson() => {
-        'category': category.index,
-        'name': name,
-        'image': imgPath,
-        'price': price,
-        'count': count,
-        'level': level
-      };
-
   factory Reward.fromJson(Map<String, dynamic> json) {
     return Reward(
+        id: json['id'],
         name: json['name'],
         imgPath: json['imagePath'],
         category: RewardCategory.values[json['category']],
