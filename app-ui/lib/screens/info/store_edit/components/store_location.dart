@@ -1,11 +1,29 @@
 import 'package:flutter/material.dart';
 import 'package:hashchecker/constants.dart';
 import 'package:hashchecker/models/address.dart';
+import 'package:hashchecker/models/store.dart';
 import 'package:hashchecker/widgets/kpostal/kpostal.dart';
 
-class StoreLocation extends StatelessWidget {
-  final store;
+class StoreLocation extends StatefulWidget {
+  final Store store;
   const StoreLocation({Key? key, required this.store}) : super(key: key);
+
+  @override
+  _StoreLocationState createState() => _StoreLocationState();
+}
+
+class _StoreLocationState extends State<StoreLocation> {
+  late TextEditingController _zipCodeController;
+  late TextEditingController _addressController;
+
+  @override
+  void initState() {
+    super.initState();
+    _zipCodeController =
+        TextEditingController(text: widget.store.address.zipCode);
+    _addressController =
+        TextEditingController(text: widget.store.address.getFullAddress());
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -18,8 +36,8 @@ class StoreLocation extends StatelessWidget {
             Expanded(
               child: TextField(
                 readOnly: true,
+                controller: _zipCodeController,
                 style: TextStyle(fontSize: 14, color: kDefaultFontColor),
-                controller: zipCodeController,
                 decoration: InputDecoration(
                     focusedBorder: OutlineInputBorder(
                       borderSide: BorderSide(color: kThemeColor, width: 1.2),
@@ -53,7 +71,11 @@ class StoreLocation extends StatelessWidget {
                             zipCode: result.postCode,
                             latitude: result.latitude,
                             longitude: result.longitude);
-                        setAddress(address);
+                        widget.store.address = address;
+                        setState(() {
+                          _zipCodeController.text = address.zipCode;
+                          _addressController.text = address.getFullAddress();
+                        });
                       },
                     ),
                   ),
@@ -79,8 +101,8 @@ class StoreLocation extends StatelessWidget {
             Expanded(
               child: TextField(
                 readOnly: true,
+                controller: _addressController,
                 style: TextStyle(fontSize: 14, color: kDefaultFontColor),
-                controller: addressController,
                 decoration: InputDecoration(
                     focusedBorder: OutlineInputBorder(
                       borderSide: BorderSide(color: kThemeColor, width: 1.2),

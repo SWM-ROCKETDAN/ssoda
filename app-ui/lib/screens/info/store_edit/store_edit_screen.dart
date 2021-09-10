@@ -9,7 +9,6 @@ import 'package:hashchecker/screens/create_store/components/store_logo.dart';
 import 'package:image_picker/image_picker.dart';
 
 import 'components/body.dart';
-import 'components/confirm_button.dart';
 import 'components/store_description.dart';
 import 'components/store_image.dart';
 import 'components/store_location.dart';
@@ -24,6 +23,8 @@ class StoreEditScreen extends StatefulWidget {
 
 class _StoreEditScreenState extends State<StoreEditScreen> {
   late Future<Store> store;
+  final List<String> newImages = [];
+  final List<String> deletedImagePaths = [];
 
   @override
   void initState() {
@@ -74,7 +75,10 @@ class _StoreEditScreenState extends State<StoreEditScreen> {
           future: store,
           builder: (context, snapshot) {
             if (snapshot.hasData) {
-              return Body(store: snapshot.data!);
+              return Body(
+                  store: snapshot.data!,
+                  newImages: newImages,
+                  deletedImagePaths: deletedImagePaths);
             } else if (snapshot.hasError) {
               return Text('${snapshot.error}');
             }

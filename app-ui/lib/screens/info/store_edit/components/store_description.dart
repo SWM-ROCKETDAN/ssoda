@@ -1,9 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:hashchecker/constants.dart';
+import 'package:hashchecker/models/store.dart';
 
-class StoreDescription extends StatelessWidget {
-  final store;
+class StoreDescription extends StatefulWidget {
+  final Store store;
   const StoreDescription({Key? key, required this.store}) : super(key: key);
+
+  @override
+  _StoreDescriptionState createState() => _StoreDescriptionState();
+}
+
+class _StoreDescriptionState extends State<StoreDescription> {
+  late TextEditingController _descriptionController;
+
+  @override
+  void initState() {
+    super.initState();
+    _descriptionController =
+        TextEditingController(text: widget.store.description);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -15,11 +30,12 @@ class StoreDescription extends StatelessWidget {
           child: TextField(
             maxLines: 4,
             minLines: 4,
+            controller: _descriptionController,
             style: TextStyle(fontSize: 14, color: kDefaultFontColor),
             cursorColor: kThemeColor,
             keyboardType: TextInputType.multiline,
             onChanged: (string) {
-              setDescription(string);
+              widget.store.description = string;
             },
             decoration: InputDecoration(
                 counterText: "",

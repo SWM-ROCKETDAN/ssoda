@@ -1,11 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:hashchecker/constants.dart';
+import 'package:hashchecker/models/store.dart';
 import 'package:hashchecker/models/store_category.dart';
 
-class StoreCate extends StatelessWidget {
-  final store;
+class StoreCate extends StatefulWidget {
+  final Store store;
   const StoreCate({Key? key, required this.store}) : super(key: key);
 
+  @override
+  _StoreCateState createState() => _StoreCateState();
+}
+
+class _StoreCateState extends State<StoreCate> {
   @override
   Widget build(BuildContext context) {
     return Row(children: [
@@ -18,16 +24,19 @@ class StoreCate extends StatelessWidget {
                   margin: const EdgeInsets.only(right: 7),
                   child: GestureDetector(
                     onTap: () {
-                      setCategory(storeCategoryList[index].category);
+                      setState(() {
+                        widget.store.category =
+                            storeCategoryList[index].category;
+                      });
                     },
                     child: Chip(
                         label: Text(
                           storeCategoryList[index].name,
                           style: TextStyle(
-                              color:
-                                  storeCategoryList[index].category == category
-                                      ? kThemeColor
-                                      : kLiteFontColor),
+                              color: storeCategoryList[index].category ==
+                                      widget.store.category
+                                  ? kThemeColor
+                                  : kLiteFontColor),
                         ),
                         avatar: CircleAvatar(
                             radius: 14,
@@ -37,14 +46,15 @@ class StoreCate extends StatelessWidget {
                               size: 14,
                             ),
                             backgroundColor:
-                                storeCategoryList[index].category == category
+                                storeCategoryList[index].category ==
+                                        widget.store.category
                                     ? kThemeColor
                                     : kLiteFontColor),
                         backgroundColor: kScaffoldBackgroundColor,
                         shape: RoundedRectangleBorder(
                             side: BorderSide(
                                 color: storeCategoryList[index].category ==
-                                        category
+                                        widget.store.category
                                     ? kThemeColor
                                     : kLiteFontColor),
                             borderRadius: BorderRadius.circular(24))),

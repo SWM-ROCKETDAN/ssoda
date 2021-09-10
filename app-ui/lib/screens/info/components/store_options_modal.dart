@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hashchecker/constants.dart';
+import 'package:hashchecker/screens/info/store_edit/store_edit_screen.dart';
 
 class StoreOptionsModal extends StatelessWidget {
   const StoreOptionsModal({Key? key}) : super(key: key);
@@ -18,7 +19,9 @@ class StoreOptionsModal extends StatelessWidget {
                       color: kDefaultFontColor.withOpacity(0.8), fontSize: 15)),
               leading: Icon(Icons.edit_rounded,
                   color: kDefaultFontColor.withOpacity(0.8)),
-              onTap: () {}),
+              onTap: () {
+                Navigator.push(context, slidePageRouting(StoreEditScreen()));
+              }),
           ListTile(
             title: Text('가게 삭제',
                 style: TextStyle(color: Colors.red, fontSize: 15)),

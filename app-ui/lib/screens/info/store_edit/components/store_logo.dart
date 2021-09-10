@@ -1,25 +1,41 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:hashchecker/api.dart';
 import 'package:hashchecker/constants.dart';
+import 'package:hashchecker/models/store.dart';
 import 'package:image_picker/image_picker.dart';
 
-class StoreLogo extends StatelessWidget {
-  final store;
+class StoreLogo extends StatefulWidget {
+  final Store store;
   const StoreLogo({Key? key, required this.store}) : super(key: key);
+
+  @override
+  _StoreLogoState createState() => _StoreLogoState();
+}
+
+class _StoreLogoState extends State<StoreLogo> {
+  final NEW_IMAGE_PREFIX = 'HASHCHECKER_NEW_IMAGE';
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: _getImageFromGallery,
-      child: Container(
-          height: 80,
-          width: 80,
-          decoration: BoxDecoration(
-              shape: BoxShape.circle,
-              image: DecorationImage(
-                  image: NetworkImage(File(logoPath!)), fit: BoxFit.cover))),
-    );
+        onTap: _getImageFromGallery,
+        child: Container(
+            height: 80,
+            width: 80,
+            decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                image: widget.store.logoImage
+                            .substring(0, NEW_IMAGE_PREFIX.length) ==
+                        NEW_IMAGE_PREFIX
+                    ? DecorationImage(
+                        image: FileImage(File(widget.store.logoImage
+                            .substring(NEW_IMAGE_PREFIX.length))),
+                        fit: BoxFit.cover)
+                    : DecorationImage(
+                        image: NetworkImage('$s3Url${widget.store.logoImage}'),
+                        fit: BoxFit.cover))));
   }
 
   void _getImageFromGallery() async {
@@ -30,7 +46,9 @@ class StoreLogo extends StatelessWidget {
         maxWidth: 400,
         imageQuality: 75);
     if (image != null) {
-      setState(() {});
+      setState(() {
+        widget.store.logoImage = '$NEW_IMAGE_PREFIX${image.path}';
+      });
     }
   }
 }

@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:hashchecker/constants.dart';
 import 'package:hashchecker/models/store.dart';
 
-import 'confirm_button.dart';
 import 'store_category.dart';
 import 'store_description.dart';
 import 'store_image.dart';
@@ -12,7 +11,14 @@ import 'store_name.dart';
 
 class Body extends StatelessWidget {
   final Store store;
-  const Body({Key? key, required this.store}) : super(key: key);
+  final List<String> newImages;
+  final List<String> deletedImagePaths;
+  const Body(
+      {Key? key,
+      required this.store,
+      required this.newImages,
+      required this.deletedImagePaths})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -30,7 +36,10 @@ class Body extends StatelessWidget {
                   SizedBox(height: kDefaultPadding),
                   StoreCate(store: store),
                   SizedBox(height: kDefaultPadding),
-                  StoreImage(store: store),
+                  StoreImage(
+                      store: store,
+                      newImages: newImages,
+                      deletedImagePaths: deletedImagePaths),
                   SizedBox(height: kDefaultPadding),
                   StoreLocation(store: store),
                   SizedBox(height: kDefaultPadding),
@@ -39,7 +48,7 @@ class Body extends StatelessWidget {
               ),
             ),
           ),
-          ConfirmButton(store: store),
+          // ConfirmButton(store: store),
         ],
       ),
     );
