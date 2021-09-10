@@ -39,6 +39,14 @@ public class RewardApiController {
     public Long update(@PathVariable Long event_id, @ModelAttribute RewardUpdateRequestDto requestDto, @LoginUser org.springframework.security.core.userdetails.User principal) throws NoAuthorityToResourceException {
         return rewardService.update(event_id, requestDto, principal);
     }
+
+    @DeleteMapping()
+    public void deleteList(List<Long> idList, @LoginUser org.springframework.security.core.userdetails.User principal) throws NoAuthorityToResourceException {
+        // 리워드 1개씩 삭제
+        for (Long id: idList) {
+            rewardService.softDelete(id, principal);
+        }
+    }
 /*
     @PostMapping("/events/{event_id}")
     public Long save(@PathVariable Long event_id, @ModelAttribute RewardSaveRequestDto reward) {

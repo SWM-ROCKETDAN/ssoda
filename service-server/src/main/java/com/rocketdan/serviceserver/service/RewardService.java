@@ -92,17 +92,12 @@ public class RewardService {
                 .block(); // await
     }
 
-    public void softDelete(Long id) {
+    public void softDelete(Long id, org.springframework.security.core.userdetails.User principal) throws NoAuthorityToResourceException {
         Reward reward = rewardRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("해당 리워드가 없습니다. id=" + id));
+
+        // valid 하지 않으면 exception 발생
+        userIdValidCheck.userIdValidCheck(reward.getEvent().getStore().getUser().getUserId(), principal);
+
         rewardRepository.delete(reward);
-    }
-
-    private void sortLevel(List<Reward> rewards) {
-        int level = 1;
-        Collections.sort(rewards);
-
-        for (Reward reward: rewards) {
-            reward.updateLevel(level++);
-        }
     }
 }

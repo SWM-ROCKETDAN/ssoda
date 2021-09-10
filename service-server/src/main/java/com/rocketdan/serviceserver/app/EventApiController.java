@@ -25,7 +25,7 @@ public class EventApiController {
     }
 
     @GetMapping("/{id}/rewards")
-    public List<RewardResponseDto> retrieveEventListById(@PathVariable Long id) {
+    public List<RewardResponseDto> retrieveRewardListById(@PathVariable Long id) {
         return eventService.getRewardListById(id);
     }
 
