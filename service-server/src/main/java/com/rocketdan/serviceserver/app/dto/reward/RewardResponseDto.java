@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 public class RewardResponseDto {
+    private Long id;
     private Integer level;
     private Integer category;
     private String name;
@@ -15,6 +16,7 @@ public class RewardResponseDto {
     private Integer count;
 
     public RewardResponseDto(Reward entity) {
+        this.id = entity.getId();
         this.level = entity.getLevel();
         this.category = entity.getCategory();
         this.name = entity.getName();

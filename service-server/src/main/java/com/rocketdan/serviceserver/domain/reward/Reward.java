@@ -10,13 +10,14 @@ import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 
 import javax.persistence.*;
+import java.util.Optional;
 
 @Entity
 @Getter
 @NoArgsConstructor
 @SQLDelete(sql = "UPDATE reward SET deleted = true WHERE id = ?")
 @Where(clause = "deleted = false")
-public class Reward {
+public class Reward implements Comparable<Reward> {
     @Id
     @JsonIgnore
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -61,6 +62,15 @@ public class Reward {
         this.count = count;
     }
 
+    public void update(Integer level, Integer category, String name, String imagePath, Integer price, Integer count) {
+        Optional.ofNullable(level).ifPresent(none -> this.level = level);
+        this.category = category;
+        Optional.ofNullable(name).ifPresent(none -> this.name = name);
+        this.imagePath = imagePath;
+        Optional.ofNullable(price).ifPresent(none -> this.price = price);
+        Optional.ofNullable(count).ifPresent(none -> this.count = count);
+    }
+
     public void setEvent(Event event) {
         this.event = event;
 
@@ -72,5 +82,16 @@ public class Reward {
     public Integer increaseUsedCount() {
         this.usedCount += 1;
         return this.usedCount;
+    }
+
+    public void updateLevel(Integer level) {
+        if (level != null) {
+            this.level = level;
+        }
+    }
+
+    @Override
+    public int compareTo(Reward reward) {
+        return this.count - reward.getCount();
     }
 }
