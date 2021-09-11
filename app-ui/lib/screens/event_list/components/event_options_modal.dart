@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:hashchecker/api.dart';
 import 'package:hashchecker/constants.dart';
 import 'package:hashchecker/models/event.dart';
 import 'package:hashchecker/screens/hall/hall_screen.dart';
@@ -143,6 +144,7 @@ class EventOptionsModal extends StatelessWidget {
                   children: [
                     TextButton(
                       onPressed: () async {
+                        await _deleteEvent(eventId);
                         Navigator.of(context).pop();
                         await _showEventDeleteCompleteDialog(context);
                       },
@@ -241,6 +243,7 @@ class EventOptionsModal extends StatelessWidget {
                   children: [
                     TextButton(
                       onPressed: () async {
+                        await _stopEvent(eventId);
                         Navigator.of(context).pop();
                         await _showEventStopCompleteDialog(context);
                       },
@@ -265,6 +268,21 @@ class EventOptionsModal extends StatelessWidget {
             ],
             shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(15))));
+  }
+
+  Future<void> _stopEvent(int eventId) async {
+    var dio = await authDio();
+    final eventStopResponse = await dio.put(
+        'http://ec2-3-37-85-236.ap-northeast-2.compute.amazonaws.com:8080/api/v1/events/$eventId/status',
+        data: {'status': 2});
+    print(eventStopResponse.data);
+  }
+
+  Future<void> _deleteEvent(int eventId) async {
+    var dio = await authDio();
+    final eventDeleteResponse =
+        await dio.delete(getApi(API.DELETE_EVENT, suffix: '/$eventId'));
+    print(eventDeleteResponse.data);
   }
 
   Future<void> _showEventStopCompleteDialog(BuildContext context) async {

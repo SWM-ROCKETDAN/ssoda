@@ -45,17 +45,10 @@ class _HallScreenState extends State<HallScreen> {
         backgroundColor: kScaffoldBackgroundColor,
         shadowColor: kShadowColor,
         elevation: 1,
-        title: GestureDetector(
-          onTap: () {
-            setState(() {
-              currentPage = TabPage.EVENT;
-            });
-          },
-          child: Container(
-            padding: const EdgeInsets.only(left: 5),
-            child: Image.asset('assets/images/appbar_logo.png'),
-            height: kToolbarHeight * 0.75,
-          ),
+        title: Container(
+          padding: const EdgeInsets.only(left: 5),
+          child: Image.asset('assets/images/appbar_logo.png'),
+          height: kToolbarHeight * 0.75,
         ),
         actions: [
           FutureBuilder<List<StoreListItem>>(
@@ -135,6 +128,8 @@ class _HallScreenState extends State<HallScreen> {
     final getStoreListResponse = await dio.get(getApi(API.GET_USER_STORES));
 
     final fetchedStoreList = getStoreListResponse.data;
+
+    print(fetchedStoreList);
 
     List<StoreListItem> storeList = List.generate(fetchedStoreList.length,
         (index) => StoreListItem.fromJson(fetchedStoreList[index]));

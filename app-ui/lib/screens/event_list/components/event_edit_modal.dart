@@ -224,8 +224,7 @@ class _EventEditModalState extends State<EventEditModal> {
       if (deletedImagePaths.length > 0) 'deleteImagePaths': deletedImagePaths,
       'hashtags': event.hashtagList,
       'requirements': event.requireList,
-      'template': event.template.id,
-      'status': event.status!.index
+      'template': event.template.id
     });
 
     final updateEventResponse = await dio.put(
