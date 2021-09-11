@@ -4,6 +4,7 @@ from server.core.modules.assist.proxy import get_proxy_url
 from server.core.modules.assist.time import get_now_date
 from server.core.modules.static.common import Type
 from server.core.modules.static.common import Status
+from ._scraped_user import ScrapedUser
 import re
 
 
@@ -12,9 +13,23 @@ def get_url(sns_id):
 
 
 def scrap_user(sns_id):
-    user_url = get_url(sns_id)
-    proxy_url = get_proxy_url(user_url)
+    url = get_url(sns_id)
+    proxy_url = get_proxy_url(url)
+    scraped_user = ScrapedUser()
+
     response = urlopen(proxy_url)
+    
+    # 상태 이상일 시 삭제됨 처리
+    if response.getcode() != 200:
+        scraped_user.sns_id(sns_id)
+        scraped_user.url(url)
+        scraped_user.type(Type.INSTAGRAM)
+        scraped_user.status(Status.DELETED)
+        scraped_user.update_date(get_now_date())
+        return scraped_user.get_scraped_user()
+    else:
+        delete_date = None
+
     soup = BeautifulSoup(response, "html.parser")
     user_meta = str(soup.find('meta', property="og:description"))
 
@@ -24,14 +39,12 @@ def scrap_user(sns_id):
 
     user_nums = re.findall("\d+", user_meta)
 
-    user = {
-        'sns_id': sns_id,
-        'url': user_url,
-        'type': Type.INSTAGRAM,
-        'status': Status.PUBLIC,
-        'follow_count': user_nums[0],
-        'post_count': user_nums[2],
-        'update_date': get_now_date()
-    }
+    scraped_user.sns_id(sns_id)
+    scraped_user.url(url)
+    scraped_user.type(Type.INSTAGRAM)
+    scraped_user.status(Status.PUBLIC)
+    scraped_user.follow_count(user_nums[0])
+    scraped_user.post_count(user_nums[2])
+    scraped_user.update_date(get_now_date())
 
-    return user
+    return scraped_user.get_scraped_user()

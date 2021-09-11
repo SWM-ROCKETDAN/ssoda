@@ -26,6 +26,7 @@ def custom_exception_handler(exc, context):
         exceptions.PostIsAlreadyRewarded.__name__: parse_custom_exception,
         exceptions.PostEventIsNotOK.__name__: parse_custom_exception,
         exceptions.PostUploadIsFasterThanEventStart.__name__: parse_custom_exception,
+        exceptions.PostEventRewardIsNotOK.__name__: parse_custom_exception,
 
         # Server Error
         exceptions.ProxyFailed.__name__: parse_custom_exception,
