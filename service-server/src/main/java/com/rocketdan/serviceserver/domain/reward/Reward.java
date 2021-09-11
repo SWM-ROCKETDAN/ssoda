@@ -17,7 +17,7 @@ import java.util.Optional;
 @NoArgsConstructor
 @SQLDelete(sql = "UPDATE reward SET deleted = true WHERE id = ?")
 @Where(clause = "deleted = false")
-public class Reward implements Comparable<Reward> {
+public class Reward {
     @Id
     @JsonIgnore
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -88,10 +88,5 @@ public class Reward implements Comparable<Reward> {
         if (level != null) {
             this.level = level;
         }
-    }
-
-    @Override
-    public int compareTo(Reward reward) {
-        return this.count - reward.getCount();
     }
 }
