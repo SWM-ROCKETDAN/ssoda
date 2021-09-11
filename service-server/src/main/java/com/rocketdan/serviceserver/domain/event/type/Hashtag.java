@@ -41,9 +41,9 @@ public class Hashtag extends Event {
         this.template = template;
     }
 
-    public void update(String title, Integer status, Date startDate, Date finishDate, List<String> images,
+    public void update(String title, Date startDate, Date finishDate, List<String> images,
                   List<String> hashtags, List<Boolean> requirements, Integer template) {
-        super.update(title, status, startDate, finishDate, images);
+        super.update(title, startDate, finishDate, images);
         Optional.ofNullable(hashtags).ifPresent(none -> this.hashtags = hashtags);
         Optional.ofNullable(requirements).ifPresent(none -> this.requirements = requirements);
         Optional.ofNullable(template).ifPresent(none -> this.template = template);

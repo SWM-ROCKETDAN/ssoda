@@ -12,7 +12,6 @@ import java.util.List;
 @NoArgsConstructor
 public class EventUpdateRequestDto {
     private String title;
-    private Integer status;
     @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
     private Date startDate;
     @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
@@ -21,9 +20,8 @@ public class EventUpdateRequestDto {
     private List<MultipartFile> newImages;
     private List<String> deleteImagePaths;
 
-    public EventUpdateRequestDto(String title, Integer status, Date startDate, Date finishDate, List<MultipartFile> newImages, List<String> deleteImagePaths) {
+    public EventUpdateRequestDto(String title, Date startDate, Date finishDate, List<MultipartFile> newImages, List<String> deleteImagePaths) {
         this.title = title;
-        this.status = status;
         this.startDate = startDate;
         this.finishDate = finishDate;
         this.newImages = newImages;

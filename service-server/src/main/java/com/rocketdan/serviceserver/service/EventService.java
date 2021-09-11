@@ -65,8 +65,11 @@ public class EventService {
 
         imgPaths.addAll(filteredImgPaths);
 
-        event.update(requestDto.getTitle(), requestDto.getStatus(), requestDto.getStartDate(), requestDto.getFinishDate(), imgPaths,
+        event.update(requestDto.getTitle(), requestDto.getStartDate(), requestDto.getFinishDate(), imgPaths,
                 requestDto.getHashtags(), requestDto.getRequirements(), requestDto.getTemplate());
+
+        // status update
+        event.updateStatus();
 
         return id;
     }
