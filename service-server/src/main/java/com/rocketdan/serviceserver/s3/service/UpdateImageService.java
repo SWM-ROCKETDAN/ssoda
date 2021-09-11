@@ -18,7 +18,7 @@ public class UpdateImageService {
 
         // newImage 필드가 존재하고, 데이터가 들어있을 때
         if (Optional.ofNullable(newImage).isPresent()) {
-            if (newImage.isEmpty()) {
+            if (!newImage.isEmpty()) {
                 imgPath = imageManagerService.upload(folderName, newImage);
             }
         }
