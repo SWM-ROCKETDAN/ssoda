@@ -7,6 +7,7 @@ import com.rocketdan.serviceserver.Exception.resource.NoAuthorityToResourceExcep
 import com.rocketdan.serviceserver.config.AnalysisServerConfig;
 import com.rocketdan.serviceserver.config.auth.UserIdValidCheck;
 import com.rocketdan.serviceserver.core.CommonResponse;
+import com.rocketdan.serviceserver.s3.service.ImageManagerService;
 import com.rocketdan.serviceserver.s3.service.UpdateImageService;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
