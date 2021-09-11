@@ -144,14 +144,6 @@ class EventImages(models.Model):
         db_table = 'event_images'
 
 
-class EventRewards(models.Model):
-    event = models.ForeignKey(Event, related_name='event_rewards', on_delete=models.CASCADE)
-    rewards = models.OneToOneField('Reward', related_name='event_reward_set', on_delete=models.CASCADE)
-
-    class Meta:
-        db_table = 'event_rewards'
-
-
 class Hashtag(models.Model):
     template = models.IntegerField()
     id = models.OneToOneField(Event, related_name='hashtag', on_delete=models.CASCADE, db_column='id', primary_key=True)

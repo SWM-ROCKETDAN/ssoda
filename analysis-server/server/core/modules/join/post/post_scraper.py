@@ -1,10 +1,10 @@
 import pprint
-
 from server.core.modules.static.common import Type
 from server.core.exceptions import exceptions
 from . import post_scraper_instagram
 from . import post_scraper_facebook
 from .check_post import check_post_event_is_ok
+from .check_post import check_post_event_reward_is_ok
 from .check_post import check_post_reward_is_ok
 from .check_post import check_post_status_is_private
 from .check_post import check_post_status_is_deleted
@@ -53,6 +53,11 @@ class PostScraper:
         join_post_event_deleted = self.join_post['event']['deleted']
         if not check_post_event_is_ok(join_post_event_deleted):
             raise exceptions.PostEventIsNotOK()
+
+        # 이벤트 리워드가 없다면 PostEventRewardIsNotOK 에러
+        join_post_event_rewards = self.join_post['event']['rewards']
+        if not check_post_event_reward_is_ok(join_post_event_rewards):
+            raise exceptions.PostEventRewardIsNotOK()
 
         # 리워드를 이미 받았다면 PostIsAlreadyRewarded 에러
         join_post_reward_date = self.join_post['reward_date']
