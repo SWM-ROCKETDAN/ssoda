@@ -18,7 +18,7 @@ def scrap_user(sns_id):
     scraped_user = ScrapedUser()
 
     response = urlopen(proxy_url)
-    
+
     # 상태 이상일 시 삭제됨 처리
     if response.getcode() != 200:
         scraped_user.sns_id(sns_id)
