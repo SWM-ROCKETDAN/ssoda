@@ -46,7 +46,7 @@ public class EventApiController {
     }
 
     @PutMapping("/{id}/status")
-    public void updateStatus(@PathVariable Long id, EventStatusUpdateRequest requestDto, @LoginUser org.springframework.security.core.userdetails.User principal) throws NoAuthorityToResourceException {
+    public void updateStatus(@PathVariable Long id, @RequestBody EventStatusUpdateRequest requestDto, @LoginUser org.springframework.security.core.userdetails.User principal) throws NoAuthorityToResourceException {
         eventService.updateStatus(id, requestDto, principal);
     }
 
