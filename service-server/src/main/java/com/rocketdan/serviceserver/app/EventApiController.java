@@ -45,7 +45,7 @@ public class EventApiController {
         return eventService.updateHashtagEvent(id, requestDto, principal);
     }
 
-    @PutMapping("/status/{id}")
+    @PutMapping("/{id}/status")
     public void updateStatus(@PathVariable Long id, EventStatusUpdateRequest requestDto, @LoginUser org.springframework.security.core.userdetails.User principal) throws NoAuthorityToResourceException {
         eventService.updateStatus(id, requestDto, principal);
     }
