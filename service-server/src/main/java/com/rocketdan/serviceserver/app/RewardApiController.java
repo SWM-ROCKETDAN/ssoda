@@ -1,6 +1,7 @@
 package com.rocketdan.serviceserver.app;
 
 import com.rocketdan.serviceserver.Exception.resource.NoAuthorityToResourceException;
+import com.rocketdan.serviceserver.app.dto.reward.RewardDeleteRequestDto;
 import com.rocketdan.serviceserver.app.dto.reward.RewardResponseDto;
 import com.rocketdan.serviceserver.app.dto.reward.RewardSaveRequestDto;
 import com.rocketdan.serviceserver.core.auth.LoginUser;
@@ -35,18 +36,10 @@ public class RewardApiController {
     }
 
     @DeleteMapping()
-    public void deleteList(List<Long> idList, @LoginUser org.springframework.security.core.userdetails.User principal) throws NoAuthorityToResourceException {
+    public void deleteList(@RequestBody RewardDeleteRequestDto requestDto, @LoginUser org.springframework.security.core.userdetails.User principal) throws NoAuthorityToResourceException {
         // 리워드 1개씩 삭제
-        for (Long id: idList) {
+        for (Long id: requestDto.getIdList()) {
             rewardService.softDelete(id, principal);
         }
     }
-/*
-    @PostMapping("/events/{event_id}")
-    public Long save(@PathVariable Long event_id, @ModelAttribute RewardSaveRequestDto reward) {
-        String imgPath = imageManagerService.upload("image/reward", reward.getImage());
-
-        return rewardService.save(event_id, reward, imgPath);
-    }
-*/
 }
