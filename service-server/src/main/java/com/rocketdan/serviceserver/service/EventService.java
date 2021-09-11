@@ -3,6 +3,7 @@ package com.rocketdan.serviceserver.service;
 import com.rocketdan.serviceserver.Exception.resource.NoAuthorityToResourceException;
 import com.rocketdan.serviceserver.app.dto.event.EventListResponseDto;
 import com.rocketdan.serviceserver.app.dto.event.EventResponseDto;
+import com.rocketdan.serviceserver.app.dto.event.EventStatusUpdateRequest;
 import com.rocketdan.serviceserver.app.dto.event.hashtag.HashtagEventResponseDto;
 import com.rocketdan.serviceserver.app.dto.event.hashtag.HashtagEventSaveRequest;
 import com.rocketdan.serviceserver.app.dto.event.hashtag.HashtagEventUpdateRequest;
@@ -72,6 +73,16 @@ public class EventService {
         event.updateStatus();
 
         return id;
+    }
+
+    @Transactional
+    public void updateStatus(Long id, EventStatusUpdateRequest requestDto, org.springframework.security.core.userdetails.User principal) throws NoAuthorityToResourceException {
+        Event event = eventRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("해당 이벤트가 없습니다. id=" + id));
+
+        // valid 하지 않으면 exception 발생
+        userIdValidCheck.userIdValidCheck(event.getStore().getUser().getUserId(), principal);
+
+        event.updateStatus(requestDto.getStatus());
     }
 
     @Transactional(readOnly = true)

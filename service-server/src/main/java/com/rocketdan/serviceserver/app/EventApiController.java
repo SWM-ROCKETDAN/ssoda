@@ -3,6 +3,7 @@ package com.rocketdan.serviceserver.app;
 import com.rocketdan.serviceserver.Exception.resource.NoAuthorityToResourceException;
 import com.rocketdan.serviceserver.app.dto.event.EventListResponseDto;
 import com.rocketdan.serviceserver.app.dto.event.EventResponseDto;
+import com.rocketdan.serviceserver.app.dto.event.EventStatusUpdateRequest;
 import com.rocketdan.serviceserver.app.dto.event.hashtag.HashtagEventSaveRequest;
 import com.rocketdan.serviceserver.app.dto.event.hashtag.HashtagEventUpdateRequest;
 import com.rocketdan.serviceserver.app.dto.reward.RewardResponseDto;
@@ -42,6 +43,11 @@ public class EventApiController {
     @PutMapping("/hashtag/{id}")
     public Long updateHashtagEvent(@PathVariable Long id, @ModelAttribute HashtagEventUpdateRequest requestDto, @LoginUser org.springframework.security.core.userdetails.User principal) throws NoAuthorityToResourceException {
         return eventService.updateHashtagEvent(id, requestDto, principal);
+    }
+
+    @PutMapping("/status/{id}")
+    public void updateStatus(@PathVariable Long id, EventStatusUpdateRequest requestDto, @LoginUser org.springframework.security.core.userdetails.User principal) throws NoAuthorityToResourceException {
+        eventService.updateStatus(id, requestDto, principal);
     }
 
     @DeleteMapping("/{id}")
