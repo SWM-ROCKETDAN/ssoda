@@ -78,12 +78,15 @@ public class StoreService {
         return new StoreResponseDto(entity);
     }
 
-    @Transactional(readOnly = true)
+    @Transactional
     public List<EventListResponseDto> getEventListById(Long id) {
         Store entity = storeRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("해당 가게가 없습니다. id=" + id));
 
         return entity.getEvents().stream()
-                .map(EventListResponseDto::new)
+                .map(event -> {
+                    event.updateStatus();
+                    return new EventListResponseDto(event);
+                })
                 .collect(Collectors.toList());
     }
 

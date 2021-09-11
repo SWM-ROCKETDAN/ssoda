@@ -103,6 +103,11 @@ public abstract class Event {
         }
     }
 
+    public void updateStatus(Integer status) {
+        Optional.ofNullable(status).ifPresent(none -> this.status = status);
+    }
+
+
     public void finishStatus() {
         this.status = 2;
     }
