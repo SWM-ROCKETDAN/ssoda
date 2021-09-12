@@ -8,6 +8,7 @@ import 'package:hashchecker/screens/create_store/components/intro.dart';
 import 'package:hashchecker/screens/hall/hall_screen.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'components/kakao_sign_in_button.dart';
 import 'components/naver_sign_in_button.dart';
@@ -101,7 +102,16 @@ class _SignInScreenState extends State<SignInScreen> {
       showLoginFailDialog(e.toString());
     }
 
-    Navigator.of(context).push(slidePageRouting(HallScreen()));
+    Widget nextScreen;
+
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    final selectedStore = prefs.getInt('selectedStore');
+    if (selectedStore == null)
+      nextScreen = CreateStoreIntroScreen();
+    else
+      nextScreen = HallScreen();
+
+    Navigator.of(context).push(slidePageRouting(nextScreen));
   }
 
   void showLoginFailDialog(String errMsg) {

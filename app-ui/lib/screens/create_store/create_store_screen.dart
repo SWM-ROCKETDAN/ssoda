@@ -6,7 +6,7 @@ import 'package:hashchecker/screens/create_store/components/store_category.dart'
 import 'package:hashchecker/screens/create_store/components/store_logo.dart';
 import 'package:image_picker/image_picker.dart';
 
-import 'components/next_button.dart';
+import 'components/create_button.dart';
 import 'components/store_description.dart';
 import 'components/store_image.dart';
 import 'components/store_location.dart';

@@ -4,10 +4,12 @@ import 'package:flutter/material.dart';
 import 'package:hashchecker/api.dart';
 import 'package:hashchecker/constants.dart';
 import 'package:hashchecker/models/address.dart';
-import 'package:hashchecker/models/store.dart';
+import 'package:hashchecker/models/selected_store.dart';
 import 'package:hashchecker/models/store_category.dart';
 import 'package:hashchecker/screens/hall/hall_screen.dart';
 import 'package:flash/flash.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:provider/provider.dart';
 
 class CreateButton extends StatelessWidget {
   final String? logo;
@@ -110,7 +112,7 @@ class CreateButton extends StatelessWidget {
     return true;
   }
 
-  Future<void> _createStore() async {
+  Future<void> _createStore(BuildContext context) async {
     var dio = await authDio();
 
     final getUserInfoResponse = await dio.get(getApi(API.GET_USER_INFO));
@@ -139,7 +141,12 @@ class CreateButton extends StatelessWidget {
     final createStoreResponse = await dio
         .post(getApi(API.CREATE_STORE, suffix: '/$id'), data: storeData);
 
-    print(createStoreResponse.data);
+    final createdStoreId = createStoreResponse.data;
+
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setInt('selectedStore', createdStoreId);
+
+    context.read<SelectedStore>().id = createdStoreId;
   }
 
   Future<void> _showCreateStoreDialog(BuildContext context) async {
@@ -171,7 +178,7 @@ class CreateButton extends StatelessWidget {
                   children: [
                     TextButton(
                       onPressed: () async {
-                        await _createStore();
+                        await _createStore(context);
                         Navigator.of(context).pop();
                         await _showDoneDialog(context);
                       },
