@@ -8,6 +8,7 @@ import 'package:hashchecker/screens/create_store/components/intro.dart';
 import 'package:hashchecker/screens/hall/hall_screen.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'components/kakao_sign_in_button.dart';
 import 'components/naver_sign_in_button.dart';
@@ -20,6 +21,7 @@ class SignInScreen extends StatefulWidget {
 }
 
 class _SignInScreenState extends State<SignInScreen> {
+  String? debugStr;
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -43,6 +45,7 @@ class _SignInScreenState extends State<SignInScreen> {
                         Text('안녕하세요, 사장님',
                             style: TextStyle(
                                 fontSize: 26.0, fontWeight: FontWeight.bold)),
+                        Text(debugStr ?? 'null'),
                       ]),
                 ),
                 Container(
@@ -57,7 +60,6 @@ class _SignInScreenState extends State<SignInScreen> {
                         size: size,
                         signIn: kakaoLoginPressed,
                       ),
-                      ElevatedButton(onPressed: () {}, child: Text('테스트 코드')),
                       SizedBox(height: kDefaultPadding / 3 * 2),
                       Text('로그인 할 플랫폼을 선택해주세요!',
                           style:
@@ -100,7 +102,16 @@ class _SignInScreenState extends State<SignInScreen> {
       showLoginFailDialog(e.toString());
     }
 
-    Navigator.of(context).push(_routeToCreateStoreScreen());
+    Widget nextScreen;
+
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    final selectedStore = prefs.getInt('selectedStore');
+    if (selectedStore == null)
+      nextScreen = CreateStoreIntroScreen();
+    else
+      nextScreen = HallScreen();
+
+    Navigator.of(context).push(slidePageRouting(nextScreen));
   }
 
   void showLoginFailDialog(String errMsg) {
@@ -132,22 +143,4 @@ class _SignInScreenState extends State<SignInScreen> {
             shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(15))));
   }
-}
-
-Route _routeToCreateStoreScreen() {
-  return PageRouteBuilder(
-    pageBuilder: (context, animation, secondaryAnimation) => const HallScreen(),
-    transitionsBuilder: (context, animation, secondaryAnimation, child) {
-      const begin = Offset(1.0, 0.0);
-      const end = Offset.zero;
-      const curve = Curves.ease;
-
-      var tween = Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
-
-      return SlideTransition(
-        position: animation.drive(tween),
-        child: child,
-      );
-    },
-  );
 }

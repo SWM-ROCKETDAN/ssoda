@@ -24,7 +24,10 @@ enum API {
   CREATE_STORE,
   CREATE_EVENT,
   CREATE_REWARDS,
-  UPDATE_EVENT
+  UPDATE_STORE,
+  UPDATE_EVENT,
+  STOP_EVENT,
+  DELETE_EVENT
 }
 
 Map<API, String> apiMap = {
@@ -36,13 +39,16 @@ Map<API, String> apiMap = {
   API.GET_USER_STORES: '/api/v1/users/me/stores',
   API.GET_EVENT: '/api/v1/events', // '/{event_id}'
   API.GET_ALL_EVENTS: '/api/v1/events',
-  API.GET_STORE: '/api/v1/stores',
-  API.GET_EVENTS_OF_STORE: '/api/v1/stores', // '/{id}/events'
-  API.GET_REWARD_OF_EVENT: '/api/v1/events', // '/{id}/rewards'
+  API.GET_STORE: '/api/v1/stores', // '/{store_id}'
+  API.GET_EVENTS_OF_STORE: '/api/v1/stores', // '/{store_id}/events'
+  API.GET_REWARD_OF_EVENT: '/api/v1/events', // '/{event_id}/rewards'
   API.CREATE_STORE: '/api/v1/stores/users',
   API.CREATE_EVENT: '/api/v1/events/hashtag/stores',
   API.CREATE_REWARDS: '/api/v1/rewards/events',
-  API.UPDATE_EVENT: '/api/v1/events/hashtag' // '/{event_id}'
+  API.UPDATE_STORE: '/api/v1/stores', // '/{store_id}'
+  API.UPDATE_EVENT: '/api/v1/events/hashtag', // '/{event_id}'
+  API.STOP_EVENT: '/api/v1/events', // '/{event_id}/status'
+  API.DELETE_EVENT: '/api/v1/events' // '/{event_id}'
 };
 
 String getApi(API apiType, {String? suffix}) {
@@ -88,8 +94,8 @@ Future<Dio> authDio() async {
       final refreshResponse = await refreshDio.get(getApi(API.REFRESH));
 
       // parsing tokens
-      final newAccessToken = refreshResponse.headers['access-token']![0];
-      final newRefreshToken = refreshResponse.headers['refresh-token']![0];
+      final newAccessToken = refreshResponse.headers['access_token']![0];
+      final newRefreshToken = refreshResponse.headers['refresh_token']![0];
 
       // update dio request headers token
       error.requestOptions.headers['Authorization'] = 'Bearer $newAccessToken';

@@ -42,6 +42,7 @@ dependencies:
   webview_flutter: ^2.0.12
   geocoding: ^2.0.1
   flash: ^2.0.1
+  shared_preferences: ^2.0.7
     
 dev_dependencies:
   flutter_test:

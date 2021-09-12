@@ -2,12 +2,12 @@ import 'package:hashchecker/models/store_category.dart';
 import 'address.dart';
 
 class Store {
-  final String name;
-  final StoreCategory category;
-  final Address address;
-  final String description;
-  final List<String> images;
-  final String logoImage;
+  String name;
+  StoreCategory category;
+  Address address;
+  String description;
+  List<String> images;
+  String logoImage;
 
   Store(
       {required this.name,

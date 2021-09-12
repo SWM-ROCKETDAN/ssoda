@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hashchecker/constants.dart';
+import 'package:hashchecker/screens/hall/hall_screen.dart';
 
 class DoneButton extends StatelessWidget {
   const DoneButton({
@@ -18,7 +19,9 @@ class DoneButton extends StatelessWidget {
           style: TextStyle(
               color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold),
         ),
-        onPressed: () {},
+        onPressed: () {
+          slidePageRouting(HallScreen());
+        },
         style: ButtonStyle(
             backgroundColor: MaterialStateProperty.all<Color>(kThemeColor),
             shape: MaterialStateProperty.all<OutlinedBorder>(

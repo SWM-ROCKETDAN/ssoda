@@ -4,6 +4,7 @@ import 'package:hashchecker/constants.dart';
 import 'package:hashchecker/screens/on_boarding/components/intro_pages.dart';
 import 'package:hashchecker/screens/sign_in/sign_in_screen.dart';
 import 'package:introduction_screen/introduction_screen.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class OnBoardingScreen extends StatefulWidget {
   const OnBoardingScreen({Key? key}) : super(key: key);
@@ -49,7 +50,10 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
     );
   }
 
-  void _onIntroEnd(context) {
+  void _onIntroEnd(context) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setBool('checkFirst', false);
+
     Navigator.of(context).push(_routeToSignInScreen());
   }
 }

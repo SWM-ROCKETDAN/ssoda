@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:hashchecker/api.dart';
 import 'package:hashchecker/constants.dart';
 import 'package:hashchecker/models/event.dart';
 import 'package:hashchecker/screens/hall/hall_screen.dart';
@@ -36,11 +37,17 @@ class EventOptionsModal extends StatelessWidget {
               onTap: () => Navigator.of(context).pop(),
             ),
           ListTile(
+            enabled: _isEnableToEdit(),
             title: Text('이벤트 편집',
                 style: TextStyle(
-                    color: kDefaultFontColor.withOpacity(0.8), fontSize: 15)),
+                    color: _isEnableToEdit()
+                        ? kDefaultFontColor.withOpacity(0.8)
+                        : kLiteFontColor.withOpacity(0.5),
+                    fontSize: 15)),
             leading: Icon(Icons.edit_rounded,
-                color: kDefaultFontColor.withOpacity(0.8)),
+                color: _isEnableToEdit()
+                    ? kDefaultFontColor.withOpacity(0.8)
+                    : kLiteFontColor.withOpacity(0.5)),
             onTap: () => showBarModalBottomSheet(
               expand: true,
               context: context,
@@ -79,12 +86,12 @@ class EventOptionsModal extends StatelessWidget {
             title: Text('이벤트 삭제',
                 style: TextStyle(
                     color: _isEnableToDelete()
-                        ? Colors.redAccent.shade400
+                        ? Colors.red
                         : kLiteFontColor.withOpacity(0.5),
                     fontSize: 15)),
             leading: Icon(Icons.delete_rounded,
                 color: _isEnableToDelete()
-                    ? Colors.redAccent.shade400
+                    ? Colors.red
                     : kLiteFontColor.withOpacity(0.5)),
             onTap: () => _showEventDeleteDialog(context),
           )
@@ -99,6 +106,10 @@ class EventOptionsModal extends StatelessWidget {
 
   bool _isEnableToDelete() {
     return eventStatus == EventStatus.ENDED;
+  }
+
+  bool _isEnableToEdit() {
+    return eventStatus != EventStatus.ENDED;
   }
 
   void _showEventDeleteDialog(BuildContext context) {
@@ -133,14 +144,14 @@ class EventOptionsModal extends StatelessWidget {
                   children: [
                     TextButton(
                       onPressed: () async {
+                        await _deleteEvent(eventId);
                         Navigator.of(context).pop();
                         await _showEventDeleteCompleteDialog(context);
                       },
-                      child: Text('삭제',
-                          style: TextStyle(color: Colors.redAccent.shade400)),
+                      child: Text('삭제', style: TextStyle(color: Colors.red)),
                       style: ButtonStyle(
                           overlayColor: MaterialStateProperty.all<Color>(
-                              Colors.redAccent.shade400.withOpacity(0.1))),
+                              Colors.red.withOpacity(0.1))),
                     ),
                     ElevatedButton(
                       onPressed: () {
@@ -148,8 +159,8 @@ class EventOptionsModal extends StatelessWidget {
                       },
                       child: Text('취소'),
                       style: ButtonStyle(
-                          backgroundColor: MaterialStateProperty.all<Color>(
-                              Colors.redAccent.shade400)),
+                          backgroundColor:
+                              MaterialStateProperty.all<Color>(Colors.red)),
                     ),
                   ],
                 ),
@@ -232,6 +243,7 @@ class EventOptionsModal extends StatelessWidget {
                   children: [
                     TextButton(
                       onPressed: () async {
+                        await _stopEvent(eventId);
                         Navigator.of(context).pop();
                         await _showEventStopCompleteDialog(context);
                       },
@@ -256,6 +268,21 @@ class EventOptionsModal extends StatelessWidget {
             ],
             shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(15))));
+  }
+
+  Future<void> _stopEvent(int eventId) async {
+    var dio = await authDio();
+    final eventStopResponse = await dio.put(
+        'http://ec2-3-37-85-236.ap-northeast-2.compute.amazonaws.com:8080/api/v1/events/$eventId/status',
+        data: {'status': 2});
+    print(eventStopResponse.data);
+  }
+
+  Future<void> _deleteEvent(int eventId) async {
+    var dio = await authDio();
+    final eventDeleteResponse =
+        await dio.delete(getApi(API.DELETE_EVENT, suffix: '/$eventId'));
+    print(eventDeleteResponse.data);
   }
 
   Future<void> _showEventStopCompleteDialog(BuildContext context) async {

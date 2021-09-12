@@ -130,22 +130,30 @@ class EventListTile extends StatelessWidget {
                                                   color: kShadowColor
                                                       .withOpacity(0.6)),
                                               GestureDetector(
-                                                onTap: () =>
+                                                onTap: () {
+                                                  if (eventListItem.status !=
+                                                      EventStatus.ENDED)
                                                     showBarModalBottomSheet(
-                                                  expand: true,
-                                                  context: context,
-                                                  builder: (context) =>
-                                                      EventEditModal(
-                                                    eventId: eventListItem.id,
-                                                  ),
-                                                ),
+                                                      expand: true,
+                                                      context: context,
+                                                      builder: (context) =>
+                                                          EventEditModal(
+                                                        eventId:
+                                                            eventListItem.id,
+                                                      ),
+                                                    );
+                                                },
                                                 child: Container(
                                                   padding:
                                                       const EdgeInsets.fromLTRB(
                                                           8, 4, 8, 4),
                                                   child: Icon(
                                                       Icons.edit_rounded,
-                                                      color: Colors.blueGrey,
+                                                      color: eventListItem
+                                                                  .status !=
+                                                              EventStatus.ENDED
+                                                          ? Colors.blueGrey
+                                                          : kShadowColor,
                                                       size: 18),
                                                 ),
                                               ),

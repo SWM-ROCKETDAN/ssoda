@@ -17,14 +17,15 @@ class HeaderWithImages extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: size.height * 0.4,
+      height: size.width / 4 * 3,
       child: Stack(children: [
         Container(
             color: kLiteFontColor,
             child: CarouselSlider(
               options: CarouselOptions(
+                  aspectRatio: 4 / 3,
                   autoPlay: true,
-                  height: size.height * 0.4 - 15,
+                  height: size.width / 4 * 3 - 15,
                   viewportFraction: 1.0,
                   enlargeCenterPage: false),
               items: event.images

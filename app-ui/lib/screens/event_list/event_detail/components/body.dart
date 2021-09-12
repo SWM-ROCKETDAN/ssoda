@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:hashchecker/constants.dart';
 import 'package:hashchecker/models/event.dart';
+import 'package:hashchecker/models/selected_store.dart';
+import 'package:provider/provider.dart';
 
 import 'event_description.dart';
 import 'header_with_images.dart';
@@ -17,12 +19,11 @@ class Body extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Size size = MediaQuery.of(context).size;
-
+    final storeId = context.read<SelectedStore>().id;
     return SingleChildScrollView(
         child: Column(
       children: [
-        HeaderWithImages(size: size, event: event),
+        HeaderWithImages(storeId: storeId, event: event),
         SizedBox(height: kDefaultPadding / 4 * 3),
         EventTitle(event: event),
         SizedBox(height: kDefaultPadding),

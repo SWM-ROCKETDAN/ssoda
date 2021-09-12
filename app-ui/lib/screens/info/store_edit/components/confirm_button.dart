@@ -1,29 +1,22 @@
 import 'package:dio/dio.dart';
-import 'package:flutter/foundation.dart';
+import 'package:flash/flash.dart';
 import 'package:flutter/material.dart';
 import 'package:hashchecker/api.dart';
 import 'package:hashchecker/constants.dart';
-import 'package:hashchecker/models/address.dart';
+import 'package:hashchecker/models/selected_store.dart';
 import 'package:hashchecker/models/store.dart';
-import 'package:hashchecker/models/store_category.dart';
 import 'package:hashchecker/screens/hall/hall_screen.dart';
-import 'package:flash/flash.dart';
+import 'package:provider/provider.dart';
 
-class CreateButton extends StatelessWidget {
-  final String? logo;
-  final List<String> imageList;
-  final StoreCategory category;
-  final String? name;
-  final Address? address;
-  final String? description;
-  const CreateButton(
+class ConfirmButton extends StatelessWidget {
+  final Store store;
+  final List<String> newImages;
+  final List<String> deletedImagePaths;
+  const ConfirmButton(
       {Key? key,
-      required this.logo,
-      required this.imageList,
-      required this.category,
-      required this.name,
-      required this.address,
-      required this.description})
+      required this.store,
+      required this.newImages,
+      required this.deletedImagePaths})
       : super(key: key);
 
   @override
@@ -34,7 +27,7 @@ class CreateButton extends StatelessWidget {
       child: ElevatedButton(
         onPressed: () async {
           if (_checkStoreValidation(context)) {
-            _showCreateStoreDialog(context);
+            _showUpdateStoreDialog(context);
           }
         },
         child: Text(
@@ -57,17 +50,7 @@ class CreateButton extends StatelessWidget {
   }
 
   bool _checkStoreValidation(BuildContext context) {
-    if (logo == null) {
-      context.showFlashBar(
-          barType: FlashBarType.error,
-          icon: const Icon(Icons.error_outline_rounded),
-          duration: const Duration(seconds: 3),
-          backgroundColor: Colors.white,
-          content: Text('가게 로고를 등록해주세요!',
-              style: TextStyle(fontSize: 14, color: kDefaultFontColor)));
-      return false;
-    }
-    if (name == null || name!.trim() == "") {
+    if (store.name.trim() == "") {
       context.showFlashBar(
           barType: FlashBarType.error,
           icon: const Icon(Icons.error_outline_rounded),
@@ -77,7 +60,7 @@ class CreateButton extends StatelessWidget {
               style: TextStyle(fontSize: 14, color: kDefaultFontColor)));
       return false;
     }
-    if (imageList.length == 0) {
+    if (store.images.length == 0) {
       context.showFlashBar(
           barType: FlashBarType.error,
           icon: const Icon(Icons.error_outline_rounded),
@@ -87,17 +70,8 @@ class CreateButton extends StatelessWidget {
               style: TextStyle(fontSize: 14, color: kDefaultFontColor)));
       return false;
     }
-    if (address == null) {
-      context.showFlashBar(
-          barType: FlashBarType.error,
-          icon: const Icon(Icons.error_outline_rounded),
-          duration: const Duration(seconds: 3),
-          backgroundColor: Colors.white,
-          content: Text('가게 주소를 입력해주세요!',
-              style: TextStyle(fontSize: 14, color: kDefaultFontColor)));
-      return false;
-    }
-    if (description == null || description!.trim() == "") {
+
+    if (store.description.trim() == "") {
       context.showFlashBar(
           barType: FlashBarType.error,
           icon: const Icon(Icons.error_outline_rounded),
@@ -110,39 +84,43 @@ class CreateButton extends StatelessWidget {
     return true;
   }
 
-  Future<void> _createStore() async {
+  Future<void> _updateStore(BuildContext context) async {
     var dio = await authDio();
-
-    final getUserInfoResponse = await dio.get(getApi(API.GET_USER_INFO));
-
-    final id = getUserInfoResponse.data['id'];
 
     dio.options.contentType = 'multipart/form-data';
 
     var storeData = FormData.fromMap({
-      'name': name!.trim(),
-      'category': category.index,
-      'description': description!.trim(),
-      'images': List.generate(imageList.length,
-          (index) => MultipartFile.fromFileSync(imageList[index])),
-      'logoImage': await MultipartFile.fromFile(logo!),
-      'city': address!.city,
-      'country': address!.country,
-      'town': address!.town,
-      'road': address!.road,
-      'buildingCode': address!.building,
-      'zipCode': address!.zipCode,
-      'latitude': address!.latitude,
-      'longitude': address!.longitude
+      'name': store.name.trim(),
+      'category': store.category.index,
+      'description': store.description.trim(),
+      if (newImages.length > 0)
+        'newImages': List.generate(newImages.length,
+            (index) => MultipartFile.fromFileSync(newImages[index])),
+      if (deletedImagePaths.length > 0)
+        'deleteImagePaths': List.generate(
+            deletedImagePaths.length, (index) => deletedImagePaths[index]),
+      if (store.logoImage.startsWith(kNewImagePrefix))
+        'logoImage': await MultipartFile.fromFile(
+            store.logoImage.substring(kNewImagePrefix.length)),
+      'city': store.address.city,
+      'country': store.address.country,
+      'town': store.address.town,
+      'road': store.address.road,
+      'buildingCode': store.address.building,
+      'zipCode': store.address.zipCode,
+      'latitude': store.address.latitude,
+      'longitude': store.address.longitude
     });
 
+    final storeId = context.read<SelectedStore>().id;
+
     final createStoreResponse = await dio
-        .post(getApi(API.CREATE_STORE, suffix: '/$id'), data: storeData);
+        .put(getApi(API.UPDATE_STORE, suffix: '/$storeId'), data: storeData);
 
     print(createStoreResponse.data);
   }
 
-  Future<void> _showCreateStoreDialog(BuildContext context) async {
+  Future<void> _showUpdateStoreDialog(BuildContext context) async {
     showDialog(
         context: context,
         builder: (context) => AlertDialog(
@@ -156,10 +134,7 @@ class CreateButton extends StatelessWidget {
             ),
             content: IntrinsicHeight(
               child: Column(children: [
-                Text("이대로 등록하시겠습니까?",
-                    style: TextStyle(fontSize: 14, color: kDefaultFontColor)),
-                SizedBox(height: kDefaultPadding / 5),
-                Text("(가게 정보는 마이페이지에서\n다시 수정할 수 있습니다)",
+                Text("이대로 수정하시겠습니까?",
                     style: TextStyle(fontSize: 14, color: kDefaultFontColor)),
               ]),
             ),
@@ -171,7 +146,7 @@ class CreateButton extends StatelessWidget {
                   children: [
                     TextButton(
                       onPressed: () async {
-                        await _createStore();
+                        await _updateStore(context);
                         Navigator.of(context).pop();
                         await _showDoneDialog(context);
                       },
@@ -204,14 +179,14 @@ class CreateButton extends StatelessWidget {
         context: context,
         builder: (context) => AlertDialog(
             title: Center(
-              child: Text('축하합니다!',
+              child: Text('완료',
                   style: TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: 18,
                       color: kDefaultFontColor),
                   textAlign: TextAlign.center),
             ),
-            content: Text("쏘다에 우리가게가 등록되었습니다\n이제 이벤트를 만들어볼까요?",
+            content: Text("가게 정보가 수정되었습니다",
                 textAlign: TextAlign.center,
                 style: TextStyle(fontSize: 14, color: kDefaultFontColor)),
             contentPadding: const EdgeInsets.fromLTRB(15, 15, 15, 5),
@@ -219,7 +194,7 @@ class CreateButton extends StatelessWidget {
               Center(
                 child: ElevatedButton(
                   onPressed: () {
-                    Navigator.of(context).push(_routeToHallScreen());
+                    Navigator.of(context).push(slidePageRouting(HallScreen()));
                   },
                   child: Text('확인', style: TextStyle(fontSize: 13)),
                   style: ButtonStyle(
@@ -232,25 +207,5 @@ class CreateButton extends StatelessWidget {
             ],
             shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(15))));
-  }
-
-  Route _routeToHallScreen() {
-    return PageRouteBuilder(
-      pageBuilder: (context, animation, secondaryAnimation) =>
-          const HallScreen(),
-      transitionsBuilder: (context, animation, secondaryAnimation, child) {
-        const begin = Offset(1.0, 0.0);
-        const end = Offset.zero;
-        const curve = Curves.ease;
-
-        var tween =
-            Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
-
-        return SlideTransition(
-          position: animation.drive(tween),
-          child: child,
-        );
-      },
-    );
   }
 }

@@ -33,8 +33,6 @@ class _EventEditModalState extends State<EventEditModal> {
   DateRangePickerController _finishDatePickerController =
       DateRangePickerController();
 
-  final NEW_IMAGE_PREFIX = 'HASHCHECKER_NEW_IMAGE';
-
   List<String> newImages = [];
   List<String> deletedImagePaths = [];
 
@@ -218,13 +216,13 @@ class _EventEditModalState extends State<EventEditModal> {
           ? null
           : DateFormat('yyyy-MM-ddTHH:mm:ss')
               .format(_finishDatePickerController.selectedDate!),
-      'newImages': List.generate(newImages.length,
-          (index) => MultipartFile.fromFileSync(newImages[index])),
-      'deleteImagePaths': deletedImagePaths,
+      if (newImages.length > 0)
+        'newImages': List.generate(newImages.length,
+            (index) => MultipartFile.fromFileSync(newImages[index])),
+      if (deletedImagePaths.length > 0) 'deleteImagePaths': deletedImagePaths,
       'hashtags': event.hashtagList,
       'requirements': event.requireList,
-      'template': event.template.id,
-      'status': event.status!.index
+      'template': event.template.id
     });
 
     final updateEventResponse = await dio.put(
@@ -384,7 +382,7 @@ class _EventEditModalState extends State<EventEditModal> {
       items: List.generate(
           event.images.length,
           (index) => event.images[index] == null
-              ? SizedBox(
+              ? Container(
                   width: MediaQuery.of(context).size.width * 0.6,
                   child: TextButton(
                     onPressed: () {
@@ -415,19 +413,19 @@ class _EventEditModalState extends State<EventEditModal> {
                   child: Stack(children: [
                     ClipRRect(
                       child: event.images[index]!
-                                  .substring(0, NEW_IMAGE_PREFIX.length) ==
-                              NEW_IMAGE_PREFIX
+                                  .substring(0, kNewImagePrefix.length) ==
+                              kNewImagePrefix
                           ? Image.file(
                               File(event.images[index]!
-                                  .substring(NEW_IMAGE_PREFIX.length)),
+                                  .substring(kNewImagePrefix.length)),
                               fit: BoxFit.cover)
                           : Image.network('$s3Url${event.images[index]}',
                               fit: BoxFit.cover),
                       borderRadius: BorderRadius.circular(16),
                     ),
                     if (event.images[index]!
-                            .substring(0, NEW_IMAGE_PREFIX.length) !=
-                        NEW_IMAGE_PREFIX)
+                            .substring(0, kNewImagePrefix.length) !=
+                        kNewImagePrefix)
                       Positioned(
                           right: 10,
                           top: 10,
@@ -973,7 +971,7 @@ class _EventEditModalState extends State<EventEditModal> {
       setState(() {
         if (event.images[index] == null && event.images.length < 3)
           event.images.add(null);
-        event.images[index] = '$NEW_IMAGE_PREFIX${image.path}';
+        event.images[index] = '$kNewImagePrefix${image.path}';
         newImages.add(image.path);
         print(event.images[index]);
       });

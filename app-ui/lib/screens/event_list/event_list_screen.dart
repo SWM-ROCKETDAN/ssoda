@@ -207,6 +207,8 @@ class _EventListScreenState extends State<EventListScreen> {
 
     final fetchedStore = getStoreResponse.data;
 
+    print(fetchedStore);
+
     return Store.fromJson(fetchedStore);
   }
 
