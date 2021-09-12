@@ -2,12 +2,15 @@ import 'package:animations/animations.dart';
 import 'package:flutter/material.dart';
 import 'package:hashchecker/api.dart';
 import 'package:hashchecker/constants.dart';
+import 'package:hashchecker/models/selected_store.dart';
 import 'package:hashchecker/models/store.dart';
 import 'package:hashchecker/models/store_list_item.dart';
 import 'package:hashchecker/screens/event_list/event_list_screen.dart';
+import 'package:hashchecker/screens/hall/components/store_select.dart';
 import 'package:hashchecker/screens/info/info_screen.dart';
 import 'package:hashchecker/screens/marketing_report/store_report/store_report_screen.dart';
 import 'package:hashchecker/widgets/pandabar/pandabar.dart';
+import 'package:provider/provider.dart';
 
 enum TabPage { EVENT, REPORT, RANKING, INFO }
 
@@ -38,6 +41,8 @@ class _HallScreenState extends State<HallScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final selectedStoreId = context.read<SelectedStore>().id;
+
     return Scaffold(
       extendBody: true,
       appBar: AppBar(
@@ -55,16 +60,8 @@ class _HallScreenState extends State<HallScreen> {
               future: storeList,
               builder: (context, snapshot) {
                 if (snapshot.hasData) {
-                  return Container(
-                      height: kToolbarHeight * 0.6,
-                      width: kToolbarHeight * 0.6,
-                      decoration: BoxDecoration(
-                          color: kShadowColor,
-                          shape: BoxShape.circle,
-                          image: DecorationImage(
-                              image: NetworkImage(
-                                  '$s3Url${snapshot.data!.last.logo}'),
-                              fit: BoxFit.contain)));
+                  return StoreSelect(
+                      selectedStoreId: selectedStoreId, storeList: storeList);
                 } else if (snapshot.hasError) {
                   return Text('${snapshot.error}');
                 }
@@ -128,8 +125,6 @@ class _HallScreenState extends State<HallScreen> {
     final getStoreListResponse = await dio.get(getApi(API.GET_USER_STORES));
 
     final fetchedStoreList = getStoreListResponse.data;
-
-    print(fetchedStoreList);
 
     List<StoreListItem> storeList = List.generate(fetchedStoreList.length,
         (index) => StoreListItem.fromJson(fetchedStoreList[index]));
