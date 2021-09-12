@@ -1,17 +1,14 @@
 package com.rocketdan.serviceserver.service;
 
-
 import com.rocketdan.serviceserver.Exception.analysis.AnalysisServerErrorException;
 import com.rocketdan.serviceserver.Exception.join.JoinEventFailedException;
 import com.rocketdan.serviceserver.Exception.resource.NoAuthorityToResourceException;
 import com.rocketdan.serviceserver.config.AnalysisServerConfig;
 import com.rocketdan.serviceserver.config.auth.UserIdValidCheck;
 import com.rocketdan.serviceserver.core.CommonResponse;
-import com.rocketdan.serviceserver.s3.service.ImageManagerService;
 import com.rocketdan.serviceserver.s3.service.UpdateImageService;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-import reactor.core.publisher.Mono;
 
 import com.rocketdan.serviceserver.app.dto.reward.RewardResponseDto;
 import com.rocketdan.serviceserver.app.dto.reward.RewardSaveRequestDto;
@@ -58,17 +55,6 @@ public class RewardService {
         return new RewardResponseDto(entity);
     }
 
-    // analysis-server에 put 요청
-    public CommonResponse getRewardId(Long joinPostId) {
-        return analysisServerConfig.webClient().get() // GET method
-                .uri("/api/v1/join/rewards/" + joinPostId + "/") // baseUrl 이후 uri
-                .retrieve() // client message 전송
-                .onStatus(HttpStatus::is4xxClientError, clientResponse -> Mono.error(JoinEventFailedException::new))
-                .onStatus(HttpStatus::is5xxServerError, clientResponse -> Mono.error(AnalysisServerErrorException::new))
-                .bodyToMono(CommonResponse.class) // body type
-                .block(); // await
-    }
-
     public void softDelete(Long id, org.springframework.security.core.userdetails.User principal) throws NoAuthorityToResourceException {
         Reward reward = rewardRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("해당 리워드가 없습니다. id=" + id));
 
@@ -76,5 +62,16 @@ public class RewardService {
         userIdValidCheck.userIdValidCheck(reward.getEvent().getStore().getUser().getUserId(), principal);
 
         rewardRepository.delete(reward);
+    }
+
+    // analysis-server에 put 요청
+    public CommonResponse getRewardId(Long joinPostId) {
+        return analysisServerConfig.webClient().get() // GET method
+                .uri("/api/v1/join/rewards/" + joinPostId + "/") // baseUrl 이후 uri
+                .retrieve() // client message 전송
+                .onStatus(HttpStatus::is4xxClientError, clientResponse -> clientResponse.bodyToMono(CommonResponse.class).map(JoinEventFailedException::new))
+                .onStatus(HttpStatus::is5xxServerError, clientResponse -> clientResponse.bodyToMono(CommonResponse.class).map(AnalysisServerErrorException::new))
+                .bodyToMono(CommonResponse.class) // body type
+                .block(); // await
     }
 }

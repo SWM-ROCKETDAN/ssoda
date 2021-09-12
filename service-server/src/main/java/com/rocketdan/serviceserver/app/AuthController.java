@@ -79,9 +79,10 @@ public class AuthController {
         return ResponseEntity.ok()
                 .headers(responseHeaders)
                 .body(CommonResponse.builder()
+                        .message("LOGIN_SUCCESS.")
                         .code("LOGIN_SUCCESS")
                         .status(200)
-                        .message(userId)
+                        .data(userId)
                         .build()
                 );
     }
@@ -147,9 +148,10 @@ public class AuthController {
         return ResponseEntity.ok()
                 .headers(responseHeaders)
                 .body(CommonResponse.builder()
+                        .message("GENERATE_TOKEN_SUCCESS.")
                         .code("GENERATE_TOKEN_SUCCESS")
                         .status(200)
-                        .message(userId)
+                        .data(userId)
                         .build()
                 );
     }
