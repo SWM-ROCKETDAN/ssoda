@@ -22,8 +22,6 @@ class StoreImage extends StatefulWidget {
 }
 
 class _StoreImageState extends State<StoreImage> {
-  final NEW_IMAGE_PREFIX = 'HASHCHECKER_NEW_IMAGE';
-
   @override
   Widget build(BuildContext context) {
     return Row(
@@ -44,32 +42,31 @@ class _StoreImageState extends State<StoreImage> {
                 )
               : ListView.separated(
                   scrollDirection: Axis.horizontal,
-                  itemBuilder: (context, index) =>
-                      index == widget.store.images.length
-                          ? (widget.store.images.length < 3
-                              ? buildAddButton()
-                              : Container())
-                          : GestureDetector(
-                              onTap: () {
-                                _removeStoreImage(index);
-                              },
-                              child: SizedBox(
-                                height: 48,
-                                child: ClipRRect(
-                                    child: widget.store.images[index].substring(
-                                                0, NEW_IMAGE_PREFIX.length) ==
-                                            NEW_IMAGE_PREFIX
-                                        ? Image.file(
-                                            File(widget.store.images[index]
-                                                .substring(
-                                                    NEW_IMAGE_PREFIX.length)),
-                                            fit: BoxFit.cover)
-                                        : Image.network(
-                                            '$s3Url${widget.store.images[index]}',
-                                            fit: BoxFit.cover),
-                                    borderRadius: BorderRadius.circular(4)),
-                              ),
-                            ),
+                  itemBuilder: (context, index) => index ==
+                          widget.store.images.length
+                      ? (widget.store.images.length < 3
+                          ? buildAddButton()
+                          : Container())
+                      : GestureDetector(
+                          onTap: () {
+                            _removeStoreImage(index);
+                          },
+                          child: SizedBox(
+                            height: 48,
+                            child: ClipRRect(
+                                child: widget.store.images[index].substring(
+                                            0, kNewImagePrefix.length) ==
+                                        kNewImagePrefix
+                                    ? Image.file(
+                                        File(widget.store.images[index]
+                                            .substring(kNewImagePrefix.length)),
+                                        fit: BoxFit.cover)
+                                    : Image.network(
+                                        '$s3Url${widget.store.images[index]}',
+                                        fit: BoxFit.cover),
+                                borderRadius: BorderRadius.circular(4)),
+                          ),
+                        ),
                   separatorBuilder: (context, index) =>
                       SizedBox(width: kDefaultPadding / 3),
                   itemCount: widget.store.images.length + 1),
@@ -110,7 +107,7 @@ class _StoreImageState extends State<StoreImage> {
         imageQuality: 75);
     if (image != null) {
       setState(() {
-        widget.store.images.add('$NEW_IMAGE_PREFIX${image.path}');
+        widget.store.images.add('$kNewImagePrefix${image.path}');
       });
       widget.newImages.add(image.path);
     }

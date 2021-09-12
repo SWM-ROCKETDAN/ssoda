@@ -47,18 +47,6 @@ class _StoreEditScreenState extends State<StoreEditScreen> {
     return Store.fromJson(fetchedStore);
   }
 
-  Future<void> _setLogoImage() async {
-    final ImagePicker _imagePicker = ImagePicker();
-    final XFile? image = await _imagePicker.pickImage(
-        source: ImageSource.gallery,
-        maxHeight: 400,
-        maxWidth: 400,
-        imageQuality: 75);
-    if (image != null) {
-      setState(() {});
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:hashchecker/constants.dart';
 import 'package:hashchecker/models/store.dart';
 
+import 'confirm_button.dart';
 import 'store_category.dart';
 import 'store_description.dart';
 import 'store_image.dart';
@@ -48,7 +49,10 @@ class Body extends StatelessWidget {
               ),
             ),
           ),
-          // ConfirmButton(store: store),
+          ConfirmButton(
+              store: store,
+              newImages: newImages,
+              deletedImagePaths: deletedImagePaths),
         ],
       ),
     );

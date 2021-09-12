@@ -15,8 +15,6 @@ class StoreLogo extends StatefulWidget {
 }
 
 class _StoreLogoState extends State<StoreLogo> {
-  final NEW_IMAGE_PREFIX = 'HASHCHECKER_NEW_IMAGE';
-
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -27,11 +25,11 @@ class _StoreLogoState extends State<StoreLogo> {
             decoration: BoxDecoration(
                 shape: BoxShape.circle,
                 image: widget.store.logoImage
-                            .substring(0, NEW_IMAGE_PREFIX.length) ==
-                        NEW_IMAGE_PREFIX
+                            .substring(0, kNewImagePrefix.length) ==
+                        kNewImagePrefix
                     ? DecorationImage(
                         image: FileImage(File(widget.store.logoImage
-                            .substring(NEW_IMAGE_PREFIX.length))),
+                            .substring(kNewImagePrefix.length))),
                         fit: BoxFit.cover)
                     : DecorationImage(
                         image: NetworkImage('$s3Url${widget.store.logoImage}'),
@@ -47,7 +45,7 @@ class _StoreLogoState extends State<StoreLogo> {
         imageQuality: 75);
     if (image != null) {
       setState(() {
-        widget.store.logoImage = '$NEW_IMAGE_PREFIX${image.path}';
+        widget.store.logoImage = '$kNewImagePrefix${image.path}';
       });
     }
   }
