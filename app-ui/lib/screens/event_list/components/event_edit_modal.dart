@@ -33,8 +33,6 @@ class _EventEditModalState extends State<EventEditModal> {
   DateRangePickerController _finishDatePickerController =
       DateRangePickerController();
 
-  final NEW_IMAGE_PREFIX = 'HASHCHECKER_NEW_IMAGE';
-
   List<String> newImages = [];
   List<String> deletedImagePaths = [];
 
@@ -415,19 +413,19 @@ class _EventEditModalState extends State<EventEditModal> {
                   child: Stack(children: [
                     ClipRRect(
                       child: event.images[index]!
-                                  .substring(0, NEW_IMAGE_PREFIX.length) ==
-                              NEW_IMAGE_PREFIX
+                                  .substring(0, kNewImagePrefix.length) ==
+                              kNewImagePrefix
                           ? Image.file(
                               File(event.images[index]!
-                                  .substring(NEW_IMAGE_PREFIX.length)),
+                                  .substring(kNewImagePrefix.length)),
                               fit: BoxFit.cover)
                           : Image.network('$s3Url${event.images[index]}',
                               fit: BoxFit.cover),
                       borderRadius: BorderRadius.circular(16),
                     ),
                     if (event.images[index]!
-                            .substring(0, NEW_IMAGE_PREFIX.length) !=
-                        NEW_IMAGE_PREFIX)
+                            .substring(0, kNewImagePrefix.length) !=
+                        kNewImagePrefix)
                       Positioned(
                           right: 10,
                           top: 10,
@@ -973,7 +971,7 @@ class _EventEditModalState extends State<EventEditModal> {
       setState(() {
         if (event.images[index] == null && event.images.length < 3)
           event.images.add(null);
-        event.images[index] = '$NEW_IMAGE_PREFIX${image.path}';
+        event.images[index] = '$kNewImagePrefix${image.path}';
         newImages.add(image.path);
         print(event.images[index]);
       });
