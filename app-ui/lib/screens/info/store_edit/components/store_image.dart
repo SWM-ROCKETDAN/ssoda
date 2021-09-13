@@ -54,9 +54,8 @@ class _StoreImageState extends State<StoreImage> {
                           child: SizedBox(
                             height: 48,
                             child: ClipRRect(
-                                child: widget.store.images[index].substring(
-                                            0, kNewImagePrefix.length) ==
-                                        kNewImagePrefix
+                                child: widget.store.images[index]
+                                        .startsWith(kNewImagePrefix)
                                     ? Image.file(
                                         File(widget.store.images[index]
                                             .substring(kNewImagePrefix.length)),
