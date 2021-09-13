@@ -13,7 +13,6 @@ import com.rocketdan.serviceserver.domain.user.User;
 import com.rocketdan.serviceserver.domain.user.UserRepository;
 import com.rocketdan.serviceserver.s3.service.UpdateImageService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -108,6 +107,10 @@ public class StoreService {
 
         // valid 하지 않으면 exception 발생
         userIdValidCheck.userIdValidCheck(store.getUser().getUserId(), principal);
+
+        // 이미지 S3에서 삭제
+        updateImageService.deleteImagePaths(store.getImagePaths());
+        updateImageService.deleteImagePath(store.getLogoImagePath());
 
         storeRepository.delete(store);
     }
