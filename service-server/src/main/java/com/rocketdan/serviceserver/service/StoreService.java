@@ -13,10 +13,12 @@ import com.rocketdan.serviceserver.domain.user.User;
 import com.rocketdan.serviceserver.domain.user.UserRepository;
 import com.rocketdan.serviceserver.s3.service.UpdateImageService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
@@ -63,7 +65,11 @@ public class StoreService {
 
         // logo 이미지
         String logoImgPath = updateImageService.uploadNewImage(requestDto.getLogoImage(), "image/store/logo");
-        updateImageService.deleteImagePath(store.getLogoImagePath());
+        if (Optional.ofNullable(logoImgPath).isPresent()) {
+            updateImageService.deleteImagePath(store.getLogoImagePath());
+        } else {
+            logoImgPath = store.getLogoImagePath();
+        }
 
         // update
         store.update(requestDto.getName(), requestDto.getCategory(), requestDto.addressToEntity(), requestDto.getDescription(), imgPaths, logoImgPath);
