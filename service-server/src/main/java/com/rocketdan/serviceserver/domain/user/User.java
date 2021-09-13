@@ -1,18 +1,24 @@
 package com.rocketdan.serviceserver.domain.user;
 
 import com.rocketdan.serviceserver.domain.store.Store;
+import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import net.minidev.json.annotate.JsonIgnore;
+import org.hibernate.annotations.ColumnDefault;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.Where;
 
 import javax.persistence.*;
 import java.util.Date;
 import java.util.List;
 
-@Getter
-@NoArgsConstructor
 @Entity
+@Getter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@SQLDelete(sql = "UPDATE user SET deleted = true WHERE id = ?")
+@Where(clause = "deleted = false")
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -53,6 +59,10 @@ public class User {
 
     @Column(nullable = false)
     private Date modifiedDate;
+
+    @ColumnDefault("false")
+    @Column(nullable = false)
+    private Boolean deleted = false;
 
     @Builder
     public User(String userId, String password, String name, String email, String picture, Role role, List<Store> stores, Provider provider, Date createdDate, Date modifiedDate) {
