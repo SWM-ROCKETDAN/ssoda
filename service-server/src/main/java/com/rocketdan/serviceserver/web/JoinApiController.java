@@ -39,19 +39,21 @@ public class JoinApiController {
         // (5) analysis-server에 reward level 요청
         ObjectMapper objectMapper = new ObjectMapper();
         RewardLevelResponseDto rewardLevelResponse = objectMapper.convertValue(rewardService.getRewardId(joinPostId).getData(), RewardLevelResponseDto.class);
-        // (6) reward 찾아 front에 return
+
+        // (6) reward 찾아 front에 response
         return rewardService.findById(rewardLevelResponse.getReward_id());
     }
 
-    @PutMapping("/posts/{post_id}/rewards")
-    public ResponseEntity<CommonResponse> receiveReward(@PathVariable Long post_id) {
+    @PutMapping("/posts/{post_id}")
+    public ResponseEntity<CommonResponse> completedParticipation(@PathVariable Long post_id) {
         Integer remainCount = joinPostService.updateReward(post_id);
 
         return ResponseEntity.ok()
                 .body(CommonResponse.builder()
-                        .code("RECEIVE_REWARD_SUCCESS.")
+                        .message("Successfully participated in the event.")
+                        .code("COMPLETED_PARTICIPATION")
                         .status(200)
-                        .message(remainCount.toString())
+                        .data(remainCount.toString())
                         .build()
                 );
     }

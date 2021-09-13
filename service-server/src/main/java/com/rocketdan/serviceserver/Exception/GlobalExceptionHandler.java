@@ -12,6 +12,7 @@ import com.rocketdan.serviceserver.Exception.auth.token.CustomAuthenticationExce
 import com.rocketdan.serviceserver.Exception.auth.CustomJwtRuntimeException;
 import com.rocketdan.serviceserver.Exception.auth.LoginFailedException;
 import com.rocketdan.serviceserver.Exception.join.JoinInvalidEventException;
+import com.rocketdan.serviceserver.Exception.join.NoRewardForEventException;
 import com.rocketdan.serviceserver.Exception.resource.NoAuthorityToResourceException;
 import com.rocketdan.serviceserver.core.CommonResponse;
 import lombok.extern.slf4j.Slf4j;
@@ -199,6 +200,20 @@ public class GlobalExceptionHandler {
                 .code(ErrorCode.JOIN_INVALID_EVENT.getCode())
                 .message(ErrorCode.JOIN_INVALID_EVENT.getMessage())
                 .status(ErrorCode.JOIN_INVALID_EVENT.getStatus())
+                .build();
+
+        return new ResponseEntity<>(response, HttpStatus.NOT_ACCEPTABLE);
+    }
+
+    @ExceptionHandler(NoRewardForEventException.class)
+    protected ResponseEntity<CommonResponse> handleNoRewardForEventException(NoRewardForEventException e) {
+
+        log.info("handleNoRewardForEventException", e);
+
+        CommonResponse response = CommonResponse.builder()
+                .code(ErrorCode.NO_REWARD_FOR_EVENT.getCode())
+                .message(ErrorCode.NO_REWARD_FOR_EVENT.getMessage())
+                .status(ErrorCode.NO_REWARD_FOR_EVENT.getStatus())
                 .build();
 
         return new ResponseEntity<>(response, HttpStatus.NOT_ACCEPTABLE);

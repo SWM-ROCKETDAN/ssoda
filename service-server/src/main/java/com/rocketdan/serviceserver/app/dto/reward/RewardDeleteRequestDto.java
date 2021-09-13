@@ -8,9 +8,9 @@ import java.util.List;
 @Getter
 @NoArgsConstructor
 public class RewardDeleteRequestDto {
-    List<Long> idList;
+    List<Long> rewardIds;
 
-    public RewardDeleteRequestDto(List<Long> idList) {
-        this.idList = idList;
+    public RewardDeleteRequestDto(List<Long> rewardIds) {
+        this.rewardIds = rewardIds;
     }
 }
