@@ -61,6 +61,9 @@ public class RewardService {
         // valid 하지 않으면 exception 발생
         userIdValidCheck.userIdValidCheck(reward.getEvent().getStore().getUser().getUserId(), principal);
 
+        // 이미지 S3에서 삭제
+        updateImageService.deleteImagePath(reward.getImagePath());
+
         rewardRepository.delete(reward);
     }
 

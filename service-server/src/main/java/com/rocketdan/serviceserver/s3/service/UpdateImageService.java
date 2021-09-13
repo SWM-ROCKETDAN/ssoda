@@ -48,6 +48,7 @@ public class UpdateImageService {
         }
     }
 
+    // deleteImagePaths 삭제 + 기존에 DB에서 deleteImagePaths 삭제해 return
     public List<String> deleteImagePaths(List<String> prevImgPaths, List<String> deleteImagePaths) {
         // deleteImagePaths 필드가 존재하고, 데이터가 들어있을 때
         if (Optional.ofNullable(deleteImagePaths).isPresent()) {
@@ -60,5 +61,15 @@ public class UpdateImageService {
             }
         }
         return prevImgPaths;
+    }
+
+    // deleteImagePaths 삭제
+    public void deleteImagePaths(List<String> deleteImagePaths) {
+        // deleteImagePaths 필드가 존재하고, 데이터가 들어있을 때
+        if (Optional.ofNullable(deleteImagePaths).isPresent()) {
+            if (!deleteImagePaths.isEmpty()) {
+                imageManagerService.delete(deleteImagePaths);
+            }
+        }
     }
 }
