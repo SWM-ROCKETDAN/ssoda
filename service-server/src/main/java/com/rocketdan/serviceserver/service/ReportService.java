@@ -1,25 +1,19 @@
 package com.rocketdan.serviceserver.service;
 
 import com.rocketdan.serviceserver.Exception.analysis.AnalysisServerErrorException;
-import com.rocketdan.serviceserver.Exception.join.NoRewardForEventException;
 import com.rocketdan.serviceserver.Exception.report.GetReportFailedException;
 import com.rocketdan.serviceserver.Exception.resource.NoAuthorityToResourceException;
-import com.rocketdan.serviceserver.app.dto.report.event.EventInReportOfEvent;
-import com.rocketdan.serviceserver.app.dto.report.event.ReportOfEventDto;
-import com.rocketdan.serviceserver.app.dto.report.event.ReportOfEventResponseDto;
-import com.rocketdan.serviceserver.app.dto.report.event.RewardInReportOfEvent;
+import com.rocketdan.serviceserver.app.dto.report.event.EventInEventReport;
+import com.rocketdan.serviceserver.app.dto.report.event.EventReportDto;
+import com.rocketdan.serviceserver.app.dto.report.event.EventReportResponseDto;
 import com.rocketdan.serviceserver.config.AnalysisServerConfig;
 import com.rocketdan.serviceserver.config.auth.UserIdValidCheck;
 import com.rocketdan.serviceserver.core.CommonResponse;
 import com.rocketdan.serviceserver.domain.event.Event;
 import com.rocketdan.serviceserver.domain.event.EventRepository;
-import com.rocketdan.serviceserver.domain.reward.Reward;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -31,26 +25,13 @@ public class ReportService {
     private final UserIdValidCheck userIdValidCheck;
 
     // Report of event 가공
-    public ReportOfEventResponseDto wrapReportOfEvent(Long eventId, ReportOfEventDto report, org.springframework.security.core.userdetails.User principal) throws NoAuthorityToResourceException {
+    public EventReportResponseDto wrapReportOfEvent(Long eventId, EventReportDto report, org.springframework.security.core.userdetails.User principal) throws NoAuthorityToResourceException {
         Event event = eventRepository.findById(eventId).orElseThrow(() -> new IllegalArgumentException("해당 이벤트가 없습니다. id=" + eventId));
 
         // valid 하지 않으면 exception 발생
         userIdValidCheck.userIdValidCheck(event.getStore().getUser().getUserId(), principal);
 
-        // Reward >= 1 인지 체크
-        List<Reward> rewards = event.getRewards();
-        if (rewards.size() == 0) {
-            throw new NoRewardForEventException();
-        }
-
-        return new ReportOfEventResponseDto(new EventInReportOfEvent(event), processRewards(rewards), report);
-    }
-
-    // rewards 가공
-    private List<RewardInReportOfEvent> processRewards(List<Reward> rewards) {
-        List<RewardInReportOfEvent> rewardsInReportOfEvent = new ArrayList<>();
-        rewards.forEach(reward -> rewardsInReportOfEvent.add(new RewardInReportOfEvent(reward)));
-        return rewardsInReportOfEvent;
+        return new EventReportResponseDto(new EventInEventReport(event), report);
     }
 
     // analysis-server에 event report get 요청
