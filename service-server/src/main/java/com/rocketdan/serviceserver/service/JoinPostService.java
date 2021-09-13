@@ -4,6 +4,7 @@ import com.rocketdan.serviceserver.Exception.analysis.AnalysisServerErrorExcepti
 import com.rocketdan.serviceserver.Exception.join.JoinDifferentEventException;
 import com.rocketdan.serviceserver.Exception.join.JoinEventFailedException;
 import com.rocketdan.serviceserver.Exception.join.JoinInvalidEventException;
+import com.rocketdan.serviceserver.Exception.join.NoRewardForEventException;
 import com.rocketdan.serviceserver.config.AnalysisServerConfig;
 import com.rocketdan.serviceserver.core.CommonResponse;
 import com.rocketdan.serviceserver.domain.event.Event;
@@ -49,6 +50,10 @@ public class JoinPostService {
             throw new JoinInvalidEventException();
         }
 
+        if (linkedEvent.getRewards().size() == 0) {
+            throw new NoRewardForEventException();
+        }
+
         // (3) Analysis server에 요청
         JoinPost savedJoinPost = JoinPost.builder()
                 .event(linkedEvent)
@@ -63,22 +68,23 @@ public class JoinPostService {
     public Integer updateReward(Long postId) {
         JoinPost joinPost = joinPostRepository.findById(postId).orElseThrow(() -> new IllegalArgumentException("해당 게시글이 없습니다. id=" + postId));
 
+        // (1) Reward 수령 여부 확인
         if (joinPost.getRewardDate() != null) {
             throw new JoinEventFailedException("Post is already rewarded");
         }
 
         Reward reward = joinPost.getReward();
 
-        // (1) usedCount 감소
+        // (2) usedCount 감소
         Integer increasedUsedCount = reward.increaseUsedCount();
 
-        // (2) rewardDate update
+        // (3) rewardDate update
         Date now = new Date();
         joinPost.updateRewardDate(now);
 
-        // (2) usedCount >= count -> 이벤트 종료
+        // (4) usedCount >= count -> 이벤트 종료
         if (increasedUsedCount >= reward.getCount()) {
-            joinPost.getEvent().finishStatus();
+            joinPost.getEvent().updateStatus(2); // 종료
         }
 
         return reward.getCount() - increasedUsedCount;

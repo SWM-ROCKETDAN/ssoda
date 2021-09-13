@@ -45,13 +45,13 @@ public class JoinApiController {
     }
 
     @PutMapping("/posts/{post_id}")
-    public ResponseEntity<CommonResponse> receiveReward(@PathVariable Long post_id) {
+    public ResponseEntity<CommonResponse> completedParticipation(@PathVariable Long post_id) {
         Integer remainCount = joinPostService.updateReward(post_id);
 
         return ResponseEntity.ok()
                 .body(CommonResponse.builder()
-                        .message("RECEIVE_REWARD_SUCCESS.")
-                        .code("RECEIVE_REWARD_SUCCESS")
+                        .message("Successfully participated in the event.")
+                        .code("COMPLETED_PARTICIPATION")
                         .status(200)
                         .data(remainCount.toString())
                         .build()

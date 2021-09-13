@@ -107,11 +107,6 @@ public abstract class Event {
         Optional.ofNullable(status).ifPresent(none -> this.status = status);
     }
 
-
-    public void finishStatus() {
-        this.status = 2;
-    }
-
     public void update(String title, Date startDate, Date finishDate, List<String> images) {
         Optional.ofNullable(title).ifPresent(none -> this.title = title);
         Optional.ofNullable(startDate).ifPresent(none -> this.startDate = startDate);

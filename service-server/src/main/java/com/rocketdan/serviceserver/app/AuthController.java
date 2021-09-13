@@ -73,13 +73,13 @@ public class AuthController {
 
         // auth-token을 헤더에 전달
         HttpHeaders responseHeaders = new HttpHeaders();
-        responseHeaders.set("access-token", accessToken.getToken());
-        responseHeaders.set("refresh-token", refreshToken.getToken());
+        responseHeaders.set("access_token", accessToken.getToken());
+        responseHeaders.set("refresh_token", refreshToken.getToken());
 
         return ResponseEntity.ok()
                 .headers(responseHeaders)
                 .body(CommonResponse.builder()
-                        .message("LOGIN_SUCCESS.")
+                        .message("Successfully logged in.")
                         .code("LOGIN_SUCCESS")
                         .status(200)
                         .data(userId)
@@ -142,13 +142,13 @@ public class AuthController {
         }
 
         HttpHeaders responseHeaders = new HttpHeaders();
-        responseHeaders.set("access-token", newAccessToken.getToken());
-        responseHeaders.set("refresh-token", authRefreshToken.getToken());
+        responseHeaders.set("access_token", newAccessToken.getToken());
+        responseHeaders.set("refresh_token", authRefreshToken.getToken());
 
         return ResponseEntity.ok()
                 .headers(responseHeaders)
                 .body(CommonResponse.builder()
-                        .message("GENERATE_TOKEN_SUCCESS.")
+                        .message("Successfully generate token.")
                         .code("GENERATE_TOKEN_SUCCESS")
                         .status(200)
                         .data(userId)
