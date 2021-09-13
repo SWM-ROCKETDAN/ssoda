@@ -13,6 +13,7 @@ import com.rocketdan.serviceserver.Exception.auth.CustomJwtRuntimeException;
 import com.rocketdan.serviceserver.Exception.auth.LoginFailedException;
 import com.rocketdan.serviceserver.Exception.join.JoinInvalidEventException;
 import com.rocketdan.serviceserver.Exception.join.NoRewardForEventException;
+import com.rocketdan.serviceserver.Exception.report.GetReportFailedException;
 import com.rocketdan.serviceserver.Exception.resource.NoAuthorityToResourceException;
 import com.rocketdan.serviceserver.core.CommonResponse;
 import lombok.extern.slf4j.Slf4j;
@@ -237,5 +238,21 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
+    /*
+    Report
+     */
 
+    @ExceptionHandler(GetReportFailedException.class)
+    protected ResponseEntity<CommonResponse> handleGetReportFailedException(GetReportFailedException e) {
+
+        log.info("handleGetReportFailedException", e);
+
+        CommonResponse response = CommonResponse.builder()
+                .code(ErrorCode.GET_REPORT_FAILED.getCode())
+                .message(e.getMessage())
+                .status(ErrorCode.GET_REPORT_FAILED.getStatus())
+                .build();
+
+        return new ResponseEntity<>(response, HttpStatus.NOT_ACCEPTABLE);
+    }
 }
