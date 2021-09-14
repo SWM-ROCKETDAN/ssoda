@@ -128,11 +128,6 @@ class NextStepButton extends StatelessWidget {
         requireList: event.requireList,
         template: event.template);
 
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) => EventPreviewScreen(event: savingEvent),
-      ),
-    );
+    slidePageRouting(EventPreviewScreen(event: savingEvent));
   }
 }
