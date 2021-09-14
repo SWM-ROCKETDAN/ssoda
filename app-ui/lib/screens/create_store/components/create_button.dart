@@ -161,9 +161,6 @@ class CreateButton extends StatelessWidget {
               child: Column(children: [
                 Text("이대로 등록하시겠습니까?",
                     style: TextStyle(fontSize: 14, color: kDefaultFontColor)),
-                SizedBox(height: kDefaultPadding / 5),
-                Text("(가게 정보는 마이페이지에서\n다시 수정할 수 있습니다)",
-                    style: TextStyle(fontSize: 14, color: kDefaultFontColor)),
               ]),
             ),
             contentPadding: const EdgeInsets.fromLTRB(15, 15, 15, 5),
@@ -172,7 +169,7 @@ class CreateButton extends StatelessWidget {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
-                    TextButton(
+                    ElevatedButton(
                       onPressed: () async {
                         await _createStore(context);
                         Navigator.of(context).pop();
@@ -184,15 +181,15 @@ class CreateButton extends StatelessWidget {
                           backgroundColor:
                               MaterialStateProperty.all<Color>(kThemeColor)),
                     ),
-                    ElevatedButton(
+                    TextButton(
                       onPressed: () {
                         Navigator.of(context).pop();
                       },
                       child: Text('아니오',
-                          style: TextStyle(color: Colors.white, fontSize: 13)),
+                          style: TextStyle(color: kThemeColor, fontSize: 13)),
                       style: ButtonStyle(
-                          backgroundColor:
-                              MaterialStateProperty.all<Color>(kThemeColor)),
+                          overlayColor: MaterialStateProperty.all<Color>(
+                              kThemeColor.withOpacity(0.2))),
                     ),
                   ],
                 ),
