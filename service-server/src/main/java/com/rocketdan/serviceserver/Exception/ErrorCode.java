@@ -21,7 +21,9 @@ public enum ErrorCode {
     JOIN_INVALID_EVENT(406, "JOIN_EVENT003", "Event is not valid."), // 유효하지 않은 이벤트에 참여(진행중이 아닌)
     NO_REWARD_FOR_EVENT(500, "JOIN_EVENT004", "There is no reward for the event."), // 이벤트에 등록된 리워드가 없음
     // Analysis server
-    ANALYSIS_SERVER_ERROR(500, "ANALYSIS001", "Analysis server error."); // 분석 서버 에러(scraping 불가 등)
+    ANALYSIS_SERVER_ERROR(500, "ANALYSIS001", "Analysis server error."), // 분석 서버 에러(scraping 불가 등)
+    // Request
+    INVALID_REQUEST_BODY(403, "REQUEST001", "Request body is invalid"); // request 내용이 invalid 한 경우
 
 
     private final String code;
