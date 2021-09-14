@@ -28,7 +28,7 @@ class _CreateEventStepScreenState extends State<CreateEventStepScreen> {
     savingEvent = Event(
         title: "",
         rewardList: [null],
-        hashtagList: [],
+        hashtagList: ["쏘다"],
         period: Period(
             DateTime.now(), DateTime.now().add(Duration(days: 30)), null),
         images: [null],
