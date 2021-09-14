@@ -53,8 +53,7 @@ INSTALLED_APPS = [
 ]
 
 CELERY_IMPORTS = [
-    'config.tasks',
-    'join.tasks'
+    'join.tasks',
 ]
 
 CELERY_BROKER_TRANSPORT_OPTIONS = {
@@ -64,7 +63,7 @@ CELERY_BROKER_TRANSPORT_OPTIONS = {
             'access_key_id': AWS.AWS_ACCESS_KEY,
             'secret_access_key': AWS.AWS_SECRET_KEY,
             'backoff_policy': {1: 10, 2: 20, 3: 40, 4: 80, 5: 320, 6: 640},
-            'backoff_tasks': ['config.tasks']
+            'backoff_tasks': ['join.tasks']
         }
     },
     'region': 'ap-northeast-2',
