@@ -1,4 +1,4 @@
-from server.core.modules.assist.time import get_interval_day_from_now_time_to_target_time
+from server.core.modules.assist.time import get_interval_day_from_now_to_target_date_time
 from server.core.modules.static.scrap import Scrap
 from server.core.modules.static.common import Status
 
@@ -8,7 +8,7 @@ def check_user_is_recently_scraped(update_date):
     if update_date is None:
         return False
 
-    interval_day = get_interval_day_from_now_time_to_target_time(update_date)
+    interval_day = get_interval_day_from_now_to_target_date_time(update_date)
     if interval_day > Scrap.USER_SCRAP_NEED_DAY:
         return False
     return True

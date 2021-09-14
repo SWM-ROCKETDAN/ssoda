@@ -13,6 +13,9 @@ from core.modules.join.post.post_scraper import PostScraper
 from core.modules.join.user.user_scraper import UserScraper
 from core.modules.join.reward.reward_calculator import RewardCalculator
 from core.exceptions import exceptions
+from core.modules.assist.time import parse_from_str_time_to_date_time
+from .tasks import add_queue_after_check_post
+from .tasks import add_queue_after_check_user
 
 
 # JoinPost PUT 요청
@@ -26,6 +29,8 @@ class JoinPostsView(APIView):
         join_post_serializer = JoinPostSerializer(join_post, scraped_post, partial=True)
         if join_post_serializer.is_valid():
             join_post_serializer.save()
+            create_date = parse_from_str_time_to_date_time(join_post_serializer.data['create_date'])
+            add_queue_after_check_post(pk, create_date, 3, 1)
             raise exceptions.PostUpdateOk()
         raise exceptions.PostUpdateFailed()
 
@@ -53,8 +58,9 @@ class JoinRewardsView(APIView):
         join_posts = get_list_or_404(JoinPost)
         join_reward_other_post_serializer = JoinRewardOtherPostSerializer(data=join_posts, many=True)
         join_reward_other_post_serializer.is_valid()
-        reward_calculator = RewardCalculator(join_reward_this_post_serializer.data,
-                                             join_reward_other_post_serializer.data)
+        this_join = join_reward_this_post_serializer.data
+        other_joins = join_reward_other_post_serializer.data
+        reward_calculator = RewardCalculator(this_join, other_joins)
         this_reward_id = reward_calculator.get_this_reward_id()
         join_post_serializer = JoinPostSerializer(join_post, {'reward': this_reward_id}, partial=True)
         if join_post_serializer.is_valid():

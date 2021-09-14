@@ -40,10 +40,10 @@ def get_interval_day_from_old_time_to_recent_time(old_time, recent_time):
     return int(interval_day)
 
 
-def get_interval_day_from_now_time_to_target_time(target_time):
+def get_interval_day_from_now_to_target_date_time(target_date_time: datetime):
     try:
-        now_time = get_now_date()
-        interval_day = get_interval_day_from_old_time_to_recent_time(target_time, now_time)
+        now = get_now_date()
+        interval_day = get_interval_day_from_old_time_to_recent_time(target_date_time, now)
     except Exception as e:
         return 0
     return interval_day
