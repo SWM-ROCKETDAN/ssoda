@@ -2,11 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:hashchecker/api.dart';
 import 'package:hashchecker/constants.dart';
 import 'package:hashchecker/models/event.dart';
+import 'package:hashchecker/models/reward_edit_data.dart';
+import 'package:hashchecker/screens/event_list/event_edit/event_edit_modal.dart';
 import 'package:hashchecker/screens/hall/hall_screen.dart';
 import 'package:hashchecker/screens/marketing_report/event_report/event_report_screen.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
-
-import 'event_edit_modal.dart';
+import 'package:provider/provider.dart';
 
 class EventOptionsModal extends StatelessWidget {
   final int eventId;
@@ -51,9 +52,9 @@ class EventOptionsModal extends StatelessWidget {
             onTap: () => showBarModalBottomSheet(
               expand: true,
               context: context,
-              builder: (context) => EventEditModal(
-                eventId: eventId,
-              ),
+              builder: (context) => Provider(
+                  create: (_) => RewardEditData(),
+                  child: EventEditModal(eventId: eventId)),
             ),
           ),
           ListTile(
@@ -273,8 +274,8 @@ class EventOptionsModal extends StatelessWidget {
   Future<void> _stopEvent(int eventId) async {
     var dio = await authDio();
     final eventStopResponse = await dio.put(
-        'http://ec2-3-37-85-236.ap-northeast-2.compute.amazonaws.com:8080/api/v1/events/$eventId/status',
-        data: {'status': 2});
+        getApi(API.STOP_EVENT, suffix: '/$eventId/status'),
+        data: {'status': EventStatus.ENDED.index});
     print(eventStopResponse.data);
   }
 

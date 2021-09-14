@@ -1,6 +1,6 @@
-import 'package:flash/flash.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:hashchecker/api.dart';
 import 'package:hashchecker/constants.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:hashchecker/models/reward_category.dart';
@@ -11,23 +11,22 @@ import 'components/input_help.dart';
 import 'components/name_input.dart';
 import 'components/price_and_count_input.dart';
 
-class InputRewardInfoScreen extends StatefulWidget {
+class RewardEditScreen extends StatefulWidget {
   final Reward? reward;
   final int level;
-  const InputRewardInfoScreen(
-      {Key? key, required this.reward, required this.level})
+  const RewardEditScreen({Key? key, required this.reward, required this.level})
       : super(key: key);
 
   @override
-  _InputRewardInfoScreenState createState() => _InputRewardInfoScreenState();
+  _RewardEditScreenState createState() => _RewardEditScreenState();
 }
 
-class _InputRewardInfoScreenState extends State<InputRewardInfoScreen> {
+class _RewardEditScreenState extends State<RewardEditScreen> {
   late TextEditingController _nameController;
   late TextEditingController _priceController;
   late TextEditingController _countController;
+  String? _rewardImage;
   RewardCategory? _choosedCategory;
-  String? _imagePath;
 
   Future _getImageFromGallery() async {
     final ImagePicker _imagePicker = ImagePicker();
@@ -38,7 +37,7 @@ class _InputRewardInfoScreenState extends State<InputRewardInfoScreen> {
         imageQuality: 75);
     if (image != null) {
       setState(() {
-        _imagePath = image.path;
+        _rewardImage = '$kNewImagePrefix${image.path}';
       });
     }
   }
@@ -53,7 +52,8 @@ class _InputRewardInfoScreenState extends State<InputRewardInfoScreen> {
             TextEditingController(text: widget.reward!.price.toString());
         _countController =
             TextEditingController(text: widget.reward!.count.toString());
-        _imagePath = widget.reward!.imgPath;
+        _rewardImage = widget.reward!.imgPath;
+
         _choosedCategory = widget.reward!.category;
       });
     } else {
@@ -84,7 +84,7 @@ class _InputRewardInfoScreenState extends State<InputRewardInfoScreen> {
               child: SingleChildScrollView(
                 child: Column(
                   children: [
-                    _imagePath == null
+                    _rewardImage == null
                         ? buildImageUploadButton()
                         : buildRewardImage(),
                     SizedBox(height: kDefaultPadding * 2),
@@ -115,17 +115,19 @@ class _InputRewardInfoScreenState extends State<InputRewardInfoScreen> {
       height: 50,
       child: ElevatedButton(
         child: Text(
-          '상품 등록하기',
+          widget.reward == null ? '상품 등록하기' : '상품 수정하기',
           style: TextStyle(
               color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold),
         ),
         onPressed: () {
           if (isValidReward()) {
+            print(_rewardImage);
             Navigator.pop(
                 context,
                 Reward(
+                    id: widget.reward == null ? null : widget.reward!.id,
                     name: _nameController.value.text.trim(),
-                    imgPath: _imagePath!,
+                    imgPath: _rewardImage!,
                     price: int.parse(_priceController.value.text.trim()),
                     count: int.parse(_countController.value.text.trim()),
                     level: widget.level,
@@ -196,16 +198,18 @@ class _InputRewardInfoScreenState extends State<InputRewardInfoScreen> {
 
   GestureDetector buildRewardImage() {
     return GestureDetector(
-      onTap: _getImageFromGallery,
-      child: ClipRRect(
-          borderRadius: BorderRadius.circular(16),
-          child: Image.file(
-            File(_imagePath!),
-            fit: BoxFit.cover,
-            width: 150,
-            height: 150,
-          )),
-    );
+        onTap: _getImageFromGallery,
+        child: ClipRRect(
+            borderRadius: BorderRadius.circular(16),
+            child: _rewardImage!.startsWith(kNewImagePrefix)
+                ? Image.file(
+                    File(_rewardImage!.substring(kNewImagePrefix.length)),
+                    fit: BoxFit.cover,
+                    width: 150,
+                    height: 150,
+                  )
+                : Image.network('$s3Url$_rewardImage',
+                    fit: BoxFit.cover, width: 150, height: 150)));
   }
 
   SizedBox buildImageUploadButton() {
@@ -243,39 +247,27 @@ class _InputRewardInfoScreenState extends State<InputRewardInfoScreen> {
         ));
   }
 
+  void _showValidationErrorSnackBar(BuildContext context, String message) {
+    final snackBar = SnackBar(
+      content: Text(message),
+      behavior: SnackBarBehavior.floating,
+      duration: const Duration(milliseconds: 2500),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(12.0),
+      ),
+    );
+    ScaffoldMessenger.of(context).showSnackBar(snackBar);
+  }
+
   bool isValidReward() {
-    if (_imagePath == null)
-      context.showFlashBar(
-          barType: FlashBarType.error,
-          icon: const Icon(Icons.error_outline_rounded),
-          duration: const Duration(seconds: 3),
-          backgroundColor: Colors.white,
-          content: Text('상품 이미지를 등록해주세요!',
-              style: TextStyle(fontSize: 14, color: kDefaultFontColor)));
+    if (_rewardImage == null)
+      _showValidationErrorSnackBar(context, '상품 이미지를 등록해주세요!');
     else if (_nameController.value.text.trim() == "")
-      context.showFlashBar(
-          barType: FlashBarType.error,
-          icon: const Icon(Icons.error_outline_rounded),
-          duration: const Duration(seconds: 3),
-          backgroundColor: Colors.white,
-          content: Text('상품 이름을 입력해주세요!',
-              style: TextStyle(fontSize: 14, color: kDefaultFontColor)));
+      _showValidationErrorSnackBar(context, '상품명을 입력해주세요!');
     else if (_priceController.value.text.trim() == "")
-      context.showFlashBar(
-          barType: FlashBarType.error,
-          icon: const Icon(Icons.error_outline_rounded),
-          duration: const Duration(seconds: 3),
-          backgroundColor: Colors.white,
-          content: Text('상품 가격을 입력해주세요!',
-              style: TextStyle(fontSize: 14, color: kDefaultFontColor)));
+      _showValidationErrorSnackBar(context, '상품 가격을 입력해주세요!');
     else if (_countController.value.text.trim() == "")
-      context.showFlashBar(
-          barType: FlashBarType.error,
-          icon: const Icon(Icons.error_outline_rounded),
-          duration: const Duration(seconds: 3),
-          backgroundColor: Colors.white,
-          content: Text('상품 수량을 입력해주세요!',
-              style: TextStyle(fontSize: 14, color: kDefaultFontColor)));
+      _showValidationErrorSnackBar(context, '상품 수량을 입력해주세요!');
     else
       return true;
     return false;
