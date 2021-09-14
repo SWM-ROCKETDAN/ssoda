@@ -203,32 +203,23 @@ class ConfirmButton extends StatelessWidget {
         if (newRewards[i] == null) continue;
         newRewardsData.fields
             .add(MapEntry('rewards[$i].name', newRewards[i]!.name));
-        print(newRewards[i]!.name);
         newRewardsData.fields.add(
             MapEntry('rewards[$i].level', newRewards[i]!.level.toString()));
-        print(newRewards[i]!.level);
         newRewardsData.fields.add(
             MapEntry('rewards[$i].price', newRewards[i]!.price.toString()));
-        print(newRewards[i]!.price);
         newRewardsData.fields.add(
             MapEntry('rewards[$i].count', newRewards[i]!.count.toString()));
-        print(newRewards[i]!.count);
         newRewardsData.fields.add(MapEntry(
             'rewards[$i].category', newRewards[i]!.category.index.toString()));
-        print(newRewards[i]!.category);
-
         newRewardsData.files.add(MapEntry(
             'rewards[$i].image',
             MultipartFile.fromFileSync(
                 newRewards[i]!.imgPath.substring(kNewImagePrefix.length))));
-        print(newRewards[i]!.imgPath);
       }
 
       var createNewRewardResponse = await dio.post(
           getApi(API.CREATE_REWARDS, suffix: '/$eventId'),
           data: newRewardsData);
-
-      print('save new rewards: ${createNewRewardResponse.data}');
     }
 
     if (updatedRewards.length > 0) {
@@ -238,25 +229,19 @@ class ConfirmButton extends StatelessWidget {
         if (updatedRewards[i] == null) continue;
         updatedRewardsData.fields
             .add(MapEntry('rewards[$i].id', updatedRewards[i]!.id.toString()));
-        print(updatedRewards[i]!.id);
         updatedRewardsData.fields
             .add(MapEntry('rewards[$i].name', updatedRewards[i]!.name));
-        print(updatedRewards[i]!.name);
         updatedRewardsData.fields.add(
             MapEntry('rewards[$i].level', updatedRewards[i]!.level.toString()));
-        print(updatedRewards[i]!.level);
 
         updatedRewardsData.fields.add(
             MapEntry('rewards[$i].price', updatedRewards[i]!.price.toString()));
-        print(updatedRewards[i]!.price);
 
         updatedRewardsData.fields.add(
             MapEntry('rewards[$i].count', updatedRewards[i]!.count.toString()));
-        print(updatedRewards[i]!.count);
 
         updatedRewardsData.fields.add(MapEntry('rewards[$i].category',
             updatedRewards[i]!.category.index.toString()));
-        print(updatedRewards[i]!.category);
 
         if (updatedRewards[i]!.imgPath.startsWith(kNewImagePrefix))
           updatedRewardsData.files.add(MapEntry(
@@ -264,13 +249,10 @@ class ConfirmButton extends StatelessWidget {
               MultipartFile.fromFileSync(updatedRewards[i]!
                   .imgPath
                   .substring(kNewImagePrefix.length))));
-        print(updatedRewards[i]!.imgPath);
       }
 
       final updateRewardsResponse =
           await dio.put(getApi(API.UPDATE_REWARDS), data: updatedRewardsData);
-
-      print('update new rewards: ${updateRewardsResponse.data}');
     }
 
     if (deletedRewardIds.length > 0) {
@@ -278,8 +260,6 @@ class ConfirmButton extends StatelessWidget {
 
       final deleteRewardsResponse = await dio.delete(getApi(API.DELETE_REWARDS),
           data: {'rewardIds': deletedRewardIds});
-
-      print('delete rewards: ${deleteRewardsResponse.data}');
     }
   }
 }
