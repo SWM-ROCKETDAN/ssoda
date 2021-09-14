@@ -1,3 +1,4 @@
+import 'package:flash/flash.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:hashchecker/constants.dart';
@@ -242,27 +243,39 @@ class _InputRewardInfoScreenState extends State<InputRewardInfoScreen> {
         ));
   }
 
-  void _showValidationErrorSnackBar(BuildContext context, String message) {
-    final snackBar = SnackBar(
-      content: Text(message),
-      behavior: SnackBarBehavior.floating,
-      duration: const Duration(milliseconds: 2500),
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(12.0),
-      ),
-    );
-    ScaffoldMessenger.of(context).showSnackBar(snackBar);
-  }
-
   bool isValidReward() {
     if (_imagePath == null)
-      _showValidationErrorSnackBar(context, '상품 이미지를 등록해주세요!');
+      context.showFlashBar(
+          barType: FlashBarType.error,
+          icon: const Icon(Icons.error_outline_rounded),
+          duration: const Duration(seconds: 3),
+          backgroundColor: Colors.white,
+          content: Text('상품 이미지를 등록해주세요!',
+              style: TextStyle(fontSize: 14, color: kDefaultFontColor)));
     else if (_nameController.value.text.trim() == "")
-      _showValidationErrorSnackBar(context, '상품명을 입력해주세요!');
+      context.showFlashBar(
+          barType: FlashBarType.error,
+          icon: const Icon(Icons.error_outline_rounded),
+          duration: const Duration(seconds: 3),
+          backgroundColor: Colors.white,
+          content: Text('상품 이름을 입력해주세요!',
+              style: TextStyle(fontSize: 14, color: kDefaultFontColor)));
     else if (_priceController.value.text.trim() == "")
-      _showValidationErrorSnackBar(context, '상품 가격을 입력해주세요!');
+      context.showFlashBar(
+          barType: FlashBarType.error,
+          icon: const Icon(Icons.error_outline_rounded),
+          duration: const Duration(seconds: 3),
+          backgroundColor: Colors.white,
+          content: Text('상품 가격을 입력해주세요!',
+              style: TextStyle(fontSize: 14, color: kDefaultFontColor)));
     else if (_countController.value.text.trim() == "")
-      _showValidationErrorSnackBar(context, '상품 수량을 입력해주세요!');
+      context.showFlashBar(
+          barType: FlashBarType.error,
+          icon: const Icon(Icons.error_outline_rounded),
+          duration: const Duration(seconds: 3),
+          backgroundColor: Colors.white,
+          content: Text('상품 수량을 입력해주세요!',
+              style: TextStyle(fontSize: 14, color: kDefaultFontColor)));
     else
       return true;
     return false;

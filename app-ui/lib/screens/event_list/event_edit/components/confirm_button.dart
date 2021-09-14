@@ -65,7 +65,7 @@ class ConfirmButton extends StatelessWidget {
           icon: const Icon(Icons.error_outline_rounded),
           duration: const Duration(seconds: 3),
           backgroundColor: Colors.white,
-          content: Text('이벤트 이름을 입력해주세요!',
+          content: Text('이벤트 제목을 입력해주세요!',
               style: TextStyle(fontSize: 14, color: kDefaultFontColor)));
       return false;
     }
