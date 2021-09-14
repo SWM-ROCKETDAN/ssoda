@@ -17,12 +17,18 @@ class UserScraper:
     def __init__(self, join_user):
         self.join_user = join_user
 
+    def get_scraped_user_only_do_scrap(self):
+        user_type = self.join_user['type']
+        if user_type in scrap_handlers:
+            self.scraped_user = scrap_handlers[user_type](self.join_user['sns_id'])
+        return self.scraped_user
+
     def get_scraped_user(self):
         self.check_user_before_scrap_user()
-        post_type = self.join_user['type']
-        if post_type in scrap_handlers:
+        user_type = self.join_user['type']
+        if user_type in scrap_handlers:
             try:
-                self.scraped_user = scrap_handlers[post_type](self.join_user['sns_id'])
+                self.scraped_user = scrap_handlers[user_type](self.join_user['sns_id'])
             except Exception as e:
                 raise exceptions.ScrapFailed()
             return self.scraped_user
