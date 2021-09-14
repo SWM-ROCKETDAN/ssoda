@@ -61,43 +61,39 @@ class _EventImageEditState extends State<EventImageEdit> {
                             BorderSide(color: kLiteFontColor))),
                   ),
                 )
-              : GestureDetector(
-                  onTap: () {
-                    _getImageFromGallery(context, index);
-                  },
-                  child: Stack(children: [
-                    ClipRRect(
-                      child: widget.event.images[index]!
-                              .startsWith(kNewImagePrefix)
-                          ? Image.file(
-                              File(widget.event.images[index]!
-                                  .substring(kNewImagePrefix.length)),
-                              fit: BoxFit.cover)
-                          : Image.network('$s3Url${widget.event.images[index]}',
-                              fit: BoxFit.cover),
-                      borderRadius: BorderRadius.circular(16),
-                    ),
-                    if (widget.event.images[index]!
-                            .substring(0, kNewImagePrefix.length) !=
-                        kNewImagePrefix)
-                      Positioned(
-                          right: 10,
-                          top: 10,
-                          child: GestureDetector(
-                            onTap: () {
-                              setState(() {
-                                widget.deletedImagePaths
-                                    .add(widget.event.images[index]!);
-                                widget.event.images.removeAt(index);
-                                if (widget.event.images.length == 2 &&
-                                    widget.event.images.last != null)
-                                  widget.event.images.add(null);
-                              });
-                            },
-                            child: Icon(Icons.cancel_rounded,
-                                size: 28, color: Colors.white.withOpacity(0.9)),
-                          ))
-                  ]))).cast<Widget>().toList(),
+              : Stack(children: [
+                  ClipRRect(
+                    child: widget.event.images[index]!
+                            .startsWith(kNewImagePrefix)
+                        ? Image.file(
+                            File(widget.event.images[index]!
+                                .substring(kNewImagePrefix.length)),
+                            fit: BoxFit.cover)
+                        : Image.network('$s3Url${widget.event.images[index]}',
+                            fit: BoxFit.cover),
+                    borderRadius: BorderRadius.circular(16),
+                  ),
+                  if (widget.event.images[index]!
+                          .substring(0, kNewImagePrefix.length) !=
+                      kNewImagePrefix)
+                    Positioned(
+                        right: 10,
+                        top: 10,
+                        child: GestureDetector(
+                          onTap: () {
+                            setState(() {
+                              widget.deletedImagePaths
+                                  .add(widget.event.images[index]!);
+                              widget.event.images.removeAt(index);
+                              if (widget.event.images.length == 2 &&
+                                  widget.event.images.last != null)
+                                widget.event.images.add(null);
+                            });
+                          },
+                          child: Icon(Icons.cancel_rounded,
+                              size: 28, color: Colors.white.withOpacity(0.9)),
+                        ))
+                ])).cast<Widget>().toList(),
     ));
   }
 
