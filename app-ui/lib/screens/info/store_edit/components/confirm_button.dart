@@ -144,7 +144,7 @@ class ConfirmButton extends StatelessWidget {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
-                    TextButton(
+                    ElevatedButton(
                       onPressed: () async {
                         await _updateStore(context);
                         Navigator.of(context).pop();
@@ -156,15 +156,15 @@ class ConfirmButton extends StatelessWidget {
                           backgroundColor:
                               MaterialStateProperty.all<Color>(kThemeColor)),
                     ),
-                    ElevatedButton(
+                    TextButton(
                       onPressed: () {
                         Navigator.of(context).pop();
                       },
                       child: Text('아니오',
-                          style: TextStyle(color: Colors.white, fontSize: 13)),
+                          style: TextStyle(color: kThemeColor, fontSize: 13)),
                       style: ButtonStyle(
-                          backgroundColor:
-                              MaterialStateProperty.all<Color>(kThemeColor)),
+                          overlayColor: MaterialStateProperty.all<Color>(
+                              kThemeColor.withOpacity(0.2))),
                     ),
                   ],
                 ),
