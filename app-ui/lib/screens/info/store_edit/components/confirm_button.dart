@@ -31,17 +31,13 @@ class ConfirmButton extends StatelessWidget {
           }
         },
         child: Text(
-          '등록하기',
+          '수정하기',
           style: TextStyle(
-              color: kThemeColor, fontSize: 16, fontWeight: FontWeight.bold),
+              color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold),
         ),
         style: ButtonStyle(
-            elevation: MaterialStateProperty.all<double>(12),
-            overlayColor:
-                MaterialStateProperty.all<Color>(kThemeColor.withOpacity(0.1)),
             shadowColor: MaterialStateProperty.all<Color>(kShadowColor),
-            backgroundColor:
-                MaterialStateProperty.all<Color>(kScaffoldBackgroundColor),
+            backgroundColor: MaterialStateProperty.all<Color>(kThemeColor),
             shape: MaterialStateProperty.all<OutlinedBorder>(
                 RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(27.0)))),

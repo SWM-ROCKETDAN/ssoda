@@ -20,7 +20,7 @@ class DoneButton extends StatelessWidget {
               color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold),
         ),
         onPressed: () {
-          slidePageRouting(HallScreen());
+          Navigator.push(context, slidePageRouting(HallScreen()));
         },
         style: ButtonStyle(
             backgroundColor: MaterialStateProperty.all<Color>(kThemeColor),
