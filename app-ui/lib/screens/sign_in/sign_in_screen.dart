@@ -21,7 +21,6 @@ class SignInScreen extends StatefulWidget {
 }
 
 class _SignInScreenState extends State<SignInScreen> {
-  String? debugStr;
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -44,8 +43,7 @@ class _SignInScreenState extends State<SignInScreen> {
                         SizedBox(height: kDefaultPadding / 2),
                         Text('안녕하세요, 사장님',
                             style: TextStyle(
-                                fontSize: 26.0, fontWeight: FontWeight.bold)),
-                        Text(debugStr ?? 'null'),
+                                fontSize: 26.0, fontWeight: FontWeight.bold))
                       ]),
                 ),
                 Container(
