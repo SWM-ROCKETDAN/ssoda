@@ -115,7 +115,7 @@ class _RewardEditScreenState extends State<RewardEditScreen> {
       height: 50,
       child: ElevatedButton(
         child: Text(
-          '상품 등록하기',
+          widget.reward == null ? '상품 등록하기' : '상품 수정하기',
           style: TextStyle(
               color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold),
         ),

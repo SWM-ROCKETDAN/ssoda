@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:flash/flash.dart';
 import 'package:flutter/material.dart';
 import 'package:hashchecker/api.dart';
 import 'package:hashchecker/constants.dart';
@@ -37,43 +38,10 @@ class ConfirmButton extends StatelessWidget {
       height: 45,
       child: ElevatedButton(
         onPressed: () async {
-          await _updateEvent(context);
-          await showDialog(
-              context: context,
-              builder: (context) => AlertDialog(
-                  title: Center(
-                    child: Text('이벤트 수정',
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 18,
-                            color: kDefaultFontColor),
-                        textAlign: TextAlign.center),
-                  ),
-                  content: Text("이벤트 수정이 완료되었습니다",
-                      textAlign: TextAlign.center,
-                      style: TextStyle(fontSize: 14, color: kDefaultFontColor)),
-                  contentPadding: const EdgeInsets.fromLTRB(15, 15, 15, 5),
-                  actions: [
-                    Center(
-                      child: ElevatedButton(
-                        onPressed: () {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => HallScreen()));
-                        },
-                        child: Text('확인', style: TextStyle(fontSize: 13)),
-                        style: ButtonStyle(
-                            shadowColor:
-                                MaterialStateProperty.all<Color>(kShadowColor),
-                            backgroundColor:
-                                MaterialStateProperty.all<Color>(kThemeColor)),
-                      ),
-                    )
-                  ],
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(15))));
-          Navigator.pop(context);
+          if (_checkEventValidation(context)) {
+            await _updateEvent(context);
+            await _showDoneDialog(context);
+          }
         },
         child: Text('이대로 수정하기',
             style: TextStyle(
@@ -88,6 +56,89 @@ class ConfirmButton extends StatelessWidget {
                     borderRadius: BorderRadius.circular(27.0)))),
       ),
     );
+  }
+
+  bool _checkEventValidation(BuildContext context) {
+    if (eventTitleController.value.text.trim() == "") {
+      context.showFlashBar(
+          barType: FlashBarType.error,
+          icon: const Icon(Icons.error_outline_rounded),
+          duration: const Duration(seconds: 3),
+          backgroundColor: Colors.white,
+          content: Text('이벤트 이름을 입력해주세요!',
+              style: TextStyle(fontSize: 14, color: kDefaultFontColor)));
+      return false;
+    }
+    if (event.images.length == 1 && event.images.last == null) {
+      context.showFlashBar(
+          barType: FlashBarType.error,
+          icon: const Icon(Icons.error_outline_rounded),
+          duration: const Duration(seconds: 3),
+          backgroundColor: Colors.white,
+          content: Text('대표 이미지를 최소 1개 이상 등록해주세요!',
+              style: TextStyle(fontSize: 14, color: kDefaultFontColor)));
+      return false;
+    }
+
+    if (event.rewardList.length == 1 && event.rewardList.last == null) {
+      context.showFlashBar(
+          barType: FlashBarType.error,
+          icon: const Icon(Icons.error_outline_rounded),
+          duration: const Duration(seconds: 3),
+          backgroundColor: Colors.white,
+          content: Text('이벤트 상품을 최소 1개 이상 등록해주세요!',
+              style: TextStyle(fontSize: 14, color: kDefaultFontColor)));
+      return false;
+    }
+
+    if (event.hashtagList.length == 0) {
+      context.showFlashBar(
+          barType: FlashBarType.error,
+          icon: const Icon(Icons.error_outline_rounded),
+          duration: const Duration(seconds: 3),
+          backgroundColor: Colors.white,
+          content: Text('필수 해시태그를 최소 1개 이상 등록해주세요!',
+              style: TextStyle(fontSize: 14, color: kDefaultFontColor)));
+      return false;
+    }
+    return true;
+  }
+
+  Future<void> _showDoneDialog(BuildContext context) async {
+    await showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+            title: Center(
+              child: Text('이벤트 수정',
+                  style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 18,
+                      color: kDefaultFontColor),
+                  textAlign: TextAlign.center),
+            ),
+            content: Text("이벤트 수정이 완료되었습니다",
+                textAlign: TextAlign.center,
+                style: TextStyle(fontSize: 14, color: kDefaultFontColor)),
+            contentPadding: const EdgeInsets.fromLTRB(15, 15, 15, 5),
+            actions: [
+              Center(
+                child: ElevatedButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) => HallScreen()));
+                  },
+                  child: Text('확인', style: TextStyle(fontSize: 13)),
+                  style: ButtonStyle(
+                      shadowColor:
+                          MaterialStateProperty.all<Color>(kShadowColor),
+                      backgroundColor:
+                          MaterialStateProperty.all<Color>(kThemeColor)),
+                ),
+              )
+            ],
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(15))));
   }
 
   List<Reward?> _getNewRewards() {
@@ -173,8 +224,9 @@ class ConfirmButton extends StatelessWidget {
         print(newRewards[i]!.imgPath);
       }
 
-      var createNewRewardResponse =
-          await dio.post(getApi(API.CREATE_REWARDS, suffix: '/$eventId'));
+      var createNewRewardResponse = await dio.post(
+          getApi(API.CREATE_REWARDS, suffix: '/$eventId'),
+          data: newRewardsData);
 
       print('save new rewards: ${createNewRewardResponse.data}');
     }

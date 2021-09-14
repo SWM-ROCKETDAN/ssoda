@@ -34,6 +34,8 @@ class _EventEditModalState extends State<EventEditModal> {
     List<Reward?> rewardList = List.generate(fetchedRewardList.length,
         (index) => Reward.fromJson(fetchedRewardList[index]));
 
+    rewardList.sort((a, b) => a!.level.compareTo(b!.level));
+
     if (rewardList.length < MAX_REWARD_COUNT) rewardList.add(null);
     return rewardList;
   }
