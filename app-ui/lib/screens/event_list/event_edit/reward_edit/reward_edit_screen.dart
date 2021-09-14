@@ -125,6 +125,7 @@ class _RewardEditScreenState extends State<RewardEditScreen> {
             Navigator.pop(
                 context,
                 Reward(
+                    id: widget.reward == null ? null : widget.reward!.id,
                     name: _nameController.value.text.trim(),
                     imgPath: _rewardImage!,
                     price: int.parse(_priceController.value.text.trim()),

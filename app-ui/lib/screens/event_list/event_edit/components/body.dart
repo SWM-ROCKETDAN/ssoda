@@ -27,9 +27,6 @@ class Body extends StatelessWidget {
   final List<String> newImages = [];
   final List<String> deletedImagePaths = [];
 
-  final List<Reward> newRewards = [];
-  final List<int> deletedRewardIds = [];
-
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -52,10 +49,7 @@ class Body extends StatelessWidget {
             SizedBox(height: kDefaultPadding * 2.5),
             Section(text: '이벤트 상품'),
             SizedBox(height: kDefaultPadding),
-            EventRewardEdit(
-                event: event,
-                newRewards: newRewards,
-                deletedRewardIds: deletedRewardIds),
+            EventRewardEdit(event: event),
             SizedBox(height: kDefaultPadding * 2.5),
             Section(text: '필수 해시태그'),
             SizedBox(height: kDefaultPadding / 3),
@@ -74,8 +68,6 @@ class Body extends StatelessWidget {
                 eventTitleController: eventTitleController,
                 newImages: newImages,
                 deletedImagePaths: deletedImagePaths,
-                newRewards: newRewards,
-                deletedRewardIds: deletedRewardIds,
                 startDatePickerController: startDatePickerController,
                 finishDatePickerController: finishDatePickerController)
           ],

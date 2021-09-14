@@ -31,8 +31,6 @@ class _EventEditModalState extends State<EventEditModal> {
 
     final fetchedRewardList = getRewardListResponse.data;
 
-    print(fetchedRewardList);
-
     List<Reward?> rewardList = List.generate(fetchedRewardList.length,
         (index) => Reward.fromJson(fetchedRewardList[index]));
 

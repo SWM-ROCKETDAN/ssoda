@@ -1,19 +1,20 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:hashchecker/api.dart';
 import 'package:hashchecker/constants.dart';
 import 'package:hashchecker/models/reward.dart';
+import 'package:hashchecker/models/reward_edit_data.dart';
 import 'package:hashchecker/screens/event_list/event_edit/reward_edit/reward_edit_screen.dart';
+import 'package:provider/provider.dart';
 
 class EventRewardEdit extends StatefulWidget {
   final event;
-  final newRewards;
-  final deletedRewardIds;
-  const EventRewardEdit(
-      {Key? key,
-      required this.event,
-      required this.newRewards,
-      required this.deletedRewardIds})
-      : super(key: key);
+
+  const EventRewardEdit({
+    Key? key,
+    required this.event,
+  }) : super(key: key);
 
   @override
   _EventRewardEditState createState() => _EventRewardEditState();
@@ -59,6 +60,10 @@ class _EventRewardEditState extends State<EventRewardEdit> {
                 : GestureDetector(
                     onTap: () {
                       _navigateToDetailScreen(index);
+                      context
+                          .read<RewardEditData>()
+                          .updatedRewardIds
+                          .add(widget.event.rewardList[index].id!);
                     },
                     child: Container(
                       child: Stack(children: [
@@ -67,8 +72,8 @@ class _EventRewardEditState extends State<EventRewardEdit> {
                           child: widget.event.rewardList[index]!.imgPath!
                                   .startsWith(kNewImagePrefix)
                               ? Image.file(
-                                  widget.event.rewardList[index]!.imgPath!
-                                      .substring(kNewImagePrefix),
+                                  File(widget.event.rewardList[index]!.imgPath!
+                                      .substring(kNewImagePrefix.length)),
                                   fit: BoxFit.cover,
                                   width: 91,
                                   height: 96,
@@ -114,7 +119,11 @@ class _EventRewardEditState extends State<EventRewardEdit> {
                               top: 0,
                               child: GestureDetector(
                                 onTap: () {
-                                  widget.deletedRewardIds.add(index);
+                                  if (widget.event.rewardList[index].id != null)
+                                    context
+                                        .read<RewardEditData>()
+                                        .deletedRewardIds
+                                        .add(widget.event.rewardList[index].id);
                                   setState(() {
                                     if (widget.event.rewardList.last == null)
                                       widget.event.rewardList.removeLast();
