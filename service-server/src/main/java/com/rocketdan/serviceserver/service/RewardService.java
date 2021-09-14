@@ -68,11 +68,13 @@ public class RewardService {
             imgPath = reward.getImagePath(); // 기존 이미지로 지정
         }
 
-        // delete & save
         Reward updatedReward = requestDto.toEntity(imgPath);
 
-        rewardRepository.delete(reward);
+        // link event
+        updatedReward.setEvent(reward.getEvent());
 
+        // delete & save
+        rewardRepository.delete(reward);
         return rewardRepository.save(updatedReward).getId();
     }
 

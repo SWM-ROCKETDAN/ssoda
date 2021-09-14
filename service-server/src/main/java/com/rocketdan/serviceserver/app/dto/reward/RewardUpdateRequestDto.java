@@ -2,11 +2,15 @@ package com.rocketdan.serviceserver.app.dto.reward;
 
 import com.rocketdan.serviceserver.domain.reward.Reward;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
+@Setter
 @Getter
+@NoArgsConstructor
 public class RewardUpdateRequestDto {
     private Long id;
     private Integer level;
