@@ -9,6 +9,7 @@ import 'package:hashchecker/screens/event_list/event_list_screen.dart';
 import 'package:hashchecker/screens/hall/components/store_select.dart';
 import 'package:hashchecker/screens/info/info_screen.dart';
 import 'package:hashchecker/screens/marketing_report/store_report/store_report_screen.dart';
+import 'package:hashchecker/screens/ranking/ranking_screen.dart';
 import 'package:hashchecker/widgets/pandabar/pandabar.dart';
 import 'package:provider/provider.dart';
 
@@ -30,8 +31,7 @@ class _HallScreenState extends State<HallScreen> {
   final pageMap = {
     TabPage.EVENT: EventListScreen(),
     TabPage.REPORT: StoreReportScreen(),
-    TabPage.RANKING: Container(
-        color: kScaffoldBackgroundColor, child: Center(child: Text('랭킹'))),
+    TabPage.RANKING: RankingScreen(),
     TabPage.INFO: InfoScreen(),
   };
 
