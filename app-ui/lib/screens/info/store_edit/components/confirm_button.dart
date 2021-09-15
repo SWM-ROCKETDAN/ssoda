@@ -112,8 +112,6 @@ class ConfirmButton extends StatelessWidget {
 
     final createStoreResponse = await dio
         .put(getApi(API.UPDATE_STORE, suffix: '/$storeId'), data: storeData);
-
-    print(createStoreResponse.data);
   }
 
   Future<void> _showUpdateStoreDialog(BuildContext context) async {
@@ -190,7 +188,9 @@ class ConfirmButton extends StatelessWidget {
               Center(
                 child: ElevatedButton(
                   onPressed: () {
-                    Navigator.of(context).push(slidePageRouting(HallScreen()));
+                    Navigator.of(context).pushAndRemoveUntil(
+                        slidePageRouting(HallScreen()),
+                        (Route<dynamic> route) => false);
                   },
                   child: Text('확인', style: TextStyle(fontSize: 13)),
                   style: ButtonStyle(

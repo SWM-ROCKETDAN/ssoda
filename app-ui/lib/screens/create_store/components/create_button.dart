@@ -219,7 +219,9 @@ class CreateButton extends StatelessWidget {
               Center(
                 child: ElevatedButton(
                   onPressed: () {
-                    Navigator.of(context).push(slidePageRouting(HallScreen()));
+                    Navigator.of(context).pushAndRemoveUntil(
+                        slidePageRouting(HallScreen()),
+                        (Route<dynamic> route) => false);
                   },
                   child: Text('확인', style: TextStyle(fontSize: 13)),
                   style: ButtonStyle(

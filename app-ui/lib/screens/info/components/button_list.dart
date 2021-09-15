@@ -110,11 +110,12 @@ class ButtonList extends StatelessWidget {
                                 TextButton(
                                   onPressed: () async {
                                     await _logout(context);
-                                    Navigator.push(
+                                    Navigator.pushAndRemoveUntil(
                                         context,
                                         MaterialPageRoute(
                                             builder: (context) =>
-                                                SignInScreen()));
+                                                SignInScreen()),
+                                        (Route<dynamic> route) => false);
                                   },
                                   child: Text('예',
                                       style: TextStyle(
@@ -195,11 +196,12 @@ class ButtonList extends StatelessWidget {
                                 TextButton(
                                   onPressed: () async {
                                     await _deleteUser(context);
-                                    Navigator.push(
+                                    Navigator.pushAndRemoveUntil(
                                         context,
                                         MaterialPageRoute(
                                             builder: (context) =>
-                                                SignInScreen()));
+                                                SignInScreen()),
+                                        (Route<dynamic> route) => false);
                                   },
                                   child: Text('예',
                                       style: TextStyle(

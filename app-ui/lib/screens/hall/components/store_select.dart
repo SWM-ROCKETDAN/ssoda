@@ -34,9 +34,11 @@ class _StoreSelectState extends State<StoreSelect> {
         if (value as int == -1) {
           Navigator.push(context, slidePageRouting(CreateStoreScreen()));
         } else {
-          _setSelectedStore(value as int);
-          Navigator.push(
-              context, MaterialPageRoute(builder: (context) => HallScreen()));
+          _setSelectedStore(value);
+          Navigator.pushAndRemoveUntil(
+              context,
+              MaterialPageRoute(builder: (context) => HallScreen()),
+              (Route<dynamic> route) => false);
         }
       },
       icon: Container(

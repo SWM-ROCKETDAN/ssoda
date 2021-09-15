@@ -150,10 +150,10 @@ class StoreOptionsModal extends StatelessWidget {
                       nextWidget = CreateStoreScreen();
                     else
                       nextWidget = HallScreen();
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => nextWidget),
-                    );
+                    Navigator.pushAndRemoveUntil(
+                        context,
+                        MaterialPageRoute(builder: (context) => nextWidget),
+                        (Route<dynamic> route) => false);
                   },
                   child: Text('확인', style: TextStyle(fontSize: 13)),
                   style: ButtonStyle(

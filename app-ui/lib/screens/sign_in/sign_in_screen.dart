@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_web_auth/flutter_web_auth.dart';
 import 'package:hashchecker/api.dart';
@@ -7,7 +6,6 @@ import 'package:hashchecker/constants.dart';
 import 'package:hashchecker/models/selected_store.dart';
 import 'package:hashchecker/screens/create_store/components/intro.dart';
 import 'package:hashchecker/screens/hall/hall_screen.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -118,7 +116,8 @@ class _SignInScreenState extends State<SignInScreen> {
       nextScreen = HallScreen();
     }
 
-    Navigator.of(context).push(slidePageRouting(nextScreen));
+    Navigator.of(context).pushAndRemoveUntil(
+        slidePageRouting(nextScreen), (Route<dynamic> route) => false);
   }
 
   void showLoginFailDialog(String errMsg) {

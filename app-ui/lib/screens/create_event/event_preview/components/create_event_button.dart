@@ -71,11 +71,11 @@ class CreateEventButton extends StatelessWidget {
               getApi(API.CREATE_REWARDS, suffix: '/${eventResponse.data}'),
               data: rewardsData);
 
-          Navigator.push(
-              context,
+          Navigator.of(context).pushAndRemoveUntil(
               slidePageRouting(ShowQrcodeScreen(
                 eventId: eventResponse.data.toString(),
-              )));
+              )),
+              (Route<dynamic> route) => false);
         },
         style: ButtonStyle(
             shadowColor: MaterialStateProperty.all<Color>(kShadowColor),
