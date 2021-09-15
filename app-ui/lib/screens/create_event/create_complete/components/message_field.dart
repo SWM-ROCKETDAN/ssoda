@@ -26,15 +26,18 @@ class MessageField extends StatelessWidget {
               ),
             ]),
             SizedBox(height: kDefaultPadding),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Icon(Icons.help_outline, size: 16, color: kLiteFontColor),
-                Text(
-                  ' QR 코드는 어떻게 사용하나요?',
-                  style: TextStyle(color: kLiteFontColor, fontSize: 12),
-                )
-              ],
+            InkWell(
+              onTap: () {},
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(Icons.help_outline, size: 16, color: kLiteFontColor),
+                  Text(
+                    ' 이벤트 템플릿은 어떻게 사용하나요?',
+                    style: TextStyle(color: kLiteFontColor, fontSize: 12),
+                  ),
+                ],
+              ),
             )
           ],
         ),

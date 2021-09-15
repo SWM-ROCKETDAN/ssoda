@@ -54,6 +54,8 @@ class _EventJoinScreenState extends State<EventJoinScreen> {
     List<Reward> rewardList = List.generate(fetchedRewardList.length,
         (index) => Reward.fromJson(fetchedRewardList[index]));
 
+    rewardList.sort((a, b) => a.level.compareTo(b.level));
+
     return rewardList;
   }
 

@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:hashchecker/api.dart';
 import 'package:hashchecker/constants.dart';
 import 'package:hashchecker/models/event.dart';
-import 'package:hashchecker/models/reward_edit_data.dart';
+import 'package:hashchecker/models/event_edit_data.dart';
 import 'package:hashchecker/screens/event_list/event_detail/event_detail_screen.dart';
 import 'package:hashchecker/screens/event_list/event_edit/event_edit_modal.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
@@ -139,7 +139,7 @@ class EventListTile extends StatelessWidget {
                                                       context: context,
                                                       builder: (context) => Provider(
                                                           create: (_) =>
-                                                              RewardEditData(),
+                                                              EventEditData(),
                                                           child: EventEditModal(
                                                               eventId:
                                                                   eventListItem

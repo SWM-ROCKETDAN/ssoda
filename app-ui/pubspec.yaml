@@ -43,6 +43,7 @@ dependencies:
   geocoding: ^2.0.1
   flash: ^2.0.1
   shared_preferences: ^2.0.7
+  screenshot: ^1.2.3
     
 dev_dependencies:
   flutter_test:

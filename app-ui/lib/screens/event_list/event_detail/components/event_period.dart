@@ -20,9 +20,10 @@ class EventPeriod extends StatelessWidget {
               color: kDefaultFontColor)),
       SizedBox(height: kDefaultPadding),
       event.period.finishDate == null
-          ? Text('${event.period.startDate.toString().substring(0, 10)} ~ 계속')
+          ? Text(
+              ' ${event.period.startDate.toString().substring(0, 10)} ~ 상품 소진 시까지')
           : Text(
-              '${event.period.startDate.toString().substring(0, 10)} ~ ${event.period.finishDate.toString().substring(0, 10)}')
+              ' ${event.period.startDate.toString().substring(0, 10)} ~ ${event.period.finishDate.toString().substring(0, 10)}')
     ]);
   }
 }

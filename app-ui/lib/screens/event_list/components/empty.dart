@@ -17,11 +17,12 @@ class Empty extends StatelessWidget {
             Image.asset('assets/images/event_list/empty.png'),
             Text(
               '아직 아무런 이벤트가 등록되지 않았습니다',
-              style: TextStyle(color: kLiteFontColor),
+              style: TextStyle(color: kLiteFontColor, fontSize: 12),
             ),
             Text(
               '먼저 이벤트를 등록해주세요!',
-              style: TextStyle(color: kLiteFontColor, height: 1.3),
+              style:
+                  TextStyle(color: kLiteFontColor, height: 1.3, fontSize: 12),
             )
           ],
         ));
