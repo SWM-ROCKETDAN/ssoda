@@ -69,8 +69,8 @@ class _HallScreenState extends State<HallScreen> {
                 }
 
                 return Container(
-                    height: kToolbarHeight * 0.6,
-                    width: kToolbarHeight * 0.6,
+                    height: kToolbarHeight * 0.5,
+                    width: kToolbarHeight * 0.5,
                     decoration: BoxDecoration(
                       color: kShadowColor,
                       shape: BoxShape.circle,

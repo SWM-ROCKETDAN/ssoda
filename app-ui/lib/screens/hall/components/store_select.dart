@@ -3,6 +3,7 @@ import 'package:hashchecker/api.dart';
 import 'package:hashchecker/constants.dart';
 import 'package:hashchecker/models/selected_store.dart';
 import 'package:hashchecker/models/store_list_item.dart';
+import 'package:hashchecker/screens/create_store/create_store_screen.dart';
 import 'package:hashchecker/screens/hall/hall_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:provider/provider.dart';
@@ -29,30 +30,35 @@ class _StoreSelectState extends State<StoreSelect> {
   @override
   Widget build(BuildContext context) {
     return PopupMenuButton(
-        onSelected: (value) {
+      onSelected: (value) {
+        if (value as int == -1) {
+          Navigator.push(context, slidePageRouting(CreateStoreScreen()));
+        } else {
           _setSelectedStore(value as int);
           Navigator.push(
               context, MaterialPageRoute(builder: (context) => HallScreen()));
-        },
-        icon: Container(
-            height: kToolbarHeight * 0.6,
-            width: kToolbarHeight * 0.6,
-            decoration: BoxDecoration(
-                color: kShadowColor,
-                shape: BoxShape.circle,
-                image: DecorationImage(
-                    image: NetworkImage(
-                        '$s3Url${widget.storeList[widget.storeList.indexWhere((element) => element.id == widget.selectedStoreId)].logo}'),
-                    fit: BoxFit.contain))),
-        itemBuilder: (context) => List.generate(
+        }
+      },
+      icon: Container(
+          height: kToolbarHeight * 0.55,
+          width: kToolbarHeight * 0.55,
+          decoration: BoxDecoration(
+              color: kShadowColor,
+              shape: BoxShape.circle,
+              image: DecorationImage(
+                  image: NetworkImage(
+                      '$s3Url${widget.storeList[widget.storeList.indexWhere((element) => element.id == widget.selectedStoreId)].logo}'),
+                  fit: BoxFit.contain))),
+      itemBuilder: (context) {
+        final List<PopupMenuEntry<Object>> storeSelectionList = List.generate(
             widget.storeList.length,
             (index) => PopupMenuItem(
                 value: widget.storeList[index].id,
                 child: Row(
                   children: [
                     Container(
-                        height: kToolbarHeight * 0.6,
-                        width: kToolbarHeight * 0.6,
+                        height: kToolbarHeight * 0.5,
+                        width: kToolbarHeight * 0.5,
                         decoration: BoxDecoration(
                             color: kShadowColor,
                             shape: BoxShape.circle,
@@ -61,9 +67,32 @@ class _StoreSelectState extends State<StoreSelect> {
                                     '$s3Url${widget.storeList[index].logo}'),
                                 fit: BoxFit.contain))),
                     SizedBox(width: kDefaultPadding),
-                    Text(widget.storeList[index].name)
+                    Text(
+                      widget.storeList[index].name,
+                      style: TextStyle(color: kDefaultFontColor, fontSize: 14),
+                    )
                   ],
-                ))));
+                )));
+        storeSelectionList.add(PopupMenuDivider());
+        storeSelectionList.add(PopupMenuItem(
+            value: -1,
+            child: Row(
+              children: [
+                Container(
+                  height: kToolbarHeight * 0.5,
+                  width: kToolbarHeight * 0.5,
+                  child: Icon(Icons.add, color: kLiteFontColor),
+                ),
+                SizedBox(width: kDefaultPadding),
+                Text(
+                  '가게 추가하기',
+                  style: TextStyle(color: kLiteFontColor, fontSize: 12),
+                )
+              ],
+            )));
+        return storeSelectionList;
+      },
+    );
   }
 
   Future<void> _setSelectedStore(int storeId) async {

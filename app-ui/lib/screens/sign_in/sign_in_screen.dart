@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_web_auth/flutter_web_auth.dart';
 import 'package:hashchecker/api.dart';
 import 'package:hashchecker/constants.dart';
+import 'package:hashchecker/models/selected_store.dart';
 import 'package:hashchecker/screens/create_store/components/intro.dart';
 import 'package:hashchecker/screens/hall/hall_screen.dart';
 import 'package:image_picker/image_picker.dart';

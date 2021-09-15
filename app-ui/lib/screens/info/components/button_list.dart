@@ -108,8 +108,13 @@ class ButtonList extends StatelessWidget {
                               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                               children: [
                                 TextButton(
-                                  onPressed: () {
-                                    Navigator.of(context).pop();
+                                  onPressed: () async {
+                                    await _logout(context);
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                SignInScreen()));
                                   },
                                   child: Text('예',
                                       style: TextStyle(
@@ -239,6 +244,11 @@ class ButtonList extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  Future<void> _logout(BuildContext context) async {
+    final storage = new FlutterSecureStorage();
+    await storage.deleteAll();
   }
 
   Future<void> _deleteUser(BuildContext context) async {
