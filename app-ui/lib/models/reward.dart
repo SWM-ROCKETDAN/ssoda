@@ -29,3 +29,5 @@ class Reward {
         level: json['level']);
   }
 }
+
+const MAX_REWARD_COUNT = 5;

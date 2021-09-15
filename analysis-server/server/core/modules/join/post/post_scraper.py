@@ -26,6 +26,12 @@ class PostScraper:
     def __init__(self, join_post):
         self.join_post = join_post
 
+    def get_scraped_post_only_do_scrap(self):
+        post_type = get_post_type_from_url(self.join_post['url'])
+        if post_type in scrap_handlers:
+            self.scraped_post = scrap_handlers[post_type](self.join_post['url'])
+        return self.scraped_post
+
     # 스크랩 된 게시물 가져오기
     def get_scraped_post(self):
         self.check_post_before_scrap_post()
@@ -37,7 +43,6 @@ class PostScraper:
                 raise exceptions.ScrapFailed()
             else:
                 self.check_post_after_scrap_post()
-            pprint.pprint(self.scraped_post)
             return self.scraped_post
 
     # 스크랩 하기 전 게시물 검사

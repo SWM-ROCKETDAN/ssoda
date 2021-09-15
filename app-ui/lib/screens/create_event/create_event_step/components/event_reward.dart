@@ -145,7 +145,7 @@ class _EventRewardState extends State<EventReward> {
                 children: [
                   Icon(Icons.info_outline, size: 16, color: kLiteFontColor),
                   Text(
-                    ' 최대 5단계까지 상품을 등록할 수 있어요!',
+                    ' 최대 $MAX_REWARD_COUNT단계까지 상품을 등록할 수 있어요!',
                     style: TextStyle(color: kLiteFontColor, fontSize: 12),
                   )
                 ],
@@ -160,13 +160,17 @@ class _EventRewardState extends State<EventReward> {
         context,
         MaterialPageRoute(
             builder: (context) => InputRewardInfoScreen(
-                reward: widget.event.rewardList[index], level: index + 1)));
+                reward: widget.event.rewardList[index],
+                level: index + 1,
+                prevCount: index > 0
+                    ? widget.event.rewardList[index - 1].count
+                    : null)));
 
     if (result != null) {
       setState(() {
         widget.event.rewardList[index] = result;
         if (widget.event.rewardList.last != null &&
-            widget.event.rewardList.length < 5)
+            widget.event.rewardList.length < MAX_REWARD_COUNT)
           widget.event.rewardList.add(null);
       });
     }

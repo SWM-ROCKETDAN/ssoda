@@ -1,6 +1,7 @@
 version: '3'
 services:
-  server:
+  server: &python
+    container_name: django
     build:
       context: .
       dockerfile: Dockerfile
@@ -12,3 +13,15 @@ services:
     - "8080:8080"
     expose:
       - "8080"
+#  rabbitmq:
+#    image: rabbitmq:3.9-management
+#    ports:
+#      - 5672:5672
+#      - 15672:15672
+#    expose:
+#      - "15672"
+  celery_worker:
+    <<: *python
+    container_name: 'backend_celery_worker'
+    command: celery -A config worker --loglevel=info
+    ports: [ ]

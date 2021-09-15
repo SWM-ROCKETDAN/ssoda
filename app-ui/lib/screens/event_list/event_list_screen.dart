@@ -5,10 +5,12 @@ import 'package:hashchecker/constants.dart';
 import 'package:hashchecker/models/address.dart';
 import 'package:hashchecker/models/event.dart';
 import 'package:hashchecker/models/event_list_item.dart';
+import 'package:hashchecker/models/selected_store.dart';
 import 'package:hashchecker/models/store.dart';
 import 'package:hashchecker/models/store_category.dart';
 import 'package:hashchecker/screens/event_list/components/event_list.dart';
 import 'package:hashchecker/screens/event_list/components/store_header.dart';
+import 'package:provider/provider.dart';
 import 'components/empty.dart';
 import 'components/event_list_tile.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
@@ -110,6 +112,7 @@ class _EventListScreenState extends State<EventListScreen> {
                             onChanged: (String? newValue) {
                               setState(() {
                                 dropdownValue = newValue!;
+                                eventList = _fetchEventListData();
                               });
                             },
                             items:
@@ -179,7 +182,7 @@ class _EventListScreenState extends State<EventListScreen> {
                       if (snapshot.hasData) {
                         return EventList(
                             size: size,
-                            eventList: snapshot.data,
+                            eventList: snapshot.data!,
                             selectedStatusFilter: _selectedStatusFilter,
                             statusStringMap: _statusStringMap,
                             statusFilterString: _statusFilterString,
@@ -198,16 +201,12 @@ class _EventListScreenState extends State<EventListScreen> {
   Future<Store> _fetchStoreData() async {
     var dio = await authDio();
 
-    final getUserStoresResponse = await dio.get(getApi(API.GET_USER_STORES));
-
-    final storeId = getUserStoresResponse.data.last['id'];
+    final storeId = context.read<SelectedStore>().id;
 
     final getStoreResponse =
         await dio.get(getApi(API.GET_STORE, suffix: '/$storeId'));
 
     final fetchedStore = getStoreResponse.data;
-
-    print(fetchedStore);
 
     return Store.fromJson(fetchedStore);
   }
@@ -215,9 +214,7 @@ class _EventListScreenState extends State<EventListScreen> {
   Future<List<EventListItem>> _fetchEventListData() async {
     var dio = await authDio();
 
-    final getUserStoresResponse = await dio.get(getApi(API.GET_USER_STORES));
-
-    final storeId = getUserStoresResponse.data.last['id'];
+    final storeId = context.read<SelectedStore>().id;
 
     final getEventListResponse = await dio
         .get(getApi(API.GET_EVENTS_OF_STORE, suffix: '/$storeId/events'));
@@ -226,6 +223,13 @@ class _EventListScreenState extends State<EventListScreen> {
 
     List<EventListItem> eventList = List.generate(fetchedEventList.length,
         (index) => EventListItem.fromJson(fetchedEventList[index]));
+
+    if (dropdownValue == "최신 등록 순")
+      eventList.sort((a, b) => a.startDate.compareTo(b.startDate));
+    else if (dropdownValue == "빠른 종료 순")
+      eventList.sort((a, b) => a.finishDate.compareTo(b.finishDate));
+    else if (dropdownValue == "가나다 순")
+      eventList.sort((a, b) => a.title.compareTo(b.title));
 
     return eventList;
   }

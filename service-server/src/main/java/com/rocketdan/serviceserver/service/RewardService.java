@@ -3,6 +3,7 @@ package com.rocketdan.serviceserver.service;
 import com.rocketdan.serviceserver.Exception.analysis.AnalysisServerErrorException;
 import com.rocketdan.serviceserver.Exception.join.JoinEventFailedException;
 import com.rocketdan.serviceserver.Exception.resource.NoAuthorityToResourceException;
+import com.rocketdan.serviceserver.app.dto.reward.RewardUpdateRequestDto;
 import com.rocketdan.serviceserver.config.AnalysisServerConfig;
 import com.rocketdan.serviceserver.config.auth.UserIdValidCheck;
 import com.rocketdan.serviceserver.core.CommonResponse;
@@ -18,6 +19,8 @@ import com.rocketdan.serviceserver.domain.reward.Reward;
 import com.rocketdan.serviceserver.domain.reward.RewardRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Optional;
 
 @RequiredArgsConstructor
 @Service
@@ -47,6 +50,32 @@ public class RewardService {
         savedReward.setEvent(linkedEvent);
 
         return rewardRepository.save(savedReward).getId();
+    }
+
+    @Transactional
+    public Long update(RewardUpdateRequestDto requestDto, org.springframework.security.core.userdetails.User principal) throws NoAuthorityToResourceException {
+        Reward reward = rewardRepository.findById(requestDto.getId()).orElseThrow(() -> new IllegalArgumentException("해당 리워드가 없습니다. id=" + requestDto.getId()));
+
+        // valid 하지 않으면 exception 발생
+        userIdValidCheck.userIdValidCheck(reward.getEvent().getStore().getUser().getUserId(), principal);
+
+        // 이미지
+        String imgPath = updateImageService.uploadNewImage(requestDto.getImage(), "image/reward");
+
+        if (Optional.ofNullable(imgPath).isPresent()) { // image가 포함된 request가 온 경우
+            updateImageService.deleteImagePath(reward.getImagePath()); // 기존에 저장돼있었던 이미지 삭제
+        } else { // image가 null로 온 경우
+            imgPath = reward.getImagePath(); // 기존 이미지로 지정
+        }
+
+        Reward updatedReward = requestDto.toEntity(imgPath);
+
+        // link event
+        updatedReward.setEvent(reward.getEvent());
+
+        // delete & save
+        rewardRepository.delete(reward);
+        return rewardRepository.save(updatedReward).getId();
     }
 
     @Transactional(readOnly = true)

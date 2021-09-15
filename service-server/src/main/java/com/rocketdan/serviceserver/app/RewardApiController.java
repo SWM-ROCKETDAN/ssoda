@@ -4,6 +4,7 @@ import com.rocketdan.serviceserver.Exception.resource.NoAuthorityToResourceExcep
 import com.rocketdan.serviceserver.app.dto.reward.RewardDeleteRequestDto;
 import com.rocketdan.serviceserver.app.dto.reward.RewardResponseDto;
 import com.rocketdan.serviceserver.app.dto.reward.RewardSaveRequestDto;
+import com.rocketdan.serviceserver.app.dto.reward.RewardUpdateRequestDto;
 import com.rocketdan.serviceserver.core.auth.LoginUser;
 import com.rocketdan.serviceserver.service.RewardService;
 import lombok.RequiredArgsConstructor;
@@ -30,6 +31,18 @@ public class RewardApiController {
         // 리워드 1개씩 저장
         for (RewardSaveRequestDto reward : rewards.getRewards() ){
             rewardIds.add(rewardService.save(event_id, reward, principal));
+        }
+
+        return rewardIds;
+    }
+
+    @PutMapping()
+    public List<Long> updateList(@ModelAttribute RewardUpdateRequestDto rewards, @LoginUser org.springframework.security.core.userdetails.User principal) throws NoAuthorityToResourceException {
+        List<Long> rewardIds = new ArrayList<>();
+
+        // 리워드 1개씩 update
+        for (RewardUpdateRequestDto reward : rewards.getRewards() ){
+            rewardIds.add(rewardService.update(reward, principal));
         }
 
         return rewardIds;

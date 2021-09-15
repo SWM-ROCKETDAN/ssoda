@@ -74,6 +74,8 @@ class _EventDetailScreenState extends State<EventDetailScreen> {
     List<Reward> rewardList = List.generate(fetchedRewardList.length,
         (index) => Reward.fromJson(fetchedRewardList[index]));
 
+    rewardList.sort((a, b) => a.level.compareTo(b.level));
+
     return rewardList;
   }
 

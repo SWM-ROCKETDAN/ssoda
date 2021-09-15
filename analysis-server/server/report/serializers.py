@@ -13,7 +13,7 @@ from core.models import JoinPost
 class RewardSerializer(serializers.ModelSerializer):
     class Meta:
         model = Reward
-        fields = ['count', 'price', 'used_count']
+        fields = ['level', 'count', 'price', 'used_count']
 
 
 class EventSerializer(serializers.ModelSerializer):

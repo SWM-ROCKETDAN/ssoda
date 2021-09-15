@@ -1,26 +1,31 @@
 import 'package:flutter/material.dart';
 import 'package:hashchecker/constants.dart';
+import 'package:hashchecker/screens/hall/hall_screen.dart';
 
-class CloseDetailButton extends StatelessWidget {
-  const CloseDetailButton({Key? key}) : super(key: key);
+class DoneButton extends StatelessWidget {
+  const DoneButton({
+    Key? key,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
+    return Container(
       width: MediaQuery.of(context).size.width,
+      margin: const EdgeInsets.only(top: 20),
       height: 50,
-      child: ElevatedButton(
+      child: TextButton(
         child: Text(
           '확인',
           style: TextStyle(
               color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold),
         ),
         onPressed: () {
-          Navigator.pop(context);
+          Navigator.pushAndRemoveUntil(context, slidePageRouting(HallScreen()),
+              (Route<dynamic> route) => false);
         },
         style: ButtonStyle(
-            shadowColor: MaterialStateProperty.all<Color>(kShadowColor),
             backgroundColor: MaterialStateProperty.all<Color>(kThemeColor),
+            overlayColor: MaterialStateProperty.all<Color>(kShadowColor),
             shape: MaterialStateProperty.all<OutlinedBorder>(
                 RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(27.0)))),

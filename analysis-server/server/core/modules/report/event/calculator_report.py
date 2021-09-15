@@ -4,6 +4,7 @@ from .calculator_exposure import calculate_exposure_count
 from .calculator_engagement import calculate_comment_count
 from .calculator_engagement import calculate_like_count
 from .calculator_expenditure import calculate_expenditure_count
+from .calculator_expenditure import calculate_level_expenditure
 from .calculator_participate import calculate_participate_count
 from .calculator_post import calculate_public_post_count
 from .calculator_post import calculate_private_post_count
@@ -72,3 +73,10 @@ def get_expenditure_count(join_post) -> int:
         if 'price' in join_post['reward']:
             return calculate_expenditure_count(join_post['reward']['price'])
     return 0
+
+
+def get_level_expenditure(join_post: dict) -> list:
+    if 'reward' in join_post and join_post['reward']:
+        if 'level' in join_post['reward'] and 'price' in join_post['reward']:
+            return calculate_level_expenditure(join_post['reward']['level'], join_post['reward']['price'])
+    return [0, 0, 0, 0, 0]

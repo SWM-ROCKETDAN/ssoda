@@ -2,11 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:hashchecker/api.dart';
 import 'package:hashchecker/constants.dart';
 import 'package:hashchecker/models/event.dart';
+import 'package:hashchecker/models/event_edit_data.dart';
+import 'package:hashchecker/screens/event_list/event_detail/event_detail_screen.dart';
+import 'package:hashchecker/screens/event_list/event_edit/event_edit_modal.dart';
 import 'package:hashchecker/screens/hall/hall_screen.dart';
 import 'package:hashchecker/screens/marketing_report/event_report/event_report_screen.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
-
-import 'event_edit_modal.dart';
+import 'package:provider/provider.dart';
 
 class EventOptionsModal extends StatelessWidget {
   final int eventId;
@@ -29,13 +31,16 @@ class EventOptionsModal extends StatelessWidget {
         children: <Widget>[
           if (!isAlreadyInPreview)
             ListTile(
-              title: Text('이벤트 미리보기',
-                  style: TextStyle(
-                      color: kDefaultFontColor.withOpacity(0.8), fontSize: 15)),
-              leading: Icon(Icons.description_rounded,
-                  color: kDefaultFontColor.withOpacity(0.8)),
-              onTap: () => Navigator.of(context).pop(),
-            ),
+                title: Text('이벤트 미리보기',
+                    style: TextStyle(
+                        color: kDefaultFontColor.withOpacity(0.8),
+                        fontSize: 15)),
+                leading: Icon(Icons.description_rounded,
+                    color: kDefaultFontColor.withOpacity(0.8)),
+                onTap: () => Navigator.push(
+                    context,
+                    slidePageRouting(EventDetailScreen(
+                        eventId: eventId, eventStatus: eventStatus)))),
           ListTile(
             enabled: _isEnableToEdit(),
             title: Text('이벤트 편집',
@@ -51,9 +56,9 @@ class EventOptionsModal extends StatelessWidget {
             onTap: () => showBarModalBottomSheet(
               expand: true,
               context: context,
-              builder: (context) => EventEditModal(
-                eventId: eventId,
-              ),
+              builder: (context) => Provider(
+                  create: (_) => EventEditData(),
+                  child: EventEditModal(eventId: eventId)),
             ),
           ),
           ListTile(
@@ -190,12 +195,12 @@ class EventOptionsModal extends StatelessWidget {
               Center(
                 child: ElevatedButton(
                   onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => HallScreen(),
-                      ),
-                    );
+                    Navigator.pushAndRemoveUntil(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => HallScreen(),
+                        ),
+                        (Route<dynamic> route) => false);
                   },
                   child: Text('확인', style: TextStyle(fontSize: 13)),
                   style: ButtonStyle(
@@ -273,8 +278,8 @@ class EventOptionsModal extends StatelessWidget {
   Future<void> _stopEvent(int eventId) async {
     var dio = await authDio();
     final eventStopResponse = await dio.put(
-        'http://ec2-3-37-85-236.ap-northeast-2.compute.amazonaws.com:8080/api/v1/events/$eventId/status',
-        data: {'status': 2});
+        getApi(API.STOP_EVENT, suffix: '/$eventId/status'),
+        data: {'status': EventStatus.ENDED.index});
     print(eventStopResponse.data);
   }
 
@@ -305,12 +310,12 @@ class EventOptionsModal extends StatelessWidget {
               Center(
                 child: ElevatedButton(
                   onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => HallScreen(),
-                      ),
-                    );
+                    Navigator.pushAndRemoveUntil(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => HallScreen(),
+                        ),
+                        (Route<dynamic> route) => false);
                   },
                   child: Text('확인', style: TextStyle(fontSize: 13)),
                   style: ButtonStyle(

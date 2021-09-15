@@ -1,3 +1,4 @@
+import celery
 from django.shortcuts import get_object_or_404
 from django.shortcuts import get_list_or_404
 from rest_framework.views import APIView
@@ -23,21 +24,6 @@ class TestJoinPostView(APIView):
 
         return JsonResponse({'join_posts': join_post_serializer.data})
 
-    def post(self, request):
-        post_tester = PostTester(4, 2, 53, None, TEST_SNS_ID)
-        test_join_posts = post_tester.get_test_join_posts()
-        join_post_serializer = JoinPostSerializer(data=test_join_posts, many=True)
-        if join_post_serializer.is_valid():
-            join_post_serializer.save()
-            raise exceptions.PostUpdateOk(join_post_serializer.data)
-        raise exceptions.PostUpdateFailed()
-
-    def delete(self, request):
-        join_posts = JoinPost.objects.all()
-        join_posts.delete()
-
-        return JsonResponse({"test": 'join post delete all!'})
-
 
 class TestJoinUserView(APIView):
     def get(self, request):
@@ -46,18 +32,3 @@ class TestJoinUserView(APIView):
         join_user_serializer.is_valid()
 
         return JsonResponse({'join_users': join_user_serializer.data})
-
-    def post(self, request):
-        user_tester = UserTester(TEST_SNS_ID)
-        test_join_user = user_tester.get_test_join_user()
-        join_user_serializer = JoinUserSerializer(data=test_join_user)
-        if join_user_serializer.is_valid():
-            join_user_serializer.save()
-            raise exceptions.UserUpdateOk({'join_user': join_user_serializer.data})
-        raise exceptions.UserUpdateFailed()
-
-    def delete(self, request):
-        join_users = JoinUser.objects.all()
-        join_users.delete()
-
-        return JsonResponse({"test": 'join user delete all!'})

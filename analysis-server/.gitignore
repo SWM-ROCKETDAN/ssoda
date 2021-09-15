@@ -3,7 +3,7 @@
 chromedriver.exe
 /config.py
 __pycache__
-
+key.py
 ### Django ###
 *.log
 *.pot
