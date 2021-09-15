@@ -11,6 +11,7 @@ from .calculator_report import get_days_from_start_date_to_now_date
 from core.modules.assist.time import parse_from_str_time_to_date_time
 from core.modules.assist.time import get_now_date
 from server.core.exceptions import exceptions
+
 # import pprint
 
 calculator_handlers = {
@@ -115,17 +116,20 @@ def parse_calculate_report_dict_to_report_dict(calculate_report_dict: dict, repo
                     report_dict['month'][calculator_name] = z
                 continue
 
-            if day_index >= len(report_dict['day'][calculator_name]) or len(report_dict['day'][calculator_name]) == 0:
+            report_dict_day_len = len(report_dict['day'][calculator_name])
+            if day_index >= report_dict_day_len or report_dict_day_len == 0:
                 report_dict['day'][calculator_name].append(calculate_result)
             else:
                 report_dict['day'][calculator_name][day_index] += calculate_result
-            if week_index >= len(report_dict['week'][calculator_name]) or len(
-                    report_dict['week'][calculator_name]) == 0:
+
+            report_dict_week_len = len(report_dict['week'][calculator_name])
+            if week_index >= report_dict_week_len or report_dict_week_len == 0:
                 report_dict['week'][calculator_name].append(calculate_result)
             else:
                 report_dict['week'][calculator_name][week_index] += calculate_result
-            if month_index >= len(report_dict['month'][calculator_name]) or len(
-                    report_dict['month'][calculator_name]) == 0:
+
+            report_dict_month_len = len(report_dict['month'][calculator_name])
+            if month_index >= report_dict_month_len or report_dict_month_len == 0:
                 report_dict['month'][calculator_name].append(calculate_result)
             else:
                 report_dict['month'][calculator_name][month_index] += calculate_result

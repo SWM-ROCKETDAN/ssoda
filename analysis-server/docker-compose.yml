@@ -1,27 +1,22 @@
 version: '3'
 services:
   server: &python
-    container_name: django
+    image: moyoung/ssoda-analysis-server:django
+    container_name: django-server
+    platform: linux/x86_64
     build:
       context: .
       dockerfile: Dockerfile
     working_dir: /usr/src/app/server
     command: gunicorn config.wsgi:application --bind 0.0.0.0:8080
     volumes:
-    - ./server:/usr/src/app/server
+      - ./server:/usr/src/app/server
     ports:
-    - "8080:8080"
-    expose:
-      - "8080"
-#  rabbitmq:
-#    image: rabbitmq:3.9-management
-#    ports:
-#      - 5672:5672
-#      - 15672:15672
-#    expose:
-#      - "15672"
+      - "8080:8080"
   celery_worker:
+    image: moyoung/ssoda-analysis-server:celery
+    container_name: celery-worker
+    platform: linux/x86_64
     <<: *python
-    container_name: 'backend_celery_worker'
     command: celery -A config worker --loglevel=info
     ports: [ ]
