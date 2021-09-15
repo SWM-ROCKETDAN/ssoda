@@ -86,7 +86,7 @@ class _StoreSelectState extends State<StoreSelect> {
                 SizedBox(width: kDefaultPadding),
                 Text(
                   '가게 추가하기',
-                  style: TextStyle(color: kLiteFontColor, fontSize: 12),
+                  style: TextStyle(color: kLiteFontColor, fontSize: 14),
                 )
               ],
             )));
@@ -100,6 +100,6 @@ class _StoreSelectState extends State<StoreSelect> {
 
     prefs.setInt('selectedStore', storeId);
 
-    final newStoreId = context.read<SelectedStore>().id = storeId;
+    context.read<SelectedStore>().id = storeId;
   }
 }

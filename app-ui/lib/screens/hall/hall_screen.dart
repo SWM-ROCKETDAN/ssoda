@@ -131,6 +131,17 @@ class _HallScreenState extends State<HallScreen> {
     List<StoreListItem> storeList = List.generate(fetchedStoreList.length,
         (index) => StoreListItem.fromJson(fetchedStoreList[index]));
 
+    final selectedStoreIndex =
+        storeList.indexWhere((element) => element.id == selectedStoreId);
+
+    final currentStoreListItem = StoreListItem(
+        id: storeList[selectedStoreIndex].id,
+        name: storeList[selectedStoreIndex].name,
+        logo: storeList[selectedStoreIndex].logo);
+
+    storeList.removeAt(selectedStoreIndex);
+
+    storeList.insert(0, currentStoreListItem);
     return storeList;
   }
 }
