@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:hashchecker/api.dart';
 import 'package:hashchecker/constants.dart';
+import 'package:hashchecker/models/selected_store.dart';
 import 'package:hashchecker/models/user.dart';
 import 'package:hashchecker/screens/info/components/button_list.dart';
 import 'package:hashchecker/screens/info/components/user_info.dart';
+import 'package:provider/provider.dart';
 
 class InfoScreen extends StatefulWidget {
   const InfoScreen({Key? key}) : super(key: key);
@@ -40,7 +42,7 @@ class _InfoScreenState extends State<InfoScreen> {
                 return Center(child: const CircularProgressIndicator());
               }),
           SizedBox(height: kDefaultPadding * 1.5),
-          ButtonList()
+          ButtonList(storeId: context.read<SelectedStore>().id)
         ],
       ),
     );

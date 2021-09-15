@@ -12,6 +12,7 @@ import 'event_hashtags.dart';
 import 'event_requirements.dart';
 import 'event_period.dart';
 import 'close_detail_button.dart';
+import 'join_qr_code.dart';
 
 class Body extends StatelessWidget {
   final Event event;
@@ -39,6 +40,8 @@ class Body extends StatelessWidget {
               EventHashtags(event: event),
               Divider(height: kDefaultPadding * 2, color: kShadowColor),
               EventPeriod(event: event),
+              Divider(height: kDefaultPadding * 2, color: kShadowColor),
+              JoinQrCode(storeId: storeId),
               Divider(height: kDefaultPadding * 2, color: kShadowColor),
               CloseDetailButton()
             ],

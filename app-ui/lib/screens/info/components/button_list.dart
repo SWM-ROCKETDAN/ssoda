@@ -12,12 +12,12 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'store_options_modal.dart';
 
 class ButtonList extends StatelessWidget {
-  const ButtonList({Key? key}) : super(key: key);
+  final storeId;
+  const ButtonList({Key? key, required this.storeId}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
-
     return Container(
       child: Column(
         children: [
@@ -31,7 +31,8 @@ class ButtonList extends StatelessWidget {
                         backgroundColor: Colors.transparent,
                         expand: false,
                         context: context,
-                        builder: (context) => StoreOptionsModal()),
+                        builder: (context) =>
+                            StoreOptionsModal(storeId: storeId)),
                     child: Text('내 가게',
                         style:
                             TextStyle(color: kDefaultFontColor, fontSize: 14)),

@@ -6,10 +6,14 @@ import 'package:hashchecker/screens/create_store/create_store_screen.dart';
 import 'package:hashchecker/screens/hall/hall_screen.dart';
 import 'package:hashchecker/screens/info/store_edit/store_edit_screen.dart';
 import 'package:provider/provider.dart';
+import 'package:qr_flutter/qr_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import 'qr_save_button.dart';
+
 class StoreOptionsModal extends StatelessWidget {
-  const StoreOptionsModal({Key? key}) : super(key: key);
+  final storeId;
+  const StoreOptionsModal({Key? key, required this.storeId}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -19,6 +23,16 @@ class StoreOptionsModal extends StatelessWidget {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
+          ListTile(
+              title: Text('가게 QR 코드 확인',
+                  style: TextStyle(
+                      color: kDefaultFontColor.withOpacity(0.8), fontSize: 15)),
+              leading: Icon(Icons.qr_code_2_rounded,
+                  color: kDefaultFontColor.withOpacity(0.8)),
+              onTap: () {
+                Navigator.pop(context);
+                _showStoreQrCodeDialog(context);
+              }),
           ListTile(
               title: Text('가게 정보 수정',
                   style: TextStyle(
@@ -99,6 +113,53 @@ class StoreOptionsModal extends StatelessWidget {
         ],
       ),
     ));
+  }
+
+  void _showStoreQrCodeDialog(context) {
+    final qrcodeUrl = '$eventJoinUrl/$storeId';
+    showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+            title: Center(
+              child: Text('가게 이벤트 참여 QR 코드',
+                  style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 18,
+                      color: kDefaultFontColor),
+                  textAlign: TextAlign.center),
+            ),
+            content: IntrinsicHeight(
+              child: Column(
+                children: [
+                  SizedBox(
+                      child: QrImage(
+                        data: qrcodeUrl,
+                        version: QrVersions.auto,
+                      ),
+                      height: 150,
+                      width: 150),
+                  QrSaveButton(qrcodeUrl: qrcodeUrl)
+                ],
+              ),
+            ),
+            contentPadding: const EdgeInsets.fromLTRB(15, 15, 15, 5),
+            actions: [
+              Center(
+                child: ElevatedButton(
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                  child: Text('닫기', style: TextStyle(fontSize: 13)),
+                  style: ButtonStyle(
+                      shadowColor:
+                          MaterialStateProperty.all<Color>(kShadowColor),
+                      backgroundColor:
+                          MaterialStateProperty.all<Color>(kThemeColor)),
+                ),
+              )
+            ],
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(15))));
   }
 
   Future<void> _deleteStore(BuildContext context) async {
