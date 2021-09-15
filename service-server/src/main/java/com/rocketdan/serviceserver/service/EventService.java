@@ -85,13 +85,11 @@ public class EventService {
 
     private boolean checkDateValid(Date startDate, Date finishDate) {
         Date now = new Date();
-        boolean startDateValid = now.after(startDate);
+        boolean startDateValid = now.before(startDate);
         boolean finishDateValid = true;
-
         if (Optional.ofNullable(finishDate).isPresent()) {
-            finishDateValid = startDate.after(finishDate);
+            finishDateValid = startDate.before(finishDate);
         }
-
         return startDateValid && finishDateValid;
     }
 
