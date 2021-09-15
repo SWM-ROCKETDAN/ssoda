@@ -54,62 +54,32 @@ class NextStepButton extends StatelessWidget {
     switch (step) {
       case 0:
         if (event.title == "") {
-          context.showFlashBar(
-              barType: FlashBarType.error,
-              icon: const Icon(Icons.error_outline_rounded),
-              duration: const Duration(seconds: 3),
-              backgroundColor: Colors.white,
-              content: Text('이벤트 제목을 입력해주세요!',
-                  style: TextStyle(fontSize: 14, color: kDefaultFontColor)));
+          _showValidationErrorFlashBar(context, '이벤트 제목을 입력해주세요!');
           return false;
         }
         break;
       case 1:
         if (event.rewardList.length == 1) {
-          context.showFlashBar(
-              barType: FlashBarType.error,
-              icon: const Icon(Icons.error_outline_rounded),
-              duration: const Duration(seconds: 3),
-              backgroundColor: Colors.white,
-              content: Text('이벤트 상품을 최소 1개 이상 등록해주세요!',
-                  style: TextStyle(fontSize: 14, color: kDefaultFontColor)));
+          _showValidationErrorFlashBar(context, '이벤트 상품을 최소 1개 이상 등록해주세요!');
           return false;
         }
         break;
       case 2:
         if (event.hashtagList.isEmpty) {
-          context.showFlashBar(
-              barType: FlashBarType.error,
-              icon: const Icon(Icons.error_outline_rounded),
-              duration: const Duration(seconds: 3),
-              backgroundColor: Colors.white,
-              content: Text('필수 해시태그를 최소 1개 이상 등록해주세요!',
-                  style: TextStyle(fontSize: 14, color: kDefaultFontColor)));
+          _showValidationErrorFlashBar(context, '필수 해시태그를 최소 1개 이상 등록해주세요!');
           return false;
         }
         break;
       case 3:
         if (event.period.finishDate != null &&
             event.period.startDate.isAfter(event.period.finishDate!)) {
-          context.showFlashBar(
-              barType: FlashBarType.error,
-              icon: const Icon(Icons.error_outline_rounded),
-              duration: const Duration(seconds: 3),
-              backgroundColor: Colors.white,
-              content: Text('종료 날짜가 시작 날짜보다 앞서있어요!',
-                  style: TextStyle(fontSize: 14, color: kDefaultFontColor)));
+          _showValidationErrorFlashBar(context, '종료 날짜가 시작 날짜보다 앞서있어요!');
           return false;
         }
         break;
       case 4:
         if (event.images.length == 1 && event.images.last == null) {
-          context.showFlashBar(
-              barType: FlashBarType.error,
-              icon: const Icon(Icons.error_outline_rounded),
-              duration: const Duration(seconds: 3),
-              backgroundColor: Colors.white,
-              content: Text('대표 이미지를 최소 1개 이상 등록해주세요!',
-                  style: TextStyle(fontSize: 14, color: kDefaultFontColor)));
+          _showValidationErrorFlashBar(context, '대표 이미지를 최소 1개 이상 등록해주세요!');
           return false;
         }
         break;

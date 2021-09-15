@@ -47,37 +47,29 @@ class ConfirmButton extends StatelessWidget {
 
   bool _checkStoreValidation(BuildContext context) {
     if (store.name.trim() == "") {
-      context.showFlashBar(
-          barType: FlashBarType.error,
-          icon: const Icon(Icons.error_outline_rounded),
-          duration: const Duration(seconds: 3),
-          backgroundColor: Colors.white,
-          content: Text('가게 이름을 입력해주세요!',
-              style: TextStyle(fontSize: 14, color: kDefaultFontColor)));
+      _showValidationErrorFlashBar(context, '가게 이름을 입력해주세요!');
       return false;
     }
     if (store.images.length == 0) {
-      context.showFlashBar(
-          barType: FlashBarType.error,
-          icon: const Icon(Icons.error_outline_rounded),
-          duration: const Duration(seconds: 3),
-          backgroundColor: Colors.white,
-          content: Text('가게 이미지를 최소 1개 등록해주세요!',
-              style: TextStyle(fontSize: 14, color: kDefaultFontColor)));
+      _showValidationErrorFlashBar(context, '가게 이미지를 최소 1개 등록해주세요!');
       return false;
     }
 
     if (store.description.trim() == "") {
-      context.showFlashBar(
-          barType: FlashBarType.error,
-          icon: const Icon(Icons.error_outline_rounded),
-          duration: const Duration(seconds: 3),
-          backgroundColor: Colors.white,
-          content: Text('가게 소개를 입력해주세요!',
-              style: TextStyle(fontSize: 14, color: kDefaultFontColor)));
+      _showValidationErrorFlashBar(context, '가게 소개를 입력해주세요!');
       return false;
     }
     return true;
+  }
+
+  void _showValidationErrorFlashBar(BuildContext context, String message) {
+    context.showFlashBar(
+        barType: FlashBarType.error,
+        icon: const Icon(Icons.error_outline_rounded),
+        duration: const Duration(seconds: 3),
+        backgroundColor: Colors.white,
+        content: Text(message,
+            style: TextStyle(fontSize: 14, color: kDefaultFontColor)));
   }
 
   Future<void> _updateStore(BuildContext context) async {
