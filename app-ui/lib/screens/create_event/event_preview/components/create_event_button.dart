@@ -34,7 +34,7 @@ class CreateEventButton extends StatelessWidget {
           final templateImagePath = await _saveTemplateImage(context);
 
           final storeId = context.read<SelectedStore>().id!;
-          //await _createEvent(storeId);
+          await _createEvent(storeId);
 
           Navigator.of(context).pushAndRemoveUntil(
               slidePageRouting(
