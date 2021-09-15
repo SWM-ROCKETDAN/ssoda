@@ -1,5 +1,6 @@
 package com.rocketdan.serviceserver.service;
 
+import com.rocketdan.serviceserver.Exception.resource.InvalidRequestBodyException;
 import com.rocketdan.serviceserver.Exception.resource.NoAuthorityToResourceException;
 import com.rocketdan.serviceserver.app.dto.event.EventListResponseDto;
 import com.rocketdan.serviceserver.app.dto.event.EventResponseDto;
@@ -19,7 +20,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
@@ -38,6 +41,11 @@ public class EventService {
 
         // valid 하지 않으면 exception 발생
         userIdValidCheck.userIdValidCheck(linkedStore.getUser().getUserId(), principal);
+
+        // status valid check
+        if (!checkDateValid(requestDto.getStartDate(), requestDto.getFinishDate())) {
+            throw new InvalidRequestBodyException("Invalid date.");
+        }
 
         // 이미지
         List<String> imgPaths = updateImageService.uploadNewImages(requestDto.getImages(), "image/event");
@@ -73,6 +81,16 @@ public class EventService {
         event.updateStatus();
 
         return id;
+    }
+
+    private boolean checkDateValid(Date startDate, Date finishDate) {
+        Date now = new Date();
+        boolean startDateValid = now.before(startDate);
+        boolean finishDateValid = true;
+        if (Optional.ofNullable(finishDate).isPresent()) {
+            finishDateValid = startDate.before(finishDate);
+        }
+        return startDateValid && finishDateValid;
     }
 
     @Transactional

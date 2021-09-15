@@ -13,6 +13,7 @@ import com.rocketdan.serviceserver.Exception.auth.CustomJwtRuntimeException;
 import com.rocketdan.serviceserver.Exception.auth.LoginFailedException;
 import com.rocketdan.serviceserver.Exception.join.JoinInvalidEventException;
 import com.rocketdan.serviceserver.Exception.join.NoRewardForEventException;
+import com.rocketdan.serviceserver.Exception.resource.InvalidRequestBodyException;
 import com.rocketdan.serviceserver.Exception.resource.NoAuthorityToResourceException;
 import com.rocketdan.serviceserver.core.CommonResponse;
 import lombok.extern.slf4j.Slf4j;
@@ -238,4 +239,21 @@ public class GlobalExceptionHandler {
     }
 
 
+    /*
+    Request
+     */
+
+    @ExceptionHandler(InvalidRequestBodyException.class)
+    protected ResponseEntity<CommonResponse> handleInvalidRequestBodyException(InvalidRequestBodyException e) {
+
+        log.info("handleInvalidRequestBodyException", e);
+
+        CommonResponse response = CommonResponse.builder()
+                .code(ErrorCode.INVALID_REQUEST_BODY.getCode())
+                .message(e.getMessage())
+                .status(ErrorCode.INVALID_REQUEST_BODY.getStatus())
+                .build();
+
+        return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
 }
