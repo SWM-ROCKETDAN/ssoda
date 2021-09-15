@@ -54,4 +54,8 @@ public class EventApiController {
     public void delete(@PathVariable Long id, @LoginUser org.springframework.security.core.userdetails.User principal) throws NoAuthorityToResourceException  {
         eventService.softDelete(id, principal);
     }
+
+    @GetMapping("/test")
+    public void test() {
+    }
 }
