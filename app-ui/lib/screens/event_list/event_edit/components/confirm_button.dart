@@ -5,7 +5,7 @@ import 'package:hashchecker/api.dart';
 import 'package:hashchecker/constants.dart';
 import 'package:hashchecker/models/event.dart';
 import 'package:hashchecker/models/reward.dart';
-import 'package:hashchecker/models/reward_edit_data.dart';
+import 'package:hashchecker/models/event_edit_data.dart';
 import 'package:hashchecker/screens/hall/hall_screen.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
@@ -14,8 +14,7 @@ class ConfirmButton extends StatelessWidget {
   final eventId;
   final Event event;
   final eventTitleController;
-  final newImages;
-  final deletedImagePaths;
+
   final startDatePickerController;
   final finishDatePickerController;
   const ConfirmButton(
@@ -23,8 +22,6 @@ class ConfirmButton extends StatelessWidget {
       required this.eventId,
       required this.event,
       required this.eventTitleController,
-      required this.newImages,
-      required this.deletedImagePaths,
       required this.startDatePickerController,
       required this.finishDatePickerController})
       : super(key: key);
@@ -152,7 +149,7 @@ class ConfirmButton extends StatelessWidget {
 
   List<Reward?> _getUpdatedRewards(BuildContext context) {
     final List<int> updatedRewardIds =
-        context.read<RewardEditData>().updatedRewardIds;
+        context.read<EventEditData>().updatedRewardIds;
 
     final List<Reward?> updatedRewards = event.rewardList
         .where((element) =>
@@ -164,12 +161,16 @@ class ConfirmButton extends StatelessWidget {
 
   List<int> _getDeletedRewardIds(BuildContext context) {
     final List<int> deletedRewardIds =
-        context.read<RewardEditData>().deletedRewardIds;
+        context.read<EventEditData>().deletedRewardIds;
 
     return deletedRewardIds;
   }
 
   Future<void> _updateEvent(BuildContext context) async {
+    final List<String> newImages = context.read<EventEditData>().newImages;
+    final List<String> deletedImagePaths =
+        context.read<EventEditData>().deletedImagePaths;
+
     var dio = await authDio();
 
     dio.options.contentType = 'multipart/form-data';

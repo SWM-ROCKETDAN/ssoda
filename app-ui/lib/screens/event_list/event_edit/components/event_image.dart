@@ -4,18 +4,14 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:hashchecker/api.dart';
 import 'package:hashchecker/constants.dart';
+import 'package:hashchecker/models/event_edit_data.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:provider/provider.dart';
 
 class EventImageEdit extends StatefulWidget {
   final event;
-  final newImages;
-  final deletedImagePaths;
-  const EventImageEdit(
-      {Key? key,
-      required this.event,
-      required this.newImages,
-      required this.deletedImagePaths})
-      : super(key: key);
+
+  const EventImageEdit({Key? key, required this.event}) : super(key: key);
 
   @override
   _EventImageEditState createState() => _EventImageEditState();
@@ -82,7 +78,9 @@ class _EventImageEditState extends State<EventImageEdit> {
                         child: GestureDetector(
                           onTap: () {
                             setState(() {
-                              widget.deletedImagePaths
+                              context
+                                  .read<EventEditData>()
+                                  .deletedImagePaths
                                   .add(widget.event.images[index]!);
                               widget.event.images.removeAt(index);
                               if (widget.event.images.length == 2 &&
@@ -109,7 +107,7 @@ class _EventImageEditState extends State<EventImageEdit> {
         if (widget.event.images[index] == null &&
             widget.event.images.length < 3) widget.event.images.add(null);
         widget.event.images[index] = '$kNewImagePrefix${image.path}';
-        widget.newImages.add(image.path);
+        context.read<EventEditData>().newImages.add(image.path);
         print(widget.event.images[index]);
       });
     }

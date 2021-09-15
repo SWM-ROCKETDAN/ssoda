@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:hashchecker/api.dart';
 import 'package:hashchecker/constants.dart';
 import 'package:hashchecker/models/event.dart';
-import 'package:hashchecker/models/reward_edit_data.dart';
+import 'package:hashchecker/models/event_edit_data.dart';
 import 'package:hashchecker/screens/event_list/event_detail/event_detail_screen.dart';
 import 'package:hashchecker/screens/event_list/event_edit/event_edit_modal.dart';
 import 'package:hashchecker/screens/hall/hall_screen.dart';
@@ -57,7 +57,7 @@ class EventOptionsModal extends StatelessWidget {
               expand: true,
               context: context,
               builder: (context) => Provider(
-                  create: (_) => RewardEditData(),
+                  create: (_) => EventEditData(),
                   child: EventEditModal(eventId: eventId)),
             ),
           ),

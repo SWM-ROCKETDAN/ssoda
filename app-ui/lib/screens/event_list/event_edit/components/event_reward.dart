@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:hashchecker/api.dart';
 import 'package:hashchecker/constants.dart';
 import 'package:hashchecker/models/reward.dart';
-import 'package:hashchecker/models/reward_edit_data.dart';
+import 'package:hashchecker/models/event_edit_data.dart';
 import 'package:hashchecker/screens/event_list/event_edit/reward_edit/reward_edit_screen.dart';
 import 'package:provider/provider.dart';
 
@@ -61,7 +61,7 @@ class _EventRewardEditState extends State<EventRewardEdit> {
                     onTap: () {
                       _navigateToDetailScreen(index);
                       context
-                          .read<RewardEditData>()
+                          .read<EventEditData>()
                           .updatedRewardIds
                           .add(widget.event.rewardList[index].id!);
                     },
@@ -121,7 +121,7 @@ class _EventRewardEditState extends State<EventRewardEdit> {
                                 onTap: () {
                                   if (widget.event.rewardList[index].id != null)
                                     context
-                                        .read<RewardEditData>()
+                                        .read<EventEditData>()
                                         .deletedRewardIds
                                         .add(widget.event.rewardList[index].id);
                                   setState(() {

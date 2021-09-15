@@ -24,9 +24,6 @@ class Body extends StatelessWidget {
       required this.finishDatePickerController})
       : super(key: key);
 
-  final List<String> newImages = [];
-  final List<String> deletedImagePaths = [];
-
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -40,9 +37,8 @@ class Body extends StatelessWidget {
             Section(text: '대표 이미지'),
             SizedBox(height: kDefaultPadding),
             EventImageEdit(
-                event: event,
-                newImages: newImages,
-                deletedImagePaths: deletedImagePaths),
+              event: event,
+            ),
             SizedBox(height: kDefaultPadding * 2),
             Section(text: '이벤트 제목'),
             EventTitleEdit(eventTitleController: eventTitleController),
@@ -66,8 +62,6 @@ class Body extends StatelessWidget {
                 eventId: eventId,
                 event: event,
                 eventTitleController: eventTitleController,
-                newImages: newImages,
-                deletedImagePaths: deletedImagePaths,
                 startDatePickerController: startDatePickerController,
                 finishDatePickerController: finishDatePickerController)
           ],
