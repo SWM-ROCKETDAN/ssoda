@@ -6,32 +6,48 @@ import com.rocketdan.serviceserver.Exception.resource.NoAuthorityToResourceExcep
 import com.rocketdan.serviceserver.app.dto.report.event.EventInEventReport;
 import com.rocketdan.serviceserver.app.dto.report.event.EventReportDto;
 import com.rocketdan.serviceserver.app.dto.report.event.EventReportResponseDto;
+import com.rocketdan.serviceserver.app.dto.report.store.StoreReportDto;
+import com.rocketdan.serviceserver.app.dto.report.store.StoreReportResponseDto;
 import com.rocketdan.serviceserver.config.AnalysisServerConfig;
 import com.rocketdan.serviceserver.config.auth.UserIdValidCheck;
 import com.rocketdan.serviceserver.core.CommonResponse;
 import com.rocketdan.serviceserver.domain.event.Event;
 import com.rocketdan.serviceserver.domain.event.EventRepository;
+import com.rocketdan.serviceserver.domain.store.Store;
+import com.rocketdan.serviceserver.domain.store.StoreRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
 public class ReportService {
     private final EventRepository eventRepository;
+    private final StoreRepository storeRepository;
 
     private final AnalysisServerConfig analysisServerConfig;
 
     private final UserIdValidCheck userIdValidCheck;
 
     // Report of event 가공
-    public EventReportResponseDto wrapReportOfEvent(Long eventId, EventReportDto report, org.springframework.security.core.userdetails.User principal) throws NoAuthorityToResourceException {
+    @Transactional(readOnly = true)
+    public EventReportResponseDto wrapEventReport(Long eventId, EventReportDto report, org.springframework.security.core.userdetails.User principal) throws NoAuthorityToResourceException {
         Event event = eventRepository.findById(eventId).orElseThrow(() -> new IllegalArgumentException("해당 이벤트가 없습니다. id=" + eventId));
 
         // valid 하지 않으면 exception 발생
         userIdValidCheck.userIdValidCheck(event.getStore().getUser().getUserId(), principal);
 
         return new EventReportResponseDto(new EventInEventReport(event), report);
+    }
+
+    public StoreReportResponseDto wrapStoreReport(Long storeId, StoreReportDto report, org.springframework.security.core.userdetails.User principal) throws NoAuthorityToResourceException {
+        Store store = storeRepository.findById(storeId).orElseThrow(() -> new IllegalArgumentException("해당 가게가 없습니다. id=" + storeId));
+
+        // valid 하지 않으면 exception 발생
+        userIdValidCheck.userIdValidCheck(store.getUser().getUserId(), principal);
+
+        return new StoreReportResponseDto(report);
     }
 
     // analysis-server에 event report get 요청
