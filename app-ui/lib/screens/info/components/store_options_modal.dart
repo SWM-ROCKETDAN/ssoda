@@ -1,6 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:hashchecker/api.dart';
 import 'package:hashchecker/constants.dart';
+import 'package:hashchecker/models/selected_store.dart';
+import 'package:hashchecker/screens/create_store/create_store_screen.dart';
+import 'package:hashchecker/screens/hall/hall_screen.dart';
 import 'package:hashchecker/screens/info/store_edit/store_edit_screen.dart';
+import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class StoreOptionsModal extends StatelessWidget {
   const StoreOptionsModal({Key? key}) : super(key: key);
@@ -58,8 +64,10 @@ class StoreOptionsModal extends StatelessWidget {
                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             children: [
                               TextButton(
-                                onPressed: () {
+                                onPressed: () async {
+                                  await _deleteStore(context);
                                   Navigator.of(context).pop();
+                                  await _showStoreDeleteCompleteDialog(context);
                                 },
                                 child: Text('예',
                                     style: TextStyle(
@@ -91,5 +99,73 @@ class StoreOptionsModal extends StatelessWidget {
         ],
       ),
     ));
+  }
+
+  Future<void> _deleteStore(BuildContext context) async {
+    final storeId = context.read<SelectedStore>().id;
+
+    var dio = await authDio();
+
+    final deleteStoreResponse =
+        await dio.delete(getApi(API.DELETE_STORE, suffix: '/$storeId'));
+
+    final getUserStoreListResponse = await dio.get(getApi(API.GET_USER_STORES));
+
+    final storeList = getUserStoreListResponse.data;
+
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+
+    if (storeList.length == 0) {
+      prefs.remove('selectedStore');
+      context.read<SelectedStore>().id = null;
+    } else {
+      final newSelectedStoreId = storeList.last.id;
+      prefs.setInt('selectedStore', newSelectedStoreId);
+      context.read<SelectedStore>().id = newSelectedStoreId;
+    }
+  }
+
+  Future<void> _showStoreDeleteCompleteDialog(BuildContext context) async {
+    await showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+            title: Center(
+              child: Text('가게 삭제',
+                  style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 18,
+                      color: kDefaultFontColor),
+                  textAlign: TextAlign.center),
+            ),
+            content: Text("가게 삭제가 완료되었습니다",
+                textAlign: TextAlign.center,
+                style: TextStyle(fontSize: 14, color: kDefaultFontColor)),
+            contentPadding: const EdgeInsets.fromLTRB(15, 15, 15, 5),
+            actions: [
+              Center(
+                child: ElevatedButton(
+                  onPressed: () {
+                    Widget nextWidget;
+                    if (context.read<SelectedStore>().id == null)
+                      nextWidget = CreateStoreScreen();
+                    else
+                      nextWidget = HallScreen();
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => nextWidget),
+                    );
+                  },
+                  child: Text('확인', style: TextStyle(fontSize: 13)),
+                  style: ButtonStyle(
+                      shadowColor:
+                          MaterialStateProperty.all<Color>(kShadowColor),
+                      backgroundColor:
+                          MaterialStateProperty.all<Color>(kThemeColor)),
+                ),
+              )
+            ],
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(15))));
+    Navigator.pop(context);
   }
 }
