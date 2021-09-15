@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:hashchecker/api.dart';
 import 'package:hashchecker/constants.dart';
 import 'package:hashchecker/models/event.dart';
-import 'package:hashchecker/models/reward_edit_data.dart';
+import 'package:hashchecker/models/event_edit_data.dart';
+import 'package:hashchecker/screens/event_list/event_detail/event_detail_screen.dart';
 import 'package:hashchecker/screens/event_list/event_edit/event_edit_modal.dart';
 import 'package:hashchecker/screens/hall/hall_screen.dart';
 import 'package:hashchecker/screens/marketing_report/event_report/event_report_screen.dart';
@@ -30,13 +31,16 @@ class EventOptionsModal extends StatelessWidget {
         children: <Widget>[
           if (!isAlreadyInPreview)
             ListTile(
-              title: Text('이벤트 미리보기',
-                  style: TextStyle(
-                      color: kDefaultFontColor.withOpacity(0.8), fontSize: 15)),
-              leading: Icon(Icons.description_rounded,
-                  color: kDefaultFontColor.withOpacity(0.8)),
-              onTap: () => Navigator.of(context).pop(),
-            ),
+                title: Text('이벤트 미리보기',
+                    style: TextStyle(
+                        color: kDefaultFontColor.withOpacity(0.8),
+                        fontSize: 15)),
+                leading: Icon(Icons.description_rounded,
+                    color: kDefaultFontColor.withOpacity(0.8)),
+                onTap: () => Navigator.push(
+                    context,
+                    slidePageRouting(EventDetailScreen(
+                        eventId: eventId, eventStatus: eventStatus)))),
           ListTile(
             enabled: _isEnableToEdit(),
             title: Text('이벤트 편집',
@@ -53,7 +57,7 @@ class EventOptionsModal extends StatelessWidget {
               expand: true,
               context: context,
               builder: (context) => Provider(
-                  create: (_) => RewardEditData(),
+                  create: (_) => EventEditData(),
                   child: EventEditModal(eventId: eventId)),
             ),
           ),
@@ -191,12 +195,12 @@ class EventOptionsModal extends StatelessWidget {
               Center(
                 child: ElevatedButton(
                   onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => HallScreen(),
-                      ),
-                    );
+                    Navigator.pushAndRemoveUntil(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => HallScreen(),
+                        ),
+                        (Route<dynamic> route) => false);
                   },
                   child: Text('확인', style: TextStyle(fontSize: 13)),
                   style: ButtonStyle(
@@ -306,12 +310,12 @@ class EventOptionsModal extends StatelessWidget {
               Center(
                 child: ElevatedButton(
                   onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => HallScreen(),
-                      ),
-                    );
+                    Navigator.pushAndRemoveUntil(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => HallScreen(),
+                        ),
+                        (Route<dynamic> route) => false);
                   },
                   child: Text('확인', style: TextStyle(fontSize: 13)),
                   style: ButtonStyle(

@@ -22,9 +22,10 @@ public enum ErrorCode {
     NO_REWARD_FOR_EVENT(500, "JOIN_EVENT004", "There is no reward for the event."), // 이벤트에 등록된 리워드가 없음
     // Analysis server
     ANALYSIS_SERVER_ERROR(500, "ANALYSIS001", "Analysis server error."), // 분석 서버 에러(scraping 불가 등)
+    // 리포트
+    GET_REPORT_FAILED(406, "REPORT001", "Failed to get report."), // report get 실패
     // Request
     INVALID_REQUEST_BODY(403, "REQUEST001", "Request body is invalid"); // request 내용이 invalid 한 경우
-
 
     private final String code;
     private final String message;

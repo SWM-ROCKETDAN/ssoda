@@ -42,15 +42,11 @@ class CreateButton extends StatelessWidget {
         child: Text(
           '등록하기',
           style: TextStyle(
-              color: kThemeColor, fontSize: 16, fontWeight: FontWeight.bold),
+              color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold),
         ),
         style: ButtonStyle(
-            elevation: MaterialStateProperty.all<double>(12),
-            overlayColor:
-                MaterialStateProperty.all<Color>(kThemeColor.withOpacity(0.1)),
             shadowColor: MaterialStateProperty.all<Color>(kShadowColor),
-            backgroundColor:
-                MaterialStateProperty.all<Color>(kScaffoldBackgroundColor),
+            backgroundColor: MaterialStateProperty.all<Color>(kThemeColor),
             shape: MaterialStateProperty.all<OutlinedBorder>(
                 RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(27.0)))),
@@ -60,56 +56,36 @@ class CreateButton extends StatelessWidget {
 
   bool _checkStoreValidation(BuildContext context) {
     if (logo == null) {
-      context.showFlashBar(
-          barType: FlashBarType.error,
-          icon: const Icon(Icons.error_outline_rounded),
-          duration: const Duration(seconds: 3),
-          backgroundColor: Colors.white,
-          content: Text('가게 로고를 등록해주세요!',
-              style: TextStyle(fontSize: 14, color: kDefaultFontColor)));
+      _showValidationErrorFlashBar(context, '가게 로고를 등록해주세요!');
       return false;
     }
     if (name == null || name!.trim() == "") {
-      context.showFlashBar(
-          barType: FlashBarType.error,
-          icon: const Icon(Icons.error_outline_rounded),
-          duration: const Duration(seconds: 3),
-          backgroundColor: Colors.white,
-          content: Text('가게 이름을 입력해주세요!',
-              style: TextStyle(fontSize: 14, color: kDefaultFontColor)));
+      _showValidationErrorFlashBar(context, '가게 이름을 입력해주세요!');
       return false;
     }
     if (imageList.length == 0) {
-      context.showFlashBar(
-          barType: FlashBarType.error,
-          icon: const Icon(Icons.error_outline_rounded),
-          duration: const Duration(seconds: 3),
-          backgroundColor: Colors.white,
-          content: Text('가게 이미지를 최소 1개 등록해주세요!',
-              style: TextStyle(fontSize: 14, color: kDefaultFontColor)));
+      _showValidationErrorFlashBar(context, '가게 이미지를 최소 1개 등록해주세요!');
       return false;
     }
     if (address == null) {
-      context.showFlashBar(
-          barType: FlashBarType.error,
-          icon: const Icon(Icons.error_outline_rounded),
-          duration: const Duration(seconds: 3),
-          backgroundColor: Colors.white,
-          content: Text('가게 주소를 입력해주세요!',
-              style: TextStyle(fontSize: 14, color: kDefaultFontColor)));
+      _showValidationErrorFlashBar(context, '가게 주소를 입력해주세요!');
       return false;
     }
     if (description == null || description!.trim() == "") {
-      context.showFlashBar(
-          barType: FlashBarType.error,
-          icon: const Icon(Icons.error_outline_rounded),
-          duration: const Duration(seconds: 3),
-          backgroundColor: Colors.white,
-          content: Text('가게 소개를 입력해주세요!',
-              style: TextStyle(fontSize: 14, color: kDefaultFontColor)));
+      _showValidationErrorFlashBar(context, '가게 소개를 입력해주세요!');
       return false;
     }
     return true;
+  }
+
+  void _showValidationErrorFlashBar(BuildContext context, String message) {
+    context.showFlashBar(
+        barType: FlashBarType.error,
+        icon: const Icon(Icons.error_outline_rounded),
+        duration: const Duration(seconds: 3),
+        backgroundColor: Colors.white,
+        content: Text(message,
+            style: TextStyle(fontSize: 14, color: kDefaultFontColor)));
   }
 
   Future<void> _createStore(BuildContext context) async {
@@ -165,9 +141,6 @@ class CreateButton extends StatelessWidget {
               child: Column(children: [
                 Text("이대로 등록하시겠습니까?",
                     style: TextStyle(fontSize: 14, color: kDefaultFontColor)),
-                SizedBox(height: kDefaultPadding / 5),
-                Text("(가게 정보는 마이페이지에서\n다시 수정할 수 있습니다)",
-                    style: TextStyle(fontSize: 14, color: kDefaultFontColor)),
               ]),
             ),
             contentPadding: const EdgeInsets.fromLTRB(15, 15, 15, 5),
@@ -176,7 +149,7 @@ class CreateButton extends StatelessWidget {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
-                    TextButton(
+                    ElevatedButton(
                       onPressed: () async {
                         await _createStore(context);
                         Navigator.of(context).pop();
@@ -188,15 +161,15 @@ class CreateButton extends StatelessWidget {
                           backgroundColor:
                               MaterialStateProperty.all<Color>(kThemeColor)),
                     ),
-                    ElevatedButton(
+                    TextButton(
                       onPressed: () {
                         Navigator.of(context).pop();
                       },
                       child: Text('아니오',
-                          style: TextStyle(color: Colors.white, fontSize: 13)),
+                          style: TextStyle(color: kThemeColor, fontSize: 13)),
                       style: ButtonStyle(
-                          backgroundColor:
-                              MaterialStateProperty.all<Color>(kThemeColor)),
+                          overlayColor: MaterialStateProperty.all<Color>(
+                              kThemeColor.withOpacity(0.2))),
                     ),
                   ],
                 ),
@@ -218,7 +191,7 @@ class CreateButton extends StatelessWidget {
                       color: kDefaultFontColor),
                   textAlign: TextAlign.center),
             ),
-            content: Text("쏘다에 우리가게가 등록되었습니다\n이제 이벤트를 만들어볼까요?",
+            content: Text("가게 등록이 완료되었습니다",
                 textAlign: TextAlign.center,
                 style: TextStyle(fontSize: 14, color: kDefaultFontColor)),
             contentPadding: const EdgeInsets.fromLTRB(15, 15, 15, 5),
@@ -226,7 +199,9 @@ class CreateButton extends StatelessWidget {
               Center(
                 child: ElevatedButton(
                   onPressed: () {
-                    Navigator.of(context).push(slidePageRouting(HallScreen()));
+                    Navigator.of(context).pushAndRemoveUntil(
+                        slidePageRouting(HallScreen()),
+                        (Route<dynamic> route) => false);
                   },
                   child: Text('확인', style: TextStyle(fontSize: 13)),
                   style: ButtonStyle(

@@ -79,8 +79,6 @@ class Body extends StatelessWidget {
       case 4:
         return EventImage(event: event);
       case 5:
-        return EventRequire(event: event);
-      case 6:
         return EventTemplate(event: event);
       default:
         return Container(child: Text('유효하지 않은 단계입니다.'));

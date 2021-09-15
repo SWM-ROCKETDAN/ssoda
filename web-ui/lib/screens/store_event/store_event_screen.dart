@@ -106,6 +106,7 @@ class _StoreEventScreenState extends State<StoreEventScreen> {
                             onChanged: (String? newValue) {
                               setState(() {
                                 dropdownValue = newValue!;
+                                eventList = _fetchEventListData();
                               });
                             },
                             items:
@@ -213,6 +214,13 @@ class _StoreEventScreenState extends State<StoreEventScreen> {
 
     List<EventListItem> eventList = List.generate(fetchedEventList.length,
         (index) => EventListItem.fromJson(fetchedEventList[index]));
+
+    if (dropdownValue == "최신 등록 순")
+      eventList.sort((a, b) => a.startDate.compareTo(b.startDate));
+    else if (dropdownValue == "빠른 종료 순")
+      eventList.sort((a, b) => a.finishDate.compareTo(b.finishDate));
+    else if (dropdownValue == "가나다 순")
+      eventList.sort((a, b) => a.title.compareTo(b.title));
 
     return eventList;
   }
