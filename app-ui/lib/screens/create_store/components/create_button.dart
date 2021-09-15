@@ -211,7 +211,7 @@ class CreateButton extends StatelessWidget {
                       color: kDefaultFontColor),
                   textAlign: TextAlign.center),
             ),
-            content: Text("쏘다에 우리가게가 등록되었습니다\n이제 이벤트를 만들어볼까요?",
+            content: Text("가게 등록이 완료되었습니다",
                 textAlign: TextAlign.center,
                 style: TextStyle(fontSize: 14, color: kDefaultFontColor)),
             contentPadding: const EdgeInsets.fromLTRB(15, 15, 15, 5),
