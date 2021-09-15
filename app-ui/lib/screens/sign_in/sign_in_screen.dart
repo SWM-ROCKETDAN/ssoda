@@ -1,13 +1,13 @@
 import 'dart:async';
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_web_auth/flutter_web_auth.dart';
 import 'package:hashchecker/api.dart';
 import 'package:hashchecker/constants.dart';
-import 'package:hashchecker/models/selected_store.dart';
 import 'package:hashchecker/screens/create_store/components/intro.dart';
 import 'package:hashchecker/screens/hall/hall_screen.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'components/kakao_sign_in_button.dart';
@@ -21,6 +21,7 @@ class SignInScreen extends StatefulWidget {
 }
 
 class _SignInScreenState extends State<SignInScreen> {
+  String? debugStr;
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -43,7 +44,8 @@ class _SignInScreenState extends State<SignInScreen> {
                         SizedBox(height: kDefaultPadding / 2),
                         Text('안녕하세요, 사장님',
                             style: TextStyle(
-                                fontSize: 26.0, fontWeight: FontWeight.bold))
+                                fontSize: 26.0, fontWeight: FontWeight.bold)),
+                        Text(debugStr ?? 'null'),
                       ]),
                 ),
                 Container(
@@ -100,24 +102,16 @@ class _SignInScreenState extends State<SignInScreen> {
       showLoginFailDialog(e.toString());
     }
 
-    var dio = await authDio();
-    final getUserStoreListResponse = await dio.get(getApi(API.GET_USER_STORES));
-    final storeList = getUserStoreListResponse.data;
-
     Widget nextScreen;
 
-    if (storeList.length == 0)
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    final selectedStore = prefs.getInt('selectedStore');
+    if (selectedStore == null)
       nextScreen = CreateStoreIntroScreen();
-    else {
-      final selectedStoreId = storeList.last['id'];
-      SharedPreferences prefs = await SharedPreferences.getInstance();
-      prefs.setInt('selectedStore', selectedStoreId);
-      context.read<SelectedStore>().id = selectedStoreId;
+    else
       nextScreen = HallScreen();
-    }
 
-    Navigator.of(context).pushAndRemoveUntil(
-        slidePageRouting(nextScreen), (Route<dynamic> route) => false);
+    Navigator.of(context).push(slidePageRouting(nextScreen));
   }
 
   void showLoginFailDialog(String errMsg) {

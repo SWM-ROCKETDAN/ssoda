@@ -31,13 +31,17 @@ class ConfirmButton extends StatelessWidget {
           }
         },
         child: Text(
-          '수정하기',
+          '등록하기',
           style: TextStyle(
-              color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold),
+              color: kThemeColor, fontSize: 16, fontWeight: FontWeight.bold),
         ),
         style: ButtonStyle(
+            elevation: MaterialStateProperty.all<double>(12),
+            overlayColor:
+                MaterialStateProperty.all<Color>(kThemeColor.withOpacity(0.1)),
             shadowColor: MaterialStateProperty.all<Color>(kShadowColor),
-            backgroundColor: MaterialStateProperty.all<Color>(kThemeColor),
+            backgroundColor:
+                MaterialStateProperty.all<Color>(kScaffoldBackgroundColor),
             shape: MaterialStateProperty.all<OutlinedBorder>(
                 RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(27.0)))),
@@ -47,29 +51,37 @@ class ConfirmButton extends StatelessWidget {
 
   bool _checkStoreValidation(BuildContext context) {
     if (store.name.trim() == "") {
-      _showValidationErrorFlashBar(context, '가게 이름을 입력해주세요!');
+      context.showFlashBar(
+          barType: FlashBarType.error,
+          icon: const Icon(Icons.error_outline_rounded),
+          duration: const Duration(seconds: 3),
+          backgroundColor: Colors.white,
+          content: Text('가게 이름을 입력해주세요!',
+              style: TextStyle(fontSize: 14, color: kDefaultFontColor)));
       return false;
     }
     if (store.images.length == 0) {
-      _showValidationErrorFlashBar(context, '가게 이미지를 최소 1개 등록해주세요!');
+      context.showFlashBar(
+          barType: FlashBarType.error,
+          icon: const Icon(Icons.error_outline_rounded),
+          duration: const Duration(seconds: 3),
+          backgroundColor: Colors.white,
+          content: Text('가게 이미지를 최소 1개 등록해주세요!',
+              style: TextStyle(fontSize: 14, color: kDefaultFontColor)));
       return false;
     }
 
     if (store.description.trim() == "") {
-      _showValidationErrorFlashBar(context, '가게 소개를 입력해주세요!');
+      context.showFlashBar(
+          barType: FlashBarType.error,
+          icon: const Icon(Icons.error_outline_rounded),
+          duration: const Duration(seconds: 3),
+          backgroundColor: Colors.white,
+          content: Text('가게 소개를 입력해주세요!',
+              style: TextStyle(fontSize: 14, color: kDefaultFontColor)));
       return false;
     }
     return true;
-  }
-
-  void _showValidationErrorFlashBar(BuildContext context, String message) {
-    context.showFlashBar(
-        barType: FlashBarType.error,
-        icon: const Icon(Icons.error_outline_rounded),
-        duration: const Duration(seconds: 3),
-        backgroundColor: Colors.white,
-        content: Text(message,
-            style: TextStyle(fontSize: 14, color: kDefaultFontColor)));
   }
 
   Future<void> _updateStore(BuildContext context) async {
@@ -104,6 +116,8 @@ class ConfirmButton extends StatelessWidget {
 
     final createStoreResponse = await dio
         .put(getApi(API.UPDATE_STORE, suffix: '/$storeId'), data: storeData);
+
+    print(createStoreResponse.data);
   }
 
   Future<void> _showUpdateStoreDialog(BuildContext context) async {
@@ -180,9 +194,7 @@ class ConfirmButton extends StatelessWidget {
               Center(
                 child: ElevatedButton(
                   onPressed: () {
-                    Navigator.of(context).pushAndRemoveUntil(
-                        slidePageRouting(HallScreen()),
-                        (Route<dynamic> route) => false);
+                    Navigator.of(context).push(slidePageRouting(HallScreen()));
                   },
                   child: Text('확인', style: TextStyle(fontSize: 13)),
                   style: ButtonStyle(

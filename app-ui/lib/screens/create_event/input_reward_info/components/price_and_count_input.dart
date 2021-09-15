@@ -22,15 +22,14 @@ class PriceAndCountInput extends StatelessWidget {
           children: [
             Expanded(
               child: TextField(
-                  textAlign: TextAlign.end,
-                  controller: _priceController,
-                  keyboardType: TextInputType.number,
-                  decoration: InputDecoration(
-                      counterText: "",
-                      prefixIcon: Icon(Icons.monetization_on_outlined),
-                      labelText: '단가',
-                      suffixText: '원'),
-                  maxLength: 7),
+                textAlign: TextAlign.end,
+                controller: _priceController,
+                keyboardType: TextInputType.number,
+                decoration: InputDecoration(
+                    prefixIcon: Icon(Icons.monetization_on_outlined),
+                    labelText: '단가',
+                    suffixText: '원'),
+              ),
             ),
             SizedBox(height: kDefaultPadding),
             Expanded(
@@ -39,11 +38,9 @@ class PriceAndCountInput extends StatelessWidget {
                   controller: _countController,
                   keyboardType: TextInputType.number,
                   decoration: InputDecoration(
-                      counterText: "",
                       prefixIcon: Icon(Icons.toll_outlined),
                       labelText: '수량',
-                      suffixText: '개'),
-                  maxLength: 5),
+                      suffixText: '개')),
             ),
           ],
         ));

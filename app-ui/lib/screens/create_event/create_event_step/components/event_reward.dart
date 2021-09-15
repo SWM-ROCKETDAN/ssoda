@@ -160,11 +160,7 @@ class _EventRewardState extends State<EventReward> {
         context,
         MaterialPageRoute(
             builder: (context) => InputRewardInfoScreen(
-                reward: widget.event.rewardList[index],
-                level: index + 1,
-                prevCount: index > 0
-                    ? widget.event.rewardList[index - 1].count
-                    : null)));
+                reward: widget.event.rewardList[index], level: index + 1)));
 
     if (result != null) {
       setState(() {

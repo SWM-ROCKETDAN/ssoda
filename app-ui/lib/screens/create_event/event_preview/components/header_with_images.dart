@@ -7,14 +7,15 @@ import 'dart:io';
 class HeaderWithImages extends StatelessWidget {
   const HeaderWithImages({
     Key? key,
+    required this.size,
     required this.event,
   }) : super(key: key);
 
+  final Size size;
   final Event event;
 
   @override
   Widget build(BuildContext context) {
-    Size size = MediaQuery.of(context).size;
     return Container(
       height: size.width / 4 * 3,
       child: Stack(children: [

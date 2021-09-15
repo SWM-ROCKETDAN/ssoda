@@ -79,7 +79,6 @@ class Init {
   static final instance = Init._();
 
   Future<Widget?> initialize(BuildContext context) async {
-    await Future.delayed(Duration(milliseconds: 2000));
     SharedPreferences prefs = await SharedPreferences.getInstance();
 
     // on first launching
@@ -102,5 +101,7 @@ class Init {
 
     // on default
     return HallScreen();
+
+    //await Future.delayed(Duration(milliseconds: 2500));
   }
 }

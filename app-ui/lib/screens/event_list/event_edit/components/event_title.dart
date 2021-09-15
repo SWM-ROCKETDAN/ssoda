@@ -21,8 +21,7 @@ class EventTitleEdit extends StatelessWidget {
               hintStyle: TextStyle(
                   color: kLiteFontColor,
                   fontSize: 15,
-                  fontWeight: FontWeight.bold)),
-          maxLength: 20),
+                  fontWeight: FontWeight.bold))),
     );
   }
 }

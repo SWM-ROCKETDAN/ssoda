@@ -1,7 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:hashchecker/api.dart';
-import 'package:hashchecker/constants.dart';
 import 'package:hashchecker/models/event.dart';
 import 'package:hashchecker/screens/create_event/show_qrcode/show_qrcode_screen.dart';
 import 'package:intl/intl.dart';
@@ -24,8 +23,6 @@ class CreateEventButton extends StatelessWidget {
         onPressed: () async {
           var dio = await authDio();
 
-          final storeId = await _getUserStoreId();
-
           dio.options.contentType = 'multipart/form-data';
 
           var eventData = FormData.fromMap({
@@ -43,10 +40,10 @@ class CreateEventButton extends StatelessWidget {
             'template': event.template.id
           });
 
-          var eventResponse = await dio.post(
-              getApi(API.CREATE_EVENT, suffix: '/$storeId'),
-              data: eventData);
+          var eventResponse = await dio
+              .post(getApi(API.CREATE_EVENT, suffix: '/1'), data: eventData);
 
+          if (eventResponse.statusCode != 200) print('이벤트 생성 오류');
           var rewardsData = FormData();
 
           for (int i = 0; i < event.rewardList.length; i++) {
@@ -69,6 +66,8 @@ class CreateEventButton extends StatelessWidget {
               getApi(API.CREATE_REWARDS, suffix: '/${eventResponse.data}'),
               data: rewardsData);
 
+          if (rewardsResponse.statusCode != 200) print('보상 생성 오류');
+
           Navigator.push(
             context,
             MaterialPageRoute(
@@ -79,22 +78,12 @@ class CreateEventButton extends StatelessWidget {
           );
         },
         style: ButtonStyle(
-            shadowColor: MaterialStateProperty.all<Color>(kShadowColor),
-            backgroundColor: MaterialStateProperty.all<Color>(kThemeColor),
+            backgroundColor: MaterialStateProperty.all<Color>(
+                Theme.of(context).primaryColor),
             shape: MaterialStateProperty.all<OutlinedBorder>(
                 RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(27.0)))),
       ),
     );
-  }
-
-  Future<String> _getUserStoreId() async {
-    var dio = await authDio();
-
-    dio.options.contentType = 'application/json';
-
-    final response = await dio.get(getApi(API.GET_USER_STORES));
-
-    return response.data.last['id'].toString();
   }
 }

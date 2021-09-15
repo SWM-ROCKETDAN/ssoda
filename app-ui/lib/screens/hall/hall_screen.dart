@@ -23,8 +23,6 @@ class HallScreen extends StatefulWidget {
 
 class _HallScreenState extends State<HallScreen> {
   late Future<List<StoreListItem>> storeList;
-  late int currentStoreIndexOnList;
-  late int selectedStoreId;
   TabPage currentPage = TabPage.EVENT;
 
   final pageMap = {
@@ -43,7 +41,8 @@ class _HallScreenState extends State<HallScreen> {
 
   @override
   Widget build(BuildContext context) {
-    selectedStoreId = context.read<SelectedStore>().id!;
+    final selectedStoreId = context.read<SelectedStore>().id;
+
     return Scaffold(
       extendBody: true,
       appBar: AppBar(
@@ -62,15 +61,14 @@ class _HallScreenState extends State<HallScreen> {
               builder: (context, snapshot) {
                 if (snapshot.hasData) {
                   return StoreSelect(
-                      selectedStoreId: selectedStoreId,
-                      storeList: snapshot.data!);
+                      selectedStoreId: selectedStoreId, storeList: storeList);
                 } else if (snapshot.hasError) {
                   return Text('${snapshot.error}');
                 }
 
                 return Container(
-                    height: kToolbarHeight * 0.5,
-                    width: kToolbarHeight * 0.5,
+                    height: kToolbarHeight * 0.6,
+                    width: kToolbarHeight * 0.6,
                     decoration: BoxDecoration(
                       color: kShadowColor,
                       shape: BoxShape.circle,
@@ -131,17 +129,6 @@ class _HallScreenState extends State<HallScreen> {
     List<StoreListItem> storeList = List.generate(fetchedStoreList.length,
         (index) => StoreListItem.fromJson(fetchedStoreList[index]));
 
-    final selectedStoreIndex =
-        storeList.indexWhere((element) => element.id == selectedStoreId);
-
-    final currentStoreListItem = StoreListItem(
-        id: storeList[selectedStoreIndex].id,
-        name: storeList[selectedStoreIndex].name,
-        logo: storeList[selectedStoreIndex].logo);
-
-    storeList.removeAt(selectedStoreIndex);
-
-    storeList.insert(0, currentStoreListItem);
     return storeList;
   }
 }

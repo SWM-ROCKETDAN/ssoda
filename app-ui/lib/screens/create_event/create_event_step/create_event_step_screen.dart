@@ -17,7 +17,7 @@ class CreateEventStepScreen extends StatefulWidget {
 class _CreateEventStepScreenState extends State<CreateEventStepScreen> {
   int step = 0;
   int prevStep = -1;
-  final maxStep = 5;
+  final maxStep = 6;
 
   late Event savingEvent;
 
@@ -28,7 +28,7 @@ class _CreateEventStepScreenState extends State<CreateEventStepScreen> {
     savingEvent = Event(
         title: "",
         rewardList: [null],
-        hashtagList: ["쏘다"],
+        hashtagList: [],
         period: Period(
             DateTime.now(), DateTime.now().add(Duration(days: 30)), null),
         images: [null],

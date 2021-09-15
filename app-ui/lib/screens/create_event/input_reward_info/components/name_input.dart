@@ -4,7 +4,7 @@ class NameInput extends StatelessWidget {
   const NameInput({
     Key? key,
     required TextEditingController nameController,
-  })  : _nameController = nameController,
+  })   : _nameController = nameController,
         super(key: key);
 
   final TextEditingController _nameController;
@@ -15,9 +15,6 @@ class NameInput extends StatelessWidget {
         textAlign: TextAlign.start,
         controller: _nameController,
         decoration: InputDecoration(
-            counterText: "",
-            prefixIcon: Icon(Icons.local_offer_outlined),
-            labelText: '상품명'),
-        maxLength: 20);
+            prefixIcon: Icon(Icons.local_offer_outlined), labelText: '상품명'));
   }
 }

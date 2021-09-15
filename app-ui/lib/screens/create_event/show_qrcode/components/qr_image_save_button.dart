@@ -1,22 +1,22 @@
 import 'dart:io';
 import 'dart:typed_data';
 
-import 'package:flash/flash.dart';
 import 'package:flutter/material.dart';
 import 'package:hashchecker/constants.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:gallery_saver/gallery_saver.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 
-class QrSaveButton extends StatelessWidget {
+class QrImageSaveButton extends StatelessWidget {
   final qrcodeUrl;
-  const QrSaveButton({Key? key, required this.qrcodeUrl}) : super(key: key);
+  const QrImageSaveButton({Key? key, required this.qrcodeUrl})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return TextButton(
       child: Text(
-        'QR 코드 이미지 저장',
+        'QR코드 이미지 저장',
         style: TextStyle(
           color: kThemeColor,
           fontSize: 12,
@@ -74,15 +74,16 @@ class QrSaveButton extends StatelessWidget {
 
     final success = await GallerySaver.saveImage(path);
 
-    context.showFlashBar(
-        barType: success! ? FlashBarType.success : FlashBarType.error,
-        icon: success
-            ? const Icon(Icons.check_circle_rounded)
-            : const Icon(Icons.error_outline_rounded),
-        duration: const Duration(seconds: 3),
-        backgroundColor: Colors.white,
-        content: Text(
-            success ? 'QR 코드 이미지를 갤러리에 저장했습니다' : 'QR 코드 이미지 저장에 실패했습니다',
-            style: TextStyle(fontSize: 14, color: kDefaultFontColor)));
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content:
+            Text(success! ? 'QR 코드 이미지를 갤러리에 저장하였습니다.' : 'QR 코드 저장에 실패하였습니다.'),
+        behavior: SnackBarBehavior.floating,
+        duration: const Duration(milliseconds: 2000),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(12.0),
+        ),
+      ),
+    );
   }
 }

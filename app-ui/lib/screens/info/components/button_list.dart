@@ -1,23 +1,17 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import 'package:hashchecker/api.dart';
 import 'package:hashchecker/constants.dart';
-import 'package:hashchecker/models/selected_store.dart';
 import 'package:hashchecker/screens/info/components/app_info.dart';
-import 'package:hashchecker/screens/sign_in/sign_in_screen.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
-import 'package:provider/provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 import 'store_options_modal.dart';
 
 class ButtonList extends StatelessWidget {
-  final storeId;
-  const ButtonList({Key? key, required this.storeId}) : super(key: key);
+  const ButtonList({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
+
     return Container(
       child: Column(
         children: [
@@ -31,8 +25,7 @@ class ButtonList extends StatelessWidget {
                         backgroundColor: Colors.transparent,
                         expand: false,
                         context: context,
-                        builder: (context) =>
-                            StoreOptionsModal(storeId: storeId)),
+                        builder: (context) => StoreOptionsModal()),
                     child: Text('내 가게',
                         style:
                             TextStyle(color: kDefaultFontColor, fontSize: 14)),
@@ -109,14 +102,8 @@ class ButtonList extends StatelessWidget {
                               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                               children: [
                                 TextButton(
-                                  onPressed: () async {
-                                    await _logout(context);
-                                    Navigator.pushAndRemoveUntil(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (context) =>
-                                                SignInScreen()),
-                                        (Route<dynamic> route) => false);
+                                  onPressed: () {
+                                    Navigator.of(context).pop();
                                   },
                                   child: Text('예',
                                       style: TextStyle(
@@ -195,14 +182,8 @@ class ButtonList extends StatelessWidget {
                               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                               children: [
                                 TextButton(
-                                  onPressed: () async {
-                                    await _deleteUser(context);
-                                    Navigator.pushAndRemoveUntil(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (context) =>
-                                                SignInScreen()),
-                                        (Route<dynamic> route) => false);
+                                  onPressed: () {
+                                    Navigator.of(context).pop();
                                   },
                                   child: Text('예',
                                       style: TextStyle(
@@ -247,24 +228,5 @@ class ButtonList extends StatelessWidget {
         ],
       ),
     );
-  }
-
-  Future<void> _logout(BuildContext context) async {
-    final storage = new FlutterSecureStorage();
-    await storage.deleteAll();
-  }
-
-  Future<void> _deleteUser(BuildContext context) async {
-    var dio = await authDio();
-
-    final deleteUserResponse = await dio.delete(getApi(API.DELETE_USER));
-
-    final storage = new FlutterSecureStorage();
-    await storage.deleteAll();
-
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.remove('selectedStore');
-
-    context.read<SelectedStore>().id = null;
   }
 }

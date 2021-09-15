@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:hashchecker/api.dart';
 import 'package:hashchecker/constants.dart';
 import 'package:hashchecker/models/reward.dart';
-import 'package:hashchecker/models/event_edit_data.dart';
+import 'package:hashchecker/models/reward_edit_data.dart';
 import 'package:hashchecker/screens/event_list/event_edit/reward_edit/reward_edit_screen.dart';
 import 'package:provider/provider.dart';
 
@@ -61,7 +61,7 @@ class _EventRewardEditState extends State<EventRewardEdit> {
                     onTap: () {
                       _navigateToDetailScreen(index);
                       context
-                          .read<EventEditData>()
+                          .read<RewardEditData>()
                           .updatedRewardIds
                           .add(widget.event.rewardList[index].id!);
                     },
@@ -121,7 +121,7 @@ class _EventRewardEditState extends State<EventRewardEdit> {
                                 onTap: () {
                                   if (widget.event.rewardList[index].id != null)
                                     context
-                                        .read<EventEditData>()
+                                        .read<RewardEditData>()
                                         .deletedRewardIds
                                         .add(widget.event.rewardList[index].id);
                                   setState(() {
@@ -146,11 +146,7 @@ class _EventRewardEditState extends State<EventRewardEdit> {
         context,
         MaterialPageRoute(
             builder: (context) => RewardEditScreen(
-                reward: widget.event.rewardList[index],
-                level: index + 1,
-                prevCount: index > 0
-                    ? widget.event.rewardList[index - 1].count
-                    : null)));
+                reward: widget.event.rewardList[index], level: index + 1)));
 
     if (result != null) {
       setState(() {

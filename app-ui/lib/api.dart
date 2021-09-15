@@ -28,8 +28,6 @@ enum API {
   UPDATE_EVENT,
   UPDATE_REWARDS,
   STOP_EVENT,
-  DELETE_USER,
-  DELETE_STORE,
   DELETE_EVENT,
   DELETE_REWARDS,
 }
@@ -53,8 +51,6 @@ Map<API, String> apiMap = {
   API.UPDATE_EVENT: '/api/v1/events/hashtag', // '/{event_id}'
   API.UPDATE_REWARDS: '/api/v1/rewards',
   API.STOP_EVENT: '/api/v1/events', // '/{event_id}/status'
-  API.DELETE_USER: '/api/v1/users/me',
-  API.DELETE_STORE: '/api/v1/stores', // '/{store_id}'
   API.DELETE_EVENT: '/api/v1/events', // '/{event_id}'
   API.DELETE_REWARDS: '/api/v1/rewards'
 };

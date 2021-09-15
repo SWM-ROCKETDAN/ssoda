@@ -2,13 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:hashchecker/api.dart';
 import 'package:hashchecker/constants.dart';
 import 'package:hashchecker/models/address.dart';
-import 'package:hashchecker/models/selected_store.dart';
 import 'package:hashchecker/models/store.dart';
 import 'package:hashchecker/models/store_category.dart';
 import 'package:hashchecker/screens/create_store/components/store_category.dart';
 import 'package:hashchecker/screens/create_store/components/store_logo.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:provider/provider.dart';
 
 import 'components/body.dart';
 import 'components/store_description.dart';
@@ -37,7 +35,9 @@ class _StoreEditScreenState extends State<StoreEditScreen> {
   Future<Store> _fetchStoreData() async {
     var dio = await authDio();
 
-    final storeId = context.read<SelectedStore>().id;
+    final getUserStoresResponse = await dio.get(getApi(API.GET_USER_STORES));
+
+    final storeId = getUserStoresResponse.data.last['id'];
 
     final getStoreResponse =
         await dio.get(getApi(API.GET_STORE, suffix: '/$storeId'));
