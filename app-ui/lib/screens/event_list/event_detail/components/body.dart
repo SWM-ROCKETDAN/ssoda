@@ -38,8 +38,6 @@ class Body extends StatelessWidget {
               Divider(height: kDefaultPadding * 2, color: kShadowColor),
               EventHashtags(event: event),
               Divider(height: kDefaultPadding * 2, color: kShadowColor),
-              EventRequirements(event: event),
-              Divider(height: kDefaultPadding * 2, color: kShadowColor),
               EventPeriod(event: event),
               Divider(height: kDefaultPadding * 2, color: kShadowColor),
               CloseDetailButton()
