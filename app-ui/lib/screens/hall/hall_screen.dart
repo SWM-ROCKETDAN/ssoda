@@ -23,6 +23,8 @@ class HallScreen extends StatefulWidget {
 
 class _HallScreenState extends State<HallScreen> {
   late Future<List<StoreListItem>> storeList;
+  late int currentStoreIndexOnList;
+  late int selectedStoreId;
   TabPage currentPage = TabPage.EVENT;
 
   final pageMap = {
@@ -41,8 +43,7 @@ class _HallScreenState extends State<HallScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final selectedStoreId = context.read<SelectedStore>().id;
-
+    selectedStoreId = context.read<SelectedStore>().id!;
     return Scaffold(
       extendBody: true,
       appBar: AppBar(
@@ -61,7 +62,8 @@ class _HallScreenState extends State<HallScreen> {
               builder: (context, snapshot) {
                 if (snapshot.hasData) {
                   return StoreSelect(
-                      selectedStoreId: selectedStoreId, storeList: storeList);
+                      selectedStoreId: selectedStoreId,
+                      storeList: snapshot.data!);
                 } else if (snapshot.hasError) {
                   return Text('${snapshot.error}');
                 }

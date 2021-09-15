@@ -3,8 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:hashchecker/api.dart';
 import 'package:hashchecker/constants.dart';
 import 'package:hashchecker/models/event.dart';
+import 'package:hashchecker/models/selected_store.dart';
 import 'package:hashchecker/screens/create_event/show_qrcode/show_qrcode_screen.dart';
 import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 
 class CreateEventButton extends StatelessWidget {
   final Event event;
@@ -24,7 +26,7 @@ class CreateEventButton extends StatelessWidget {
         onPressed: () async {
           var dio = await authDio();
 
-          final storeId = await _getUserStoreId();
+          final storeId = context.read<SelectedStore>().id;
 
           dio.options.contentType = 'multipart/form-data';
 
@@ -83,15 +85,5 @@ class CreateEventButton extends StatelessWidget {
                     borderRadius: BorderRadius.circular(27.0)))),
       ),
     );
-  }
-
-  Future<String> _getUserStoreId() async {
-    var dio = await authDio();
-
-    dio.options.contentType = 'application/json';
-
-    final response = await dio.get(getApi(API.GET_USER_STORES));
-
-    return response.data.last['id'].toString();
   }
 }
