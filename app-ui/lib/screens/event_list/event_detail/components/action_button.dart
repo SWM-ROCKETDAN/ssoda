@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flash/flash.dart';
 import 'package:flutter/material.dart';
 import 'package:hashchecker/constants.dart';
@@ -20,12 +21,14 @@ class ActionButton extends StatelessWidget {
           child: SizedBox(
             height: 50,
             child: ElevatedButton(
-              child: Text(
+              child: AutoSizeText(
                 '템플릿 이미지 저장',
                 style: TextStyle(
                     color: kThemeColor,
                     fontSize: 16,
                     fontWeight: FontWeight.bold),
+                maxLines: 1,
+                minFontSize: 12,
               ),
               onPressed: () {
                 _saveTemplateImage(context);
