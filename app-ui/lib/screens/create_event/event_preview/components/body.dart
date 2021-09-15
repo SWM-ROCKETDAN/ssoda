@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:hashchecker/constants.dart';
 import 'package:hashchecker/models/event.dart';
+import 'package:hashchecker/models/selected_store.dart';
+import 'package:provider/provider.dart';
 
 import 'event_description.dart';
 import 'header_with_images.dart';
@@ -10,6 +12,7 @@ import 'event_hashtags.dart';
 import 'event_requirements.dart';
 import 'event_period.dart';
 import 'create_event_button.dart';
+import 'join_qr_code.dart';
 
 class Body extends StatelessWidget {
   final Event event;
@@ -18,6 +21,7 @@ class Body extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
+    final storeId = context.read<SelectedStore>().id;
 
     return SingleChildScrollView(
         child: Column(
@@ -38,6 +42,8 @@ class Body extends StatelessWidget {
               EventHashtags(event: event),
               Divider(height: kDefaultPadding * 2, color: kShadowColor),
               EventPeriod(event: event),
+              Divider(height: kDefaultPadding * 2, color: kShadowColor),
+              JoinQrCode(storeId: storeId),
               Divider(height: kDefaultPadding * 2, color: kShadowColor),
               CreateEventButton(
                 event: event,
