@@ -118,6 +118,16 @@ class NextStepButton extends StatelessWidget {
     return true;
   }
 
+  void _showValidationErrorFlashBar(BuildContext context, String message) {
+    context.showFlashBar(
+        barType: FlashBarType.error,
+        icon: const Icon(Icons.error_outline_rounded),
+        duration: const Duration(seconds: 3),
+        backgroundColor: Colors.white,
+        content: Text(message,
+            style: TextStyle(fontSize: 14, color: kDefaultFontColor)));
+  }
+
   void _createPreview(BuildContext context) {
     Event savingEvent = Event(
         title: event.title,

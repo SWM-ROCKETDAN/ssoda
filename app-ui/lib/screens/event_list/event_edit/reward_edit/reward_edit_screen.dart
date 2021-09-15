@@ -1,3 +1,4 @@
+import 'package:flash/flash.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:hashchecker/api.dart';
@@ -14,7 +15,12 @@ import 'components/price_and_count_input.dart';
 class RewardEditScreen extends StatefulWidget {
   final Reward? reward;
   final int level;
-  const RewardEditScreen({Key? key, required this.reward, required this.level})
+  final int? prevCount;
+  const RewardEditScreen(
+      {Key? key,
+      required this.reward,
+      required this.level,
+      required this.prevCount})
       : super(key: key);
 
   @override
@@ -247,27 +253,29 @@ class _RewardEditScreenState extends State<RewardEditScreen> {
         ));
   }
 
-  void _showValidationErrorSnackBar(BuildContext context, String message) {
-    final snackBar = SnackBar(
-      content: Text(message),
-      behavior: SnackBarBehavior.floating,
-      duration: const Duration(milliseconds: 2500),
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(12.0),
-      ),
-    );
-    ScaffoldMessenger.of(context).showSnackBar(snackBar);
+  void _showValidationErrorFlashBar(BuildContext context, String message) {
+    context.showFlashBar(
+        barType: FlashBarType.error,
+        icon: const Icon(Icons.error_outline_rounded),
+        duration: const Duration(seconds: 3),
+        backgroundColor: Colors.white,
+        content: Text(message,
+            style: TextStyle(fontSize: 14, color: kDefaultFontColor)));
   }
 
   bool isValidReward() {
     if (_rewardImage == null)
-      _showValidationErrorSnackBar(context, '상품 이미지를 등록해주세요!');
+      _showValidationErrorFlashBar(context, '상품 이미지를 등록해주세요!');
     else if (_nameController.value.text.trim() == "")
-      _showValidationErrorSnackBar(context, '상품명을 입력해주세요!');
+      _showValidationErrorFlashBar(context, '상품명을 입력해주세요!');
     else if (_priceController.value.text.trim() == "")
-      _showValidationErrorSnackBar(context, '상품 가격을 입력해주세요!');
-    else if (_countController.value.text.trim() == "")
-      _showValidationErrorSnackBar(context, '상품 수량을 입력해주세요!');
+      _showValidationErrorFlashBar(context, '상품 가격을 입력해주세요!');
+    else if (_countController.value.text.trim() == "" ||
+        int.parse(_countController.value.text.trim()) == 0)
+      _showValidationErrorFlashBar(context, '상품 수량을 입력해주세요!');
+    else if (widget.prevCount != null &&
+        int.parse(_countController.value.text.trim()) >= widget.prevCount!)
+      _showValidationErrorFlashBar(context, '전 단계 상품보다 더 작은 수량으로 입력해주세요!');
     else
       return true;
     return false;
