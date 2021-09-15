@@ -112,7 +112,6 @@ class _EventListScreenState extends State<EventListScreen> {
                             onChanged: (String? newValue) {
                               setState(() {
                                 dropdownValue = newValue!;
-
                                 eventList = _fetchEventListData();
                               });
                             },
@@ -230,7 +229,7 @@ class _EventListScreenState extends State<EventListScreen> {
     else if (dropdownValue == "빠른 종료 순")
       eventList.sort((a, b) => a.finishDate.compareTo(b.finishDate));
     else if (dropdownValue == "가나다 순")
-      eventList.sort((a, b) => a.title.compareTo(a.title));
+      eventList.sort((a, b) => a.title.compareTo(b.title));
 
     return eventList;
   }

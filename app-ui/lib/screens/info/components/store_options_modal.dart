@@ -119,7 +119,7 @@ class StoreOptionsModal extends StatelessWidget {
       prefs.remove('selectedStore');
       context.read<SelectedStore>().id = null;
     } else {
-      final newSelectedStoreId = storeList.last.id;
+      final newSelectedStoreId = storeList.last['id'];
       prefs.setInt('selectedStore', newSelectedStoreId);
       context.read<SelectedStore>().id = newSelectedStoreId;
     }
