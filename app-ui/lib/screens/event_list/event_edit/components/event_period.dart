@@ -224,6 +224,7 @@ class _EventPeriodEditState extends State<EventPeriodEdit> {
                                                     .finishDatePickerController
                                                     .selectedDate!;
                                         });
+
                                         Navigator.pop(context);
                                       },
                                       child: Text('확인'))

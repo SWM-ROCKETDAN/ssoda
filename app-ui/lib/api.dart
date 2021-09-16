@@ -7,7 +7,7 @@ const baseUrl =
 const eventJoinUrl =
     'http://ec2-13-124-246-123.ap-northeast-2.compute.amazonaws.com';
 
-const s3Url = 'https://hashchecker-bucket.s3.ap-northeast-2.amazonaws.com/';
+const s3Url = 'https://image.ssoda.io/';
 
 enum API {
   NAVER_LOGIN,
@@ -21,6 +21,7 @@ enum API {
   GET_STORE,
   GET_EVENTS_OF_STORE,
   GET_REWARD_OF_EVENT,
+  GET_REPORT_OF_EVENT,
   CREATE_STORE,
   CREATE_EVENT,
   CREATE_REWARDS,
@@ -46,6 +47,7 @@ Map<API, String> apiMap = {
   API.GET_STORE: '/api/v1/stores', // '/{store_id}'
   API.GET_EVENTS_OF_STORE: '/api/v1/stores', // '/{store_id}/events'
   API.GET_REWARD_OF_EVENT: '/api/v1/events', // '/{event_id}/rewards'
+  API.GET_REPORT_OF_EVENT: '/api/v1/report/events', // '/{event_id}'
   API.CREATE_STORE: '/api/v1/stores/users',
   API.CREATE_EVENT: '/api/v1/events/hashtag/stores',
   API.CREATE_REWARDS: '/api/v1/rewards/events',
