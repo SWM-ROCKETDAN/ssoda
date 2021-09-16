@@ -1,7 +1,9 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
+import 'package:hashchecker/api.dart';
 import 'package:hashchecker/constants.dart';
-import 'package:hashchecker/models/event_report.dart';
+import 'package:hashchecker/models/event_report_item.dart';
+import 'package:hashchecker/models/event_report_per_period.dart';
 
 import 'components/daily_report.dart';
 import 'components/monthly_report.dart';
@@ -9,33 +11,23 @@ import 'components/total_report.dart';
 import 'components/weekly_report.dart';
 
 class EventReportScreen extends StatefulWidget {
-  const EventReportScreen({Key? key, required this.eventId}) : super(key: key);
+  const EventReportScreen(
+      {Key? key,
+      required this.eventReportItem,
+      required this.eventDayReport,
+      required this.eventWeekReport,
+      required this.eventMonthReport})
+      : super(key: key);
 
-  final int eventId;
+  final EventReportItem eventReportItem;
+  final EventReportPerPeriod eventDayReport;
+  final EventReportPerPeriod eventWeekReport;
+  final EventReportPerPeriod eventMonthReport;
   @override
   _EventReportScreenState createState() => _EventReportScreenState();
 }
 
 class _EventReportScreenState extends State<EventReportScreen> {
-  late EventReport eventReport;
-
-  @override
-  void initState() {
-    super.initState();
-    eventReport = EventReport(
-        eventName: '우리가게 SNS 해시태그 이벤트',
-        joinCount: 4379,
-        likeCount: 7423,
-        livePostCount: 257,
-        deadPostCount: 127,
-        commentCount: 2184,
-        exposeCount: 51824,
-        followerSum: 51623,
-        followerAvg: 186,
-        costSum: 372100,
-        costPerReward: [50000, 65000, 50000, 75000, 90000]);
-  }
-
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -64,7 +56,7 @@ class _EventReportScreenState extends State<EventReportScreen> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           AutoSizeText(
-                            eventReport.eventName,
+                            widget.eventReportItem.title,
                             style: TextStyle(color: Colors.white, fontSize: 14),
                             maxLines: 1,
                           ),
@@ -83,8 +75,8 @@ class _EventReportScreenState extends State<EventReportScreen> {
                           color: Colors.transparent,
                           image: DecorationImage(
                             fit: BoxFit.cover,
-                            image: AssetImage(
-                              'assets/images/event1.jpg', // eventId를 통해 첫번째 이미지 표시
+                            image: NetworkImage(
+                              '$s3Url${widget.eventReportItem.thumbnail}',
                             ),
                           ),
                         ),
@@ -136,10 +128,10 @@ class _EventReportScreenState extends State<EventReportScreen> {
               ],
           body: TabBarView(
             children: [
-              DailyReport(size: size, eventReport: eventReport),
-              WeeklyReport(size: size, eventReport: eventReport),
-              MonthlyReport(size: size, eventReport: eventReport),
-              TotalReport(size: size, eventReport: eventReport)
+              DailyReport(eventReport: widget.eventDayReport),
+              WeeklyReport(eventReport: widget.eventWeekReport),
+              MonthlyReport(eventReport: widget.eventMonthReport),
+              TotalReport(eventReport: widget.eventMonthReport)
             ],
           )),
     ));

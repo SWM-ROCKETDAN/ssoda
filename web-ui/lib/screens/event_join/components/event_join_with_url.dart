@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:flash/flash.dart';
 import 'package:hashchecker_web/api.dart';
 import 'package:hashchecker_web/constants.dart';
 import 'package:hashchecker_web/models/reward.dart';
@@ -125,17 +126,24 @@ class _EventJoinWithUrlState extends State<EventJoinWithUrl> {
     dio.options.contentType = 'application/json';
     dio.options.headers['Access-Control-Allow-Origin'] = '*';
 
+    dio.interceptors.add(InterceptorsWrapper(onError: (error, handler) async {
+      if (error.response?.statusCode == 406) {
+        // 인스타 포스트 상태에 따른 예외 처리
+
+      } else {
+        _showValidationErrorFlashBar(context, '알 수 없는 오류가 발생하였습니다.');
+      }
+    }));
+
     final response = await dio.post(
         getApi(API.GET_REWARD, suffix: '/${widget.eventId}'),
         data: urlJson);
-
-    print(response.data);
 
     widget.loading(false);
 
     if (response.statusCode == 200) {
       Reward reward = Reward.fromJson(response.data);
-      Navigator.push(
+      Navigator.pushReplacement(
         context,
         MaterialPageRoute(
           builder: (context) => RewardGetScreen(
@@ -144,17 +152,17 @@ class _EventJoinWithUrlState extends State<EventJoinWithUrl> {
               rewardImage: reward.imgPath),
         ),
       );
-    } else {
-      final snackBar = SnackBar(
-        content: Text('URL 제출에 실패하였습니다.'),
-        behavior: SnackBarBehavior.floating,
-        duration: const Duration(milliseconds: 2500),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(12.0),
-        ),
-      );
-      ScaffoldMessenger.of(context).showSnackBar(snackBar);
     }
+  }
+
+  void _showValidationErrorFlashBar(BuildContext context, String message) {
+    context.showFlashBar(
+        barType: FlashBarType.error,
+        icon: const Icon(Icons.error_outline_rounded),
+        duration: const Duration(seconds: 3),
+        backgroundColor: Colors.white,
+        content: Text(message,
+            style: TextStyle(fontSize: 14, color: kDefaultFontColor)));
   }
 
   bool isValidUrl() {

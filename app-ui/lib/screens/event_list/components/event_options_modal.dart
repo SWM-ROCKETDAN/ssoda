@@ -67,10 +67,7 @@ class EventOptionsModal extends StatelessWidget {
                     color: kDefaultFontColor.withOpacity(0.8), fontSize: 15)),
             leading: Icon(Icons.assessment_rounded,
                 color: kDefaultFontColor.withOpacity(0.8)),
-            onTap: () => Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => EventReportScreen(eventId: eventId))),
+            onTap: () => {},
           ),
           ListTile(
             enabled: _isEnableToStop(),

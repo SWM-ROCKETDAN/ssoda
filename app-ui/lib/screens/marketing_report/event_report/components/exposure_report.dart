@@ -1,46 +1,51 @@
+import 'dart:math';
+
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:hashchecker/constants.dart';
-import 'package:hashchecker/models/event_report.dart';
+import 'package:hashchecker/models/event_report_per_period.dart';
 import 'package:number_display/number_display.dart';
 import 'package:hashchecker/widgets/number_slider/number_slide_animation_widget.dart';
-import '../delta_data.dart';
-import '../report_design.dart';
 
-class ExposureReportWeekly extends StatefulWidget {
-  ExposureReportWeekly(
-      {Key? key, required this.size, required this.eventReport})
-      : super(key: key);
+import 'delta_data.dart';
+import 'report_design.dart';
 
-  final Size size;
-  final EventReport eventReport;
+class ExposureReport extends StatefulWidget {
+  ExposureReport({Key? key, required this.eventReport}) : super(key: key);
+
+  final EventReportPerPeriod eventReport;
   final numberDisplay = createDisplay();
 
   @override
-  _ExposureReportWeeklyState createState() => _ExposureReportWeeklyState();
+  _ExposureReportState createState() => _ExposureReportState();
 }
 
-class _ExposureReportWeeklyState extends State<ExposureReportWeekly> {
+class _ExposureReportState extends State<ExposureReport> {
   @override
   Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
     List<Color> gradientColors = [kThemeColor];
 
     return Container(
       padding: const EdgeInsets.all(20),
-      width: widget.size.width,
+      width: size.width,
       margin: const EdgeInsets.fromLTRB(5, 5, 5, 15),
       decoration: reportBoxDecoration,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-            Text('이번 주에',
+            Text('오늘',
                 style: TextStyle(
                     color: kDefaultFontColor,
                     fontWeight: FontWeight.bold,
                     fontSize: 14)),
             DeltaData(
-                value: 258, icon: Icons.arrow_drop_up, color: Colors.green)
+                value: widget.eventReport.exposureCount.length > 1
+                    ? widget.eventReport.exposureCount.last -
+                        widget.eventReport.exposureCount[
+                            widget.eventReport.exposureCount.length - 2]
+                    : widget.eventReport.exposureCount.last)
           ]),
           Wrap(
             crossAxisAlignment: WrapCrossAlignment.center,
@@ -52,7 +57,7 @@ class _ExposureReportWeeklyState extends State<ExposureReportWeekly> {
                       fontWeight: FontWeight.bold,
                       fontSize: 18)),
               NumberSlideAnimation(
-                  number: (widget.eventReport.exposeCount ~/ 15).toString(),
+                  number: (widget.eventReport.exposureCount.last).toString(),
                   duration: kDefaultNumberSliderDuration,
                   curve: Curves.easeOut,
                   textStyle: TextStyle(
@@ -78,7 +83,7 @@ class _ExposureReportWeeklyState extends State<ExposureReportWeekly> {
           ),
           SizedBox(height: kDefaultPadding),
           SizedBox(
-            width: widget.size.width,
+            width: size.width,
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
@@ -102,7 +107,9 @@ class _ExposureReportWeeklyState extends State<ExposureReportWeekly> {
                             fontSize: 14,
                             color: kDefaultFontColor)),
                     NumberSlideAnimation(
-                        number: '6',
+                        number: widget.eventReport.exposureCount.last == 0
+                            ? '0'
+                            : '${(widget.eventReport.expenditureCount.last ~/ widget.eventReport.exposureCount.last)}',
                         duration: kDefaultNumberSliderDuration,
                         curve: Curves.easeOut,
                         textStyle: TextStyle(
@@ -121,9 +128,12 @@ class _ExposureReportWeeklyState extends State<ExposureReportWeekly> {
                   height: kDefaultPadding,
                 ),
                 Container(
-                  width: widget.size.width * 0.7,
+                  width: size.width * 0.7,
                   height: 150,
                   child: LineChart(LineChartData(
+                    lineTouchData: LineTouchData(
+                        touchTooltipData:
+                            LineTouchTooltipData(tooltipBgColor: Colors.white)),
                     gridData: FlGridData(
                       show: true,
                       drawVerticalLine: false,
@@ -143,26 +153,7 @@ class _ExposureReportWeeklyState extends State<ExposureReportWeekly> {
                     titlesData: FlTitlesData(
                       show: true,
                       bottomTitles: SideTitles(
-                        showTitles: true,
-                        reservedSize: 14,
-                        getTextStyles: (context, value) => const TextStyle(
-                            color: kLiteFontColor,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 12),
-                        getTitles: (value) {
-                          switch (value.toInt()) {
-                            case 0:
-                              return '6주 전';
-                            case 2:
-                              return '4주 전';
-                            case 4:
-                              return '2주 전';
-                            case 6:
-                              return '이번 주';
-                          }
-                          return '';
-                        },
-                        margin: 8,
+                        showTitles: false,
                       ),
                       leftTitles: SideTitles(
                         showTitles: true,
@@ -172,15 +163,32 @@ class _ExposureReportWeeklyState extends State<ExposureReportWeekly> {
                           fontSize: 12,
                         ),
                         getTitles: (value) {
-                          switch (value.toInt()) {
-                            case 1:
-                              return '10k';
-                            case 3:
-                              return '30k';
-                            case 5:
-                              return '50k';
-                          }
-                          return '';
+                          final exposureValue = value.toInt();
+                          if (exposureValue == 0) return "0";
+                          if (exposureValue ==
+                              widget.eventReport.exposureCount.reduce(max) *
+                                  1 ~/
+                                  3)
+                            return (widget.eventReport.exposureCount
+                                        .reduce(max) *
+                                    1 ~/
+                                    3)
+                                .toString();
+                          if (exposureValue ==
+                              widget.eventReport.exposureCount.reduce(max) *
+                                  2 ~/
+                                  3)
+                            return (widget.eventReport.exposureCount
+                                        .reduce(max) *
+                                    2 ~/
+                                    3)
+                                .toString();
+                          if (exposureValue ==
+                              widget.eventReport.exposureCount.reduce(max))
+                            return widget.eventReport.exposureCount
+                                .reduce(max)
+                                .toString();
+                          return "";
                         },
                         reservedSize: 14,
                         margin: 12,
@@ -193,22 +201,32 @@ class _ExposureReportWeeklyState extends State<ExposureReportWeekly> {
                     minX: 0,
                     maxX: 6,
                     minY: 0,
-                    maxY: 6,
+                    maxY: widget.eventReport.exposureCount
+                            .reduce(max)
+                            .toDouble() *
+                        1.1,
                     lineBarsData: [
                       LineChartBarData(
-                        spots: [
-                          FlSpot(0, 1),
-                          FlSpot(1, 2),
-                          FlSpot(2, 5),
-                          FlSpot(3, 1),
-                          FlSpot(4, 3),
-                          FlSpot(5, 2),
-                          FlSpot(6, 5),
-                        ],
+                        spots: List.generate(
+                            min(7, widget.eventReport.exposureCount.length)
+                                .toInt(),
+                            (index) => FlSpot(
+                                index.toDouble(),
+                                widget
+                                    .eventReport
+                                    .exposureCount[widget
+                                            .eventReport.exposureCount.length -
+                                        min(
+                                                7,
+                                                widget.eventReport.exposureCount
+                                                    .length)
+                                            .toInt() +
+                                        index]
+                                    .toDouble())),
                         isCurved: false,
                         colors: gradientColors,
                         barWidth: 5,
-                        isStrokeCapRound: true,
+                        isStrokeCapRound: false,
                         dotData: FlDotData(
                           show: true,
                         ),

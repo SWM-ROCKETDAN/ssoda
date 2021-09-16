@@ -4,19 +4,18 @@ import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:hashchecker/constants.dart';
-import 'package:hashchecker/models/event_report.dart';
+import 'package:hashchecker/models/event_report_per_period.dart';
 import 'package:number_display/number_display.dart';
 import 'package:hashchecker/widgets/number_slider/number_slide_animation_widget.dart';
 
+import '../delta_data.dart';
 import '../report_design.dart';
 
 class ParticipationReportTotal extends StatefulWidget {
-  ParticipationReportTotal(
-      {Key? key, required this.size, required this.eventReport})
+  ParticipationReportTotal({Key? key, required this.eventReport})
       : super(key: key);
 
-  final Size size;
-  final EventReport eventReport;
+  final EventReportPerPeriod eventReport;
 
   @override
   _ParticipationReportTotalState createState() =>
@@ -25,35 +24,44 @@ class ParticipationReportTotal extends StatefulWidget {
 
 class _ParticipationReportTotalState extends State<ParticipationReportTotal> {
   final numberDisplay = createDisplay();
+  late int publicPostSum;
+  late int deletedPostSum;
+  late int participateSum;
+  late int commentSum;
+  late int likeSum;
   int? touchedIndex;
-  int livePostCount = 0;
-
-  late Timer _everySecond;
 
   @override
   void initState() {
     super.initState();
-    _everySecond = Timer.periodic(Duration(milliseconds: 90), (Timer t) {
-      if (livePostCount == widget.eventReport.livePostCount) return;
-      setState(() {
-        livePostCount += widget.eventReport.livePostCount ~/ 20;
-        if (livePostCount > widget.eventReport.livePostCount)
-          livePostCount = widget.eventReport.livePostCount;
-      });
-    });
+    publicPostSum = widget.eventReport.publicPostCount.reduce((a, b) => a + b);
+
+    deletedPostSum =
+        widget.eventReport.deletedPostCount.reduce((a, b) => a + b);
+    participateSum =
+        widget.eventReport.participateCount.reduce((a, b) => a + b);
+    commentSum = widget.eventReport.commentCount.reduce((a, b) => a + b);
+    likeSum = widget.eventReport.likeCount.reduce((a, b) => a + b);
   }
 
   @override
   Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
+
     return Container(
       padding: const EdgeInsets.all(20),
-      width: widget.size.width,
+      width: size.width,
       margin: const EdgeInsets.fromLTRB(5, 5, 5, 15),
       decoration: reportBoxDecoration,
       child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
+            Text('오늘',
+                style: TextStyle(
+                    color: kDefaultFontColor,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 14)),
             Wrap(
               crossAxisAlignment: WrapCrossAlignment.center,
               runSpacing: 5.0,
@@ -64,7 +72,7 @@ class _ParticipationReportTotalState extends State<ParticipationReportTotal> {
                         fontWeight: FontWeight.bold,
                         fontSize: 18)),
                 NumberSlideAnimation(
-                    number: widget.eventReport.joinCount.toString(),
+                    number: participateSum.toString(),
                     duration: kDefaultNumberSliderDuration,
                     curve: Curves.easeOut,
                     textStyle: TextStyle(
@@ -85,7 +93,7 @@ class _ParticipationReportTotalState extends State<ParticipationReportTotal> {
                       color: kDefaultFontColor,
                       fontWeight: FontWeight.bold,
                       fontSize: 18),
-                )
+                ),
               ],
             ),
             SizedBox(height: kDefaultPadding * 2),
@@ -128,19 +136,18 @@ class _ParticipationReportTotalState extends State<ParticipationReportTotal> {
                                   sections: [
                                     PieChartSectionData(
                                         radius: touchedIndex == 0 ? 40 : 30,
-                                        title: livePostCount.toString(),
-                                        value: livePostCount.toDouble(),
+                                        title: publicPostSum.toString(),
+                                        value: publicPostSum.toDouble(),
                                         color: kThemeColor,
                                         titleStyle: TextStyle(
                                             fontSize:
                                                 touchedIndex == 0 ? 16 : 12,
-                                            fontWeight: FontWeight.bold)),
+                                            fontWeight: FontWeight.bold,
+                                            color: Colors.white)),
                                     PieChartSectionData(
                                         radius: touchedIndex == 1 ? 40 : 30,
-                                        title: widget.eventReport.deadPostCount
-                                            .toString(),
-                                        value: widget.eventReport.deadPostCount
-                                            .toDouble(),
+                                        title: deletedPostSum.toString(),
+                                        value: deletedPostSum.toDouble(),
                                         color: Colors.grey.shade300,
                                         titleStyle: TextStyle(
                                             fontSize:
@@ -151,7 +158,9 @@ class _ParticipationReportTotalState extends State<ParticipationReportTotal> {
                             ),
                             Center(
                                 child: Text(
-                                    '${(livePostCount / (livePostCount + widget.eventReport.deadPostCount) * 100).toStringAsFixed(1)}%',
+                                    publicPostSum + deletedPostSum == 0
+                                        ? '0%'
+                                        : '${(publicPostSum / (publicPostSum + deletedPostSum) * 100).toStringAsFixed(1)}%',
                                     style: TextStyle(
                                         fontSize: 15,
                                         color: kThemeColor,
@@ -179,8 +188,7 @@ class _ParticipationReportTotalState extends State<ParticipationReportTotal> {
                                 ),
                                 SizedBox(width: kDefaultPadding / 3),
                                 NumberSlideAnimation(
-                                  number:
-                                      widget.eventReport.likeCount.toString(),
+                                  number: likeSum.toString(),
                                   duration: kDefaultNumberSliderDuration,
                                   curve: Curves.easeOut,
                                   textStyle: TextStyle(
@@ -204,8 +212,7 @@ class _ParticipationReportTotalState extends State<ParticipationReportTotal> {
                                 ),
                                 SizedBox(width: kDefaultPadding / 3),
                                 NumberSlideAnimation(
-                                  number: widget.eventReport.commentCount
-                                      .toString(),
+                                  number: commentSum.toString(),
                                   duration: kDefaultNumberSliderDuration,
                                   curve: Curves.easeOut,
                                   textStyle: TextStyle(

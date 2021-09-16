@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:hashchecker/constants.dart';
 
-class Empty extends StatelessWidget {
-  const Empty({
-    Key? key,
-  }) : super(key: key);
+class RankingScreen extends StatelessWidget {
+  const RankingScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -14,13 +12,13 @@ class Empty extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Image.asset('assets/images/event_list/empty.png'),
+            Image.asset('assets/images/not_ready.png'),
             Text(
-              '아직 아무런 이벤트가 등록되지 않았습니다',
+              '이 페이지는 아직 준비 중입니다',
               style: TextStyle(color: kLiteFontColor, fontSize: 13),
             ),
             Text(
-              '먼저 이벤트를 등록해주세요!',
+              '업데이트를 기대해주세요!',
               style:
                   TextStyle(color: kLiteFontColor, height: 1.3, fontSize: 13),
             )

@@ -1,17 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:hashchecker/constants.dart';
-import 'package:hashchecker/models/event_report.dart';
+import 'package:hashchecker/models/event_report_per_period.dart';
 import 'package:number_display/number_display.dart';
 import 'package:hashchecker/widgets/number_slider/number_slide_animation_widget.dart';
 
 import '../report_design.dart';
 
 class ExposureReportTotal extends StatefulWidget {
-  ExposureReportTotal({Key? key, required this.size, required this.eventReport})
-      : super(key: key);
+  ExposureReportTotal({Key? key, required this.eventReport}) : super(key: key);
 
-  final Size size;
-  final EventReport eventReport;
+  final EventReportPerPeriod eventReport;
   final numberDisplay = createDisplay();
 
   @override
@@ -21,9 +19,15 @@ class ExposureReportTotal extends StatefulWidget {
 class _ExposureReportTotalState extends State<ExposureReportTotal> {
   @override
   Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
+    final exposureSum =
+        widget.eventReport.exposureCount.reduce((a, b) => a + b);
+    final expenditureSum =
+        widget.eventReport.expenditureCount.reduce((a, b) => a + b);
+
     return Container(
       padding: const EdgeInsets.all(20),
-      width: widget.size.width,
+      width: size.width,
       margin: const EdgeInsets.fromLTRB(5, 5, 5, 15),
       decoration: reportBoxDecoration,
       child: Column(
@@ -39,7 +43,8 @@ class _ExposureReportTotalState extends State<ExposureReportTotal> {
                       fontWeight: FontWeight.bold,
                       fontSize: 18)),
               NumberSlideAnimation(
-                  number: widget.eventReport.exposeCount.toString(),
+                  number: (widget.eventReport.exposureCount
+                      .reduce((a, b) => a + b)).toString(),
                   duration: kDefaultNumberSliderDuration,
                   curve: Curves.easeOut,
                   textStyle: TextStyle(
@@ -65,12 +70,12 @@ class _ExposureReportTotalState extends State<ExposureReportTotal> {
           ),
           SizedBox(height: kDefaultPadding),
           SizedBox(
-            width: widget.size.width,
+            width: size.width,
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Icon(
-                  Icons.person_outline,
+                  Icons.person_outline_rounded,
                   size: 48,
                   color: kDefaultFontColor,
                 ),
@@ -89,9 +94,9 @@ class _ExposureReportTotalState extends State<ExposureReportTotal> {
                             fontSize: 14,
                             color: kDefaultFontColor)),
                     NumberSlideAnimation(
-                        number: (widget.eventReport.costSum ~/
-                                widget.eventReport.exposeCount)
-                            .toString(),
+                        number: expenditureSum == 0
+                            ? "0"
+                            : (exposureSum ~/ expenditureSum).toString(),
                         duration: kDefaultNumberSliderDuration,
                         curve: Curves.easeOut,
                         textStyle: TextStyle(

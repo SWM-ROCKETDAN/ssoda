@@ -1,11 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
+import 'package:hashchecker/api.dart';
 import 'package:hashchecker/constants.dart';
-import 'package:hashchecker/models/event.dart';
+import 'package:hashchecker/models/event_report.dart';
 import 'package:hashchecker/models/event_report_item.dart';
+import 'package:hashchecker/models/event_report_per_period.dart';
+import 'package:hashchecker/models/selected_store.dart';
+import 'package:hashchecker/models/store_report.dart';
 import 'package:hashchecker/models/store_report_overview.dart';
 import 'package:hashchecker/screens/marketing_report/store_report/components/event_report_card.dart';
 import 'package:number_display/number_display.dart';
+import 'package:provider/provider.dart';
 import 'components/report_overview.dart';
 
 class StoreReportScreen extends StatefulWidget {
@@ -30,36 +35,14 @@ class _StoreReportScreenState extends State<StoreReportScreen> {
 
   final numberDisplay = createDisplay();
 
-  late List<int> eventIdList; // 추후 이벤트 별 보고서를 이벤트 id 를 통해 요청해야함
-  late List<EventReportItem> eventReportList;
-  late StoreReportOverview storeReportOverview;
+  late Future<StoreReportOverview> storeReportOverview;
+  late Future<List<EventReport>> eventReportList;
 
   @override
   void initState() {
     super.initState();
-    eventReportList = [
-      EventReportItem(
-          eventName: '우리가게 SNS 해시태그 이벤트',
-          guestPrice: 7,
-          joinCount: 839,
-          likeCount: 12341,
-          rewardNameList: ['콜라', '샌드위치', '3000원 쿠폰'],
-          thumbnail: 'assets/images/event1.jpg',
-          status: EventStatus.PROCEEDING),
-      EventReportItem(
-          eventName: '우리가게 7월 한정 쿠폰 이벤트',
-          guestPrice: 10,
-          joinCount: 423,
-          likeCount: 7318,
-          rewardNameList: ['5000원 쿠폰', '10000원 쿠폰'],
-          thumbnail: 'assets/images/event2.jpg',
-          status: EventStatus.ENDED),
-    ];
-
-    storeReportOverview = StoreReportOverview(
-        guestPrice: 7.13, joinCount: 62345, likeCount: 8201543);
-
-    eventIdList = [-1, -1];
+    eventReportList = _fetchEventReportData();
+    storeReportOverview = _fetchStoreReportData();
   }
 
   @override
@@ -80,8 +63,18 @@ class _StoreReportScreenState extends State<StoreReportScreen> {
                     color: kDefaultFontColor),
               ),
               SizedBox(height: kDefaultPadding / 5 * 6),
-              ReportOverview(
-                  size: size, storeReportOverview: storeReportOverview),
+              FutureBuilder<StoreReportOverview>(
+                  future: storeReportOverview,
+                  builder: (context, snapshot) {
+                    if (snapshot.hasData) {
+                      return ReportOverview(
+                          size: size, storeReportOverview: snapshot.data!);
+                    } else if (snapshot.hasError) {
+                      return Text('${snapshot.error}');
+                    }
+
+                    return Center(child: const CircularProgressIndicator());
+                  }),
               SizedBox(height: kDefaultPadding / 3 * 5),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -132,30 +125,125 @@ class _StoreReportScreenState extends State<StoreReportScreen> {
                 ],
               ),
               SizedBox(height: kDefaultPadding / 3 * 1),
-              AnimationLimiter(
-                  child: Column(
-                children: AnimationConfiguration.toStaggeredList(
-                    duration: const Duration(milliseconds: 500),
-                    childAnimationBuilder: (widget) => SlideAnimation(
-                          horizontalOffset: 100,
-                          child: FadeInAnimation(
-                            child: widget,
-                          ),
-                        ),
-                    children: List.generate(
-                      eventReportList.length,
-                      (index) => EventReportCard(
-                          eventId: eventIdList[index],
-                          index: index,
-                          size: size,
-                          eventReportList: eventReportList,
-                          numberDisplay: numberDisplay),
-                    )),
-              )),
+              FutureBuilder<List<EventReport>>(
+                  future: eventReportList,
+                  builder: (context, snapshot) {
+                    if (snapshot.hasData) {
+                      return AnimationLimiter(
+                          child: Column(
+                        children: AnimationConfiguration.toStaggeredList(
+                            duration: const Duration(milliseconds: 500),
+                            childAnimationBuilder: (widget) => SlideAnimation(
+                                  horizontalOffset: 100,
+                                  child: FadeInAnimation(
+                                    child: widget,
+                                  ),
+                                ),
+                            children: List.generate(
+                              snapshot.data!.length,
+                              (index) => EventReportCard(
+                                  eventReportItem:
+                                      snapshot.data![index].eventReportItem,
+                                  eventDayReport:
+                                      snapshot.data![index].eventDayReport,
+                                  eventWeekReport:
+                                      snapshot.data![index].eventWeekReport,
+                                  eventMonthReport:
+                                      snapshot.data![index].eventMonthReport,
+                                  numberDisplay: numberDisplay),
+                            )),
+                      ));
+                    } else if (snapshot.hasError) {
+                      return Text('${snapshot.error}');
+                    }
+
+                    return Center(child: const CircularProgressIndicator());
+                  })
             ],
           ),
         ),
       ),
     );
+  }
+
+  Future<List<EventReport>> _fetchEventReportData() async {
+    final storeId = context.read<SelectedStore>().id;
+    var dio = await authDio();
+
+    final getStoreResponse =
+        await dio.get(getApi(API.GET_STORE, suffix: '/$storeId'));
+
+    var eventIdsFromJson = getStoreResponse.data['eventIds'];
+    final List<int> eventIdList = eventIdsFromJson.cast<int>();
+
+    final List<EventReport> eventReportList = [];
+
+    for (int i = 0; i < eventIdList.length; i++) {
+      final getEventReportResponse = await dio
+          .get(getApi(API.GET_REPORT_OF_EVENT, suffix: '/${eventIdList[i]}'));
+      final fetchedEventReportData = getEventReportResponse.data;
+
+      final EventReportItem reportItem =
+          EventReportItem.fromJson(fetchedEventReportData['event']);
+      final EventReportPerPeriod dayReport = EventReportPerPeriod.fromJson(
+          fetchedEventReportData['report']['day']);
+      final EventReportPerPeriod weekReport = EventReportPerPeriod.fromJson(
+          fetchedEventReportData['report']['week']);
+      final EventReportPerPeriod monthReport = EventReportPerPeriod.fromJson(
+          fetchedEventReportData['report']['month']);
+
+      // get guestPrice & joinCount & likeCount of EventListItem
+      final likeSum = monthReport.likeCount.reduce((a, b) => a + b);
+      final participateSum =
+          monthReport.participateCount.reduce((a, b) => a + b);
+      final expenditureSum =
+          monthReport.expenditureCount.reduce((a, b) => a + b);
+      final guestPrice = expenditureSum / participateSum;
+
+      // get rewardNameList of event
+      final getRewardListResponse = await dio.get(getApi(
+          API.GET_REWARD_OF_EVENT,
+          suffix: '/${eventIdList[i]}/rewards'));
+      final fetchedRewardListData = getRewardListResponse.data;
+
+      final List<String> rewardNameList = List.generate(
+          fetchedRewardListData.length,
+          (index) => fetchedRewardListData[index]['name']);
+
+      // set additional info of EventListItem
+      reportItem.likeCount = likeSum;
+      reportItem.joinCount = participateSum;
+      reportItem.guestPrice = guestPrice;
+      reportItem.rewardNameList = rewardNameList;
+
+      eventReportList.add(EventReport(
+          eventReportItem: reportItem,
+          eventDayReport: dayReport,
+          eventWeekReport: weekReport,
+          eventMonthReport: monthReport));
+    }
+
+    return eventReportList;
+  }
+
+  Future<StoreReportOverview> _fetchStoreReportData() async {
+    final storeId = context.read<SelectedStore>().id;
+    var dio = await authDio();
+    final getStoreReportResponse =
+        await dio.get(getApi(API.GET_REPORT_OF_STORE, suffix: '/$storeId'));
+    final fetchedStoreReportData = getStoreReportResponse.data['report'];
+
+    final StoreReport storeReport =
+        StoreReport.fromJson(fetchedStoreReportData);
+
+    final likeSum = storeReport.likeCount;
+    final participateSum = storeReport.participateCount;
+    final expenditureSum = storeReport.expenditureCount;
+    final guestPrice = expenditureSum / participateSum;
+
+    final StoreReportOverview storeReportOverview = StoreReportOverview(
+        guestPrice: guestPrice, joinCount: participateSum, likeCount: likeSum);
+
+    return storeReportOverview;
   }
 }

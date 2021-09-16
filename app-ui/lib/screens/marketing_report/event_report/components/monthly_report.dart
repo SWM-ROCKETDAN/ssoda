@@ -1,29 +1,27 @@
 import 'package:flutter/material.dart';
+import 'package:hashchecker/constants.dart';
+import 'package:hashchecker/models/event_report_per_period.dart';
 
-import '../../../../constants.dart';
-import '../../../../models/event_report.dart';
-import './monthly_report/expenditure_report_monthly.dart';
-import './monthly_report/exposure_report_monthly.dart';
-import './monthly_report/participation_report_monthly.dart';
+import 'expenditure_report.dart';
+import 'exposure_report.dart';
+import 'participate_report.dart';
 
 class MonthlyReport extends StatelessWidget {
   const MonthlyReport({
     Key? key,
-    required this.size,
     required this.eventReport,
   }) : super(key: key);
 
-  final Size size;
-  final EventReport eventReport;
+  final EventReportPerPeriod eventReport;
 
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
       child: Column(children: [
         SizedBox(height: kDefaultPadding),
-        ExposureReportMonthly(size: size, eventReport: eventReport),
-        ParticipationReportMonthly(size: size, eventReport: eventReport),
-        ExpenditureReportMonthly(size: size, eventReport: eventReport),
+        ExposureReport(eventReport: eventReport),
+        ParticipationReport(eventReport: eventReport),
+        ExpenditureReport(eventReport: eventReport),
       ]),
     );
   }

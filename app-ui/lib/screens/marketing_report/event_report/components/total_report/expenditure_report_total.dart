@@ -2,7 +2,8 @@ import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:hashchecker/constants.dart';
-import 'package:hashchecker/models/event_report.dart';
+import 'package:hashchecker/models/event_report_per_period.dart';
+import 'package:hashchecker/screens/marketing_report/event_report/components/delta_data.dart';
 import 'package:number_display/number_display.dart';
 import 'dart:math';
 
@@ -11,12 +12,10 @@ import 'package:hashchecker/widgets/number_slider/number_slide_animation_widget.
 import '../report_design.dart';
 
 class ExpenditureReportTotal extends StatefulWidget {
-  const ExpenditureReportTotal(
-      {Key? key, required this.size, required this.eventReport})
+  const ExpenditureReportTotal({Key? key, required this.eventReport})
       : super(key: key);
 
-  final Size size;
-  final EventReport eventReport;
+  final EventReportPerPeriod eventReport;
 
   @override
   _ExpenditureReportTotalState createState() => _ExpenditureReportTotalState();
@@ -32,14 +31,24 @@ class _ExpenditureReportTotalState extends State<ExpenditureReportTotal> {
 
   @override
   Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
+    final expenditureSum =
+        widget.eventReport.expenditureCount.reduce((a, b) => a + b);
     return Container(
       padding: const EdgeInsets.all(20),
-      width: widget.size.width,
+      width: size.width,
       margin: const EdgeInsets.fromLTRB(5, 5, 5, 15),
       decoration: reportBoxDecoration,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+            Text('오늘',
+                style: TextStyle(
+                    color: kDefaultFontColor,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 14)),
+          ]),
           Wrap(
             crossAxisAlignment: WrapCrossAlignment.center,
             runSpacing: 5.0,
@@ -50,7 +59,7 @@ class _ExpenditureReportTotalState extends State<ExpenditureReportTotal> {
                       fontWeight: FontWeight.bold,
                       fontSize: 18)),
               NumberSlideAnimation(
-                number: widget.eventReport.costSum.toString(),
+                number: expenditureSum.toString(),
                 duration: kDefaultNumberSliderDuration,
                 curve: Curves.easeOut,
                 textStyle: TextStyle(
@@ -79,7 +88,7 @@ class _ExpenditureReportTotalState extends State<ExpenditureReportTotal> {
           Container(
             height: 200,
             padding: const EdgeInsets.symmetric(horizontal: 15),
-            width: widget.size.width,
+            width: size.width,
             child: BarChart(mainBarData()),
           )
         ],
@@ -103,7 +112,7 @@ class _ExpenditureReportTotalState extends State<ExpenditureReportTotal> {
           width: width,
           backDrawRodData: BackgroundBarChartRodData(
             show: true,
-            y: widget.eventReport.costPerReward.reduce(max).toDouble() * 1.1,
+            y: widget.eventReport.levelExpenditure.reduce(max).toDouble() * 1.1,
             colors: [Colors.transparent],
           ),
         ),
@@ -113,8 +122,8 @@ class _ExpenditureReportTotalState extends State<ExpenditureReportTotal> {
   }
 
   List<BarChartGroupData> showingGroups() => List.generate(
-      5,
-      (i) => makeGroupData(i, widget.eventReport.costPerReward[i].toDouble(),
+      widget.eventReport.levelExpenditure.length,
+      (i) => makeGroupData(i, widget.eventReport.levelExpenditure[i].toDouble(),
           isTouched: i == touchedIndex));
 
   BarChartData mainBarData() {
@@ -123,48 +132,13 @@ class _ExpenditureReportTotalState extends State<ExpenditureReportTotal> {
         touchTooltipData: BarTouchTooltipData(
             tooltipBgColor: kScaffoldBackgroundColor.withOpacity(0.8),
             getTooltipItem: (group, groupIndex, rod, rodIndex) {
-              String rewardName;
-              switch (group.x.toInt()) {
-                case 0:
-                  rewardName = '콜라';
-                  break;
-                case 1:
-                  rewardName = '피자';
-
-                  break;
-                case 2:
-                  rewardName = '치킨';
-
-                  break;
-                case 3:
-                  rewardName = '배고파';
-
-                  break;
-                case 4:
-                  rewardName = '햄버거';
-
-                  break;
-
-                default:
-                  throw Error();
-              }
               return BarTooltipItem(
-                rewardName + '\n',
+                '${numberDisplay(rod.y ~/ 1.1)}원',
                 TextStyle(
                   color: kThemeColor,
                   fontWeight: FontWeight.bold,
                   fontSize: 18,
                 ),
-                children: <TextSpan>[
-                  TextSpan(
-                    text: '${numberDisplay(rod.y.toInt())}원',
-                    style: TextStyle(
-                      color: kDefaultFontColor,
-                      fontSize: 16,
-                      fontWeight: FontWeight.w500,
-                    ),
-                  ),
-                ],
               );
             }),
         touchCallback: (barTouchResponse) {

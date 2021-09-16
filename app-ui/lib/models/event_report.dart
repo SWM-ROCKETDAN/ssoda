@@ -1,26 +1,24 @@
+import 'package:hashchecker/models/event_report_item.dart';
+import 'package:hashchecker/models/event_report_per_period.dart';
+
 class EventReport {
-  final String eventName;
-  final int joinCount;
-  final int likeCount;
-  final int livePostCount;
-  final int deadPostCount;
-  final int commentCount;
-  final int exposeCount;
-  final int followerSum;
-  final int followerAvg;
-  final int costSum;
-  final List<int> costPerReward;
+  final EventReportItem eventReportItem;
+  final EventReportPerPeriod eventDayReport;
+  final EventReportPerPeriod eventWeekReport;
+  final EventReportPerPeriod eventMonthReport;
 
   EventReport(
-      {required this.eventName,
-      required this.joinCount,
-      required this.likeCount,
-      required this.livePostCount,
-      required this.deadPostCount,
-      required this.commentCount,
-      required this.exposeCount,
-      required this.followerSum,
-      required this.followerAvg,
-      required this.costSum,
-      required this.costPerReward});
+      {required this.eventReportItem,
+      required this.eventDayReport,
+      required this.eventWeekReport,
+      required this.eventMonthReport});
+
+  factory EventReport.fromJson(Map<String, dynamic> json) {
+    return EventReport(
+      eventReportItem: json['event'],
+      eventDayReport: json['report']['day'],
+      eventWeekReport: json['report']['week'],
+      eventMonthReport: json['report']['month'],
+    );
+  }
 }
