@@ -11,7 +11,7 @@ import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 
 import javax.persistence.*;
-import java.util.Date;
+import java.time.LocalDateTime;
 
 @Entity
 @Getter
@@ -45,25 +45,25 @@ public class JoinPost {
     private String hashtags;
 
     @Column(nullable = false)
-    private Date createDate;
+    private LocalDateTime createDate;
 
-    private Date uploadDate;
+    private LocalDateTime uploadDate;
 
     // 크롤링했을 때, 비공개 전환인 경우 update
-    private Date privateDate;
+    private LocalDateTime privateDate;
 
-    private Date deleteDate;
+    private LocalDateTime deleteDate;
 
-    private Date updateDate;
+    private LocalDateTime updateDate;
 
-    private Date rewardDate;
+    private LocalDateTime rewardDate;
 
     @ColumnDefault("false")
     @Column(nullable = false)
     private Boolean deleted = false;
 
     @Builder
-    public JoinPost(Event event, String snsId, String url, Integer type, Integer status, Integer likeCount, Integer commentCount, String hashtags, Date createDate, Date uploadDate, Date privateDate, Date deleteDate, Date updateDate, Reward reward) {
+    public JoinPost(Event event, String snsId, String url, Integer type, Integer status, Integer likeCount, Integer commentCount, String hashtags, LocalDateTime createDate, LocalDateTime uploadDate, LocalDateTime privateDate, LocalDateTime deleteDate, LocalDateTime updateDate, Reward reward) {
         this.event = event;
         this.snsId = snsId;
         this.url = url;
@@ -84,7 +84,7 @@ public class JoinPost {
         this.event = event;
     }
 
-    public void updateRewardDate(Date rewardDate) {
+    public void updateRewardDate(LocalDateTime rewardDate) {
         this.rewardDate = rewardDate;
     }
 }

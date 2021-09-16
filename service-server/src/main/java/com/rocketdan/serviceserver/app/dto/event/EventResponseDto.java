@@ -5,7 +5,7 @@ import com.rocketdan.serviceserver.domain.event.Event;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Getter
@@ -15,9 +15,9 @@ public class EventResponseDto {
     private String title;
     private Integer status;
     @JsonFormat(shape=JsonFormat.Shape.STRING, pattern="yyyy-MM-dd'T'HH:mm:ss")
-    private Date startDate;
+    private LocalDateTime startDate;
     @JsonFormat(shape=JsonFormat.Shape.STRING, pattern="yyyy-MM-dd'T'HH:mm:ss")
-    private Date finishDate;
+    private LocalDateTime finishDate;
     private List<String> images;
     private String type;
     private Long store_id;

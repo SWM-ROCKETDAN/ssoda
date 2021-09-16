@@ -19,7 +19,7 @@ import org.springframework.retry.annotation.Retryable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -58,7 +58,7 @@ public class JoinPostService {
         JoinPost savedJoinPost = JoinPost.builder()
                 .event(linkedEvent)
                 .url(url)
-                .createDate(new Date())
+                .createDate(LocalDateTime.now())
                 .build();
 
         return joinPostRepository.save(savedJoinPost).getId();
@@ -79,7 +79,7 @@ public class JoinPostService {
         Integer increasedUsedCount = reward.increaseUsedCount();
 
         // (3) rewardDate update
-        Date now = new Date();
+        LocalDateTime now = LocalDateTime.now();
         joinPost.updateRewardDate(now);
 
         // (4) usedCount >= count -> 이벤트 종료

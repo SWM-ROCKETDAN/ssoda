@@ -9,6 +9,7 @@ import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.*;
 
 @Entity
@@ -34,10 +35,10 @@ public abstract class Event {
 
     // 이벤트 시작 시간
     @Column(nullable = false)
-    private Date startDate;
+    private LocalDateTime startDate;
 
     // 이벤트 끝 시간 (null -> 영구데이)
-    private Date finishDate;
+    private LocalDateTime finishDate;
 
     // 이벤트 이미지 배열
     @ElementCollection
@@ -57,7 +58,7 @@ public abstract class Event {
     @Column(nullable = false)
     private Boolean deleted = false;
 
-    public Event(String title, Integer status, Date startDate, Date finishDate, List<String> imagePaths, List<Reward> rewards, Store store) {
+    public Event(String title, Integer status, LocalDateTime startDate, LocalDateTime finishDate, List<String> imagePaths, List<Reward> rewards, Store store) {
         this.title = title;
         this.status = status;
         this.startDate = startDate;
@@ -68,7 +69,7 @@ public abstract class Event {
     }
 
     public void updateStatus() {
-        Date time = new Date();
+        LocalDateTime now = LocalDateTime.now();
 
         // 강제로 종료된 이벤트이거나, 이미 종료된 이벤트의 경우.
         if (Optional.ofNullable(this.status).isPresent() && this.status == 2) {
@@ -78,9 +79,9 @@ public abstract class Event {
         // 영구적인 이벤트가 아닐 경우
         if (Optional.ofNullable(this.finishDate).isPresent() ) {
             // 시작 시간이 지났을 경우
-            if ( time.after(this.startDate) ) {
+            if ( now.isAfter(this.startDate) ) {
                 // 종료 시간을 지나지 않았을 경우
-                if ( time.before(this.finishDate) ) {
+                if ( now.isBefore(this.finishDate) ) {
                     this.status = 1; // 진행중
                 }
                 else {
@@ -94,7 +95,7 @@ public abstract class Event {
         // 영구 이벤트의 경우
         else {
             // 시작 시간이 지났을 경우
-            if ( time.after(this.startDate) ) {
+            if ( now.isAfter(this.startDate) ) {
                 this.status = 1; // 진행중
             }
             else {
@@ -107,7 +108,7 @@ public abstract class Event {
         Optional.ofNullable(status).ifPresent(none -> this.status = status);
     }
 
-    public void update(String title, Date startDate, Date finishDate, List<String> images) {
+    public void update(String title, LocalDateTime startDate, LocalDateTime finishDate, List<String> images) {
         Optional.ofNullable(title).ifPresent(none -> this.title = title);
         Optional.ofNullable(startDate).ifPresent(none -> this.startDate = startDate);
         this.finishDate = finishDate;

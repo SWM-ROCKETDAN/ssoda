@@ -5,7 +5,7 @@ import lombok.NoArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Getter
@@ -13,14 +13,14 @@ import java.util.List;
 public class EventUpdateRequestDto {
     private String title;
     @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
-    private Date startDate;
+    private LocalDateTime startDate;
     @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
-    private Date finishDate;
+    private LocalDateTime finishDate;
 
     private List<MultipartFile> newImages;
     private List<String> deleteImagePaths;
 
-    public EventUpdateRequestDto(String title, Date startDate, Date finishDate, List<MultipartFile> newImages, List<String> deleteImagePaths) {
+    public EventUpdateRequestDto(String title, LocalDateTime startDate, LocalDateTime finishDate, List<MultipartFile> newImages, List<String> deleteImagePaths) {
         this.title = title;
         this.startDate = startDate;
         this.finishDate = finishDate;

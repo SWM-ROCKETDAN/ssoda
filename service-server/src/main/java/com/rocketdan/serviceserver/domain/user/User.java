@@ -11,7 +11,7 @@ import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 
 import javax.persistence.*;
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
@@ -55,17 +55,17 @@ public class User {
     private Provider provider;
 
     @Column(nullable = false)
-    private Date createdDate;
+    private LocalDateTime createdDate;
 
     @Column(nullable = false)
-    private Date modifiedDate;
+    private LocalDateTime modifiedDate;
 
     @ColumnDefault("false")
     @Column(nullable = false)
     private Boolean deleted = false;
 
     @Builder
-    public User(String userId, String password, String name, String email, String picture, Role role, List<Store> stores, Provider provider, Date createdDate, Date modifiedDate) {
+    public User(String userId, String password, String name, String email, String picture, Role role, List<Store> stores, Provider provider, LocalDateTime createdDate, LocalDateTime modifiedDate) {
         this.userId = userId;
         this.password = password;
         this.name = name;
@@ -86,7 +86,7 @@ public class User {
         this.picture = picture;
     }
 
-    public void setModifiedDate(Date date) {
+    public void setModifiedDate(LocalDateTime date) {
         this.modifiedDate = date;
     }
 

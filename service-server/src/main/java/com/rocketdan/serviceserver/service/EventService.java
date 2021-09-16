@@ -20,7 +20,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Date;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -83,12 +84,12 @@ public class EventService {
         return id;
     }
 
-    private boolean checkDateValid(Date startDate, Date finishDate) {
-        Date now = new Date();
-        boolean startDateValid = now.before(startDate);
+    private boolean checkDateValid(LocalDateTime startDate, LocalDateTime finishDate) {
+        LocalDate now = LocalDate.now();
+        boolean startDateValid = now.compareTo(startDate.toLocalDate()) <= 0;
         boolean finishDateValid = true;
         if (Optional.ofNullable(finishDate).isPresent()) {
-            finishDateValid = startDate.before(finishDate);
+            finishDateValid = startDate.isBefore(finishDate);
         }
         return startDateValid && finishDateValid;
     }

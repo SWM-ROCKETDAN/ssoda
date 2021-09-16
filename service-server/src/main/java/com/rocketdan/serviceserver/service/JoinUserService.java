@@ -14,7 +14,7 @@ import org.springframework.retry.annotation.Retryable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.Optional;
 
 @RequiredArgsConstructor
@@ -38,7 +38,7 @@ public class JoinUserService {
         JoinUser savedJoinUser = JoinUser.builder()
                 .snsId(linkedJoinPost.getSnsId())
                 .type(linkedJoinPost.getType())
-                .createDate(new Date())
+                .createDate(LocalDateTime.now())
                 .build();
 
         return joinUserRepository.save(savedJoinUser).getId();
