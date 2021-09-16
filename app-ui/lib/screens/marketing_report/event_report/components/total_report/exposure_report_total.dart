@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hashchecker/constants.dart';
-import 'package:hashchecker/models/event_report.dart';
+import 'package:hashchecker/models/event_report_per_period.dart';
 import 'package:number_display/number_display.dart';
 import 'package:hashchecker/widgets/number_slider/number_slide_animation_widget.dart';
 

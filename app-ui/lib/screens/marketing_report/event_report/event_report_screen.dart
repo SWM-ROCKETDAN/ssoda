@@ -1,7 +1,7 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:hashchecker/constants.dart';
-import 'package:hashchecker/models/event_report.dart';
+import 'package:hashchecker/models/event_report_per_period.dart';
 
 import 'components/daily_report.dart';
 import 'components/monthly_report.dart';

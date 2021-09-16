@@ -1,11 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
+import 'package:hashchecker/api.dart';
 import 'package:hashchecker/constants.dart';
 import 'package:hashchecker/models/event.dart';
+import 'package:hashchecker/models/event_report.dart';
 import 'package:hashchecker/models/event_report_item.dart';
+import 'package:hashchecker/models/selected_store.dart';
+import 'package:hashchecker/models/store_report.dart';
 import 'package:hashchecker/models/store_report_overview.dart';
 import 'package:hashchecker/screens/marketing_report/store_report/components/event_report_card.dart';
 import 'package:number_display/number_display.dart';
+import 'package:provider/provider.dart';
 import 'components/report_overview.dart';
 
 class StoreReportScreen extends StatefulWidget {
@@ -30,9 +35,8 @@ class _StoreReportScreenState extends State<StoreReportScreen> {
 
   final numberDisplay = createDisplay();
 
-  late List<int> eventIdList; // 추후 이벤트 별 보고서를 이벤트 id 를 통해 요청해야함
-  late List<EventReportItem> eventReportList;
-  late StoreReportOverview storeReportOverview;
+  late StoreReport storeReport;
+  late EventReport eventReport;
 
   @override
   void initState() {
@@ -157,5 +161,24 @@ class _StoreReportScreenState extends State<StoreReportScreen> {
         ),
       ),
     );
+  }
+
+  Future<void> _fetchEventReportData() async {
+    final storeId = context.read<SelectedStore>().id;
+    var dio = await authDio();
+
+    final getStoreResponse =
+        await dio.get(getApi(API.GET_STORE, suffix: '/$storeId'));
+
+    final List<int> eventIdList = getStoreResponse.data['eventIds'];
+
+    final List<EventReport> eventReportList;
+
+    for (int i = 0; i < eventIdList.length; i++) {
+      final getEventReportResponse = await dio
+          .get(getApi(API.GET_REPORT_OF_EVENT, suffix: '/${eventIdList[i]}'));
+      final fetchedEventReportData = getEventReportResponse.data;
+      
+    }
   }
 }

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../../../constants.dart';
-import '../../../../models/event_report.dart';
+import '../../../../models/event_report_per_period.dart';
 import './daily_report/expenditure_report_daily.dart';
 import './daily_report/exposure_report_daily.dart';
 import './daily_report/participation_report_daily.dart';
