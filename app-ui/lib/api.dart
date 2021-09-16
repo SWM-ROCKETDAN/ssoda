@@ -22,6 +22,7 @@ enum API {
   GET_EVENTS_OF_STORE,
   GET_REWARD_OF_EVENT,
   GET_REPORT_OF_EVENT,
+  GET_REPORT_OF_STORE,
   CREATE_STORE,
   CREATE_EVENT,
   CREATE_REWARDS,
@@ -48,6 +49,7 @@ Map<API, String> apiMap = {
   API.GET_EVENTS_OF_STORE: '/api/v1/stores', // '/{store_id}/events'
   API.GET_REWARD_OF_EVENT: '/api/v1/events', // '/{event_id}/rewards'
   API.GET_REPORT_OF_EVENT: '/api/v1/report/events', // '/{event_id}'
+  API.GET_REPORT_OF_STORE: '/api/v1/report/stores', // '/{store_id}'
   API.CREATE_STORE: '/api/v1/stores/users',
   API.CREATE_EVENT: '/api/v1/events/hashtag/stores',
   API.CREATE_REWARDS: '/api/v1/rewards/events',
