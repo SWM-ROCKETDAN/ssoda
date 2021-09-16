@@ -6,7 +6,7 @@ from datetime import datetime
 
 
 # url 로 sns 타입 체크
-def get_post_type_from_url(post_url: str) -> bool:
+def get_post_type_from_url(post_url: str) -> int:
     if 'instagram' in post_url:
         return Type.INSTAGRAM
     elif 'facebook' in post_url:
@@ -29,10 +29,10 @@ def check_post_event_reward_is_ok(post_event_rewards: list) -> bool:
 
     reward_count = 0
     for post_event_reward in post_event_rewards:
-        if 'deleted' in post_event_reward and post_event_reward['deleted']:
+        if 'deleted' in post_event_reward and not post_event_reward['deleted']:
             reward_count += 1
 
-    if reward_count:
+    if reward_count == 0:
         return False
     return True
 

@@ -62,11 +62,11 @@ class JoinPostScrapSerializer(serializers.ModelSerializer):
         # 해시태그 파싱
         try:
             event_hashtags = []
-            event_hashtag_hashtag_hashtags = representation.get('event').get('hashtag').get('hashtag_hashtags')
+            event_hashtag_hashtag_hashtags = representation['event']['hashtag']['hashtag_hashtags']
             if event_hashtag_hashtag_hashtags is not None:
                 for event_hashtag in event_hashtag_hashtag_hashtags:
-                    event_hashtag = event_hashtag.upper()
-                    event_hashtags.append(event_hashtag['hashtags'])
+                    event_hashtag = event_hashtag['hashtags'].upper()
+                    event_hashtags.append(event_hashtag)
             representation['event_hashtags'] = event_hashtags
         except Exception as e:
             representation['event_hashtags'] = []

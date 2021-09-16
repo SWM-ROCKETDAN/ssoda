@@ -41,8 +41,7 @@ class PostScraper:
                 self.scraped_post = scrap_handlers[post_type](self.join_post['url'])
             except Exception as e:
                 raise exceptions.ScrapFailed()
-            else:
-                self.check_post_after_scrap_post()
+            self.check_post_after_scrap_post()
             return self.scraped_post
 
     # 스크랩 하기 전 게시물 검사
@@ -97,7 +96,7 @@ class PostScraper:
             raise exceptions.PostIsDeleted()
 
         # 게시물 해시태그가 일치하지 않으면 PostIsDiffHashtag 에러
-        if not self.scraped_post['hashtags']:
+        if self.scraped_post['hashtags']:
             join_post_hashtags = self.scraped_post['hashtags'].split(',')
         else:
             join_post_hashtags = []

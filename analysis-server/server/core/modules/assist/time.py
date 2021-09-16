@@ -47,3 +47,9 @@ def get_interval_day_from_now_to_target_date_time(target_date_time: datetime):
     except Exception as e:
         return 0
     return interval_day
+
+
+def get_timedelta_from_now_to_target(target: datetime) -> timedelta:
+    _now = datetime.now().replace(tzinfo=None)
+    _timedelta = _now - target.replace(tzinfo=None)
+    return _timedelta

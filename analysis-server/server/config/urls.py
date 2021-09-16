@@ -22,6 +22,4 @@ urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^api/v1/join/', include('join.urls'), name='join'),
     url(r'^api/v1/report/', include('report.urls'), name='report'),
-    url(r'^api/v1/task/', include('task.urls'), name='task'),
-    url(r'^api/v1/test/', include('test.urls'), name='test'),
 ]

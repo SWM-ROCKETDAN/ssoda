@@ -10,10 +10,11 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.2/ref/settings/
 """
 from .key import AWS
+from .key import DJANGO
 from pathlib import Path
 import os
 import sys
-
+from kombu.utils.url import safequote
 sys.path.append(os.path.dirname(os.path.abspath(os.path.dirname(os.path.abspath(os.path.dirname(__file__))))))
 
 from server.secret.key import DataBaseConfig
@@ -27,7 +28,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-yjtd(!s^a$j_6h+e^=z9s7y@t4a6e)^njp!e4*%l(w8=g!e1%_'
+SECRET_KEY = DJANGO.SECRET_KEY
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -48,27 +49,34 @@ INSTALLED_APPS = [
     'core',
     'join',
     'report',
-    'task',
-    'test',
 ]
 
-CELERY_IMPORTS = [
-    'join.tasks',
-]
+# CELERY_BROKER_TRANSPORT_OPTIONS = {
+#     'predefined_queues': {
+#         'celery': {
+#             'url': 'https://sqs.ap-northeast-2.amazonaws.com/083622219977/celery-test',
+#             'access_key_id': AWS.AWS_ACCESS_KEY,
+#             'secret_access_key': AWS.AWS_SECRET_KEY,
+#         },
+#     },
+# }
+
+
+aws_access_key = safequote(AWS.AWS_ACCESS_KEY)
+aws_secret_key = safequote(AWS.AWS_SECRET_KEY)
+
+CELERY_BROKER_URL = "sqs://{aws_access_key}:{aws_secret_key}@".format(
+    aws_access_key=aws_access_key, aws_secret_key=aws_secret_key,
+)
 
 CELERY_BROKER_TRANSPORT_OPTIONS = {
-    'predefined_queues': {
-        'celery': {
-            'url': 'https://sqs.ap-northeast-2.amazonaws.com/083622219977/analysis-server-sqs',
-            'access_key_id': AWS.AWS_ACCESS_KEY,
-            'secret_access_key': AWS.AWS_SECRET_KEY,
-            'backoff_policy': {1: 10, 2: 20, 3: 40, 4: 80, 5: 320, 6: 640},
-            'backoff_tasks': ['join.tasks']
-        }
-    },
     'region': 'ap-northeast-2',
-    'polling_interval': 3,
-    'visibility_timeout': 300,
+    'visibility_timeout': 3600,
+    'polling_interval': 10,
+    'queue_name_prefix': '%s-' % {
+        True: 'dev',
+        False: 'production'}[DEBUG],
+    'CELERYD_PREFETCH_MULTIPLIER': 0,
 }
 
 REST_FRAMEWORK = {
