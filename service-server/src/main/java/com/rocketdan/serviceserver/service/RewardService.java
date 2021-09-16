@@ -84,6 +84,7 @@ public class RewardService {
         return new RewardResponseDto(entity);
     }
 
+    @Transactional
     public void softDelete(Long id, org.springframework.security.core.userdetails.User principal) throws NoAuthorityToResourceException {
         Reward reward = rewardRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("해당 리워드가 없습니다. id=" + id));
 
