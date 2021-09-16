@@ -55,20 +55,20 @@ CELERY_IMPORTS = [
     'join.tasks',
 ]
 
-CELERY_BROKER_TRANSPORT_OPTIONS = {
-    'predefined_queues': {
-        'celery': {
-            'url': 'https://sqs.ap-northeast-2.amazonaws.com/083622219977/analysis-server-sqs',
-            'access_key_id': AWS.AWS_ACCESS_KEY,
-            'secret_access_key': AWS.AWS_SECRET_KEY,
-            'backoff_policy': {1: 10, 2: 20, 3: 40, 4: 80, 5: 320, 6: 640},
-            'backoff_tasks': ['join.tasks']
-        }
-    },
-    'region': 'ap-northeast-2',
-    'polling_interval': 3,
-    'visibility_timeout': 300,
-}
+# CELERY_BROKER_TRANSPORT_OPTIONS = {
+#     # 'predefined_queues': {
+#     #     'celery': {
+#     #         'url': 'https://sqs.ap-northeast-2.amazonaws.com/083622219977/celery',
+#     #         'access_key_id': AWS.AWS_ACCESS_KEY,
+#     #         'secret_access_key': AWS.AWS_SECRET_KEY,
+#     #         'backoff_policy': {1: 10, 2: 20, 3: 40, 4: 80, 5: 320, 6: 640},
+#     #         'backoff_tasks': ['join.tasks']
+#     #     },
+#     # },
+#     'region': 'ap-northeast-2',
+#     'polling_interval': 3,
+#     'visibility_timeout': 300,
+# }
 
 REST_FRAMEWORK = {
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',

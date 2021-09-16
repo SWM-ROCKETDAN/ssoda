@@ -21,11 +21,11 @@ def scrap_user(sns_id):
 
     # 상태 이상일 시 삭제됨 처리
     if response.getcode() != 200:
-        scraped_user.sns_id(sns_id)
-        scraped_user.url(url)
-        scraped_user.type(Type.INSTAGRAM)
-        scraped_user.status(Status.DELETED)
-        scraped_user.update_date(get_now_date())
+        scraped_user.sns_id = sns_id
+        scraped_user.url = url
+        scraped_user.type = Type.INSTAGRAM
+        scraped_user.status = Status.DELETED
+        scraped_user.update_date = get_now_date()
         return scraped_user.get_scraped_user()
     else:
         delete_date = None
@@ -39,12 +39,12 @@ def scrap_user(sns_id):
 
     user_nums = re.findall("\d+", user_meta)
 
-    scraped_user.sns_id(sns_id)
-    scraped_user.url(url)
-    scraped_user.type(Type.INSTAGRAM)
-    scraped_user.status(Status.PUBLIC)
-    scraped_user.follow_count(user_nums[0])
-    scraped_user.post_count(user_nums[2])
-    scraped_user.update_date(get_now_date())
+    scraped_user.sns_id = sns_id
+    scraped_user.url = url
+    scraped_user.type = Type.INSTAGRAM
+    scraped_user.status = Status.PUBLIC
+    scraped_user.follow_count = user_nums[0]
+    scraped_user.post_count = user_nums[2]
+    scraped_user.update_date = get_now_date()
 
     return scraped_user.get_scraped_user()

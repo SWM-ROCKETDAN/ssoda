@@ -16,18 +16,25 @@ def scrap_post(url: str) -> dict:
 
     # 상태 이상일 시 삭제됨 처리
     if response.getcode() != 200:
-        scraped_post.type(Type.INSTAGRAM)
-        scraped_post.status(Status.DELETED)
-        scraped_post.delete_date(get_now_date())
-        scraped_post.update_date(get_now_date())
+        scraped_post.type = Type.INSTAGRAM
+        scraped_post.status = Status.DELETED
+        scraped_post.delete_date = get_now_date()
+        scraped_post.update_date = get_now_date()
         return scraped_post.get_scraped_post()
     else:
         delete_date = None
-
     soup = BeautifulSoup(response, "html.parser")
 
-    # find data
-    post_data = soup.find('script', type='application/ld+json').string
+    # find data 실패시 삭제된 게시물 처리됨
+    try:
+        post_data = soup.find('script', type='application/ld+json').string
+    except Exception as e:
+        scraped_post.type = Type.INSTAGRAM
+        scraped_post.status = Status.DELETED
+        scraped_post.delete_date = get_now_date()
+        scraped_post.update_date = get_now_date()
+        return scraped_post.get_scraped_post()
+
     hashtags = [item["content"] for item in soup.find_all('meta', property="instapp:hashtags")]
 
     # convert dictionary
@@ -39,7 +46,7 @@ def scrap_post(url: str) -> dict:
     if 'author' in post_data:
         sns_id = post_data['author']['alternateName'][1:]
     else:
-        sns_id = post_data['alternateName'][1:]
+        sns_id = post_data['name'][1:]
 
     # likes
     if 'commentCount' in post_data:
@@ -69,16 +76,16 @@ def scrap_post(url: str) -> dict:
 
     # maintain
     hashtags = ','.join(hashtags)
-
-    scraped_post.type(Type.INSTAGRAM)
-    scraped_post.sns_id(sns_id)
-    scraped_post.status(status)
-    scraped_post.like_count(like_count)
-    scraped_post.comment_count(comment_count)
-    scraped_post.hashtags(hashtags)
-    scraped_post.update_date(upload_date)
-    scraped_post.private_date(private_date)
-    scraped_post.delete_date(delete_date)
-    scraped_post.upload_date(get_now_date())
+    scraped_post.type = Type.INSTAGRAM
+    scraped_post.sns_id = sns_id
+    scraped_post.url = url
+    scraped_post.status = status
+    scraped_post.like_count = like_count
+    scraped_post.comment_count = comment_count
+    scraped_post.hashtags = hashtags
+    scraped_post.upload_date = upload_date
+    scraped_post.private_date = private_date
+    scraped_post.delete_date = delete_date
+    scraped_post.update_date = get_now_date()
 
     return scraped_post.get_scraped_post()

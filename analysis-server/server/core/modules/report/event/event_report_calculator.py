@@ -12,7 +12,7 @@ from core.modules.assist.time import parse_from_str_time_to_date_time
 from core.modules.assist.time import get_now_date
 from server.core.exceptions import exceptions
 
-# import pprint
+import pprint
 
 calculator_handlers = {
     'exposure_count': get_exposure_count,
@@ -43,6 +43,8 @@ def get_calculate_report_dict_format(event: dict) -> dict:
 def get_calculate_report_dict(event: dict, join_posts: list):
     calculate_report_dict = get_calculate_report_dict_format(event)
     for join_post in join_posts:
+        if not join_post['upload_date']:
+            continue
         upload_date = parse_from_str_time_to_date_time(join_post['upload_date']).date()
         if upload_date not in calculate_report_dict:
             continue
@@ -151,6 +153,7 @@ class EventReportCalculator:
 
     def get_event_report(self):
         try:
+            # pprint.pprint(self.event)
             event_report_dict = get_event_report_dict(self.event, self.event['join_posts'])
         except Exception as e:
             raise exceptions.EventReportCalculateFailed()
