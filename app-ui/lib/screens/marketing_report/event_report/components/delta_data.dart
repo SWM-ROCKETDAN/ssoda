@@ -3,27 +3,30 @@ import 'package:hashchecker/constants.dart';
 import 'package:hashchecker/widgets/number_slider/number_slide_animation_widget.dart';
 
 class DeltaData extends StatelessWidget {
-  const DeltaData(
-      {Key? key, required this.value, required this.icon, required this.color})
-      : super(key: key);
+  const DeltaData({Key? key, required this.value}) : super(key: key);
 
   final int value;
-  final IconData icon;
-  final Color color;
 
   @override
   Widget build(BuildContext context) {
     return Row(children: [
       Icon(
-        icon,
-        color: color,
+        value > 0
+            ? Icons.arrow_drop_up
+            : (value < 0 ? Icons.arrow_drop_down : Icons.remove),
+        color:
+            value > 0 ? Colors.green : (value < 0 ? Colors.red : Colors.grey),
         size: 32,
       ),
       NumberSlideAnimation(
-          number: value.toString(),
+          number: value.abs().toString(),
           duration: kDefaultNumberSliderDuration,
           curve: Curves.easeOut,
-          textStyle: TextStyle(color: color, fontSize: 18),
+          textStyle: TextStyle(
+              color: value > 0
+                  ? Colors.green
+                  : (value < 0 ? Colors.red : Colors.grey),
+              fontSize: 18),
           format: NumberFormatMode.comma)
     ]);
   }

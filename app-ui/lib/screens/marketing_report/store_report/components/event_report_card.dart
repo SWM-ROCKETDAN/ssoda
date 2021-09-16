@@ -1,8 +1,10 @@
 import 'package:animations/animations.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
+import 'package:hashchecker/api.dart';
 import 'package:hashchecker/constants.dart';
 import 'package:hashchecker/models/event.dart';
+import 'package:hashchecker/models/event_report_per_period.dart';
 import 'package:hashchecker/screens/marketing_report/event_report/event_report_screen.dart';
 import 'package:number_display/number_display.dart';
 import 'package:hashchecker/models/event_report_item.dart';
@@ -10,21 +12,22 @@ import 'package:hashchecker/models/event_report_item.dart';
 class EventReportCard extends StatelessWidget {
   const EventReportCard({
     Key? key,
-    required this.eventId,
-    required this.index,
-    required this.size,
-    required this.eventReportList,
+    required this.eventReportItem,
+    required this.eventDayReport,
+    required this.eventWeekReport,
+    required this.eventMonthReport,
     required this.numberDisplay,
   }) : super(key: key);
 
-  final int eventId;
-  final int index;
-  final Size size;
-  final List<EventReportItem> eventReportList;
+  final EventReportItem eventReportItem;
+  final EventReportPerPeriod eventDayReport;
+  final EventReportPerPeriod eventWeekReport;
+  final EventReportPerPeriod eventMonthReport;
   final Display numberDisplay;
 
   @override
   Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
     return Container(
         width: size.width,
         margin: const EdgeInsets.only(bottom: kDefaultPadding),
@@ -43,8 +46,10 @@ class EventReportCard extends StatelessWidget {
                 closedElevation: 0,
                 transitionType: ContainerTransitionType.fade,
                 openBuilder: (context, _) => EventReportScreen(
-                      eventId: eventId,
-                    ),
+                    eventReportItem: eventReportItem,
+                    eventDayReport: eventDayReport,
+                    eventWeekReport: eventWeekReport,
+                    eventMonthReport: eventMonthReport),
                 closedBuilder: (context, openContainer) => InkWell(
                       highlightColor: kShadowColor,
                       overlayColor:
@@ -59,8 +64,8 @@ class EventReportCard extends StatelessWidget {
                                 BorderRadius.vertical(top: Radius.circular(20)),
                             child: Stack(
                               children: [
-                                Image.asset(
-                                  eventReportList[index].thumbnail,
+                                Image.network(
+                                  '$s3Url${eventReportItem.thumbnail}',
                                   fit: BoxFit.cover,
                                 ),
                                 Positioned(
@@ -72,7 +77,7 @@ class EventReportCard extends StatelessWidget {
                                       width: 60,
                                       child: Center(
                                         child: Text(
-                                          eventReportList[index].status ==
+                                          eventReportItem.status ==
                                                   EventStatus.PROCEEDING
                                               ? '진행 중'
                                               : '종료',
@@ -82,7 +87,7 @@ class EventReportCard extends StatelessWidget {
                                               fontWeight: FontWeight.bold),
                                         ),
                                       ),
-                                      color: eventReportList[index].status ==
+                                      color: eventReportItem.status ==
                                               EventStatus.PROCEEDING
                                           ? Colors.greenAccent.shade700
                                           : Colors.grey.shade600,
@@ -96,7 +101,7 @@ class EventReportCard extends StatelessWidget {
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.center,
                                 children: [
-                                  AutoSizeText(eventReportList[index].eventName,
+                                  AutoSizeText(eventReportItem.title,
                                       style: TextStyle(
                                           fontWeight: FontWeight.bold,
                                           fontSize: 18,
@@ -117,7 +122,7 @@ class EventReportCard extends StatelessWidget {
                                               color: Colors.blueGrey,
                                             ),
                                             Text(
-                                              '${numberDisplay(eventReportList[index].guestPrice)}원',
+                                              '${numberDisplay(eventReportItem.guestPrice)}원',
                                               style: TextStyle(
                                                   color: kLiteFontColor,
                                                   fontSize: 14),
@@ -138,7 +143,7 @@ class EventReportCard extends StatelessWidget {
                                             SizedBox(
                                                 width: kDefaultPadding / 3),
                                             Text(
-                                                '${numberDisplay(eventReportList[index].joinCount)}명',
+                                                '${numberDisplay(eventReportItem.joinCount)}명',
                                                 style: TextStyle(
                                                     color: kLiteFontColor,
                                                     fontSize: 14)),
@@ -158,7 +163,7 @@ class EventReportCard extends StatelessWidget {
                                             SizedBox(
                                                 width: kDefaultPadding / 3),
                                             Text(
-                                                '${numberDisplay(eventReportList[index].likeCount)}개',
+                                                '${numberDisplay(eventReportItem.likeCount)}개',
                                                 style: TextStyle(
                                                     color: kLiteFontColor,
                                                     fontSize: 14)),
@@ -172,13 +177,11 @@ class EventReportCard extends StatelessWidget {
                                       direction: Axis.horizontal,
                                       spacing: 5.0,
                                       children: List.generate(
-                                        eventReportList[index]
-                                            .rewardNameList
-                                            .length,
+                                        eventReportItem.rewardNameList!.length,
                                         (rewardIndex) => Chip(
                                           label: Text(
-                                            eventReportList[index]
-                                                .rewardNameList[rewardIndex],
+                                            eventReportItem
+                                                .rewardNameList![rewardIndex],
                                             style: TextStyle(
                                                 fontSize: 11,
                                                 color: kDefaultFontColor),

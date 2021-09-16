@@ -9,22 +9,21 @@ import './total_report/participation_report_total.dart';
 class TotalReport extends StatelessWidget {
   const TotalReport({
     Key? key,
-    required this.size,
     required this.eventReport,
   }) : super(key: key);
 
-  final Size size;
-  final EventReport eventReport;
+  final EventReportPerPeriod eventReport;
 
   @override
   Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
     return SingleChildScrollView(
       child: Column(
         children: [
           SizedBox(height: kDefaultPadding),
-          ExposureReportTotal(size: size, eventReport: eventReport),
-          ParticipationReportTotal(size: size, eventReport: eventReport),
-          ExpenditureReportTotal(size: size, eventReport: eventReport),
+          ExposureReportTotal(eventReport: eventReport),
+          ParticipationReportTotal(eventReport: eventReport),
+          ExpenditureReportTotal(eventReport: eventReport),
         ],
       ),
     );

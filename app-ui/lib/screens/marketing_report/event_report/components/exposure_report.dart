@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:hashchecker/constants.dart';
@@ -5,43 +7,45 @@ import 'package:hashchecker/models/event_report_per_period.dart';
 import 'package:number_display/number_display.dart';
 import 'package:hashchecker/widgets/number_slider/number_slide_animation_widget.dart';
 
-import '../delta_data.dart';
-import '../report_design.dart';
+import 'delta_data.dart';
+import 'report_design.dart';
 
-class ExposureReportMonthly extends StatefulWidget {
-  ExposureReportMonthly(
-      {Key? key, required this.size, required this.eventReport})
-      : super(key: key);
+class ExposureReport extends StatefulWidget {
+  ExposureReport({Key? key, required this.eventReport}) : super(key: key);
 
-  final Size size;
-  final EventReport eventReport;
+  final EventReportPerPeriod eventReport;
   final numberDisplay = createDisplay();
 
   @override
-  _ExposureReportMonthlyState createState() => _ExposureReportMonthlyState();
+  _ExposureReportState createState() => _ExposureReportState();
 }
 
-class _ExposureReportMonthlyState extends State<ExposureReportMonthly> {
+class _ExposureReportState extends State<ExposureReport> {
   @override
   Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
     List<Color> gradientColors = [kThemeColor];
 
     return Container(
       padding: const EdgeInsets.all(20),
-      width: widget.size.width,
+      width: size.width,
       margin: const EdgeInsets.fromLTRB(5, 5, 5, 15),
       decoration: reportBoxDecoration,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-            Text('이번 달에',
+            Text('오늘',
                 style: TextStyle(
                     color: kDefaultFontColor,
                     fontWeight: FontWeight.bold,
                     fontSize: 14)),
             DeltaData(
-                value: 1287, icon: Icons.arrow_drop_up, color: Colors.green)
+                value: widget.eventReport.exposureCount.length > 1
+                    ? widget.eventReport.exposureCount.last -
+                        widget.eventReport.exposureCount[
+                            widget.eventReport.exposureCount.length - 2]
+                    : widget.eventReport.exposureCount.last)
           ]),
           Wrap(
             crossAxisAlignment: WrapCrossAlignment.center,
@@ -53,7 +57,7 @@ class _ExposureReportMonthlyState extends State<ExposureReportMonthly> {
                       fontWeight: FontWeight.bold,
                       fontSize: 18)),
               NumberSlideAnimation(
-                  number: (widget.eventReport.exposeCount ~/ 6).toString(),
+                  number: (widget.eventReport.exposureCount.last).toString(),
                   duration: kDefaultNumberSliderDuration,
                   curve: Curves.easeOut,
                   textStyle: TextStyle(
@@ -74,12 +78,12 @@ class _ExposureReportMonthlyState extends State<ExposureReportMonthly> {
                     color: kDefaultFontColor,
                     fontWeight: FontWeight.bold,
                     fontSize: 18),
-              ),
+              )
             ],
           ),
           SizedBox(height: kDefaultPadding),
           SizedBox(
-            width: widget.size.width,
+            width: size.width,
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
@@ -103,7 +107,9 @@ class _ExposureReportMonthlyState extends State<ExposureReportMonthly> {
                             fontSize: 14,
                             color: kDefaultFontColor)),
                     NumberSlideAnimation(
-                        number: '12',
+                        number: widget.eventReport.exposureCount.last == 0
+                            ? '0'
+                            : '${(widget.eventReport.expenditureCount.last ~/ widget.eventReport.exposureCount.last)}',
                         duration: kDefaultNumberSliderDuration,
                         curve: Curves.easeOut,
                         textStyle: TextStyle(
@@ -122,9 +128,12 @@ class _ExposureReportMonthlyState extends State<ExposureReportMonthly> {
                   height: kDefaultPadding,
                 ),
                 Container(
-                  width: widget.size.width * 0.7,
+                  width: size.width * 0.7,
                   height: 150,
                   child: LineChart(LineChartData(
+                    lineTouchData: LineTouchData(
+                        touchTooltipData:
+                            LineTouchTooltipData(tooltipBgColor: Colors.white)),
                     gridData: FlGridData(
                       show: true,
                       drawVerticalLine: false,
@@ -144,34 +153,7 @@ class _ExposureReportMonthlyState extends State<ExposureReportMonthly> {
                     titlesData: FlTitlesData(
                       show: true,
                       bottomTitles: SideTitles(
-                        showTitles: true,
-                        reservedSize: 14,
-                        getTextStyles: (context, value) => const TextStyle(
-                            color: kLiteFontColor,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 12),
-                        getTitles: (value) {
-                          switch (value.toInt()) {
-                            case 0:
-                              return '12월';
-                            case 1:
-                              return '1월';
-                            case 2:
-                              return '2월';
-                            case 3:
-                              return '3월';
-                            case 4:
-                              return '4월';
-                            case 5:
-                              return '5월';
-                            case 5:
-                              return '6월';
-                            case 6:
-                              return '7월';
-                          }
-                          return '';
-                        },
-                        margin: 8,
+                        showTitles: false,
                       ),
                       leftTitles: SideTitles(
                         showTitles: true,
@@ -181,15 +163,32 @@ class _ExposureReportMonthlyState extends State<ExposureReportMonthly> {
                           fontSize: 12,
                         ),
                         getTitles: (value) {
-                          switch (value.toInt()) {
-                            case 1:
-                              return '10k';
-                            case 3:
-                              return '30k';
-                            case 5:
-                              return '50k';
-                          }
-                          return '';
+                          final exposureValue = value.toInt();
+                          if (exposureValue == 0) return "0";
+                          if (exposureValue ==
+                              widget.eventReport.exposureCount.reduce(max) *
+                                  1 ~/
+                                  3)
+                            return (widget.eventReport.exposureCount
+                                        .reduce(max) *
+                                    1 ~/
+                                    3)
+                                .toString();
+                          if (exposureValue ==
+                              widget.eventReport.exposureCount.reduce(max) *
+                                  2 ~/
+                                  3)
+                            return (widget.eventReport.exposureCount
+                                        .reduce(max) *
+                                    2 ~/
+                                    3)
+                                .toString();
+                          if (exposureValue ==
+                              widget.eventReport.exposureCount.reduce(max))
+                            return widget.eventReport.exposureCount
+                                .reduce(max)
+                                .toString();
+                          return "";
                         },
                         reservedSize: 14,
                         margin: 12,
@@ -202,22 +201,32 @@ class _ExposureReportMonthlyState extends State<ExposureReportMonthly> {
                     minX: 0,
                     maxX: 6,
                     minY: 0,
-                    maxY: 6,
+                    maxY: widget.eventReport.exposureCount
+                            .reduce(max)
+                            .toDouble() *
+                        1.1,
                     lineBarsData: [
                       LineChartBarData(
-                        spots: [
-                          FlSpot(0, 3),
-                          FlSpot(1, 5),
-                          FlSpot(2, 1),
-                          FlSpot(3, 2),
-                          FlSpot(4, 6),
-                          FlSpot(5, 3),
-                          FlSpot(6, 5),
-                        ],
+                        spots: List.generate(
+                            min(7, widget.eventReport.exposureCount.length)
+                                .toInt(),
+                            (index) => FlSpot(
+                                index.toDouble(),
+                                widget
+                                    .eventReport
+                                    .exposureCount[widget
+                                            .eventReport.exposureCount.length -
+                                        min(
+                                                7,
+                                                widget.eventReport.exposureCount
+                                                    .length)
+                                            .toInt() +
+                                        index]
+                                    .toDouble())),
                         isCurved: false,
                         colors: gradientColors,
                         barWidth: 5,
-                        isStrokeCapRound: true,
+                        isStrokeCapRound: false,
                         dotData: FlDotData(
                           show: true,
                         ),

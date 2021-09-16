@@ -8,53 +8,28 @@ import 'package:hashchecker/models/event_report_per_period.dart';
 import 'package:number_display/number_display.dart';
 import 'package:hashchecker/widgets/number_slider/number_slide_animation_widget.dart';
 
-import '../delta_data.dart';
-import '../report_design.dart';
+import 'delta_data.dart';
+import 'report_design.dart';
 
-class ParticipationReportWeekly extends StatefulWidget {
-  ParticipationReportWeekly(
-      {Key? key, required this.size, required this.eventReport})
-      : super(key: key);
+class ParticipationReport extends StatefulWidget {
+  ParticipationReport({Key? key, required this.eventReport}) : super(key: key);
 
-  final Size size;
-  final EventReport eventReport;
+  final EventReportPerPeriod eventReport;
 
   @override
-  _ParticipationReportWeeklyState createState() =>
-      _ParticipationReportWeeklyState();
+  _ParticipationReportState createState() => _ParticipationReportState();
 }
 
-class _ParticipationReportWeeklyState extends State<ParticipationReportWeekly> {
+class _ParticipationReportState extends State<ParticipationReport> {
   final numberDisplay = createDisplay();
   int? touchedIndex;
-  int livePostCount = 0;
-
-  late Timer _everySecond;
-
-  @override
-  void initState() {
-    super.initState();
-    _everySecond = Timer.periodic(Duration(milliseconds: 90), (Timer t) {
-      if (livePostCount == widget.eventReport.livePostCount) return;
-      setState(() {
-        livePostCount += widget.eventReport.livePostCount ~/ 20;
-        if (livePostCount > widget.eventReport.livePostCount)
-          livePostCount = widget.eventReport.livePostCount;
-      });
-    });
-  }
-
-  @override
-  void dispose() {
-    _everySecond.cancel();
-    super.dispose();
-  }
 
   @override
   Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
     return Container(
       padding: const EdgeInsets.all(20),
-      width: widget.size.width,
+      width: size.width,
       margin: const EdgeInsets.fromLTRB(5, 5, 5, 15),
       decoration: reportBoxDecoration,
       child: Column(
@@ -62,13 +37,17 @@ class _ParticipationReportWeeklyState extends State<ParticipationReportWeekly> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-              Text('이번 주에',
+              Text('오늘',
                   style: TextStyle(
                       color: kDefaultFontColor,
                       fontWeight: FontWeight.bold,
                       fontSize: 14)),
               DeltaData(
-                  value: 31, icon: Icons.arrow_drop_down, color: Colors.red)
+                  value: widget.eventReport.participateCount.length > 1
+                      ? widget.eventReport.participateCount.last -
+                          widget.eventReport.participateCount[
+                              widget.eventReport.participateCount.length - 2]
+                      : widget.eventReport.participateCount.last)
             ]),
             Wrap(
               crossAxisAlignment: WrapCrossAlignment.center,
@@ -80,7 +59,8 @@ class _ParticipationReportWeeklyState extends State<ParticipationReportWeekly> {
                         fontWeight: FontWeight.bold,
                         fontSize: 18)),
                 NumberSlideAnimation(
-                    number: (widget.eventReport.joinCount ~/ 15).toString(),
+                    number:
+                        (widget.eventReport.participateCount.last).toString(),
                     duration: kDefaultNumberSliderDuration,
                     curve: Curves.easeOut,
                     textStyle: TextStyle(
@@ -101,7 +81,7 @@ class _ParticipationReportWeeklyState extends State<ParticipationReportWeekly> {
                       color: kDefaultFontColor,
                       fontWeight: FontWeight.bold,
                       fontSize: 18),
-                )
+                ),
               ],
             ),
             SizedBox(height: kDefaultPadding * 2),
@@ -144,18 +124,25 @@ class _ParticipationReportWeeklyState extends State<ParticipationReportWeekly> {
                                   sections: [
                                     PieChartSectionData(
                                         radius: touchedIndex == 0 ? 40 : 30,
-                                        title: livePostCount.toString(),
-                                        value: livePostCount.toDouble(),
+                                        title: widget
+                                            .eventReport.publicPostCount.last
+                                            .toString(),
+                                        value: widget
+                                            .eventReport.publicPostCount.last
+                                            .toDouble(),
                                         color: kThemeColor,
                                         titleStyle: TextStyle(
                                             fontSize:
                                                 touchedIndex == 0 ? 16 : 12,
-                                            fontWeight: FontWeight.bold)),
+                                            fontWeight: FontWeight.bold,
+                                            color: Colors.white)),
                                     PieChartSectionData(
                                         radius: touchedIndex == 1 ? 40 : 30,
-                                        title: widget.eventReport.deadPostCount
+                                        title: widget
+                                            .eventReport.deletedPostCount.last
                                             .toString(),
-                                        value: widget.eventReport.deadPostCount
+                                        value: widget
+                                            .eventReport.deletedPostCount.last
                                             .toDouble(),
                                         color: Colors.grey.shade300,
                                         titleStyle: TextStyle(
@@ -167,7 +154,12 @@ class _ParticipationReportWeeklyState extends State<ParticipationReportWeekly> {
                             ),
                             Center(
                                 child: Text(
-                                    '${(livePostCount / (livePostCount + widget.eventReport.deadPostCount) * 100).toStringAsFixed(1)}%',
+                                    widget.eventReport.publicPostCount.last +
+                                                widget.eventReport
+                                                    .deletedPostCount.last ==
+                                            0
+                                        ? '0%'
+                                        : '${(widget.eventReport.publicPostCount.last / (widget.eventReport.publicPostCount.last + widget.eventReport.deletedPostCount.last) * 100).toStringAsFixed(1)}%',
                                     style: TextStyle(
                                         fontSize: 15,
                                         color: kThemeColor,
@@ -195,7 +187,7 @@ class _ParticipationReportWeeklyState extends State<ParticipationReportWeekly> {
                                 ),
                                 SizedBox(width: kDefaultPadding / 3),
                                 NumberSlideAnimation(
-                                  number: (widget.eventReport.likeCount ~/ 15)
+                                  number: (widget.eventReport.likeCount.last)
                                       .toString(),
                                   duration: kDefaultNumberSliderDuration,
                                   curve: Curves.easeOut,
@@ -220,9 +212,8 @@ class _ParticipationReportWeeklyState extends State<ParticipationReportWeekly> {
                                 ),
                                 SizedBox(width: kDefaultPadding / 3),
                                 NumberSlideAnimation(
-                                  number:
-                                      (widget.eventReport.commentCount ~/ 15)
-                                          .toString(),
+                                  number: (widget.eventReport.commentCount.last)
+                                      .toString(),
                                   duration: kDefaultNumberSliderDuration,
                                   curve: Curves.easeOut,
                                   textStyle: TextStyle(
