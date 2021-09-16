@@ -1,14 +1,12 @@
-import 'package:hashchecker/screens/create_event/create_event_step/components/event_template.dart';
-
 import 'event.dart';
 
 class EventReportItem {
   final String title;
   final String thumbnail;
-  final int? guestPrice;
-  final int? joinCount;
-  final int? likeCount;
-  final List<String>? rewardNameList;
+  double? guestPrice;
+  int? joinCount;
+  int? likeCount;
+  List<String>? rewardNameList;
   final EventStatus status;
 
   EventReportItem(

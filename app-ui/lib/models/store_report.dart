@@ -1,12 +1,12 @@
 class StoreReport {
-  final List<int> exposureCount;
-  final List<int> participateCount;
-  final List<int> publicPostCount;
-  final List<int> privatePostCount;
-  final List<int> deletedPostCount;
-  final List<int> likeCount;
-  final List<int> commentCount;
-  final List<int> expenditureCount;
+  final int exposureCount;
+  final int participateCount;
+  final int publicPostCount;
+  final int privatePostCount;
+  final int deletedPostCount;
+  final int likeCount;
+  final int commentCount;
+  final int expenditureCount;
 
   StoreReport({
     required this.exposureCount,

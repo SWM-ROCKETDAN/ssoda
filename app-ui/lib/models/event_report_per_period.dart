@@ -1,5 +1,3 @@
-import 'package:hashchecker/models/event.dart';
-
 class EventReportPerPeriod {
   final List<int> exposureCount;
   final List<int> participateCount;
@@ -23,15 +21,35 @@ class EventReportPerPeriod {
       required this.levelExpenditure});
 
   factory EventReportPerPeriod.fromJson(Map<String, dynamic> json) {
+    var exposureCountFromJson = json['exposure_count'];
+    var participateCountFromJson = json['participate_count'];
+    var publicPostCountFromJson = json['public_post_count'];
+    var privatePostCountFromJson = json['private_post_count'];
+    var deletedPostCountFromJson = json['deleted_post_count'];
+    var likeCountFromJson = json['like_count'];
+    var commentCountFromJson = json['comment_count'];
+    var expenditureCountFromJson = json['expenditure_count'];
+    var levelExpenditureFromJson = json['level_expenditure'];
+
+    List<int> exposureCount = exposureCountFromJson.cast<int>();
+    List<int> participateCount = participateCountFromJson.cast<int>();
+    List<int> publicPostCount = publicPostCountFromJson.cast<int>();
+    List<int> privatePostCount = privatePostCountFromJson.cast<int>();
+    List<int> deletedPostCount = deletedPostCountFromJson.cast<int>();
+    List<int> likeCount = likeCountFromJson.cast<int>();
+    List<int> commentCount = commentCountFromJson.cast<int>();
+    List<int> expenditureCount = expenditureCountFromJson.cast<int>();
+    List<int> levelExpenditure = levelExpenditureFromJson.cast<int>();
+
     return EventReportPerPeriod(
-        exposureCount: json['exposure_count'],
-        participateCount: json['participate_count'],
-        publicPostCount: json['public_post_count'],
-        privatePostCount: json['private_post_count'],
-        deletedPostCount: json['deleted_post_count'],
-        likeCount: json['like_count'],
-        commentCount: json['comment_count'],
-        expenditureCount: json['expenditure_count'],
-        levelExpenditure: json['level_expenditure']);
+        exposureCount: exposureCount,
+        participateCount: participateCount,
+        publicPostCount: publicPostCount,
+        privatePostCount: privatePostCount,
+        deletedPostCount: deletedPostCount,
+        likeCount: likeCount,
+        commentCount: commentCount,
+        expenditureCount: expenditureCount,
+        levelExpenditure: levelExpenditure);
   }
 }
