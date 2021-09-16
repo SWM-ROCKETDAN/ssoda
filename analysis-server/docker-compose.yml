@@ -4,7 +4,7 @@ services:
   server: &python
     image: moyoung/ssoda-analysis-server:django
     container_name: server
-#    platform: linux/amd64
+    platform: linux/amd64
     build:
       context: .
       dockerfile: Dockerfile
@@ -17,12 +17,10 @@ services:
   celery_worker:
     image: moyoung/ssoda-analysis-server:celery
     container_name: server-celery
-#    platform: linux/amd64
+    platform: linux/amd64
     <<: *python
     command: celery -A config worker --loglevel=info
     ports: [ ]
-    depends_on:
-      - server
 #  nginx:
 #    image: nginx:latest
 #    container_name: server-nginx

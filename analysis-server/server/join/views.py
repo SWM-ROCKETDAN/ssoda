@@ -14,10 +14,7 @@ from core.modules.join.user.user_scraper import UserScraper
 from core.modules.join.reward.reward_calculator import RewardCalculator
 from core.exceptions import exceptions
 from core.modules.assist.time import parse_from_str_time_to_date_time
-from join.tasks import add_queue_after_check_post
 from join.tasks import task_scrap_post
-from join.tasks import task_test
-from join.tasks import add_queue_after_check_user
 from datetime import datetime
 from datetime import timedelta
 
@@ -33,8 +30,7 @@ class JoinPostsView(APIView):
         join_post_serializer = JoinPostSerializer(join_post, scraped_post, partial=True)
         if join_post_serializer.is_valid():
             join_post_serializer.save()
-            create_date = parse_from_str_time_to_date_time(join_post_serializer.data['create_date'])
-            task_scrap_post.apply_async((pk, 2, 1), countdown=120)
+            task_scrap_post.apply_async((pk,), countdown=3600*24)
             raise exceptions.PostUpdateOk()
         raise exceptions.PostUpdateFailed()
 
