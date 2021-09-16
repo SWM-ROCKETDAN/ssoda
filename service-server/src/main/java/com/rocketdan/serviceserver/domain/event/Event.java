@@ -45,7 +45,7 @@ public abstract class Event {
     private List<String> imagePaths;
 
     // 이벤트 보상 목록
-    @OneToMany(cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "event", cascade = CascadeType.REMOVE)
     private List<Reward> rewards;
 
     // link된 store
