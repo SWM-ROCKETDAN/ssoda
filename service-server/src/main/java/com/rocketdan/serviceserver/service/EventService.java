@@ -132,6 +132,7 @@ public class EventService {
                 .collect(Collectors.toList());
     }
 
+    @Transactional
     public void softDelete(Long id, org.springframework.security.core.userdetails.User principal) throws NoAuthorityToResourceException  {
         Event event = eventRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("해당 이벤트가 없습니다. id=" + id));
 

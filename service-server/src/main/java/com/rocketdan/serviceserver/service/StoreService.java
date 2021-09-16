@@ -102,6 +102,7 @@ public class StoreService {
                 .collect(Collectors.toList());
     }
 
+    @Transactional
     public void softDelete(Long id, org.springframework.security.core.userdetails.User principal) throws NoAuthorityToResourceException {
         Store store = storeRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("해당 가게가 없습니다. id=" + id));
 
