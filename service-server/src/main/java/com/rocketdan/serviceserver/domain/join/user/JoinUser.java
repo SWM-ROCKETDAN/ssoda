@@ -10,7 +10,7 @@ import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 
 import javax.persistence.*;
-import java.util.Date;
+import java.time.LocalDateTime;
 
 @Entity
 @Getter
@@ -35,16 +35,16 @@ public class JoinUser {
 
     private Integer postCount;
 
-    private Date createDate;
+    private LocalDateTime createDate;
 
-    private Date updateDate;
+    private LocalDateTime updateDate;
 
     @ColumnDefault("false")
     @Column(nullable = false)
     private Boolean deleted = false;
 
     @Builder
-    public JoinUser(String snsId, String url, Integer type, Integer status, Integer followCount, Integer postCount, Date createDate, Date updateDate) {
+    public JoinUser(String snsId, String url, Integer type, Integer status, Integer followCount, Integer postCount, LocalDateTime createDate, LocalDateTime updateDate) {
         this.snsId = snsId;
         this.url = url;
         this.type = type;

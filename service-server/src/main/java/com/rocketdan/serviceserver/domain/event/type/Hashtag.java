@@ -9,7 +9,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -33,7 +33,7 @@ public class Hashtag extends Event {
     private Integer template;
 
     @Builder
-    public Hashtag(String title, Integer status, Date startDate, Date finishDate, List<String> images, List<Reward> rewards, Store store,
+    public Hashtag(String title, Integer status, LocalDateTime startDate, LocalDateTime finishDate, List<String> images, List<Reward> rewards, Store store,
                    List<String> hashtags, List<Boolean> requirements, Integer template) {
         super(title, status, startDate, finishDate, images, rewards, store);
         this.hashtags = hashtags;
@@ -41,7 +41,7 @@ public class Hashtag extends Event {
         this.template = template;
     }
 
-    public void update(String title, Date startDate, Date finishDate, List<String> images,
+    public void update(String title, LocalDateTime startDate, LocalDateTime finishDate, List<String> images,
                   List<String> hashtags, List<Boolean> requirements, Integer template) {
         super.update(title, startDate, finishDate, images);
         Optional.ofNullable(hashtags).ifPresent(none -> this.hashtags = hashtags);

@@ -13,7 +13,7 @@ import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.Optional;
 
 @Service
@@ -60,7 +60,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
     }
 
     private User createUser(OAuth2UserInfo userInfo, Provider provider) {
-        Date now = new Date();
+        LocalDateTime now = LocalDateTime.now();
 
         User user = User.builder()
                 .userId(userInfo.getId())
@@ -78,7 +78,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
     }
 
     private User updateUser(User user, OAuth2UserInfo userInfo) {
-        Date now = new Date();
+        LocalDateTime now = LocalDateTime.now();
 
         if (userInfo.getName() != null && !user.getName().equals(userInfo.getName())) {
             user.setName(userInfo.getName());

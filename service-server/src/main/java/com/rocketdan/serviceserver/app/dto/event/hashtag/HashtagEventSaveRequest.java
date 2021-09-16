@@ -6,7 +6,7 @@ import lombok.Builder;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.List;
 
 public class HashtagEventSaveRequest extends EventSaveRequestDto {
@@ -15,7 +15,7 @@ public class HashtagEventSaveRequest extends EventSaveRequestDto {
     private Integer template;
 
     @Builder
-    public HashtagEventSaveRequest(String title, @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss") Date startDate, @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss") Date finishDate, List<MultipartFile> images,
+    public HashtagEventSaveRequest(String title, @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss") LocalDateTime startDate, @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss") LocalDateTime finishDate, List<MultipartFile> images,
                                    List<String> hashtags, List<Boolean> requirements, Integer template) {
         super(title, startDate, finishDate, images);
         this.hashtags = hashtags;

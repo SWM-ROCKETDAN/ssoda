@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import com.rocketdan.serviceserver.domain.event.Event;
 import lombok.Getter;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Getter
@@ -13,9 +13,9 @@ public class EventListResponseDto {
     private String title;
     private Integer status;
     @JsonFormat(shape=JsonFormat.Shape.STRING, pattern="yyyy-MM-dd'T'HH:mm:ss")
-    private Date startDate;
+    private LocalDateTime startDate;
     @JsonFormat(shape=JsonFormat.Shape.STRING, pattern="yyyy-MM-dd'T'HH:mm:ss")
-    private Date finishDate;
+    private LocalDateTime finishDate;
     private List<String> imagePaths;
     private String type;
 
