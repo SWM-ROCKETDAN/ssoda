@@ -18,4 +18,16 @@ class StoreReport {
     required this.commentCount,
     required this.expenditureCount,
   });
+
+  factory StoreReport.fromJson(Map<String, dynamic> json) {
+    return StoreReport(
+        exposureCount: json['exposure_count'],
+        participateCount: json['participate_count'],
+        publicPostCount: json['public_post_count'],
+        privatePostCount: json['private_post_count'],
+        deletedPostCount: json['deleted_post_count'],
+        likeCount: json['like_count'],
+        commentCount: json['comment_count'],
+        expenditureCount: json['expenditure_count']);
+  }
 }
