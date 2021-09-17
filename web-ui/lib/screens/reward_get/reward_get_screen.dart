@@ -5,11 +5,15 @@ class RewardGetScreen extends StatelessWidget {
   final eventTitle;
   final rewardName;
   final rewardImage;
+  final postId;
+  final url;
   const RewardGetScreen(
       {Key? key,
       required this.eventTitle,
       required this.rewardName,
-      required this.rewardImage})
+      required this.rewardImage,
+      required this.postId,
+      required this.url})
       : super(key: key);
 
   @override
@@ -21,6 +25,8 @@ class RewardGetScreen extends StatelessWidget {
             size: size,
             eventTitle: eventTitle,
             rewardName: rewardName,
-            rewardImage: rewardImage));
+            rewardImage: rewardImage,
+            postId: postId,
+            url: url));
   }
 }
