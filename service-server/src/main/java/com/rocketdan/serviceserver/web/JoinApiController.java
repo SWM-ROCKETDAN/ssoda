@@ -1,11 +1,11 @@
 package com.rocketdan.serviceserver.web;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.rocketdan.serviceserver.app.dto.reward.RewardResponseDto;
 import com.rocketdan.serviceserver.core.CommonResponse;
 import com.rocketdan.serviceserver.service.JoinPostService;
 import com.rocketdan.serviceserver.service.JoinUserService;
 import com.rocketdan.serviceserver.service.RewardService;
+import com.rocketdan.serviceserver.web.dto.join.JoinEventResponseDto;
 import com.rocketdan.serviceserver.web.dto.reward.RewardLevelRequestDto;
 import com.rocketdan.serviceserver.web.dto.reward.RewardLevelResponseDto;
 import lombok.RequiredArgsConstructor;
@@ -23,7 +23,7 @@ public class JoinApiController {
     private final RewardService rewardService;
 
     @PostMapping("/events/{event_id}")
-    public RewardResponseDto joinEventAndRetrieveReward(@PathVariable Long event_id, @RequestBody RewardLevelRequestDto requestDto) {
+    public JoinEventResponseDto joinEventAndRetrieveReward(@PathVariable Long event_id, @RequestBody RewardLevelRequestDto requestDto) {
         // (1) join_post 저장
         Long joinPostId = joinPostService.save(event_id, requestDto.getUrl());
 
@@ -41,7 +41,7 @@ public class JoinApiController {
         RewardLevelResponseDto rewardLevelResponse = objectMapper.convertValue(rewardService.getRewardId(joinPostId).getData(), RewardLevelResponseDto.class);
 
         // (6) reward 찾아 front에 response
-        return rewardService.findById(rewardLevelResponse.getReward_id());
+        return new JoinEventResponseDto(joinPostId, rewardService.findById(rewardLevelResponse.getReward_id()));
     }
 
     @PutMapping("/posts/{post_id}")
