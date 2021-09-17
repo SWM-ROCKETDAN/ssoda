@@ -43,3 +43,4 @@ out/
 /src/main/resources/application-aws.yml
 /src/main/resources/application-analysis.yml
 /src/main/resources/application-cors.yml
+/environment
