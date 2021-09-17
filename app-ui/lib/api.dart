@@ -1,11 +1,9 @@
 import 'package:dio/dio.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart' as fss;
 
-const baseUrl =
-    'http://ec2-3-37-85-236.ap-northeast-2.compute.amazonaws.com:8080';
+const baseUrl = 'https://api.ssoda.io';
 
-const eventJoinUrl =
-    'http://ec2-13-124-246-123.ap-northeast-2.compute.amazonaws.com';
+const eventJoinUrl = 'https://ssoda.io';
 
 const s3Url = 'https://image.ssoda.io/';
 
@@ -93,7 +91,8 @@ Future<Dio> authDio() async {
       refreshDio.interceptors
           .add(InterceptorsWrapper(onError: (error, handler) async {
         if (error.response?.statusCode == 401) {
-          print('로그인이 만료되었습니다. 다시 해주세용');
+          print('refresh token expired');
+          await storage.deleteAll();
         }
         return handler.next(error);
       }));
