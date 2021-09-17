@@ -1,5 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.rocketdan.hashchecker">
+    package="com.rocketdan.ssoda">
     <!-- Required to fetch data from the internet. -->
   <uses-permission android:name="android.permission.INTERNET" />
   <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
@@ -52,7 +52,7 @@
             <action android:name="android.intent.action.VIEW" />
             <category android:name="android.intent.category.DEFAULT" />
             <category android:name="android.intent.category.BROWSABLE" />
-            <data android:scheme="com.rocketdan.hashchecker" />
+            <data android:scheme="com.rocketdan.ssoda" />
           </intent-filter>
          </activity>
 

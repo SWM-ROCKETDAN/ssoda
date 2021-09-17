@@ -1,4 +1,4 @@
-package com.rocketdan.hashchecker
+package com.rocketdan.ssoda
 
 import io.flutter.embedding.android.FlutterActivity
 

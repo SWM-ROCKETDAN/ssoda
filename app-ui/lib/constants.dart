@@ -8,7 +8,7 @@ const kLiteFontColor = Color(0xFF848c97);
 const kLogoColor = Color(0xFF0088ff);
 const kDefaultPadding = 15.0;
 const kDefaultNumberSliderDuration = Duration(seconds: 2);
-const kAppUrlScheme = 'com.rocketdan.hashchecker';
+const kAppUrlScheme = 'com.rocketdan.ssoda';
 final kNewImagePrefix = 'HASHCHECKER_NEW_IMAGE';
 
 Route slidePageRouting(Widget page) {
