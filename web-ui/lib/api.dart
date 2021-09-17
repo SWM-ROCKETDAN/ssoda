@@ -1,7 +1,6 @@
-const baseUrl =
-    'http://ec2-3-37-85-236.ap-northeast-2.compute.amazonaws.com:8080';
+const baseUrl = 'https://ssoda.io';
 
-const s3Url = 'https://hashchecker-bucket.s3.ap-northeast-2.amazonaws.com/';
+const s3Url = 'https://image.ssoda.io/';
 
 const instagramPostUrlPrefix = 'https://www.instagram.com/p/';
 
