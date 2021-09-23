@@ -61,6 +61,7 @@ class EventOptionsModal extends StatelessWidget {
                   child: EventEditModal(eventId: eventId)),
             ),
           ),
+          /*
           ListTile(
             title: Text('마케팅 보고서',
                 style: TextStyle(
@@ -68,7 +69,7 @@ class EventOptionsModal extends StatelessWidget {
             leading: Icon(Icons.assessment_rounded,
                 color: kDefaultFontColor.withOpacity(0.8)),
             onTap: () => {},
-          ),
+          ),*/
           ListTile(
             enabled: _isEnableToStop(),
             title: Text('이벤트 중지',
