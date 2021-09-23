@@ -13,8 +13,8 @@
     </queries>
 
    <application
-        android:label="hashchecker"
-        android:icon="@mipmap/ic_launcher"
+        android:label="쏘다"
+        android:icon="@mipmap/launcher_icon"
         android:usesCleartextTraffic="true">
         <activity
             android:name=".MainActivity"
