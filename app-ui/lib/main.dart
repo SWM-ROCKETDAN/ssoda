@@ -3,8 +3,6 @@ import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:hashchecker/constants.dart';
 import 'package:hashchecker/models/selected_store.dart';
-import 'package:hashchecker/screens/create_store/create_store_screen.dart';
-import 'package:hashchecker/screens/event_list/event_list_screen.dart';
 import 'package:hashchecker/screens/hall/hall_screen.dart';
 import 'package:hashchecker/screens/on_boarding/on_boarding_screen.dart';
 import 'package:hashchecker/screens/sign_in/sign_in_screen.dart';

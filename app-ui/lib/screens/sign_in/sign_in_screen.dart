@@ -93,6 +93,9 @@ class _SignInScreenState extends State<SignInScreen> {
       final accessToken = Uri.parse(result).queryParameters['access-token'];
       final refreshToken = Uri.parse(result).queryParameters['refresh-token'];
 
+      print('accessToken: $accessToken');
+      print('refreshToken: $refreshToken');
+
       // save tokens on secure storage
       await storage.write(key: 'ACCESS_TOKEN', value: accessToken);
       await storage.write(key: 'REFRESH_TOKEN', value: refreshToken);
