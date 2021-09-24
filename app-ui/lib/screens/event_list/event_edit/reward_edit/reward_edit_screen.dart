@@ -3,6 +3,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:hashchecker/api.dart';
 import 'package:hashchecker/constants.dart';
+import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:hashchecker/models/reward_category.dart';
 import 'package:hashchecker/models/reward.dart';
@@ -36,16 +37,42 @@ class _RewardEditScreenState extends State<RewardEditScreen> {
 
   Future _getImageFromGallery() async {
     final ImagePicker _imagePicker = ImagePicker();
-    final XFile? image = await _imagePicker.pickImage(
-        source: ImageSource.gallery,
-        maxHeight: 800,
-        maxWidth: 800,
-        imageQuality: 75);
+    final XFile? image =
+        await _imagePicker.pickImage(source: ImageSource.gallery);
+    File? croppedFile;
     if (image != null) {
+      croppedFile = await _cropImage(image.path);
+    }
+    if (croppedFile != null) {
       setState(() {
-        _rewardImage = '$kNewImagePrefix${image.path}';
+        _rewardImage = '$kNewImagePrefix${croppedFile!.path}';
       });
     }
+  }
+
+  Future<File?> _cropImage(String imagePath) async {
+    File? croppedFile = await ImageCropper.cropImage(
+        maxHeight: 800,
+        maxWidth: 800,
+        compressFormat: ImageCompressFormat.jpg,
+        compressQuality: 75,
+        sourcePath: imagePath,
+        aspectRatioPresets: [CropAspectRatioPreset.square],
+        androidUiSettings: AndroidUiSettings(
+            toolbarTitle: '사진 편집',
+            toolbarColor: kScaffoldBackgroundColor,
+            toolbarWidgetColor: kDefaultFontColor,
+            activeControlsWidgetColor: kThemeColor,
+            initAspectRatio: CropAspectRatioPreset.original,
+            lockAspectRatio: true),
+        iosUiSettings: IOSUiSettings(
+          minimumAspectRatio: 1.0,
+          title: '사진 편집',
+          doneButtonTitle: '완료',
+          cancelButtonTitle: '취소',
+          aspectRatioLockEnabled: true,
+        ));
+    return croppedFile;
   }
 
   @override
