@@ -70,6 +70,9 @@ public abstract class Event {
 
     public void updateStatus() {
         LocalDateTime now = LocalDateTime.now();
+        System.out.println("now : " + now);
+        System.out.println("startDate : " + startDate);
+        System.out.println("finishDate : " + finishDate);
 
         // 강제로 종료된 이벤트이거나, 이미 종료된 이벤트의 경우.
         if (Optional.ofNullable(this.status).isPresent() && this.status == 2) {

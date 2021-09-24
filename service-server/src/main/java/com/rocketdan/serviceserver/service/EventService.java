@@ -47,6 +47,7 @@ public class EventService {
         if (!checkDateValid(requestDto.getStartDate(), requestDto.getFinishDate())) {
             throw new InvalidRequestBodyException("Invalid date.");
         }
+        System.out.println(requestDto.getStartDate() + " " + requestDto.getFinishDate());
 
         // 이미지
         List<String> imgPaths = updateImageService.uploadNewImages(requestDto.getImages(), "image/event");
