@@ -81,8 +81,10 @@ Future<Dio> authDio() async {
     return handler.next(options);
   }, onError: (error, handler) async {
     // when accessToken expired
+
     if (error.response?.statusCode == 401) {
       // request refreshing with refreshToken
+      print('access token expired');
       final accessToken = await storage.read(key: 'ACCESS_TOKEN');
       final refreshToken = await storage.read(key: 'REFRESH_TOKEN');
 
@@ -115,6 +117,10 @@ Future<Dio> authDio() async {
       await storage.write(key: 'ACCESS_TOKEN', value: newAccessToken);
       await storage.write(key: 'REFRESH_TOKEN', value: newRefreshToken);
 
+      print('change with new access token!');
+
+      print('newAccessToken: $newAccessToken');
+      print('newRefreshToken: $newRefreshToken');
       // create clonedRequest to request again
       final clonedRequest = await dio.request(error.requestOptions.path,
           options: Options(
