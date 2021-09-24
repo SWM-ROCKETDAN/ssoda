@@ -11,6 +11,8 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 import java.io.File;
 import java.io.IOException;
 import java.time.LocalDate;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
@@ -61,7 +63,7 @@ public class ImageManagerService {
      */
     // 이미지 list 업로드
     public List<String> upload(String folderName, List<MultipartFile> images) {
-        String foldDiv = LocalDate.now().format(DateTimeFormatter.ofPattern("yyyyMM"));
+        String foldDiv =  ZonedDateTime.now(ZoneId.of("Asia/Seoul")).toLocalDateTime().format(DateTimeFormatter.ofPattern("yyyyMM"));
         String filePath = folderName + File.separator + foldDiv;
 
         List<String> fileNames = new ArrayList<>();
@@ -76,7 +78,7 @@ public class ImageManagerService {
 
     // 이미지 1개 업로드
     public String upload(String folderName, MultipartFile image) {
-        String foldDiv = LocalDate.now().format(DateTimeFormatter.ofPattern("yyyyMM"));
+        String foldDiv = ZonedDateTime.now(ZoneId.of("Asia/Seoul")).toLocalDateTime().format(DateTimeFormatter.ofPattern("yyyyMM"));
         String filePath = folderName + File.separator + foldDiv;
 
         return createAndUploadFile(image, filePath);

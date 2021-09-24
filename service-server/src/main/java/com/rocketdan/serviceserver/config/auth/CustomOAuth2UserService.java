@@ -14,6 +14,8 @@ import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.Optional;
 
 @Service
@@ -60,7 +62,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
     }
 
     private User createUser(OAuth2UserInfo userInfo, Provider provider) {
-        LocalDateTime now = LocalDateTime.now();
+        LocalDateTime now =  ZonedDateTime.now(ZoneId.of("Asia/Seoul")).toLocalDateTime();;
 
         User user = User.builder()
                 .userId(userInfo.getId())
@@ -78,7 +80,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
     }
 
     private User updateUser(User user, OAuth2UserInfo userInfo) {
-        LocalDateTime now = LocalDateTime.now();
+        LocalDateTime now = ZonedDateTime.now(ZoneId.of("Asia/Seoul")).toLocalDateTime();;
 
         if (userInfo.getName() != null && !user.getName().equals(userInfo.getName())) {
             user.setName(userInfo.getName());
