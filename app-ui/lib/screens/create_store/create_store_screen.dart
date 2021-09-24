@@ -34,48 +34,84 @@ class _CreateStoreScreenState extends State<CreateStoreScreen> {
 
   Future<void> _setLogoImage() async {
     final ImagePicker _imagePicker = ImagePicker();
-    final XFile? image = await _imagePicker.pickImage(
-        source: ImageSource.gallery,
-        maxHeight: 400,
-        maxWidth: 400,
-        imageQuality: 75);
-    File? croppedFile = await ImageCropper.cropImage(
-        sourcePath: image!.path,
-        aspectRatioPresets: [
-          CropAspectRatioPreset.square,
-          CropAspectRatioPreset.ratio3x2,
-          CropAspectRatioPreset.original,
-          CropAspectRatioPreset.ratio4x3,
-          CropAspectRatioPreset.ratio16x9
-        ],
-        androidUiSettings: AndroidUiSettings(
-            toolbarTitle: 'Cropper',
-            toolbarColor: Colors.deepOrange,
-            toolbarWidgetColor: Colors.white,
-            initAspectRatio: CropAspectRatioPreset.original,
-            lockAspectRatio: false),
-        iosUiSettings: IOSUiSettings(
-          minimumAspectRatio: 1.0,
-        ));
+    final XFile? image =
+        await _imagePicker.pickImage(source: ImageSource.gallery);
+
+    File? croppedFile;
+    if (image != null) {
+      croppedFile = await _cropLogoImage(image.path);
+    }
     if (croppedFile != null) {
       setState(() {
-        _logoPath = croppedFile.path;
+        _logoPath = croppedFile!.path;
       });
     }
   }
 
+  Future<File?> _cropLogoImage(String imagePath) async {
+    File? croppedFile = await ImageCropper.cropImage(
+        cropStyle: CropStyle.circle,
+        maxHeight: 400,
+        maxWidth: 400,
+        compressFormat: ImageCompressFormat.jpg,
+        compressQuality: 75,
+        sourcePath: imagePath,
+        aspectRatioPresets: [CropAspectRatioPreset.square],
+        androidUiSettings: AndroidUiSettings(
+            toolbarTitle: '사진 편집',
+            toolbarColor: kScaffoldBackgroundColor,
+            toolbarWidgetColor: kDefaultFontColor,
+            activeControlsWidgetColor: kThemeColor,
+            initAspectRatio: CropAspectRatioPreset.original,
+            lockAspectRatio: true),
+        iosUiSettings: IOSUiSettings(
+          minimumAspectRatio: 1.0,
+          title: '사진 편집',
+          doneButtonTitle: '완료',
+          cancelButtonTitle: '취소',
+          aspectRatioLockEnabled: true,
+        ));
+    return croppedFile;
+  }
+
   Future<void> _addStoreImage() async {
     final ImagePicker _imagePicker = ImagePicker();
-    final XFile? image = await _imagePicker.pickImage(
-        source: ImageSource.gallery,
-        maxHeight: 1280,
-        maxWidth: 1280,
-        imageQuality: 75);
+    final XFile? image =
+        await _imagePicker.pickImage(source: ImageSource.gallery);
+    File? croppedFile;
     if (image != null) {
+      croppedFile = await _cropImage(image.path);
+    }
+    if (croppedFile != null) {
       setState(() {
-        _storeImageList.add(image.path);
+        _storeImageList.add(croppedFile!.path);
       });
     }
+  }
+
+  Future<File?> _cropImage(String imagePath) async {
+    File? croppedFile = await ImageCropper.cropImage(
+        maxHeight: 1280,
+        maxWidth: 1280,
+        compressFormat: ImageCompressFormat.jpg,
+        compressQuality: 75,
+        sourcePath: imagePath,
+        aspectRatioPresets: [CropAspectRatioPreset.ratio4x3],
+        androidUiSettings: AndroidUiSettings(
+            toolbarTitle: '사진 편집',
+            toolbarColor: kScaffoldBackgroundColor,
+            toolbarWidgetColor: kDefaultFontColor,
+            activeControlsWidgetColor: kThemeColor,
+            initAspectRatio: CropAspectRatioPreset.original,
+            lockAspectRatio: true),
+        iosUiSettings: IOSUiSettings(
+          minimumAspectRatio: 1.0,
+          title: '사진 편집',
+          doneButtonTitle: '완료',
+          cancelButtonTitle: '취소',
+          aspectRatioLockEnabled: true,
+        ));
+    return croppedFile;
   }
 
   void _deleteStoreImage(int index) {
