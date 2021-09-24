@@ -52,7 +52,7 @@ class _HallScreenState extends State<HallScreen> {
         shadowColor: kShadowColor,
         elevation: 1,
         title: Container(
-          padding: const EdgeInsets.only(left: 5),
+          padding: const EdgeInsets.only(left: 1),
           child: Image.asset('assets/images/appbar_logo.png'),
           height: kToolbarHeight * 0.75,
         ),
