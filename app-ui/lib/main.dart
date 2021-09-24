@@ -32,22 +32,29 @@ class MyApp extends StatelessWidget {
           return MaterialApp(home: SplashScreen());
         } else {
           return MaterialApp(
-              debugShowCheckedModeBanner: false,
-              title: 'SSODA',
-              localizationsDelegates: [
-                GlobalMaterialLocalizations.delegate,
-                GlobalWidgetsLocalizations.delegate,
-              ],
-              supportedLocales: [
-                const Locale('ko'),
-              ],
-              locale: const Locale('ko'),
-              theme: ThemeData(
-                  primarySwatch: _createMaterialColor(kThemeColor),
-                  visualDensity: VisualDensity.adaptivePlatformDensity,
-                  scaffoldBackgroundColor: kScaffoldBackgroundColor,
-                  accentColor: kShadowColor),
-              home: snapshot.data);
+            debugShowCheckedModeBanner: false,
+            title: 'SSODA',
+            localizationsDelegates: [
+              GlobalMaterialLocalizations.delegate,
+              GlobalWidgetsLocalizations.delegate,
+            ],
+            supportedLocales: [
+              const Locale('ko'),
+            ],
+            locale: const Locale('ko'),
+            theme: ThemeData(
+                primarySwatch: _createMaterialColor(kThemeColor),
+                visualDensity: VisualDensity.adaptivePlatformDensity,
+                scaffoldBackgroundColor: kScaffoldBackgroundColor,
+                accentColor: kShadowColor),
+            home: snapshot.data,
+            builder: (context, child) => MediaQuery(
+                child: child!,
+                data: MediaQuery.of(context).copyWith(
+                    textScaleFactor: MediaQuery.of(context)
+                        .textScaleFactor
+                        .clamp(0.9, 1.1))),
+          );
         }
       },
     );
