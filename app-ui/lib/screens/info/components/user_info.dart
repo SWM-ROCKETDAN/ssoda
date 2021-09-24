@@ -19,14 +19,17 @@ class UserInfo extends StatelessWidget {
                 decoration: BoxDecoration(
                     color: kShadowColor,
                     shape: BoxShape.circle,
-                    image: DecorationImage(
-                        image: NetworkImage(user.picture), fit: BoxFit.cover))),
+                    image: user.picture == null
+                        ? null
+                        : DecorationImage(
+                            image: NetworkImage(user.picture!),
+                            fit: BoxFit.cover))),
             SizedBox(width: kDefaultPadding),
             Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-              Text(user.name,
+              Text(user.name ?? "",
                   style: TextStyle(color: kDefaultFontColor, fontSize: 14)),
               SizedBox(height: kDefaultPadding / 5),
-              Text(user.email,
+              Text(user.email ?? "",
                   style: TextStyle(color: kLiteFontColor, fontSize: 12))
             ])
           ],

@@ -1,20 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:hashchecker/api.dart';
 import 'package:hashchecker/constants.dart';
-import 'package:hashchecker/models/address.dart';
 import 'package:hashchecker/models/selected_store.dart';
 import 'package:hashchecker/models/store.dart';
-import 'package:hashchecker/models/store_category.dart';
-import 'package:hashchecker/screens/create_store/components/store_category.dart';
-import 'package:hashchecker/screens/create_store/components/store_logo.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 
 import 'components/body.dart';
-import 'components/store_description.dart';
-import 'components/store_image.dart';
-import 'components/store_location.dart';
-import 'components/store_name.dart';
 
 class StoreEditScreen extends StatefulWidget {
   const StoreEditScreen({Key? key}) : super(key: key);
@@ -59,20 +50,82 @@ class _StoreEditScreenState extends State<StoreEditScreen> {
             style: TextStyle(
                 color: kDefaultFontColor, fontWeight: FontWeight.bold),
           )),
-      body: FutureBuilder<Store>(
-          future: store,
-          builder: (context, snapshot) {
-            if (snapshot.hasData) {
-              return Body(
-                  store: snapshot.data!,
-                  newImages: newImages,
-                  deletedImagePaths: deletedImagePaths);
-            } else if (snapshot.hasError) {
-              return Text('${snapshot.error}');
-            }
+      body: WillPopScope(
+        onWillPop: () async {
+          bool shouldClose = true;
+          await showDialog(
+              context: context,
+              builder: (context) => AlertDialog(
+                  title: Center(
+                    child: Text('가게 정보 수정',
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 18,
+                            color: kDefaultFontColor),
+                        textAlign: TextAlign.center),
+                  ),
+                  content: IntrinsicHeight(
+                    child: Column(children: [
+                      Text("저장되지 않은 내용이 있습니다.",
+                          style: TextStyle(
+                              fontSize: 14, color: kDefaultFontColor)),
+                      SizedBox(height: kDefaultPadding / 5),
+                      Text("그래도 나가시겠습니까?",
+                          style: TextStyle(
+                              fontSize: 14, color: kDefaultFontColor)),
+                    ]),
+                  ),
+                  contentPadding: const EdgeInsets.fromLTRB(15, 15, 15, 5),
+                  actions: [
+                    Center(
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          TextButton(
+                            onPressed: () {
+                              Navigator.of(context).pop();
+                            },
+                            child: Text('예',
+                                style: TextStyle(
+                                    color: kThemeColor, fontSize: 13)),
+                            style: ButtonStyle(
+                                overlayColor: MaterialStateProperty.all<Color>(
+                                    kThemeColor.withOpacity(0.2))),
+                          ),
+                          ElevatedButton(
+                            onPressed: () {
+                              shouldClose = false;
+                              Navigator.of(context).pop();
+                            },
+                            child: Text('아니오', style: TextStyle(fontSize: 13)),
+                            style: ButtonStyle(
+                                backgroundColor:
+                                    MaterialStateProperty.all<Color>(
+                                        kThemeColor)),
+                          ),
+                        ],
+                      ),
+                    )
+                  ],
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(15))));
+          return shouldClose;
+        },
+        child: FutureBuilder<Store>(
+            future: store,
+            builder: (context, snapshot) {
+              if (snapshot.hasData) {
+                return Body(
+                    store: snapshot.data!,
+                    newImages: newImages,
+                    deletedImagePaths: deletedImagePaths);
+              } else if (snapshot.hasError) {
+                return Text('${snapshot.error}');
+              }
 
-            return Center(child: const CircularProgressIndicator());
-          }),
+              return Center(child: const CircularProgressIndicator());
+            }),
+      ),
     );
   }
 }

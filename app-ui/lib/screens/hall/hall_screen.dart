@@ -76,8 +76,7 @@ class _HallScreenState extends State<HallScreen> {
                       shape: BoxShape.circle,
                     ));
               }),
-          Icon(Icons.arrow_drop_down_rounded, color: kDefaultFontColor),
-          SizedBox(width: kDefaultPadding / 2)
+          SizedBox(width: kDefaultPadding / 3)
         ],
       ),
       bottomNavigationBar: PandaBar(

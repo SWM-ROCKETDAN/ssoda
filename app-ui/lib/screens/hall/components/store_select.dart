@@ -50,7 +50,7 @@ class _StoreSelectState extends State<StoreSelect> {
               image: DecorationImage(
                   image: NetworkImage(
                       '$s3Url${widget.storeList[widget.storeList.indexWhere((element) => element.id == widget.selectedStoreId)].logo}'),
-                  fit: BoxFit.contain))),
+                  fit: BoxFit.cover))),
       itemBuilder: (context) {
         final List<PopupMenuEntry<Object>> storeSelectionList = List.generate(
             widget.storeList.length,

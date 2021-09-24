@@ -102,46 +102,108 @@ class _CreateStoreScreenState extends State<CreateStoreScreen> {
             style: TextStyle(
                 color: kDefaultFontColor, fontWeight: FontWeight.bold),
           )),
-      body: Container(
-        padding: const EdgeInsets.all(20),
-        child: Column(
-          children: [
-            Expanded(
-              child: SingleChildScrollView(
-                child: Column(
-                  children: [
-                    StoreLogo(
-                        getImageFromGallery: _setLogoImage,
-                        logoPath: _logoPath),
-                    SizedBox(height: kDefaultPadding * 1.5),
-                    StoreName(setName: _setName),
-                    SizedBox(height: kDefaultPadding),
-                    StoreCate(
-                        setCategory: _setCategory, category: _storeCategory),
-                    SizedBox(height: kDefaultPadding),
-                    StoreImage(
-                        getImageFromGallery: _addStoreImage,
-                        deleteImage: _deleteStoreImage,
-                        imageList: _storeImageList),
-                    SizedBox(height: kDefaultPadding),
-                    StoreLocation(
-                        setAddress: _setAddress,
-                        zipCodeController: _storeZipCodeController,
-                        addressController: _storeAddressController),
-                    SizedBox(height: kDefaultPadding),
-                    StoreDescription(setDescription: _setDescription),
+      body: WillPopScope(
+        onWillPop: () async {
+          bool shouldClose = true;
+          await showDialog(
+              context: context,
+              builder: (context) => AlertDialog(
+                  title: Center(
+                    child: Text('신규 가게 등록',
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 18,
+                            color: kDefaultFontColor),
+                        textAlign: TextAlign.center),
+                  ),
+                  content: IntrinsicHeight(
+                    child: Column(children: [
+                      Text("저장되지 않은 내용이 있습니다.",
+                          style: TextStyle(
+                              fontSize: 14, color: kDefaultFontColor)),
+                      SizedBox(height: kDefaultPadding / 5),
+                      Text("그래도 나가시겠습니까?",
+                          style: TextStyle(
+                              fontSize: 14, color: kDefaultFontColor)),
+                    ]),
+                  ),
+                  contentPadding: const EdgeInsets.fromLTRB(15, 15, 15, 5),
+                  actions: [
+                    Center(
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          TextButton(
+                            onPressed: () {
+                              Navigator.of(context).pop();
+                            },
+                            child: Text('예',
+                                style: TextStyle(
+                                    color: kThemeColor, fontSize: 13)),
+                            style: ButtonStyle(
+                                overlayColor: MaterialStateProperty.all<Color>(
+                                    kThemeColor.withOpacity(0.2))),
+                          ),
+                          ElevatedButton(
+                            onPressed: () {
+                              shouldClose = false;
+                              Navigator.of(context).pop();
+                            },
+                            child: Text('아니오', style: TextStyle(fontSize: 13)),
+                            style: ButtonStyle(
+                                backgroundColor:
+                                    MaterialStateProperty.all<Color>(
+                                        kThemeColor)),
+                          ),
+                        ],
+                      ),
+                    )
                   ],
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(15))));
+          return shouldClose;
+        },
+        child: Container(
+          padding: const EdgeInsets.all(20),
+          child: Column(
+            children: [
+              Expanded(
+                child: SingleChildScrollView(
+                  child: Column(
+                    children: [
+                      StoreLogo(
+                          getImageFromGallery: _setLogoImage,
+                          logoPath: _logoPath),
+                      SizedBox(height: kDefaultPadding * 1.5),
+                      StoreName(setName: _setName),
+                      SizedBox(height: kDefaultPadding),
+                      StoreCate(
+                          setCategory: _setCategory, category: _storeCategory),
+                      SizedBox(height: kDefaultPadding),
+                      StoreImage(
+                          getImageFromGallery: _addStoreImage,
+                          deleteImage: _deleteStoreImage,
+                          imageList: _storeImageList),
+                      SizedBox(height: kDefaultPadding),
+                      StoreLocation(
+                          setAddress: _setAddress,
+                          zipCodeController: _storeZipCodeController,
+                          addressController: _storeAddressController),
+                      SizedBox(height: kDefaultPadding),
+                      StoreDescription(setDescription: _setDescription),
+                    ],
+                  ),
                 ),
               ),
-            ),
-            CreateButton(
-                logo: _logoPath,
-                imageList: _storeImageList,
-                category: _storeCategory,
-                name: _storeName,
-                address: _storeAddress,
-                description: _storeDescription),
-          ],
+              CreateButton(
+                  logo: _logoPath,
+                  imageList: _storeImageList,
+                  category: _storeCategory,
+                  name: _storeName,
+                  address: _storeAddress,
+                  description: _storeDescription),
+            ],
+          ),
         ),
       ),
     );
