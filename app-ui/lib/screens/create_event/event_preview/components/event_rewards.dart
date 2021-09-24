@@ -23,12 +23,73 @@ class EventRewards extends StatelessWidget {
       SizedBox(
         height: 150,
         child: ListView.separated(
-          itemBuilder: (context, index) => ClipRRect(
-            borderRadius: BorderRadius.circular(8.0),
-            child: Image.file(
-              File(event.rewardList[index]!.imgPath),
-              fit: BoxFit.cover,
-              width: 130,
+          itemBuilder: (context, index) => GestureDetector(
+            onTap: () async {
+              await showDialog(
+                  context: context,
+                  builder: (context) => AlertDialog(
+                      content: Stack(children: [
+                        ClipRRect(
+                          child: Stack(
+                            children: [
+                              Image.file(File(event.rewardList[index]!.imgPath),
+                                  fit: BoxFit.cover),
+                              Positioned(
+                                bottom: 0.0,
+                                left: 0.0,
+                                right: 0.0,
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                    gradient: LinearGradient(
+                                      colors: [
+                                        Color.fromARGB(150, 0, 0, 0),
+                                        Color.fromARGB(0, 0, 0, 0)
+                                      ],
+                                      begin: Alignment.bottomCenter,
+                                      end: Alignment.topCenter,
+                                    ),
+                                  ),
+                                  padding: EdgeInsets.symmetric(
+                                      vertical: 10.0, horizontal: 20.0),
+                                  child: Text(
+                                    '${event.rewardList[index]!.name}',
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 20.0,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ),
+                              )
+                            ],
+                          ),
+                          borderRadius: BorderRadius.circular(15),
+                        ),
+                        Positioned(
+                            right: 12,
+                            top: 12,
+                            child: GestureDetector(
+                              onTap: () {
+                                Navigator.pop(context);
+                              },
+                              child: Icon(
+                                Icons.close_rounded,
+                                color: Colors.white,
+                              ),
+                            ))
+                      ]),
+                      contentPadding: const EdgeInsets.all(0),
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(15))));
+            },
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(8.0),
+              child: Image.file(
+                File(event.rewardList[index]!.imgPath),
+                fit: BoxFit.cover,
+                width: 130,
+              ),
             ),
           ),
           itemCount: event.rewardList.length,

@@ -58,11 +58,22 @@ class CreateEventButton extends StatelessWidget {
 
     var eventData = FormData.fromMap({
       'title': event.title,
-      'startDate':
-          DateFormat('yyyy-MM-ddTHH:mm:ss').format(event.period.startDate),
+      'startDate': DateFormat('yyyy-MM-ddTHH:mm:ss').format(DateTime(
+          event.period.startDate.year,
+          event.period.startDate.month,
+          event.period.startDate.day,
+          0,
+          0,
+          0)),
       'finishDate': event.period.finishDate == null
           ? null
-          : DateFormat('yyyy-MM-ddTHH:mm:ss').format(event.period.finishDate!),
+          : DateFormat('yyyy-MM-ddTHH:mm:ss').format(DateTime(
+              event.period.finishDate!.year,
+              event.period.finishDate!.month,
+              event.period.finishDate!.day,
+              23,
+              59,
+              59)),
       'images': List.generate(event.images.length,
           (index) => MultipartFile.fromFileSync(event.images[index]!)),
       'hashtags': event.hashtagList,

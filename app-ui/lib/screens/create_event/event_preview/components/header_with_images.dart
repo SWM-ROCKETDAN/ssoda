@@ -45,11 +45,43 @@ class _HeaderWithImagesState extends State<HeaderWithImages> {
                   viewportFraction: 1.0,
                   enlargeCenterPage: false),
               items: widget.event.images
-                  .map((item) => Container(
-                        child: Center(
-                            child: Image.file(File(item!),
-                                fit: BoxFit.cover,
-                                height: size.height * 0.4 - 15)),
+                  .map((item) => GestureDetector(
+                        onTap: () async {
+                          await showDialog(
+                              context: context,
+                              builder: (context) => AlertDialog(
+                                  content: Stack(children: [
+                                    ClipRRect(
+                                      child: Image.file(File(item!),
+                                          fit: BoxFit.cover),
+                                      borderRadius: BorderRadius.circular(15),
+                                    ),
+                                    Positioned(
+                                        right: 12,
+                                        top: 12,
+                                        child: GestureDetector(
+                                          onTap: () {
+                                            Navigator.pop(context);
+                                          },
+                                          child: Icon(
+                                            Icons.close_rounded,
+                                            color: Colors.white,
+                                          ),
+                                        ))
+                                  ]),
+                                  contentPadding: const EdgeInsets.all(0),
+                                  shape: RoundedRectangleBorder(
+                                      borderRadius:
+                                          BorderRadius.circular(15))));
+                        },
+                        child: Container(
+                          child: Center(
+                              child: Image.file(
+                            File(item!),
+                            fit: BoxFit.cover,
+                            width: size.width,
+                          )),
+                        ),
                       ))
                   .toList(),
             )),
@@ -75,21 +107,51 @@ class _HeaderWithImagesState extends State<HeaderWithImages> {
                 future: storeLogo,
                 builder: (context, snapshot) {
                   if (snapshot.hasData) {
-                    return Container(
-                        height: size.width * 0.28,
-                        width: size.width * 0.28,
-                        decoration: BoxDecoration(
-                            boxShadow: [
-                              BoxShadow(
-                                  blurRadius: 25,
-                                  offset: Offset(0, 5),
-                                  color: kDefaultFontColor.withOpacity(0.2))
-                            ],
-                            color: kShadowColor,
-                            shape: BoxShape.circle,
-                            image: DecorationImage(
-                                image: NetworkImage('$s3Url${snapshot.data}'),
-                                fit: BoxFit.cover)));
+                    return GestureDetector(
+                      onTap: () async {
+                        await showDialog(
+                            context: context,
+                            builder: (context) => AlertDialog(
+                                content: Stack(children: [
+                                  ClipRRect(
+                                    child: Image.network(
+                                        '$s3Url${snapshot.data}',
+                                        fit: BoxFit.cover),
+                                    borderRadius: BorderRadius.circular(15),
+                                  ),
+                                  Positioned(
+                                      right: 12,
+                                      top: 12,
+                                      child: GestureDetector(
+                                        onTap: () {
+                                          Navigator.pop(context);
+                                        },
+                                        child: Icon(
+                                          Icons.close_rounded,
+                                          color: kDefaultFontColor,
+                                        ),
+                                      ))
+                                ]),
+                                contentPadding: const EdgeInsets.all(0),
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(15))));
+                      },
+                      child: Container(
+                          height: size.width * 0.28,
+                          width: size.width * 0.28,
+                          decoration: BoxDecoration(
+                              boxShadow: [
+                                BoxShadow(
+                                    blurRadius: 25,
+                                    offset: Offset(0, 5),
+                                    color: kDefaultFontColor.withOpacity(0.2))
+                              ],
+                              color: kShadowColor,
+                              shape: BoxShape.circle,
+                              image: DecorationImage(
+                                  image: NetworkImage('$s3Url${snapshot.data}'),
+                                  fit: BoxFit.cover))),
+                    );
                   } else if (snapshot.hasError) {
                     return Text('${snapshot.error}');
                   }
