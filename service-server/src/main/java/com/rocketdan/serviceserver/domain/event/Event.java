@@ -70,16 +70,12 @@ public abstract class Event {
 
     public void updateStatus() {
         LocalDateTime now = LocalDateTime.now();
-        System.out.println("now : " + now);
-        System.out.println("startDate : " + startDate);
-        System.out.println("finishDate : " + finishDate);
 
         // 강제로 종료된 이벤트이거나, 이미 종료된 이벤트의 경우.
         if (Optional.ofNullable(this.status).isPresent() && this.status == 2) {
             return;
         }
 
-        System.out.println(now.isAfter(this.startDate));
         // 영구적인 이벤트가 아닐 경우
         if (Optional.ofNullable(this.finishDate).isPresent() ) {
             // 시작 시간이 지났을 경우
@@ -106,7 +102,6 @@ public abstract class Event {
                 this.status = 0; // 대기중
             }
         }
-        System.out.println("status : " + status);
     }
 
     public void updateStatus(Integer status) {
