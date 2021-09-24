@@ -56,7 +56,7 @@ class _EventListScreenState extends State<EventListScreen> {
       slivers: [
         SliverAppBar(
           toolbarHeight: 0,
-          expandedHeight: size.width / 16 * 9 * 1.65,
+          expandedHeight: size.width / 3 * 2 * 1.525,
           backgroundColor: kScaffoldBackgroundColor,
           flexibleSpace: FlexibleSpaceBar(
               background: FutureBuilder<Store>(
