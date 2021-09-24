@@ -29,7 +29,7 @@ class UserInfo extends StatelessWidget {
               Text(user.name ?? "",
                   style: TextStyle(color: kDefaultFontColor, fontSize: 14)),
               SizedBox(height: kDefaultPadding / 5),
-              Text(user.email ?? "",
+              Text(user.email ?? "카카오 계정",
                   style: TextStyle(color: kLiteFontColor, fontSize: 12))
             ])
           ],

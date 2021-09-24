@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:hashchecker/api.dart';
 import 'package:hashchecker/constants.dart';
 import 'package:hashchecker/models/store.dart';
+import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 
 class StoreImage extends StatefulWidget {
@@ -99,17 +100,43 @@ class _StoreImageState extends State<StoreImage> {
 
   Future<void> _addStoreImage() async {
     final ImagePicker _imagePicker = ImagePicker();
-    final XFile? image = await _imagePicker.pickImage(
-        source: ImageSource.gallery,
+    final XFile? image =
+        await _imagePicker.pickImage(source: ImageSource.gallery);
+    File? croppedFile;
+    if (image != null) {
+      croppedFile = await _cropImage(image.path);
+    }
+    if (croppedFile != null) {
+      setState(() {
+        widget.store.images.add('$kNewImagePrefix${croppedFile!.path}');
+      });
+      widget.newImages.add(croppedFile.path);
+    }
+  }
+
+  Future<File?> _cropImage(String imagePath) async {
+    File? croppedFile = await ImageCropper.cropImage(
         maxHeight: 1280,
         maxWidth: 1280,
-        imageQuality: 75);
-    if (image != null) {
-      setState(() {
-        widget.store.images.add('$kNewImagePrefix${image.path}');
-      });
-      widget.newImages.add(image.path);
-    }
+        compressFormat: ImageCompressFormat.jpg,
+        compressQuality: 75,
+        sourcePath: imagePath,
+        aspectRatioPresets: [CropAspectRatioPreset.ratio4x3],
+        androidUiSettings: AndroidUiSettings(
+            toolbarTitle: '사진 편집',
+            toolbarColor: kScaffoldBackgroundColor,
+            toolbarWidgetColor: kDefaultFontColor,
+            activeControlsWidgetColor: kThemeColor,
+            initAspectRatio: CropAspectRatioPreset.original,
+            lockAspectRatio: true),
+        iosUiSettings: IOSUiSettings(
+          minimumAspectRatio: 1.0,
+          title: '사진 편집',
+          doneButtonTitle: '완료',
+          cancelButtonTitle: '취소',
+          aspectRatioLockEnabled: true,
+        ));
+    return croppedFile;
   }
 
   void _removeStoreImage(int index) {
