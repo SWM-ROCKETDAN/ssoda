@@ -79,6 +79,7 @@ public abstract class Event {
             return;
         }
 
+        System.out.println(now.isAfter(this.startDate));
         // 영구적인 이벤트가 아닐 경우
         if (Optional.ofNullable(this.finishDate).isPresent() ) {
             // 시작 시간이 지났을 경우
@@ -105,6 +106,7 @@ public abstract class Event {
                 this.status = 0; // 대기중
             }
         }
+        System.out.println("status : " + status);
     }
 
     public void updateStatus(Integer status) {
