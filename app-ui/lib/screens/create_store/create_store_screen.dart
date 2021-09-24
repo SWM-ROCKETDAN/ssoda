@@ -1,9 +1,12 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:hashchecker/constants.dart';
 import 'package:hashchecker/models/address.dart';
 import 'package:hashchecker/models/store_category.dart';
 import 'package:hashchecker/screens/create_store/components/store_category.dart';
 import 'package:hashchecker/screens/create_store/components/store_logo.dart';
+import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 
 import 'components/create_button.dart';
@@ -36,9 +39,27 @@ class _CreateStoreScreenState extends State<CreateStoreScreen> {
         maxHeight: 400,
         maxWidth: 400,
         imageQuality: 75);
-    if (image != null) {
+    File? croppedFile = await ImageCropper.cropImage(
+        sourcePath: image!.path,
+        aspectRatioPresets: [
+          CropAspectRatioPreset.square,
+          CropAspectRatioPreset.ratio3x2,
+          CropAspectRatioPreset.original,
+          CropAspectRatioPreset.ratio4x3,
+          CropAspectRatioPreset.ratio16x9
+        ],
+        androidUiSettings: AndroidUiSettings(
+            toolbarTitle: 'Cropper',
+            toolbarColor: Colors.deepOrange,
+            toolbarWidgetColor: Colors.white,
+            initAspectRatio: CropAspectRatioPreset.original,
+            lockAspectRatio: false),
+        iosUiSettings: IOSUiSettings(
+          minimumAspectRatio: 1.0,
+        ));
+    if (croppedFile != null) {
       setState(() {
-        _logoPath = image.path;
+        _logoPath = croppedFile.path;
       });
     }
   }

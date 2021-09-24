@@ -44,6 +44,7 @@ dependencies:
   flash: ^2.0.1
   shared_preferences: ^2.0.7
   screenshot: ^1.2.3
+  image_cropper: ^1.4.1
     
 dev_dependencies:
   flutter_test:
