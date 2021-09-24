@@ -9,7 +9,7 @@ services:
     depends_on:
       - spring
   spring:
-    image: iamhge/ssoda-service-server:version1.0
+    image: iamhge/ssoda-service-server:version1.3
 #    build: .
     platform: linux/amd64
     expose:

@@ -15,6 +15,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.Optional;
 
 @RequiredArgsConstructor
@@ -38,7 +40,7 @@ public class JoinUserService {
         JoinUser savedJoinUser = JoinUser.builder()
                 .snsId(linkedJoinPost.getSnsId())
                 .type(linkedJoinPost.getType())
-                .createDate(LocalDateTime.now())
+                .createDate( ZonedDateTime.now(ZoneId.of("Asia/Seoul")).toLocalDateTime())
                 .build();
 
         return joinUserRepository.save(savedJoinUser).getId();

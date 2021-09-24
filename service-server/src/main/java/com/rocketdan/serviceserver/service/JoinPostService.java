@@ -20,6 +20,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -58,7 +60,7 @@ public class JoinPostService {
         JoinPost savedJoinPost = JoinPost.builder()
                 .event(linkedEvent)
                 .url(url)
-                .createDate(LocalDateTime.now())
+                .createDate(ZonedDateTime.now(ZoneId.of("Asia/Seoul")).toLocalDateTime())
                 .build();
 
         return joinPostRepository.save(savedJoinPost).getId();
@@ -79,7 +81,7 @@ public class JoinPostService {
         Integer increasedUsedCount = reward.increaseUsedCount();
 
         // (3) rewardDate update
-        LocalDateTime now = LocalDateTime.now();
+        LocalDateTime now = ZonedDateTime.now(ZoneId.of("Asia/Seoul")).toLocalDateTime();
         joinPost.updateRewardDate(now);
 
         // (4) usedCount >= count -> 이벤트 종료

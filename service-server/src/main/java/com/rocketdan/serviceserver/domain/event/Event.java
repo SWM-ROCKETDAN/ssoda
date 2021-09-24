@@ -9,7 +9,10 @@ import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.*;
 
 @Entity
@@ -69,7 +72,9 @@ public abstract class Event {
     }
 
     public void updateStatus() {
-        LocalDateTime now = LocalDateTime.now();
+        LocalDateTime now = ZonedDateTime.now(ZoneId.of("Asia/Seoul")).toLocalDateTime();
+        // startDate 가 지났거나 같은 경우 -> true
+        boolean startDateCompareToNow = now.compareTo(this.startDate) >= 0;
 
         // 강제로 종료된 이벤트이거나, 이미 종료된 이벤트의 경우.
         if (Optional.ofNullable(this.status).isPresent() && this.status == 2) {
@@ -78,10 +83,13 @@ public abstract class Event {
 
         // 영구적인 이벤트가 아닐 경우
         if (Optional.ofNullable(this.finishDate).isPresent() ) {
+            // finishDate 가 지나지 않았거나 같은 경우 -> true
+            boolean finishDateCompareToNow = now.compareTo(this.finishDate) <= 0;
+
             // 시작 시간이 지났을 경우
-            if ( now.isAfter(this.startDate) ) {
+            if ( startDateCompareToNow ) {
                 // 종료 시간을 지나지 않았을 경우
-                if ( now.isBefore(this.finishDate) ) {
+                if ( finishDateCompareToNow ) {
                     this.status = 1; // 진행중
                 }
                 else {
@@ -95,13 +103,17 @@ public abstract class Event {
         // 영구 이벤트의 경우
         else {
             // 시작 시간이 지났을 경우
-            if ( now.isAfter(this.startDate) ) {
-                this.status = 1; // 진행중
+            if ( startDateCompareToNow ) {
+                this.status = 1;
             }
             else {
                 this.status = 0; // 대기중
             }
         }
+        System.out.println("now : " + now);
+        System.out.println("startDate : " + startDate);
+        System.out.println("finishDate : " + finishDate);
+        System.out.println("status : "+ status);
     }
 
     public void updateStatus(Integer status) {
