@@ -9,7 +9,6 @@ import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 
 import javax.persistence.*;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
@@ -110,10 +109,6 @@ public abstract class Event {
                 this.status = 0; // 대기중
             }
         }
-        System.out.println("now : " + now);
-        System.out.println("startDate : " + startDate);
-        System.out.println("finishDate : " + finishDate);
-        System.out.println("status : "+ status);
     }
 
     public void updateStatus(Integer status) {
