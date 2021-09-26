@@ -10,6 +10,7 @@ import com.rocketdan.serviceserver.domain.user.UserPrincipal;
 import com.rocketdan.serviceserver.provider.security.JwtAuthToken;
 import com.rocketdan.serviceserver.provider.security.JwtAuthTokenProvider;
 import com.rocketdan.serviceserver.service.UserRefreshTokenService;
+import com.rocketdan.serviceserver.utils.CookieUtil;
 import com.rocketdan.serviceserver.utils.HeaderUtil;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
@@ -22,6 +23,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.Date;
@@ -38,6 +40,7 @@ public class AuthController {
     private final UserRefreshTokenService userRefreshTokenService;
 
     private final static long THREE_DAYS_MSEC = 259200000;
+    private final static String REFRESH_TOKEN = "refresh_token";
 
     @PostMapping("/login")
     public ResponseEntity<CommonResponse> login(
@@ -109,12 +112,20 @@ public class AuthController {
         Role role = Role.of(claims.get("role", String.class));
 
         // refresh token
-        String refreshToken = HeaderUtil.getRefreshToken(request);
+//        String refreshToken = HeaderUtil.getRefreshToken(request);
+        String refreshToken = CookieUtil.getCookie(request, REFRESH_TOKEN)
+                .map(Cookie::getValue)
+                .orElse((null));
         JwtAuthToken authRefreshToken = jwtAuthTokenProvider.convertAuthToken(refreshToken);
 
         try {
             authRefreshToken.validate();
         } catch (ExpiredJwtException e) {
+            throw new CustomRefreshTokenException();
+        }
+
+        // refresh token DB 확인
+        if (!userRefreshTokenService.checkValid(userId, refreshToken)) {
             throw new CustomRefreshTokenException();
         }
 

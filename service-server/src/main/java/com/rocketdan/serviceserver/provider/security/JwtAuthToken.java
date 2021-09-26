@@ -72,7 +72,6 @@ public class JwtAuthToken implements AuthToken<Claims> {
         return null;
     }
 
-
     // 로그인 요청 및 JWT 토큰을 생성
     private Optional<String> createJwtAuthToken(String id, String role, Date expiredDate) {
 

@@ -7,7 +7,7 @@ public class HeaderUtil {
     private final static String HEADER_AUTHORIZATION = "Authorization";
     private final static String TOKEN_PREFIX = "Bearer ";
 
-    public final static String REFRESH_TOKEN = "refresh_token";
+    public final static String REFRESH_TOKEN = "Cookie";
 
     public static String getAccessToken(HttpServletRequest request) {
         String headerValue = request.getHeader(HEADER_AUTHORIZATION);

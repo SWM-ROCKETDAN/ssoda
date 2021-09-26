@@ -39,7 +39,7 @@ public class UserRefreshTokenService {
     }
 
     @Transactional(readOnly = true)
-    public UserRefreshToken findByUserIdAndRefreshToken(String userId, String refreshToken){
-        return userRefreshTokenRepository.findByUserIdAndRefreshToken(userId, refreshToken).orElseThrow(CustomRefreshTokenException::new);
+    public boolean checkValid(String userId, String refreshToken){
+        return userRefreshTokenRepository.findByUserIdAndRefreshToken(userId, refreshToken).isPresent();
     }
 }
