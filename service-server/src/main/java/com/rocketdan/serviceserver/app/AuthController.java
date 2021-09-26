@@ -39,6 +39,7 @@ public class AuthController {
     private final AuthenticationManager authenticationManager;
     private final UserRefreshTokenService userRefreshTokenService;
 
+    private final static String HEADER_AUTHORIZATION = "Authorization";
     private final static long THREE_DAYS_MSEC = 259200000;
     private final static String REFRESH_TOKEN = "refresh_token";
 
@@ -74,10 +75,14 @@ public class AuthController {
         // userId refresh token 으로 DB 확인
         userRefreshTokenService.saveOrUpdate(userId, refreshToken.getToken());
 
-        // auth-token을 헤더에 전달
+        // access token을 헤더에 전달
         HttpHeaders responseHeaders = new HttpHeaders();
-        responseHeaders.set("access_token", accessToken.getToken());
-        responseHeaders.set("refresh_token", refreshToken.getToken());
+        responseHeaders.set(HEADER_AUTHORIZATION, accessToken.getToken());
+
+        // refresh token을 쿠키로 전달
+        int cookieMaxAge = (int) refreshTokenExpiry / 60;
+        CookieUtil.deleteCookie(request, response, REFRESH_TOKEN);
+        CookieUtil.addCookie(response, REFRESH_TOKEN, refreshToken.getToken(), cookieMaxAge);
 
         return ResponseEntity.ok()
                 .headers(responseHeaders)
@@ -150,11 +155,17 @@ public class AuthController {
 
             // DB에 refresh 토큰 업데이트
             userRefreshTokenService.update(userId, authRefreshToken.getToken());
+
+            // refresh token을 쿠키로 전달
+            int cookieMaxAge = (int) refreshTokenExpiry / 60;
+            CookieUtil.deleteCookie(request, response, REFRESH_TOKEN);
+            CookieUtil.addCookie(response, REFRESH_TOKEN, authRefreshToken.getToken(), cookieMaxAge);
         }
 
+        // access token을 헤더에 전달
         HttpHeaders responseHeaders = new HttpHeaders();
-        responseHeaders.set("access_token", newAccessToken.getToken());
-        responseHeaders.set("refresh_token", authRefreshToken.getToken());
+        responseHeaders.set(HEADER_AUTHORIZATION, newAccessToken.getToken());
+//        responseHeaders.set("refresh_token", authRefreshToken.getToken());
 
         return ResponseEntity.ok()
                 .headers(responseHeaders)
