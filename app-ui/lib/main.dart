@@ -51,7 +51,7 @@ class MyApp extends StatelessWidget {
                 data: MediaQuery.of(context).copyWith(
                     textScaleFactor: MediaQuery.of(context)
                         .textScaleFactor
-                        .clamp(0.9, 1.1))),
+                        .clamp(0.95, 1.05))),
           );
         }
       },
