@@ -3,6 +3,8 @@ import 'package:hashchecker/api.dart';
 import 'package:hashchecker/constants.dart';
 import 'package:hashchecker/models/event.dart';
 import 'package:hashchecker/models/event_edit_data.dart';
+import 'package:hashchecker/models/event_report_item.dart';
+import 'package:hashchecker/models/event_report_per_period.dart';
 import 'package:hashchecker/screens/event_list/event_detail/event_detail_screen.dart';
 import 'package:hashchecker/screens/event_list/event_edit/event_edit_modal.dart';
 import 'package:hashchecker/screens/hall/hall_screen.dart';
@@ -61,15 +63,15 @@ class EventOptionsModal extends StatelessWidget {
                   child: EventEditModal(eventId: eventId)),
             ),
           ),
-          /*
           ListTile(
-            title: Text('마케팅 보고서',
-                style: TextStyle(
-                    color: kDefaultFontColor.withOpacity(0.8), fontSize: 15)),
-            leading: Icon(Icons.assessment_rounded,
-                color: kDefaultFontColor.withOpacity(0.8)),
-            onTap: () => {},
-          ),*/
+              title: Text('마케팅 보고서',
+                  style: TextStyle(
+                      color: kDefaultFontColor.withOpacity(0.8), fontSize: 15)),
+              leading: Icon(Icons.assessment_rounded,
+                  color: kDefaultFontColor.withOpacity(0.8)),
+              onTap: () {
+                _showEventReport(context);
+              }),
           ListTile(
             enabled: _isEnableToStop(),
             title: Text('이벤트 중지',
@@ -327,5 +329,28 @@ class EventOptionsModal extends StatelessWidget {
             shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(15))));
     Navigator.pop(context);
+  }
+
+  Future<void> _showEventReport(BuildContext context) async {
+    var dio = await authDio();
+
+    final getEventReportResponse =
+        await dio.get(getApi(API.GET_REPORT_OF_EVENT, suffix: '/$eventId'));
+    final fetchedEventReportData = getEventReportResponse.data;
+
+    final EventReportItem reportItem =
+        EventReportItem.fromJson(fetchedEventReportData['event']);
+    final EventReportPerPeriod dayReport =
+        EventReportPerPeriod.fromJson(fetchedEventReportData['report']['day']);
+    final EventReportPerPeriod weekReport =
+        EventReportPerPeriod.fromJson(fetchedEventReportData['report']['week']);
+    final EventReportPerPeriod monthReport = EventReportPerPeriod.fromJson(
+        fetchedEventReportData['report']['month']);
+
+    Navigator.of(context).push(slidePageRouting(EventReportScreen(
+        eventReportItem: reportItem,
+        eventDayReport: dayReport,
+        eventWeekReport: weekReport,
+        eventMonthReport: monthReport)));
   }
 }

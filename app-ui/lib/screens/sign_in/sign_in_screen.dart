@@ -93,9 +93,6 @@ class _SignInScreenState extends State<SignInScreen> {
       final accessToken = Uri.parse(result).queryParameters['access-token'];
       final refreshToken = Uri.parse(result).queryParameters['refresh-token'];
 
-      print('accessToken: $accessToken');
-      print('refreshToken: $refreshToken');
-
       // save tokens on secure storage
       await storage.write(key: 'ACCESS_TOKEN', value: accessToken);
       await storage.write(key: 'REFRESH_TOKEN', value: refreshToken);
@@ -135,8 +132,6 @@ class _SignInScreenState extends State<SignInScreen> {
             content: IntrinsicHeight(
               child: Column(children: [
                 Text("로그인 도중 오류가 발생하였습니다.", style: TextStyle(fontSize: 14)),
-                SizedBox(height: kDefaultPadding / 5),
-                Text(errMsg, style: TextStyle(fontSize: 14)),
               ]),
             ),
             contentPadding: const EdgeInsets.fromLTRB(15, 15, 15, 5),
