@@ -1,9 +1,13 @@
+import 'dart:io';
+
 import 'package:dio/dio.dart';
+import 'package:dio_cookie_manager/dio_cookie_manager.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart' as fss;
 import 'package:flutter/material.dart';
 import 'package:hashchecker/constants.dart';
 import 'package:hashchecker/screens/sign_in/sign_in_screen.dart';
+import 'package:cookie_jar/cookie_jar.dart';
 
 const baseUrl = 'https://api.ssoda.io';
 
@@ -92,6 +96,9 @@ Future<Dio> authDio(BuildContext context) async {
       final accessToken = await storage.read(key: 'ACCESS_TOKEN');
       final refreshToken = await storage.read(key: 'REFRESH_TOKEN');
 
+      print('accessToken: $accessToken');
+      print('refreshToken: $refreshToken');
+
       var refreshDio = Dio();
       refreshDio.interceptors.clear();
       refreshDio.interceptors
@@ -109,14 +116,27 @@ Future<Dio> authDio(BuildContext context) async {
 
       // setting refreshDio options
       refreshDio.options.headers['Authorization'] = 'Bearer $accessToken';
-      refreshDio.options.headers['refresh_token'] = 'Bearer $refreshToken';
+      refreshDio.options.headers['Cookie'] = 'refresh_token=$refreshToken';
 
       // get refreshToken
       final refreshResponse = await refreshDio.get(getApi(API.REFRESH));
 
       // parsing tokens
-      final newAccessToken = refreshResponse.headers['access_token']![0];
-      final newRefreshToken = refreshResponse.headers['refresh_token']![0];
+      final newAccessToken = refreshResponse.headers['Authorization']![0];
+
+      final tempRefreshToken =
+          refreshResponse.headers['Set-Cookie']![1].toString();
+
+      print('tempRefreshToken=$tempRefreshToken');
+      final tempRefreshToken2 = tempRefreshToken.split(' ')[0].substring(14);
+
+      print('tempRefreshToken2=$tempRefreshToken2');
+
+      final newRefreshToken =
+          tempRefreshToken2.substring(0, tempRefreshToken2.length - 1);
+
+      print('newAccessToken: $newAccessToken');
+      print('newRefreshToken: $newRefreshToken');
 
       // update dio request headers token
       error.requestOptions.headers['Authorization'] = 'Bearer $newAccessToken';
@@ -126,9 +146,6 @@ Future<Dio> authDio(BuildContext context) async {
       await storage.write(key: 'REFRESH_TOKEN', value: newRefreshToken);
 
       print('change with new access token!');
-
-      print('newAccessToken: $newAccessToken');
-      print('newRefreshToken: $newRefreshToken');
       // create clonedRequest to request again
       final clonedRequest = await dio.request(error.requestOptions.path,
           options: Options(

@@ -151,8 +151,8 @@ class CreateButton extends StatelessWidget {
                   children: [
                     ElevatedButton(
                       onPressed: () async {
-                        await _createStore(context);
                         Navigator.of(context).pop();
+                        await _createStore(context);
                         await _showDoneDialog(context);
                       },
                       child: Text('예',
