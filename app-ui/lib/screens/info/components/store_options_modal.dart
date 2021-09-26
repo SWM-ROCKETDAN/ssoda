@@ -165,7 +165,7 @@ class StoreOptionsModal extends StatelessWidget {
   Future<void> _deleteStore(BuildContext context) async {
     final storeId = context.read<SelectedStore>().id;
 
-    var dio = await authDio();
+    var dio = await authDio(context);
 
     final deleteStoreResponse =
         await dio.delete(getApi(API.DELETE_STORE, suffix: '/$storeId'));

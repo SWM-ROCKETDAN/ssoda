@@ -171,7 +171,7 @@ class ConfirmButton extends StatelessWidget {
     final List<String> deletedImagePaths =
         context.read<EventEditData>().deletedImagePaths;
 
-    var dio = await authDio();
+    var dio = await authDio(context);
 
     dio.options.contentType = 'multipart/form-data';
 

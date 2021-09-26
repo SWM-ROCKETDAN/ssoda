@@ -221,7 +221,7 @@ class ButtonList extends StatelessWidget {
   }
 
   Future<void> _deleteUser(BuildContext context) async {
-    var dio = await authDio();
+    var dio = await authDio(context);
 
     final deleteUserResponse = await dio.delete(getApi(API.DELETE_USER));
 

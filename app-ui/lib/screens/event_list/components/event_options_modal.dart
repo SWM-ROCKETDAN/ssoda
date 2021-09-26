@@ -149,7 +149,7 @@ class EventOptionsModal extends StatelessWidget {
                   children: [
                     TextButton(
                       onPressed: () async {
-                        await _deleteEvent(eventId);
+                        await _deleteEvent(context, eventId);
                         Navigator.of(context).pop();
                         await _showEventDeleteCompleteDialog(context);
                       },
@@ -248,7 +248,7 @@ class EventOptionsModal extends StatelessWidget {
                   children: [
                     TextButton(
                       onPressed: () async {
-                        await _stopEvent(eventId);
+                        await _stopEvent(context, eventId);
                         Navigator.of(context).pop();
                         await _showEventStopCompleteDialog(context);
                       },
@@ -275,16 +275,16 @@ class EventOptionsModal extends StatelessWidget {
                 borderRadius: BorderRadius.circular(15))));
   }
 
-  Future<void> _stopEvent(int eventId) async {
-    var dio = await authDio();
+  Future<void> _stopEvent(BuildContext context, int eventId) async {
+    var dio = await authDio(context);
     final eventStopResponse = await dio.put(
         getApi(API.STOP_EVENT, suffix: '/$eventId/status'),
         data: {'status': EventStatus.ENDED.index});
     print(eventStopResponse.data);
   }
 
-  Future<void> _deleteEvent(int eventId) async {
-    var dio = await authDio();
+  Future<void> _deleteEvent(BuildContext context, int eventId) async {
+    var dio = await authDio(context);
     final eventDeleteResponse =
         await dio.delete(getApi(API.DELETE_EVENT, suffix: '/$eventId'));
     print(eventDeleteResponse.data);
@@ -332,7 +332,7 @@ class EventOptionsModal extends StatelessWidget {
   }
 
   Future<void> _showEventReport(BuildContext context) async {
-    var dio = await authDio();
+    var dio = await authDio(context);
 
     final getEventReportResponse =
         await dio.get(getApi(API.GET_REPORT_OF_EVENT, suffix: '/$eventId'));

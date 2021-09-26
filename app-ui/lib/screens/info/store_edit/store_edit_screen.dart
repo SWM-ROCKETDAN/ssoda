@@ -26,7 +26,7 @@ class _StoreEditScreenState extends State<StoreEditScreen> {
   }
 
   Future<Store> _fetchStoreData() async {
-    var dio = await authDio();
+    var dio = await authDio(context);
 
     final storeId = context.read<SelectedStore>().id;
 

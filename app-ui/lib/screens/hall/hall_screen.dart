@@ -121,7 +121,7 @@ class _HallScreenState extends State<HallScreen> {
   }
 
   Future<List<StoreListItem>> _fetchStoreListData() async {
-    var dio = await authDio();
+    var dio = await authDio(context);
 
     final getStoreListResponse = await dio.get(getApi(API.GET_USER_STORES));
 

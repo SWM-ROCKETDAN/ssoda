@@ -245,7 +245,7 @@ class _HeaderWithImagesState extends State<HeaderWithImages> {
   }
 
   Future<String> _fetchStoreLogoData() async {
-    var dio = await authDio();
+    var dio = await authDio(context);
 
     final getStoreResponse =
         await dio.get(getApi(API.GET_STORE, suffix: '/${widget.storeId}'));

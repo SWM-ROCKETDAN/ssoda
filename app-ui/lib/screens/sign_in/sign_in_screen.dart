@@ -100,7 +100,7 @@ class _SignInScreenState extends State<SignInScreen> {
       showLoginFailDialog(e.toString());
     }
 
-    var dio = await authDio();
+    var dio = await authDio(context);
     final getUserStoreListResponse = await dio.get(getApi(API.GET_USER_STORES));
     final storeList = getUserStoreListResponse.data;
 

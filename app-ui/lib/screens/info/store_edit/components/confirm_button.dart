@@ -73,7 +73,7 @@ class ConfirmButton extends StatelessWidget {
   }
 
   Future<void> _updateStore(BuildContext context) async {
-    var dio = await authDio();
+    var dio = await authDio(context);
 
     dio.options.contentType = 'multipart/form-data';
 

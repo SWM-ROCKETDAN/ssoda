@@ -34,7 +34,7 @@ class CreateEventButton extends StatelessWidget {
           final templateImagePath = await _saveTemplateImage(context);
 
           final storeId = context.read<SelectedStore>().id!;
-          await _createEvent(storeId);
+          await _createEvent(context, storeId);
 
           Navigator.of(context).pushAndRemoveUntil(
               slidePageRouting(
@@ -51,8 +51,8 @@ class CreateEventButton extends StatelessWidget {
     );
   }
 
-  Future<void> _createEvent(int storeId) async {
-    var dio = await authDio();
+  Future<void> _createEvent(BuildContext context, int storeId) async {
+    var dio = await authDio(context);
 
     dio.options.contentType = 'multipart/form-data';
 

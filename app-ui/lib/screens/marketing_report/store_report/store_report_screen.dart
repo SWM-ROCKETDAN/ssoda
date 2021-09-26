@@ -169,7 +169,7 @@ class _StoreReportScreenState extends State<StoreReportScreen> {
 
   Future<List<EventReport>> _fetchEventReportData() async {
     final storeId = context.read<SelectedStore>().id;
-    var dio = await authDio();
+    var dio = await authDio(context);
 
     final getStoreResponse =
         await dio.get(getApi(API.GET_STORE, suffix: '/$storeId'));
@@ -249,7 +249,7 @@ class _StoreReportScreenState extends State<StoreReportScreen> {
 
   Future<StoreReportOverview> _fetchStoreReportData() async {
     final storeId = context.read<SelectedStore>().id;
-    var dio = await authDio();
+    var dio = await authDio(context);
     final getStoreReportResponse =
         await dio.get(getApi(API.GET_REPORT_OF_STORE, suffix: '/$storeId'));
     final fetchedStoreReportData = getStoreReportResponse.data['report'];

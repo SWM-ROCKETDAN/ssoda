@@ -1,5 +1,9 @@
 import 'package:dio/dio.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart' as fss;
+import 'package:flutter/material.dart';
+import 'package:hashchecker/constants.dart';
+import 'package:hashchecker/screens/sign_in/sign_in_screen.dart';
 
 const baseUrl = 'https://api.ssoda.io';
 
@@ -68,7 +72,7 @@ String getApi(API apiType, {String? suffix}) {
   return api;
 }
 
-Future<Dio> authDio() async {
+Future<Dio> authDio(BuildContext context) async {
   var dio = Dio();
 
   final storage = new fss.FlutterSecureStorage();
@@ -95,6 +99,10 @@ Future<Dio> authDio() async {
         if (error.response?.statusCode == 401) {
           print('refresh token expired');
           await storage.deleteAll();
+          Navigator.of(context).pushAndRemoveUntil(
+              slidePageRouting(SignInScreen()),
+              (Route<dynamic> route) => false);
+          await _showLoginExpiredDialog(context);
         }
         return handler.next(error);
       }));
@@ -134,4 +142,38 @@ Future<Dio> authDio() async {
     return handler.next(error);
   }));
   return dio;
+}
+
+Future<void> _showLoginExpiredDialog(BuildContext context) async {
+  await showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+          title: Center(
+            child: Text('로그인 만료',
+                style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 18,
+                    color: kDefaultFontColor),
+                textAlign: TextAlign.center),
+          ),
+          content: Text("로그인이 만료되었습니다.\n다시 로그인 해주세요!",
+              textAlign: TextAlign.center,
+              style: TextStyle(fontSize: 14, color: kDefaultFontColor)),
+          contentPadding: const EdgeInsets.fromLTRB(15, 15, 15, 5),
+          actions: [
+            Center(
+              child: ElevatedButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+                child: Text('확인', style: TextStyle(fontSize: 13)),
+                style: ButtonStyle(
+                    shadowColor: MaterialStateProperty.all<Color>(kShadowColor),
+                    backgroundColor:
+                        MaterialStateProperty.all<Color>(kThemeColor)),
+              ),
+            )
+          ],
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(15))));
 }

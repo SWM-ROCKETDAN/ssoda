@@ -89,7 +89,7 @@ class CreateButton extends StatelessWidget {
   }
 
   Future<void> _createStore(BuildContext context) async {
-    var dio = await authDio();
+    var dio = await authDio(context);
 
     final getUserInfoResponse = await dio.get(getApi(API.GET_USER_INFO));
 
