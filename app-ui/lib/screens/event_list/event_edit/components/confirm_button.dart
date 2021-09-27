@@ -36,7 +36,7 @@ class ConfirmButton extends StatelessWidget {
       child: ElevatedButton(
         onPressed: () async {
           if (_checkEventValidation(context)) {
-            await _updateEvent(context);
+            await showProgressDialog(context, _updateEvent(context));
             await _showDoneDialog(context);
           }
         },

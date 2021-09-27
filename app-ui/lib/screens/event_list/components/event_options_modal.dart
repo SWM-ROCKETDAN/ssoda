@@ -3,6 +3,7 @@ import 'package:hashchecker/api.dart';
 import 'package:hashchecker/constants.dart';
 import 'package:hashchecker/models/event.dart';
 import 'package:hashchecker/models/event_edit_data.dart';
+import 'package:hashchecker/models/event_report.dart';
 import 'package:hashchecker/models/event_report_item.dart';
 import 'package:hashchecker/models/event_report_per_period.dart';
 import 'package:hashchecker/screens/event_list/event_detail/event_detail_screen.dart';
@@ -16,12 +17,14 @@ class EventOptionsModal extends StatelessWidget {
   final int eventId;
   final EventStatus eventStatus;
   final bool isAlreadyInPreview;
-  const EventOptionsModal(
+  EventOptionsModal(
       {Key? key,
       required this.eventId,
       required this.eventStatus,
       required this.isAlreadyInPreview})
       : super(key: key);
+
+  EventReport? eventReport;
 
   @override
   Widget build(BuildContext context) {
@@ -69,8 +72,15 @@ class EventOptionsModal extends StatelessWidget {
                       color: kDefaultFontColor.withOpacity(0.8), fontSize: 15)),
               leading: Icon(Icons.assessment_rounded,
                   color: kDefaultFontColor.withOpacity(0.8)),
-              onTap: () {
-                _showEventReport(context);
+              onTap: () async {
+                await showProgressDialog(context, _loadEventReport(context));
+                Navigator.pop(context);
+                if (eventReport != null)
+                  Navigator.of(context).push(slidePageRouting(EventReportScreen(
+                      eventReportItem: eventReport!.eventReportItem,
+                      eventDayReport: eventReport!.eventDayReport,
+                      eventWeekReport: eventReport!.eventWeekReport,
+                      eventMonthReport: eventReport!.eventMonthReport)));
               }),
           ListTile(
             enabled: _isEnableToStop(),
@@ -331,7 +341,7 @@ class EventOptionsModal extends StatelessWidget {
     Navigator.pop(context);
   }
 
-  Future<void> _showEventReport(BuildContext context) async {
+  Future<void> _loadEventReport(BuildContext context) async {
     var dio = await authDio(context);
 
     final getEventReportResponse =
@@ -347,10 +357,10 @@ class EventOptionsModal extends StatelessWidget {
     final EventReportPerPeriod monthReport = EventReportPerPeriod.fromJson(
         fetchedEventReportData['report']['month']);
 
-    Navigator.of(context).push(slidePageRouting(EventReportScreen(
+    eventReport = EventReport(
         eventReportItem: reportItem,
         eventDayReport: dayReport,
         eventWeekReport: weekReport,
-        eventMonthReport: monthReport)));
+        eventMonthReport: monthReport);
   }
 }

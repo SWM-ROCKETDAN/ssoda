@@ -15,10 +15,11 @@ import 'package:screenshot/screenshot.dart';
 class CreateEventButton extends StatelessWidget {
   final Event event;
   final ScreenshotController screenshotController;
-  const CreateEventButton(
+  CreateEventButton(
       {Key? key, required this.event, required this.screenshotController})
       : super(key: key);
 
+  String? templateImagePath;
   @override
   Widget build(BuildContext context) {
     return SizedBox(
@@ -31,15 +32,12 @@ class CreateEventButton extends StatelessWidget {
               color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold),
         ),
         onPressed: () async {
-          final templateImagePath = await _saveTemplateImage(context);
-
-          final storeId = context.read<SelectedStore>().id!;
-          await _createEvent(context, storeId);
-
-          Navigator.of(context).pushAndRemoveUntil(
-              slidePageRouting(
-                  CreateCompleteScreen(templateImage: templateImagePath)),
-              (Route<dynamic> route) => false);
+          await showProgressDialog(context, _eventCreateProcess(context));
+          if (templateImagePath != null)
+            Navigator.of(context).pushAndRemoveUntil(
+                slidePageRouting(
+                    CreateCompleteScreen(templateImage: templateImagePath!)),
+                (Route<dynamic> route) => false);
         },
         style: ButtonStyle(
             shadowColor: MaterialStateProperty.all<Color>(kShadowColor),
@@ -49,6 +47,14 @@ class CreateEventButton extends StatelessWidget {
                     borderRadius: BorderRadius.circular(27.0)))),
       ),
     );
+  }
+
+  Future<void> _eventCreateProcess(BuildContext context) async {
+    templateImagePath = await _saveTemplateImage(context);
+
+    final storeId = context.read<SelectedStore>().id!;
+
+    await _createEvent(context, storeId);
   }
 
   Future<void> _createEvent(BuildContext context, int storeId) async {
