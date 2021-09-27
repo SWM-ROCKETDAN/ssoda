@@ -91,7 +91,6 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
 
         // DB 저장
         userRefreshTokenService.saveOrUpdate(userInfo.getId(), refreshToken.getToken());
-        System.out.println(accessToken.getToken());
         return UriComponentsBuilder.fromUriString(targetUrl + SUCCESS_COMMAND)
                 .queryParam("access-token", accessToken.getToken())
                 .queryParam("refresh-token", refreshToken.getToken())

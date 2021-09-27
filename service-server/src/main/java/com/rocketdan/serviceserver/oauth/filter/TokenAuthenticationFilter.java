@@ -36,6 +36,7 @@ public class TokenAuthenticationFilter extends OncePerRequestFilter {
             case "GET":
                 return excludeUrlPatternsGET.stream().anyMatch(pattern -> new AntPathMatcher().match(pattern, path));
             case "POST":
+                System.out.println("why????????");
                 return excludeUrlPatternsPOST.stream().anyMatch(pattern -> new AntPathMatcher().match(pattern, path));
             case "PUT":
                 return excludeUrlPatternsPUT.stream().anyMatch(pattern -> new AntPathMatcher().match(pattern, path));

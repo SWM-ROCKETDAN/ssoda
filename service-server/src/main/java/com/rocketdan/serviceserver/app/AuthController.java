@@ -2,6 +2,7 @@ package com.rocketdan.serviceserver.app;
 
 import com.rocketdan.serviceserver.Exception.auth.token.CustomRefreshTokenException;
 import com.rocketdan.serviceserver.Exception.auth.token.NoExpiredTokenYetException;
+import com.rocketdan.serviceserver.app.dto.auth.RefreshTokenResponseDto;
 import com.rocketdan.serviceserver.app.dto.user.LoginRequestDto;
 import com.rocketdan.serviceserver.config.properties.AppProperties;
 import com.rocketdan.serviceserver.core.CommonResponse;
@@ -10,6 +11,7 @@ import com.rocketdan.serviceserver.domain.user.UserPrincipal;
 import com.rocketdan.serviceserver.provider.security.JwtAuthToken;
 import com.rocketdan.serviceserver.provider.security.JwtAuthTokenProvider;
 import com.rocketdan.serviceserver.service.UserRefreshTokenService;
+import com.rocketdan.serviceserver.utils.CookieUtil;
 import com.rocketdan.serviceserver.utils.HeaderUtil;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
@@ -22,6 +24,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.Date;
@@ -37,7 +40,9 @@ public class AuthController {
     private final AuthenticationManager authenticationManager;
     private final UserRefreshTokenService userRefreshTokenService;
 
+    private final static String HEADER_AUTHORIZATION = "Authorization";
     private final static long THREE_DAYS_MSEC = 259200000;
+    private final static String REFRESH_TOKEN = "refresh_token";
 
     @PostMapping("/login")
     public ResponseEntity<CommonResponse> login(
@@ -71,10 +76,14 @@ public class AuthController {
         // userId refresh token 으로 DB 확인
         userRefreshTokenService.saveOrUpdate(userId, refreshToken.getToken());
 
-        // auth-token을 헤더에 전달
+        // access token을 헤더에 전달
         HttpHeaders responseHeaders = new HttpHeaders();
-        responseHeaders.set("access_token", accessToken.getToken());
-        responseHeaders.set("refresh_token", refreshToken.getToken());
+        responseHeaders.set(HEADER_AUTHORIZATION, accessToken.getToken());
+
+        // refresh token을 쿠키로 전달
+        int cookieMaxAge = (int) refreshTokenExpiry / 60;
+        CookieUtil.deleteCookie(request, response, REFRESH_TOKEN);
+        CookieUtil.addCookie(response, REFRESH_TOKEN, refreshToken.getToken(), cookieMaxAge);
 
         return ResponseEntity.ok()
                 .headers(responseHeaders)
@@ -109,12 +118,19 @@ public class AuthController {
         Role role = Role.of(claims.get("role", String.class));
 
         // refresh token
-        String refreshToken = HeaderUtil.getRefreshToken(request);
+        String refreshToken = CookieUtil.getCookie(request, REFRESH_TOKEN)
+                .map(Cookie::getValue)
+                .orElse((null));
         JwtAuthToken authRefreshToken = jwtAuthTokenProvider.convertAuthToken(refreshToken);
 
         try {
             authRefreshToken.validate();
         } catch (ExpiredJwtException e) {
+            throw new CustomRefreshTokenException();
+        }
+
+        // refresh token DB 확인
+        if (!userRefreshTokenService.checkValid(userId, refreshToken)) {
             throw new CustomRefreshTokenException();
         }
 
@@ -141,9 +157,9 @@ public class AuthController {
             userRefreshTokenService.update(userId, authRefreshToken.getToken());
         }
 
+        // access token을 헤더에 전달
         HttpHeaders responseHeaders = new HttpHeaders();
-        responseHeaders.set("access_token", newAccessToken.getToken());
-        responseHeaders.set("refresh_token", authRefreshToken.getToken());
+        responseHeaders.set(HEADER_AUTHORIZATION, newAccessToken.getToken());
 
         return ResponseEntity.ok()
                 .headers(responseHeaders)
@@ -151,7 +167,7 @@ public class AuthController {
                         .message("Successfully generate token.")
                         .code("GENERATE_TOKEN_SUCCESS")
                         .status(200)
-                        .data(userId)
+                        .data(new RefreshTokenResponseDto(authRefreshToken.getToken()))
                         .build()
                 );
     }
