@@ -123,17 +123,7 @@ Future<Dio> authDio(BuildContext context) async {
 
       // parsing tokens
       final newAccessToken = refreshResponse.headers['Authorization']![0];
-
-      final tempRefreshToken =
-          refreshResponse.headers['Set-Cookie']![1].toString();
-
-      print('tempRefreshToken=$tempRefreshToken');
-      final tempRefreshToken2 = tempRefreshToken.split(' ')[0].substring(14);
-
-      print('tempRefreshToken2=$tempRefreshToken2');
-
-      final newRefreshToken =
-          tempRefreshToken2.substring(0, tempRefreshToken2.length - 1);
+      final newRefreshToken = refreshResponse.data['data']['refreshToken'];
 
       print('newAccessToken: $newAccessToken');
       print('newRefreshToken: $newRefreshToken');

@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:future_progress_dialog/future_progress_dialog.dart';
+import 'package:hashchecker/screens/hall/hall_screen.dart';
 
 const kThemeColor = Color(0xFF0071f1);
 const kScaffoldBackgroundColor = Color(0xFFfdfdfe);
@@ -27,4 +29,10 @@ Route slidePageRouting(Widget page) {
       );
     },
   );
+}
+
+Future<void> showProgressDialog(
+    BuildContext context, Future<dynamic> future) async {
+  await showDialog(
+      context: context, builder: (context) => FutureProgressDialog(future));
 }

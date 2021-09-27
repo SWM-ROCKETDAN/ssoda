@@ -45,6 +45,7 @@ dependencies:
   shared_preferences: ^2.0.7
   screenshot: ^1.2.3
   image_cropper: ^1.4.1
+  future_progress_dialog: ^0.2.0
     
 dev_dependencies:
   flutter_test:
