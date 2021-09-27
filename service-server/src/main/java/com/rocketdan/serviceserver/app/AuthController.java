@@ -2,6 +2,7 @@ package com.rocketdan.serviceserver.app;
 
 import com.rocketdan.serviceserver.Exception.auth.token.CustomRefreshTokenException;
 import com.rocketdan.serviceserver.Exception.auth.token.NoExpiredTokenYetException;
+import com.rocketdan.serviceserver.app.dto.auth.RefreshTokenResponseDto;
 import com.rocketdan.serviceserver.app.dto.user.LoginRequestDto;
 import com.rocketdan.serviceserver.config.properties.AppProperties;
 import com.rocketdan.serviceserver.core.CommonResponse;
@@ -117,7 +118,6 @@ public class AuthController {
         Role role = Role.of(claims.get("role", String.class));
 
         // refresh token
-//        String refreshToken = HeaderUtil.getRefreshToken(request);
         String refreshToken = CookieUtil.getCookie(request, REFRESH_TOKEN)
                 .map(Cookie::getValue)
                 .orElse((null));
@@ -155,17 +155,11 @@ public class AuthController {
 
             // DB에 refresh 토큰 업데이트
             userRefreshTokenService.update(userId, authRefreshToken.getToken());
-
-            // refresh token을 쿠키로 전달
-            int cookieMaxAge = (int) refreshTokenExpiry / 60;
-            CookieUtil.deleteCookie(request, response, REFRESH_TOKEN);
-            CookieUtil.addCookie(response, REFRESH_TOKEN, authRefreshToken.getToken(), cookieMaxAge);
         }
 
         // access token을 헤더에 전달
         HttpHeaders responseHeaders = new HttpHeaders();
         responseHeaders.set(HEADER_AUTHORIZATION, newAccessToken.getToken());
-//        responseHeaders.set("refresh_token", authRefreshToken.getToken());
 
         return ResponseEntity.ok()
                 .headers(responseHeaders)
@@ -173,7 +167,7 @@ public class AuthController {
                         .message("Successfully generate token.")
                         .code("GENERATE_TOKEN_SUCCESS")
                         .status(200)
-                        .data(userId)
+                        .data(new RefreshTokenResponseDto(authRefreshToken.getToken()))
                         .build()
                 );
     }
