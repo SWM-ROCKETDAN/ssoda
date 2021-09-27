@@ -153,6 +153,7 @@ class Hashtag(models.Model):
 
 
 class HashtagHashtags(models.Model):
+    id = models.BigAutoField(primary_key=True)
     hashtag = models.ForeignKey(Hashtag, related_name='hashtag_hashtags', on_delete=models.CASCADE)
     hashtags = models.CharField(max_length=255, blank=True, null=True)
 
@@ -169,13 +170,14 @@ class HashtagRequirements(models.Model):
 
 
 class Reward(models.Model):
+    id = models.BigAutoField(primary_key=True)
     category = models.IntegerField(blank=True, null=True)
     count = models.IntegerField(blank=True, null=True)
     name = models.CharField(max_length=255)
     price = models.IntegerField(blank=True, null=True)
     level = models.BigIntegerField(blank=True, null=True)
     used_count = models.IntegerField(blank=True, null=True)
-    event = models.ForeignKey(Event, related_name='rewards', on_delete=models.CASCADE, blank=True, null=True)
+    event = models.ForeignKey(Event, related_name='rewards', on_delete=models.DO_NOTHING, blank=True, null=True)
     image_path = models.CharField(max_length=255, blank=True, null=True)
     deleted = models.BooleanField(null=True, default=False)
 
@@ -231,8 +233,8 @@ class User(models.Model):
 
 class JoinPost(models.Model):
     id = models.BigAutoField(primary_key=True)
-    event = models.ForeignKey(Event, related_name='event', on_delete=models.CASCADE)
-    reward = models.ForeignKey(Reward, related_name='reward', on_delete=models.CASCADE, blank=True, null=True)
+    event = models.ForeignKey(Event, related_name='event', on_delete=models.DO_NOTHING)
+    reward = models.ForeignKey(Reward, related_name='reward', on_delete=models.DO_NOTHING, blank=True, null=True)
     sns_id = models.CharField(max_length=255, blank=True, null=True)
     url = models.CharField(max_length=255)
     type = models.IntegerField(blank=True, null=True)
@@ -247,6 +249,7 @@ class JoinPost(models.Model):
     update_date = models.DateTimeField(blank=True, null=True)
     reward_date = models.DateTimeField(blank=True, null=True)
     deleted = models.BooleanField(null=True, default=False)
+    # deleted = models.BinaryField(null=True, default=False)
 
     class Meta:
         db_table = 'join_post'
@@ -266,11 +269,3 @@ class JoinUser(models.Model):
 
     class Meta:
         db_table = 'join_user'
-
-
-class TaskJoinPost(models.Model):
-    id = models.BigAutoField(primary_key=True)
-    join_post = models.ForeignKey(JoinPost, related_name='join_post', on_delete=models.CASCADE)
-
-    class Meta:
-        db_table = 'task_join_post'
