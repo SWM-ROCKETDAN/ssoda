@@ -1,7 +1,6 @@
 package com.rocketdan.serviceserver.oauth.filter;
 
 import com.rocketdan.serviceserver.Exception.auth.CustomJwtRuntimeException;
-import com.rocketdan.serviceserver.Exception.auth.token.CustomAccessTokenException;
 import com.rocketdan.serviceserver.provider.security.JwtAuthToken;
 import com.rocketdan.serviceserver.provider.security.JwtAuthTokenProvider;
 import com.rocketdan.serviceserver.utils.HeaderUtil;
@@ -36,7 +35,6 @@ public class TokenAuthenticationFilter extends OncePerRequestFilter {
             case "GET":
                 return excludeUrlPatternsGET.stream().anyMatch(pattern -> new AntPathMatcher().match(pattern, path));
             case "POST":
-                System.out.println("why????????");
                 return excludeUrlPatternsPOST.stream().anyMatch(pattern -> new AntPathMatcher().match(pattern, path));
             case "PUT":
                 return excludeUrlPatternsPUT.stream().anyMatch(pattern -> new AntPathMatcher().match(pattern, path));
