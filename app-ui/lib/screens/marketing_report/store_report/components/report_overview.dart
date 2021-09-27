@@ -72,7 +72,11 @@ class ReportOverview extends StatelessWidget {
                     AutoSizeText.rich(
                       TextSpan(children: [
                         TextSpan(
-                            text: numberDisplay(storeReportOverview.guestPrice),
+                            text: numberDisplay(
+                                        storeReportOverview.guestPrice) ==
+                                    ""
+                                ? '0'
+                                : numberDisplay(storeReportOverview.guestPrice),
                             style: TextStyle(
                                 color: kThemeColor,
                                 fontWeight: FontWeight.bold,
