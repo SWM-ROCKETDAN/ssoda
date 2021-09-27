@@ -2,8 +2,8 @@ from .calculator_post import calculate_post_hashtags
 from .calculator_user import calculate_user_follow
 from .calculator_prev import calculate_prev_maintain
 from .calculator_prev import calculate_prev_engagement
-from server.core.modules.static.reward import InstagramReward
-from server.core.modules.assist.time import get_now_date
+from core.modules.static.reward import InstagramReward
+from core.modules.assist.time import get_now_date
 
 
 def get_reward_point(join):

@@ -1,5 +1,5 @@
-from server.core.modules.static.common import Status
-from server.core.modules.static.common import Type
+from core.modules.static.common import Status
+from core.modules.static.common import Type
 from core.modules.assist.time import parse_from_str_time_to_date_time
 from core.modules.assist.time import get_interval_day_from_now_to_target_date_time
 from datetime import datetime

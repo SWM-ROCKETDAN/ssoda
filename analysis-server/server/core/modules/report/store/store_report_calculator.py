@@ -1,5 +1,5 @@
 from ..event.event_report_calculator import get_event_report_dict
-from server.core.exceptions import exceptions
+from core.exceptions import exceptions
 
 key_handlers = [
     'exposure_count',

@@ -1,9 +1,9 @@
 from bs4 import BeautifulSoup
 from urllib.request import urlopen
-from server.core.modules.assist.proxy import get_proxy_url
-from server.core.modules.assist.time import get_now_date
-from server.core.modules.static.common import Type
-from server.core.modules.static.common import Status
+from core.modules.assist.proxy import get_proxy_url
+from core.modules.assist.time import get_now_date
+from core.modules.static.common import Type
+from core.modules.static.common import Status
 from ._scraped_user import ScrapedUser
 import re
 

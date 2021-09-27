@@ -1,6 +1,6 @@
-from server.core.modules.assist.time import get_interval_day_from_now_to_target_date_time
-from server.core.modules.static.scrap import Scrap
-from server.core.modules.static.common import Status
+from core.modules.assist.time import get_interval_day_from_now_to_target_date_time
+from core.modules.static.scrap import Scrap
+from core.modules.static.common import Status
 
 
 # 유저 업데이트 날짜 체크

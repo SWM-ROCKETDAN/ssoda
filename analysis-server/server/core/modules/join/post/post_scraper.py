@@ -1,6 +1,6 @@
 import pprint
-from server.core.modules.static.common import Type
-from server.core.exceptions import exceptions
+from core.modules.static.common import Type
+from core.exceptions import exceptions
 from . import post_scraper_instagram
 from . import post_scraper_facebook
 from .check_post import check_post_event_is_ok

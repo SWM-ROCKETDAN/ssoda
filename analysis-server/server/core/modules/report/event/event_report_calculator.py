@@ -10,7 +10,7 @@ from .calculator_report import get_level_expenditure
 from .calculator_report import get_days_from_start_date_to_now_date
 from core.modules.assist.time import parse_from_str_time_to_date_time
 from core.modules.assist.time import get_now_date
-from server.core.exceptions import exceptions
+from core.exceptions import exceptions
 
 import pprint
 
