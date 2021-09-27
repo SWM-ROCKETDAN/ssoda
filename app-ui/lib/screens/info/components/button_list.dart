@@ -21,61 +21,27 @@ class ButtonList extends StatelessWidget {
     return Container(
       child: Column(
         children: [
-          Row(
-            children: [
-              Expanded(
-                child: Container(
-                  height: 45,
-                  child: ElevatedButton(
-                    onPressed: () => showMaterialModalBottomSheet(
-                        backgroundColor: Colors.transparent,
-                        expand: false,
-                        context: context,
-                        builder: (context) =>
-                            StoreOptionsModal(storeId: storeId)),
-                    child: Text('내 가게',
-                        style:
-                            TextStyle(color: kDefaultFontColor, fontSize: 14)),
-                    style: ButtonStyle(
-                        elevation: MaterialStateProperty.all<double>(4),
-                        overlayColor:
-                            MaterialStateProperty.all<Color>(kShadowColor),
-                        shadowColor:
-                            MaterialStateProperty.all<Color>(kShadowColor),
-                        backgroundColor: MaterialStateProperty.all<Color>(
-                            kScaffoldBackgroundColor),
-                        shape: MaterialStateProperty.all<OutlinedBorder>(
-                            RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(12)))),
-                  ),
-                ),
-              ),
-              SizedBox(width: kDefaultPadding),
-              Expanded(
-                child: Container(
-                  height: 45,
-                  child: ElevatedButton(
-                    onPressed: () {
-                      Navigator.push(context, slidePageRouting(AppInfo()));
-                    },
-                    child: Text('앱 설정',
-                        style:
-                            TextStyle(color: kDefaultFontColor, fontSize: 14)),
-                    style: ButtonStyle(
-                        elevation: MaterialStateProperty.all<double>(4),
-                        overlayColor:
-                            MaterialStateProperty.all<Color>(kShadowColor),
-                        shadowColor:
-                            MaterialStateProperty.all<Color>(kShadowColor),
-                        backgroundColor: MaterialStateProperty.all<Color>(
-                            kScaffoldBackgroundColor),
-                        shape: MaterialStateProperty.all<OutlinedBorder>(
-                            RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(12)))),
-                  ),
-                ),
-              )
-            ],
+          Container(
+            height: 45,
+            width: size.width,
+            child: ElevatedButton(
+              onPressed: () => showMaterialModalBottomSheet(
+                  backgroundColor: Colors.transparent,
+                  expand: false,
+                  context: context,
+                  builder: (context) => StoreOptionsModal(storeId: storeId)),
+              child: Text('내 가게',
+                  style: TextStyle(color: kDefaultFontColor, fontSize: 14)),
+              style: ButtonStyle(
+                  elevation: MaterialStateProperty.all<double>(4),
+                  overlayColor: MaterialStateProperty.all<Color>(kShadowColor),
+                  shadowColor: MaterialStateProperty.all<Color>(kShadowColor),
+                  backgroundColor: MaterialStateProperty.all<Color>(
+                      kScaffoldBackgroundColor),
+                  shape: MaterialStateProperty.all<OutlinedBorder>(
+                      RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12)))),
+            ),
           ),
           SizedBox(height: kDefaultPadding),
           Container(
@@ -255,7 +221,7 @@ class ButtonList extends StatelessWidget {
   }
 
   Future<void> _deleteUser(BuildContext context) async {
-    var dio = await authDio();
+    var dio = await authDio(context);
 
     final deleteUserResponse = await dio.delete(getApi(API.DELETE_USER));
 

@@ -17,7 +17,9 @@ import 'join_qr_code.dart';
 
 class Body extends StatefulWidget {
   final Event event;
-  const Body({Key? key, required this.event}) : super(key: key);
+  final int eventId;
+  const Body({Key? key, required this.event, required this.eventId})
+      : super(key: key);
 
   @override
   _BodyState createState() => _BodyState();
@@ -38,7 +40,10 @@ class _BodyState extends State<Body> {
             color: kScaffoldBackgroundColor,
             child: Column(
               children: [
-                HeaderWithImages(storeId: storeId, event: widget.event),
+                HeaderWithImages(
+                    storeId: storeId,
+                    eventId: widget.eventId,
+                    event: widget.event),
                 SizedBox(height: kDefaultPadding / 4 * 3),
                 EventTitle(event: widget.event),
                 SizedBox(height: kDefaultPadding),

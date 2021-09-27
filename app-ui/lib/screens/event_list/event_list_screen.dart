@@ -56,7 +56,7 @@ class _EventListScreenState extends State<EventListScreen> {
       slivers: [
         SliverAppBar(
           toolbarHeight: 0,
-          expandedHeight: size.width / 16 * 9 * 1.65,
+          expandedHeight: size.width / 3 * 2 * 1.525,
           backgroundColor: kScaffoldBackgroundColor,
           flexibleSpace: FlexibleSpaceBar(
               background: FutureBuilder<Store>(
@@ -199,7 +199,7 @@ class _EventListScreenState extends State<EventListScreen> {
   }
 
   Future<Store> _fetchStoreData() async {
-    var dio = await authDio();
+    var dio = await authDio(context);
 
     final storeId = context.read<SelectedStore>().id;
 
@@ -212,7 +212,7 @@ class _EventListScreenState extends State<EventListScreen> {
   }
 
   Future<List<EventListItem>> _fetchEventListData() async {
-    var dio = await authDio();
+    var dio = await authDio(context);
 
     final storeId = context.read<SelectedStore>().id;
 
@@ -220,6 +220,8 @@ class _EventListScreenState extends State<EventListScreen> {
         .get(getApi(API.GET_EVENTS_OF_STORE, suffix: '/$storeId/events'));
 
     final fetchedEventList = getEventListResponse.data;
+
+    print(fetchedEventList);
 
     List<EventListItem> eventList = List.generate(fetchedEventList.length,
         (index) => EventListItem.fromJson(fetchedEventList[index]));

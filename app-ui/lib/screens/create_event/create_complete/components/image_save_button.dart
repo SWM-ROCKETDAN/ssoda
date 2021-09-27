@@ -29,8 +29,8 @@ class ImageSaveButton extends StatelessWidget {
           ],
         ),
       ),
-      onPressed: () {
-        _saveTemplateImage(context);
+      onPressed: () async {
+        await showProgressDialog(context, _saveTemplateImage(context));
       },
       style: ButtonStyle(
           padding: MaterialStateProperty.all<EdgeInsetsGeometry>(
@@ -42,7 +42,7 @@ class ImageSaveButton extends StatelessWidget {
     );
   }
 
-  void _saveTemplateImage(BuildContext context) async {
+  Future<void> _saveTemplateImage(BuildContext context) async {
     final success = await GallerySaver.saveImage(templateImage);
 
     context.showFlashBar(

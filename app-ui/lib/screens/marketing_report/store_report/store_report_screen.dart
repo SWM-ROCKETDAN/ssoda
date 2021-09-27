@@ -107,6 +107,7 @@ class _StoreReportScreenState extends State<StoreReportScreen> {
                       onChanged: (String? newValue) {
                         setState(() {
                           dropdownValue = newValue!;
+                          _fetchEventReportData();
                         });
                       },
                       items: eventSortDropdownItemList.map((String value) {
@@ -168,7 +169,7 @@ class _StoreReportScreenState extends State<StoreReportScreen> {
 
   Future<List<EventReport>> _fetchEventReportData() async {
     final storeId = context.read<SelectedStore>().id;
-    var dio = await authDio();
+    var dio = await authDio(context);
 
     final getStoreResponse =
         await dio.get(getApi(API.GET_STORE, suffix: '/$storeId'));
@@ -223,12 +224,32 @@ class _StoreReportScreenState extends State<StoreReportScreen> {
           eventMonthReport: monthReport));
     }
 
+    if (dropdownValue == "최신 등록 순") {
+    } else if (dropdownValue == "높은 객단가 순")
+      eventReportList.sort((a, b) => b.eventReportItem.guestPrice!
+          .compareTo(a.eventReportItem.guestPrice!));
+    else if (dropdownValue == "낮은 객단가 순")
+      eventReportList.sort((a, b) => a.eventReportItem.guestPrice!
+          .compareTo(b.eventReportItem.guestPrice!));
+    else if (dropdownValue == "높은 참가자 순")
+      eventReportList.sort((a, b) =>
+          b.eventReportItem.joinCount!.compareTo(a.eventReportItem.joinCount!));
+    else if (dropdownValue == "낮은 참가자 순")
+      eventReportList.sort((a, b) =>
+          a.eventReportItem.joinCount!.compareTo(b.eventReportItem.joinCount!));
+    else if (dropdownValue == "높은 좋아요 순")
+      eventReportList.sort((a, b) =>
+          b.eventReportItem.likeCount!.compareTo(a.eventReportItem.likeCount!));
+    else if (dropdownValue == "낮은 좋아요 순")
+      eventReportList.sort((a, b) =>
+          a.eventReportItem.likeCount!.compareTo(b.eventReportItem.likeCount!));
+
     return eventReportList;
   }
 
   Future<StoreReportOverview> _fetchStoreReportData() async {
     final storeId = context.read<SelectedStore>().id;
-    var dio = await authDio();
+    var dio = await authDio(context);
     final getStoreReportResponse =
         await dio.get(getApi(API.GET_REPORT_OF_STORE, suffix: '/$storeId'));
     final fetchedStoreReportData = getStoreReportResponse.data['report'];

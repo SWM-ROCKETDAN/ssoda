@@ -3,8 +3,6 @@ import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:hashchecker/constants.dart';
 import 'package:hashchecker/models/selected_store.dart';
-import 'package:hashchecker/screens/create_store/create_store_screen.dart';
-import 'package:hashchecker/screens/event_list/event_list_screen.dart';
 import 'package:hashchecker/screens/hall/hall_screen.dart';
 import 'package:hashchecker/screens/on_boarding/on_boarding_screen.dart';
 import 'package:hashchecker/screens/sign_in/sign_in_screen.dart';
@@ -32,22 +30,29 @@ class MyApp extends StatelessWidget {
           return MaterialApp(home: SplashScreen());
         } else {
           return MaterialApp(
-              debugShowCheckedModeBanner: false,
-              title: 'SSODA',
-              localizationsDelegates: [
-                GlobalMaterialLocalizations.delegate,
-                GlobalWidgetsLocalizations.delegate,
-              ],
-              supportedLocales: [
-                const Locale('ko'),
-              ],
-              locale: const Locale('ko'),
-              theme: ThemeData(
-                  primarySwatch: _createMaterialColor(kThemeColor),
-                  visualDensity: VisualDensity.adaptivePlatformDensity,
-                  scaffoldBackgroundColor: kScaffoldBackgroundColor,
-                  accentColor: kShadowColor),
-              home: snapshot.data);
+            debugShowCheckedModeBanner: false,
+            title: 'SSODA',
+            localizationsDelegates: [
+              GlobalMaterialLocalizations.delegate,
+              GlobalWidgetsLocalizations.delegate,
+            ],
+            supportedLocales: [
+              const Locale('ko'),
+            ],
+            locale: const Locale('ko'),
+            theme: ThemeData(
+                primarySwatch: _createMaterialColor(kThemeColor),
+                visualDensity: VisualDensity.adaptivePlatformDensity,
+                scaffoldBackgroundColor: kScaffoldBackgroundColor,
+                accentColor: kShadowColor),
+            home: snapshot.data,
+            builder: (context, child) => MediaQuery(
+                child: child!,
+                data: MediaQuery.of(context).copyWith(
+                    textScaleFactor: MediaQuery.of(context)
+                        .textScaleFactor
+                        .clamp(0.95, 1.05))),
+          );
         }
       },
     );

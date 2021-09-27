@@ -30,8 +30,8 @@ class ActionButton extends StatelessWidget {
                 maxLines: 1,
                 minFontSize: 12,
               ),
-              onPressed: () {
-                _saveTemplateImage(context);
+              onPressed: () async {
+                await showProgressDialog(context, _saveTemplateImage(context));
               },
               style: ButtonStyle(
                   shadowColor: MaterialStateProperty.all<Color>(kShadowColor),
@@ -75,7 +75,7 @@ class ActionButton extends StatelessWidget {
     );
   }
 
-  void _saveTemplateImage(BuildContext context) async {
+  Future<void> _saveTemplateImage(BuildContext context) async {
     Directory tempDir = await getTemporaryDirectory();
     String tempPath = tempDir.path;
 

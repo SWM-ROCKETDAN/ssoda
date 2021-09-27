@@ -73,7 +73,7 @@ class ConfirmButton extends StatelessWidget {
   }
 
   Future<void> _updateStore(BuildContext context) async {
-    var dio = await authDio();
+    var dio = await authDio(context);
 
     dio.options.contentType = 'multipart/form-data';
 
@@ -132,7 +132,8 @@ class ConfirmButton extends StatelessWidget {
                   children: [
                     ElevatedButton(
                       onPressed: () async {
-                        await _updateStore(context);
+                        await showProgressDialog(
+                            context, _updateStore(context));
                         Navigator.of(context).pop();
                         await _showDoneDialog(context);
                       },

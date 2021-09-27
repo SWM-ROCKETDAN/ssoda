@@ -13,8 +13,8 @@
     </queries>
 
    <application
-        android:label="hashchecker"
-        android:icon="@mipmap/ic_launcher"
+        android:label="쏘다"
+        android:icon="@mipmap/launcher_icon"
         android:usesCleartextTraffic="true">
         <activity
             android:name=".MainActivity"
@@ -55,6 +55,11 @@
             <data android:scheme="com.rocketdan.ssoda" />
           </intent-filter>
          </activity>
+
+         <activity
+          android:name="com.yalantis.ucrop.UCropActivity"
+          android:screenOrientation="portrait"
+          android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>
 
         <!-- Don't delete the meta-data below.
              This is used by the Flutter tool to generate GeneratedPluginRegistrant.java -->

@@ -28,7 +28,7 @@ class PriceAndCountInput extends StatelessWidget {
                   decoration: InputDecoration(
                       counterText: "",
                       prefixIcon: Icon(Icons.monetization_on_outlined),
-                      labelText: '단가',
+                      labelText: '상품 단가',
                       suffixText: '원'),
                   maxLength: 7),
             ),
@@ -41,7 +41,7 @@ class PriceAndCountInput extends StatelessWidget {
                   decoration: InputDecoration(
                       counterText: "",
                       prefixIcon: Icon(Icons.toll_outlined),
-                      labelText: '수량',
+                      labelText: '보유 수량',
                       suffixText: '개'),
                   maxLength: 5),
             ),

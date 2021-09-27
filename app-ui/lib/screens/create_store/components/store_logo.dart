@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:hashchecker/constants.dart';
+import 'package:image_cropper/image_cropper.dart';
 
 class StoreLogo extends StatelessWidget {
   final VoidCallback getImageFromGallery;

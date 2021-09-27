@@ -18,36 +18,68 @@ class StoreHeader extends StatelessWidget {
 
     return Column(children: [
       Container(
-        height: size.width / 16 * 9 + size.width * 0.1,
+        height: size.width / 3 * 2 + size.width * 0.1,
         color: kScaffoldBackgroundColor,
         child: Stack(children: [
           CarouselSlider(
             options: CarouselOptions(
                 autoPlay: true,
-                height: size.width / 16 * 9,
+                height: size.width / 3 * 2,
                 viewportFraction: 1.0,
-                enlargeCenterPage: false),
+                enlargeCenterPage: false,
+                aspectRatio: 4 / 3),
             items: store.images
-                .map((item) => Container(
-                      child: Center(
-                          child: Stack(children: [
-                        Image.network(
-                          '$s3Url$item',
-                          fit: BoxFit.cover,
-                          width: size.width,
-                        ),
-                        Container(
-                            decoration: BoxDecoration(
-                          gradient: LinearGradient(
-                            colors: [
-                              kScaffoldBackgroundColor,
-                              Colors.transparent
-                            ],
-                            begin: Alignment.bottomCenter,
-                            end: Alignment.topCenter,
+                .map((item) => GestureDetector(
+                      onTap: () async {
+                        await showDialog(
+                            context: context,
+                            builder: (context) => AlertDialog(
+                                content: Stack(children: [
+                                  ClipRRect(
+                                    child: Image.network(
+                                      '$s3Url$item',
+                                      fit: BoxFit.cover,
+                                    ),
+                                    borderRadius: BorderRadius.circular(15),
+                                  ),
+                                  Positioned(
+                                      right: 12,
+                                      top: 12,
+                                      child: GestureDetector(
+                                        onTap: () {
+                                          Navigator.pop(context);
+                                        },
+                                        child: Icon(
+                                          Icons.close_rounded,
+                                          color: Colors.white,
+                                        ),
+                                      ))
+                                ]),
+                                contentPadding: const EdgeInsets.all(0),
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(15))));
+                      },
+                      child: Container(
+                        child: Center(
+                            child: Stack(children: [
+                          Image.network(
+                            '$s3Url$item',
+                            fit: BoxFit.cover,
+                            width: size.width,
                           ),
-                        ))
-                      ])),
+                          Container(
+                              decoration: BoxDecoration(
+                            gradient: LinearGradient(
+                              colors: [
+                                kScaffoldBackgroundColor,
+                                Colors.transparent
+                              ],
+                              begin: Alignment.bottomCenter,
+                              end: Alignment.topCenter,
+                            ),
+                          ))
+                        ])),
+                      ),
                     ))
                 .toList(),
           ),
@@ -55,22 +87,51 @@ class StoreHeader extends StatelessWidget {
               bottom: 0,
               right: size.width * 0.4,
               left: size.width * 0.4,
-              child: Container(
-                  height: size.width * 0.2,
-                  width: size.width * 0.2,
-                  decoration: BoxDecoration(
-                      boxShadow: [
-                        BoxShadow(
-                            blurRadius: 0.5,
-                            spreadRadius: 0.5,
-                            offset: Offset(0, 0),
-                            color: kDefaultFontColor.withOpacity(0.2))
-                      ],
-                      color: kShadowColor,
-                      shape: BoxShape.circle,
-                      image: DecorationImage(
-                          image: NetworkImage('$s3Url${store.logoImage}'),
-                          fit: BoxFit.cover))))
+              child: GestureDetector(
+                onTap: () async {
+                  await showDialog(
+                      context: context,
+                      builder: (context) => AlertDialog(
+                          content: Stack(children: [
+                            ClipRRect(
+                              child: Image.network('$s3Url${store.logoImage}',
+                                  fit: BoxFit.cover),
+                              borderRadius: BorderRadius.circular(15),
+                            ),
+                            Positioned(
+                                right: 12,
+                                top: 12,
+                                child: GestureDetector(
+                                  onTap: () {
+                                    Navigator.pop(context);
+                                  },
+                                  child: Icon(
+                                    Icons.close_rounded,
+                                    color: kDefaultFontColor,
+                                  ),
+                                ))
+                          ]),
+                          contentPadding: const EdgeInsets.all(0),
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(15))));
+                },
+                child: Container(
+                    height: size.width * 0.2,
+                    width: size.width * 0.2,
+                    decoration: BoxDecoration(
+                        boxShadow: [
+                          BoxShadow(
+                              blurRadius: 0.5,
+                              spreadRadius: 0.5,
+                              offset: Offset(0, 0),
+                              color: kDefaultFontColor.withOpacity(0.2))
+                        ],
+                        color: kShadowColor,
+                        shape: BoxShape.circle,
+                        image: DecorationImage(
+                            image: NetworkImage('$s3Url${store.logoImage}'),
+                            fit: BoxFit.cover))),
+              ))
         ]),
       ),
       SizedBox(height: kDefaultPadding * 1.2),

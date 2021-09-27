@@ -1,5 +1,13 @@
+import 'dart:io';
+
 import 'package:dio/dio.dart';
+import 'package:dio_cookie_manager/dio_cookie_manager.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart' as fss;
+import 'package:flutter/material.dart';
+import 'package:hashchecker/constants.dart';
+import 'package:hashchecker/screens/sign_in/sign_in_screen.dart';
+import 'package:cookie_jar/cookie_jar.dart';
 
 const baseUrl = 'https://api.ssoda.io';
 
@@ -68,7 +76,7 @@ String getApi(API apiType, {String? suffix}) {
   return api;
 }
 
-Future<Dio> authDio() async {
+Future<Dio> authDio(BuildContext context) async {
   var dio = Dio();
 
   final storage = new fss.FlutterSecureStorage();
@@ -81,10 +89,15 @@ Future<Dio> authDio() async {
     return handler.next(options);
   }, onError: (error, handler) async {
     // when accessToken expired
+
     if (error.response?.statusCode == 401) {
       // request refreshing with refreshToken
+      print('access token expired');
       final accessToken = await storage.read(key: 'ACCESS_TOKEN');
       final refreshToken = await storage.read(key: 'REFRESH_TOKEN');
+
+      print('accessToken: $accessToken');
+      print('refreshToken: $refreshToken');
 
       var refreshDio = Dio();
       refreshDio.interceptors.clear();
@@ -93,20 +106,27 @@ Future<Dio> authDio() async {
         if (error.response?.statusCode == 401) {
           print('refresh token expired');
           await storage.deleteAll();
+          Navigator.of(context).pushAndRemoveUntil(
+              slidePageRouting(SignInScreen()),
+              (Route<dynamic> route) => false);
+          await _showLoginExpiredDialog(context);
         }
         return handler.next(error);
       }));
 
       // setting refreshDio options
       refreshDio.options.headers['Authorization'] = 'Bearer $accessToken';
-      refreshDio.options.headers['refresh_token'] = 'Bearer $refreshToken';
+      refreshDio.options.headers['Cookie'] = 'refresh_token=$refreshToken';
 
       // get refreshToken
       final refreshResponse = await refreshDio.get(getApi(API.REFRESH));
 
       // parsing tokens
-      final newAccessToken = refreshResponse.headers['access_token']![0];
-      final newRefreshToken = refreshResponse.headers['refresh_token']![0];
+      final newAccessToken = refreshResponse.headers['Authorization']![0];
+      final newRefreshToken = refreshResponse.data['data']['refreshToken'];
+
+      print('newAccessToken: $newAccessToken');
+      print('newRefreshToken: $newRefreshToken');
 
       // update dio request headers token
       error.requestOptions.headers['Authorization'] = 'Bearer $newAccessToken';
@@ -115,6 +135,7 @@ Future<Dio> authDio() async {
       await storage.write(key: 'ACCESS_TOKEN', value: newAccessToken);
       await storage.write(key: 'REFRESH_TOKEN', value: newRefreshToken);
 
+      print('change with new access token!');
       // create clonedRequest to request again
       final clonedRequest = await dio.request(error.requestOptions.path,
           options: Options(
@@ -128,4 +149,38 @@ Future<Dio> authDio() async {
     return handler.next(error);
   }));
   return dio;
+}
+
+Future<void> _showLoginExpiredDialog(BuildContext context) async {
+  await showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+          title: Center(
+            child: Text('로그인 만료',
+                style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 18,
+                    color: kDefaultFontColor),
+                textAlign: TextAlign.center),
+          ),
+          content: Text("로그인이 만료되었습니다.\n다시 로그인 해주세요!",
+              textAlign: TextAlign.center,
+              style: TextStyle(fontSize: 14, color: kDefaultFontColor)),
+          contentPadding: const EdgeInsets.fromLTRB(15, 15, 15, 5),
+          actions: [
+            Center(
+              child: ElevatedButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+                child: Text('확인', style: TextStyle(fontSize: 13)),
+                style: ButtonStyle(
+                    shadowColor: MaterialStateProperty.all<Color>(kShadowColor),
+                    backgroundColor:
+                        MaterialStateProperty.all<Color>(kThemeColor)),
+              ),
+            )
+          ],
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(15))));
 }

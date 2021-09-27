@@ -49,7 +49,7 @@ class _InfoScreenState extends State<InfoScreen> {
   }
 
   Future<User> _fetchUserData() async {
-    var dio = await authDio();
+    var dio = await authDio(context);
 
     final getUserResponse = await dio.get(getApi(API.GET_USER_INFO));
 

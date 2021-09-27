@@ -10,6 +10,7 @@ import 'package:hashchecker/screens/hall/hall_screen.dart';
 import 'package:flash/flash.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:provider/provider.dart';
+import 'package:future_progress_dialog/future_progress_dialog.dart';
 
 class CreateButton extends StatelessWidget {
   final String? logo;
@@ -89,7 +90,7 @@ class CreateButton extends StatelessWidget {
   }
 
   Future<void> _createStore(BuildContext context) async {
-    var dio = await authDio();
+    var dio = await authDio(context);
 
     final getUserInfoResponse = await dio.get(getApi(API.GET_USER_INFO));
 
@@ -151,8 +152,9 @@ class CreateButton extends StatelessWidget {
                   children: [
                     ElevatedButton(
                       onPressed: () async {
-                        await _createStore(context);
-                        Navigator.of(context).pop();
+                        await showProgressDialog(
+                            context, _createStore(context));
+                        Navigator.pop(context);
                         await _showDoneDialog(context);
                       },
                       child: Text('예',

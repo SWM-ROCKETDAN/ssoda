@@ -18,53 +18,91 @@ class EventDetailScreen extends StatefulWidget {
   _EventDetailScreenState createState() => _EventDetailScreenState();
 }
 
-class _EventDetailScreenState extends State<EventDetailScreen> {
+class _EventDetailScreenState extends State<EventDetailScreen>
+    with TickerProviderStateMixin {
   late Future<Event> event;
+  late AnimationController _colorAnimationController;
+  late Animation _colorTween, _iconColorTween;
+
   @override
   void initState() {
+    _colorAnimationController =
+        AnimationController(vsync: this, duration: Duration(seconds: 0));
+    _colorTween = ColorTween(begin: Colors.transparent, end: Colors.white)
+        .animate(_colorAnimationController);
+    _iconColorTween = ColorTween(begin: Colors.white, end: kDefaultFontColor)
+        .animate(_colorAnimationController);
+    ;
     super.initState();
+
     event = _fetchEventData();
+  }
+
+  bool _scrollListener(ScrollNotification scrollInfo) {
+    if (scrollInfo.metrics.axis == Axis.vertical) {
+      _colorAnimationController.animateTo(scrollInfo.metrics.pixels / 130);
+      return true;
+    }
+    return false;
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          backgroundColor: kScaffoldBackgroundColor,
-          leading: IconButton(
-              onPressed: () {
-                Navigator.pop(context);
-              },
-              icon: Icon(Icons.arrow_back_ios_new_rounded),
-              color: kDefaultFontColor),
-          actions: [
-            IconButton(
-                onPressed: () => showMaterialModalBottomSheet(
-                    backgroundColor: Colors.transparent,
-                    expand: false,
-                    context: context,
-                    builder: (context) => EventOptionsModal(
-                        eventId: widget.eventId,
-                        eventStatus: widget.eventStatus,
-                        isAlreadyInPreview: true)),
-                icon: Icon(Icons.more_vert_rounded, color: kDefaultFontColor))
-          ],
-        ),
-        body: FutureBuilder<Event>(
-            future: event,
-            builder: (context, snapshot) {
-              if (snapshot.hasData) {
-                return Body(event: snapshot.data!);
-              } else if (snapshot.hasError) {
-                return Text('${snapshot.error}');
-              }
+        body: NotificationListener<ScrollNotification>(
+      onNotification: _scrollListener,
+      child: Container(
+        height: double.infinity,
+        child: Stack(children: [
+          FutureBuilder<Event>(
+              future: event,
+              builder: (context, snapshot) {
+                if (snapshot.hasData) {
+                  return SingleChildScrollView(
+                    child: Body(event: snapshot.data!, eventId: widget.eventId),
+                  );
+                } else if (snapshot.hasError) {
+                  return Text('${snapshot.error}');
+                }
 
-              return Center(child: const CircularProgressIndicator());
-            }));
+                return Center(child: const CircularProgressIndicator());
+              }),
+          Container(
+            height: kToolbarHeight * 2,
+            child: AnimatedBuilder(
+              animation: _colorAnimationController,
+              builder: (context, build) => AppBar(
+                elevation: 0,
+                backgroundColor: _colorTween.value,
+                leading: IconButton(
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                    icon: Icon(Icons.arrow_back_ios_new_rounded),
+                    color: _iconColorTween.value),
+                actions: [
+                  IconButton(
+                      onPressed: () => showMaterialModalBottomSheet(
+                          backgroundColor: _colorTween.value,
+                          expand: false,
+                          context: context,
+                          builder: (context) => EventOptionsModal(
+                              eventId: widget.eventId,
+                              eventStatus: widget.eventStatus,
+                              isAlreadyInPreview: true)),
+                      icon: Icon(Icons.more_vert_rounded,
+                          color: _iconColorTween.value))
+                ],
+              ),
+            ),
+          )
+        ]),
+      ),
+    ));
   }
 
   Future<List<Reward>> _fetchRewardListData() async {
-    var dio = await authDio();
+    var dio = await authDio(context);
 
     final getRewardListResponse = await dio.get(
         getApi(API.GET_REWARD_OF_EVENT, suffix: '/${widget.eventId}/rewards'));
@@ -82,7 +120,7 @@ class _EventDetailScreenState extends State<EventDetailScreen> {
   Future<Event> _fetchEventData() async {
     List<Reward> _rewardList = await _fetchRewardListData();
 
-    var dio = await authDio();
+    var dio = await authDio(context);
 
     final getEventResponse =
         await dio.get(getApi(API.GET_EVENT, suffix: '/${widget.eventId}'));

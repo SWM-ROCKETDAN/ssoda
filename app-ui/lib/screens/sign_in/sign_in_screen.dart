@@ -100,7 +100,7 @@ class _SignInScreenState extends State<SignInScreen> {
       showLoginFailDialog(e.toString());
     }
 
-    var dio = await authDio();
+    var dio = await authDio(context);
     final getUserStoreListResponse = await dio.get(getApi(API.GET_USER_STORES));
     final storeList = getUserStoreListResponse.data;
 
@@ -132,8 +132,6 @@ class _SignInScreenState extends State<SignInScreen> {
             content: IntrinsicHeight(
               child: Column(children: [
                 Text("로그인 도중 오류가 발생하였습니다.", style: TextStyle(fontSize: 14)),
-                SizedBox(height: kDefaultPadding / 5),
-                Text(errMsg, style: TextStyle(fontSize: 14)),
               ]),
             ),
             contentPadding: const EdgeInsets.fromLTRB(15, 15, 15, 5),

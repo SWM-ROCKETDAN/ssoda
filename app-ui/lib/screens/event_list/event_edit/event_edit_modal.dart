@@ -24,7 +24,7 @@ class _EventEditModalState extends State<EventEditModal> {
       DateRangePickerController();
 
   Future<List<Reward?>> _fetchRewardListData() async {
-    var dio = await authDio();
+    var dio = await authDio(context);
 
     final getRewardListResponse = await dio.get(
         getApi(API.GET_REWARD_OF_EVENT, suffix: '/${widget.eventId}/rewards'));
@@ -43,7 +43,7 @@ class _EventEditModalState extends State<EventEditModal> {
   Future<Event> _fetchEventData() async {
     List<Reward?> _rewardList = await _fetchRewardListData();
 
-    var dio = await authDio();
+    var dio = await authDio(context);
 
     final getEventResponse =
         await dio.get(getApi(API.GET_EVENT, suffix: '/${widget.eventId}'));

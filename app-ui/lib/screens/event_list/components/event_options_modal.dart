@@ -3,6 +3,9 @@ import 'package:hashchecker/api.dart';
 import 'package:hashchecker/constants.dart';
 import 'package:hashchecker/models/event.dart';
 import 'package:hashchecker/models/event_edit_data.dart';
+import 'package:hashchecker/models/event_report.dart';
+import 'package:hashchecker/models/event_report_item.dart';
+import 'package:hashchecker/models/event_report_per_period.dart';
 import 'package:hashchecker/screens/event_list/event_detail/event_detail_screen.dart';
 import 'package:hashchecker/screens/event_list/event_edit/event_edit_modal.dart';
 import 'package:hashchecker/screens/hall/hall_screen.dart';
@@ -14,12 +17,14 @@ class EventOptionsModal extends StatelessWidget {
   final int eventId;
   final EventStatus eventStatus;
   final bool isAlreadyInPreview;
-  const EventOptionsModal(
+  EventOptionsModal(
       {Key? key,
       required this.eventId,
       required this.eventStatus,
       required this.isAlreadyInPreview})
       : super(key: key);
+
+  EventReport? eventReport;
 
   @override
   Widget build(BuildContext context) {
@@ -62,13 +67,21 @@ class EventOptionsModal extends StatelessWidget {
             ),
           ),
           ListTile(
-            title: Text('마케팅 보고서',
-                style: TextStyle(
-                    color: kDefaultFontColor.withOpacity(0.8), fontSize: 15)),
-            leading: Icon(Icons.assessment_rounded,
-                color: kDefaultFontColor.withOpacity(0.8)),
-            onTap: () => {},
-          ),
+              title: Text('마케팅 보고서',
+                  style: TextStyle(
+                      color: kDefaultFontColor.withOpacity(0.8), fontSize: 15)),
+              leading: Icon(Icons.assessment_rounded,
+                  color: kDefaultFontColor.withOpacity(0.8)),
+              onTap: () async {
+                await showProgressDialog(context, _loadEventReport(context));
+                Navigator.pop(context);
+                if (eventReport != null)
+                  Navigator.of(context).push(slidePageRouting(EventReportScreen(
+                      eventReportItem: eventReport!.eventReportItem,
+                      eventDayReport: eventReport!.eventDayReport,
+                      eventWeekReport: eventReport!.eventWeekReport,
+                      eventMonthReport: eventReport!.eventMonthReport)));
+              }),
           ListTile(
             enabled: _isEnableToStop(),
             title: Text('이벤트 중지',
@@ -146,7 +159,7 @@ class EventOptionsModal extends StatelessWidget {
                   children: [
                     TextButton(
                       onPressed: () async {
-                        await _deleteEvent(eventId);
+                        await _deleteEvent(context, eventId);
                         Navigator.of(context).pop();
                         await _showEventDeleteCompleteDialog(context);
                       },
@@ -245,7 +258,7 @@ class EventOptionsModal extends StatelessWidget {
                   children: [
                     TextButton(
                       onPressed: () async {
-                        await _stopEvent(eventId);
+                        await _stopEvent(context, eventId);
                         Navigator.of(context).pop();
                         await _showEventStopCompleteDialog(context);
                       },
@@ -272,16 +285,16 @@ class EventOptionsModal extends StatelessWidget {
                 borderRadius: BorderRadius.circular(15))));
   }
 
-  Future<void> _stopEvent(int eventId) async {
-    var dio = await authDio();
+  Future<void> _stopEvent(BuildContext context, int eventId) async {
+    var dio = await authDio(context);
     final eventStopResponse = await dio.put(
         getApi(API.STOP_EVENT, suffix: '/$eventId/status'),
         data: {'status': EventStatus.ENDED.index});
     print(eventStopResponse.data);
   }
 
-  Future<void> _deleteEvent(int eventId) async {
-    var dio = await authDio();
+  Future<void> _deleteEvent(BuildContext context, int eventId) async {
+    var dio = await authDio(context);
     final eventDeleteResponse =
         await dio.delete(getApi(API.DELETE_EVENT, suffix: '/$eventId'));
     print(eventDeleteResponse.data);
@@ -326,5 +339,28 @@ class EventOptionsModal extends StatelessWidget {
             shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(15))));
     Navigator.pop(context);
+  }
+
+  Future<void> _loadEventReport(BuildContext context) async {
+    var dio = await authDio(context);
+
+    final getEventReportResponse =
+        await dio.get(getApi(API.GET_REPORT_OF_EVENT, suffix: '/$eventId'));
+    final fetchedEventReportData = getEventReportResponse.data;
+
+    final EventReportItem reportItem =
+        EventReportItem.fromJson(fetchedEventReportData['event']);
+    final EventReportPerPeriod dayReport =
+        EventReportPerPeriod.fromJson(fetchedEventReportData['report']['day']);
+    final EventReportPerPeriod weekReport =
+        EventReportPerPeriod.fromJson(fetchedEventReportData['report']['week']);
+    final EventReportPerPeriod monthReport = EventReportPerPeriod.fromJson(
+        fetchedEventReportData['report']['month']);
+
+    eventReport = EventReport(
+        eventReportItem: reportItem,
+        eventDayReport: dayReport,
+        eventWeekReport: weekReport,
+        eventMonthReport: monthReport);
   }
 }

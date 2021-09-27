@@ -36,7 +36,7 @@ class ConfirmButton extends StatelessWidget {
       child: ElevatedButton(
         onPressed: () async {
           if (_checkEventValidation(context)) {
-            await _updateEvent(context);
+            await showProgressDialog(context, _updateEvent(context));
             await _showDoneDialog(context);
           }
         },
@@ -171,18 +171,28 @@ class ConfirmButton extends StatelessWidget {
     final List<String> deletedImagePaths =
         context.read<EventEditData>().deletedImagePaths;
 
-    var dio = await authDio();
+    var dio = await authDio(context);
 
     dio.options.contentType = 'multipart/form-data';
 
     var eventData = FormData.fromMap({
       'title': eventTitleController.value.text.trim(),
-      'startDate': DateFormat('yyyy-MM-ddTHH:mm:ss')
-          .format(startDatePickerController.selectedDate!),
+      'startDate': DateFormat('yyyy-MM-ddTHH:mm:ss').format(DateTime(
+          startDatePickerController.selectedDate!.year,
+          startDatePickerController.selectedDate!.month,
+          startDatePickerController.selectedDate!.day,
+          0,
+          0,
+          0)),
       'finishDate': finishDatePickerController.selectedDate == null
           ? null
-          : DateFormat('yyyy-MM-ddTHH:mm:ss')
-              .format(finishDatePickerController.selectedDate!),
+          : DateFormat('yyyy-MM-ddTHH:mm:ss').format(DateTime(
+              finishDatePickerController.selectedDate!.year,
+              finishDatePickerController.selectedDate!.month,
+              finishDatePickerController.selectedDate!.day,
+              23,
+              59,
+              59)),
       if (newImages.length > 0)
         'newImages': List.generate(newImages.length,
             (index) => MultipartFile.fromFileSync(newImages[index])),
