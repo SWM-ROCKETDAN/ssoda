@@ -8,6 +8,7 @@ import 'package:hashchecker/models/event_report_per_period.dart';
 import 'package:hashchecker/models/selected_store.dart';
 import 'package:hashchecker/models/store_report.dart';
 import 'package:hashchecker/models/store_report_overview.dart';
+import 'package:hashchecker/screens/event_list/components/empty.dart';
 import 'package:hashchecker/screens/marketing_report/store_report/components/event_report_card.dart';
 import 'package:number_display/number_display.dart';
 import 'package:provider/provider.dart';
@@ -59,7 +60,7 @@ class _StoreReportScreenState extends State<StoreReportScreen> {
                 '리포트 요약',
                 style: TextStyle(
                     fontWeight: FontWeight.bold,
-                    fontSize: 24,
+                    fontSize: 20,
                     color: kDefaultFontColor),
               ),
               SizedBox(height: kDefaultPadding / 5 * 6),
@@ -83,7 +84,7 @@ class _StoreReportScreenState extends State<StoreReportScreen> {
                     '이벤트 별 리포트',
                     style: TextStyle(
                         fontWeight: FontWeight.bold,
-                        fontSize: 24,
+                        fontSize: 20,
                         color: kDefaultFontColor),
                   ),
                   DropdownButton(
@@ -131,29 +132,38 @@ class _StoreReportScreenState extends State<StoreReportScreen> {
                   builder: (context, snapshot) {
                     if (snapshot.hasData) {
                       return AnimationLimiter(
-                          child: Column(
-                        children: AnimationConfiguration.toStaggeredList(
-                            duration: const Duration(milliseconds: 500),
-                            childAnimationBuilder: (widget) => SlideAnimation(
-                                  horizontalOffset: 100,
-                                  child: FadeInAnimation(
-                                    child: widget,
-                                  ),
-                                ),
-                            children: List.generate(
-                              snapshot.data!.length,
-                              (index) => EventReportCard(
-                                  eventReportItem:
-                                      snapshot.data![index].eventReportItem,
-                                  eventDayReport:
-                                      snapshot.data![index].eventDayReport,
-                                  eventWeekReport:
-                                      snapshot.data![index].eventWeekReport,
-                                  eventMonthReport:
-                                      snapshot.data![index].eventMonthReport,
-                                  numberDisplay: numberDisplay),
-                            )),
-                      ));
+                          child: snapshot.data!.length == 0
+                              ? Empty()
+                              : Column(
+                                  children:
+                                      AnimationConfiguration.toStaggeredList(
+                                          duration:
+                                              const Duration(milliseconds: 500),
+                                          childAnimationBuilder: (widget) =>
+                                              SlideAnimation(
+                                                horizontalOffset: 100,
+                                                child: FadeInAnimation(
+                                                  child: widget,
+                                                ),
+                                              ),
+                                          children: List.generate(
+                                            snapshot.data!.length,
+                                            (index) => EventReportCard(
+                                                eventReportItem: snapshot
+                                                    .data![index]
+                                                    .eventReportItem,
+                                                eventDayReport: snapshot
+                                                    .data![index]
+                                                    .eventDayReport,
+                                                eventWeekReport: snapshot
+                                                    .data![index]
+                                                    .eventWeekReport,
+                                                eventMonthReport: snapshot
+                                                    .data![index]
+                                                    .eventMonthReport,
+                                                numberDisplay: numberDisplay),
+                                          )),
+                                ));
                     } else if (snapshot.hasError) {
                       return Text('${snapshot.error}');
                     }
@@ -177,7 +187,7 @@ class _StoreReportScreenState extends State<StoreReportScreen> {
     var eventIdsFromJson = getStoreResponse.data['eventIds'];
     final List<int> eventIdList = eventIdsFromJson.cast<int>();
 
-    final List<EventReport> eventReportList = [];
+    List<EventReport> eventReportList = [];
 
     for (int i = 0; i < eventIdList.length; i++) {
       final getEventReportResponse = await dio
@@ -225,6 +235,7 @@ class _StoreReportScreenState extends State<StoreReportScreen> {
     }
 
     if (dropdownValue == "최신 등록 순") {
+      eventReportList = List.from(eventReportList.reversed);
     } else if (dropdownValue == "높은 객단가 순")
       eventReportList.sort((a, b) => b.eventReportItem.guestPrice!
           .compareTo(a.eventReportItem.guestPrice!));
