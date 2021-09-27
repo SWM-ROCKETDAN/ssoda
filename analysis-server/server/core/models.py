@@ -129,7 +129,7 @@ class Event(models.Model):
     start_date = models.DateTimeField()
     status = models.IntegerField()
     title = models.CharField(max_length=255)
-    store = models.ForeignKey('Store', models.DO_NOTHING, blank=True, null=True)
+    store = models.ForeignKey('Store', on_delete=models.CASCADE, blank=True, null=True)
     deleted = models.BooleanField(null=True, default=False)
 
     class Meta:
@@ -161,7 +161,7 @@ class HashtagHashtags(models.Model):
 
 
 class HashtagRequirements(models.Model):
-    hashtag = models.ForeignKey(Hashtag, models.DO_NOTHING)
+    hashtag = models.ForeignKey(Hashtag, on_delete=models.CASCADE)
     requirements = models.TextField()  # This field type is a guess.
 
     class Meta:
@@ -175,7 +175,7 @@ class Reward(models.Model):
     price = models.IntegerField(blank=True, null=True)
     level = models.BigIntegerField(blank=True, null=True)
     used_count = models.IntegerField(blank=True, null=True)
-    event = models.ForeignKey(Event, related_name='rewards', on_delete=models.DO_NOTHING, blank=True, null=True)
+    event = models.ForeignKey(Event, related_name='rewards', on_delete=models.CASCADE, blank=True, null=True)
     image_path = models.CharField(max_length=255, blank=True, null=True)
     deleted = models.BooleanField(null=True, default=False)
 
@@ -195,7 +195,7 @@ class Store(models.Model):
     category = models.IntegerField(blank=True, null=True)
     description = models.TextField(blank=True, null=True)
     name = models.CharField(max_length=255, blank=True, null=True)
-    user = models.ForeignKey('User', models.DO_NOTHING, blank=True, null=True)
+    user = models.ForeignKey('User', on_delete=models.CASCADE, blank=True, null=True)
     logo_image_path = models.CharField(max_length=255, blank=True, null=True)
     building_code = models.CharField(max_length=255, blank=True, null=True)
     deleted = models.BooleanField(null=True, default=False)
@@ -205,7 +205,7 @@ class Store(models.Model):
 
 
 class StoreImages(models.Model):
-    store = models.ForeignKey(Store, models.DO_NOTHING)
+    store = models.ForeignKey(Store, on_delete=models.CASCADE)
     images = models.CharField(max_length=255, blank=True, null=True)
 
     class Meta:
@@ -231,8 +231,8 @@ class User(models.Model):
 
 class JoinPost(models.Model):
     id = models.BigAutoField(primary_key=True)
-    event = models.ForeignKey(Event, related_name='event', on_delete=models.DO_NOTHING)
-    reward = models.ForeignKey(Reward, related_name='reward', on_delete=models.DO_NOTHING, blank=True, null=True)
+    event = models.ForeignKey(Event, related_name='event', on_delete=models.CASCADE)
+    reward = models.ForeignKey(Reward, related_name='reward', on_delete=models.CASCADE, blank=True, null=True)
     sns_id = models.CharField(max_length=255, blank=True, null=True)
     url = models.CharField(max_length=255)
     type = models.IntegerField(blank=True, null=True)
@@ -270,7 +270,7 @@ class JoinUser(models.Model):
 
 class TaskJoinPost(models.Model):
     id = models.BigAutoField(primary_key=True)
-    join_post = models.ForeignKey(JoinPost, related_name='join_post', on_delete=models.DO_NOTHING)
+    join_post = models.ForeignKey(JoinPost, related_name='join_post', on_delete=models.CASCADE)
 
     class Meta:
         db_table = 'task_join_post'
