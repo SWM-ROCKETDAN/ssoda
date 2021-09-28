@@ -15,12 +15,11 @@ enum API {
 
 Map<API, String> apiMap = {
   API.GET_EVENT: '/api/v1/events',
-  API.GET_REWARD: '/join/events',
-  API.GET_STORE: '/api/v1/stores', // '/{store_id}'
+  API.GET_REWARD: '/api/v1/join/events',
+  API.GET_STORE: '/api/v1/stores',
   API.GET_EVENTS_OF_STORE: '/api/v1/stores',
-  API.GET_REWARD_OF_EVENT:
-      '/api/v1/events', // '/{id}/rewards'// '/{store_id}/events'
-  API.JOIN_EVENT_COMPLETE: '/api/v1/join/posts' // '/{post_id}
+  API.GET_REWARD_OF_EVENT: '/api/v1/events',
+  API.JOIN_EVENT_COMPLETE: '/api/v1/join/posts'
 };
 
 String getApi(API apiType, {String? suffix}) {

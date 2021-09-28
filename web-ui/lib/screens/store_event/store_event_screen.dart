@@ -59,7 +59,7 @@ class _StoreEventScreenState extends State<StoreEventScreen> {
                     if (snapshot.hasData) {
                       return StoreHeader(store: snapshot.data!);
                     } else if (snapshot.hasError) {
-                      return Text('${snapshot.stackTrace}');
+                      return Text('${snapshot.error}');
                     }
 
                     return Center(child: const CircularProgressIndicator());
