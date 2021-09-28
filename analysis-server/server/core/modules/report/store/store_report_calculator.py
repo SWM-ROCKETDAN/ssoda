@@ -1,4 +1,4 @@
-from ..event.event_report_calculator import get_event_report_dict
+from ..event.event_report_calculator import _get_event_report_dict
 from core.exceptions import exceptions
 
 key_handlers = [
@@ -19,7 +19,7 @@ def _get_store_report(store):
     for key in key_handlers:
         store_report[key] = 0
     for event in events:
-        event_report = get_event_report_dict(event, event['join_posts'])['day']
+        event_report = _get_event_report_dict(event, event['join_posts'])['day']
         for key in key_handlers:
             store_report[key] += sum(event_report[key])
 

@@ -1,8 +1,8 @@
 from bs4 import BeautifulSoup
 from urllib.request import urlopen
 from core.modules.assist.proxy import get_proxy_url
-from core.modules.assist.time import get_now_date
-from core.modules.assist.time import parse_from_str_time_to_date_time
+from core.modules.assist.time import _get_now_date
+from core.modules.assist.time import _parse_from_str_time_to_date_time
 from core.modules.static.common import Type
 from core.modules.static.common import Status
 from ._scraped_post import ScrapedPost
@@ -18,8 +18,8 @@ def scrap_post(url: str) -> dict:
     if response.getcode() != 200:
         scraped_post.type = Type.INSTAGRAM
         scraped_post.status = Status.DELETED
-        scraped_post.delete_date = get_now_date()
-        scraped_post.update_date = get_now_date()
+        scraped_post.delete_date = _get_now_date()
+        scraped_post.update_date = _get_now_date()
         return scraped_post.get_scraped_post()
     else:
         delete_date = None
@@ -31,8 +31,8 @@ def scrap_post(url: str) -> dict:
     except Exception as e:
         scraped_post.type = Type.INSTAGRAM
         scraped_post.status = Status.DELETED
-        scraped_post.delete_date = get_now_date()
-        scraped_post.update_date = get_now_date()
+        scraped_post.delete_date = _get_now_date()
+        scraped_post.update_date = _get_now_date()
         return scraped_post.get_scraped_post()
 
     hashtags = [item["content"] for item in soup.find_all('meta', property="instapp:hashtags")]
@@ -63,14 +63,14 @@ def scrap_post(url: str) -> dict:
     # status
     if post_data['@type'] == 'Person':
         status = Status.PRIVATE
-        private_date = get_now_date()
+        private_date = _get_now_date()
     else:
         status = Status.PUBLIC
         private_date = None
 
     # uploadDate
     if 'uploadDate' in post_data:
-        upload_date = parse_from_str_time_to_date_time(post_data['uploadDate'])
+        upload_date = _parse_from_str_time_to_date_time(post_data['uploadDate'])
     else:
         upload_date = None
 
@@ -86,6 +86,6 @@ def scrap_post(url: str) -> dict:
     scraped_post.upload_date = upload_date
     scraped_post.private_date = private_date
     scraped_post.delete_date = delete_date
-    scraped_post.update_date = get_now_date()
+    scraped_post.update_date = _get_now_date()
 
     return scraped_post.get_scraped_post()

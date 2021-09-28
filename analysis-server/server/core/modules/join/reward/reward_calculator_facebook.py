@@ -3,7 +3,7 @@ from .calculator_user import calculate_user_follow
 from .calculator_prev import calculate_prev_maintain
 from .calculator_prev import calculate_prev_engagement
 from core.modules.static.reward import FacebookReward
-from core.modules.assist.time import get_now_date
+from core.modules.assist.time import _get_now_date
 
 
 def get_reward_point(join):
@@ -35,7 +35,7 @@ def get_prev_maintain_point(join):
     upload_date = join['upload_date']
 
     if join['delete_date'] is None:
-        delete_date = get_now_date()
+        delete_date = _get_now_date()
     else:
         delete_date = join['delete_date']
 

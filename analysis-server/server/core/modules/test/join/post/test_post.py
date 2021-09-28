@@ -1,7 +1,7 @@
 from server.core.modules.static.common import Type
 from server.core.modules.static.common import Status
-from server.core.modules.assist.time import get_now_date
-from server.core.modules.assist.time import get_days_from_now_date_by_day_delta
+from server.core.modules.assist.time import _get_now_date
+from server.core.modules.assist.time import _get_days_from_now_date_by_day_delta
 import random
 
 
@@ -29,8 +29,8 @@ def get_test_join_post(date_time, event_id, reward_id, sns_id):
         'like_count': get_random_int_from_start_to_end(0, 100),
         'comment_count': get_random_int_from_start_to_end(0, 100),
         'hashtags': 'test, hashtag',
-        'create_date': get_now_date(),
-        'upload_date': get_now_date(),
+        'create_date': _get_now_date(),
+        'upload_date': _get_now_date(),
         'delete_date': None,
         'reward_date': get_random_time_from_date_time(date_time),
     }
@@ -46,7 +46,7 @@ class PostTester:
         self.sns_id = sns_id
 
     def get_test_join_posts(self):
-        days = get_days_from_now_date_by_day_delta(self.day_delta)
+        days = _get_days_from_now_date_by_day_delta(self.day_delta)
         test_join_posts = []
         for day in days:
             for i in range(self.try_count):

@@ -13,7 +13,7 @@ from core.modules.join.post.post_scraper import PostScraper
 from core.modules.join.user.user_scraper import UserScraper
 from core.modules.join.reward.reward_calculator import RewardCalculator
 from core.exceptions import exceptions
-from core.modules.assist.time import parse_from_str_time_to_date_time
+from core.modules.assist.time import _parse_from_str_time_to_date_time
 from join.tasks import task_scrap_post
 from datetime import datetime
 from datetime import timedelta

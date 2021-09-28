@@ -7,7 +7,7 @@ from .calculator_report import get_like_count
 from .calculator_report import get_comment_count
 from .calculator_report import get_expenditure_count
 from .calculator_report import get_days_from_start_date_to_now_date
-from core.modules.assist.time import parse_from_str_time_to_date_time
+from core.modules.assist.time import _parse_from_str_time_to_date_time
 from server.core.exceptions import exceptions
 
 calculator_handlers = {
@@ -48,7 +48,7 @@ def get_report_dict(event, join_posts):
 
     # day_report_dict 채워넣기
     for join_post in join_posts:
-        upload_date = parse_from_str_time_to_date_time(join_post['upload_date']).date()
+        upload_date = _parse_from_str_time_to_date_time(join_post['upload_date']).date()
         upload_week = (upload_date.isocalendar()[0], upload_date.isocalendar()[1])
         upload_month = upload_date.month
         if upload_date in report_dict['day']:
