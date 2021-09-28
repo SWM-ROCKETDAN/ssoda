@@ -6,12 +6,14 @@ class RewardGetScreen extends StatelessWidget {
   final rewardName;
   final rewardImage;
   final postId;
+  final storeId;
   final url;
   const RewardGetScreen(
       {Key? key,
       required this.eventTitle,
       required this.rewardName,
       required this.rewardImage,
+      required this.storeId,
       required this.postId,
       required this.url})
       : super(key: key);
@@ -27,6 +29,7 @@ class RewardGetScreen extends StatelessWidget {
             rewardName: rewardName,
             rewardImage: rewardImage,
             postId: postId,
+            storeId: storeId,
             url: url));
   }
 }
