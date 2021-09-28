@@ -16,12 +16,8 @@ class Empty extends StatelessWidget {
           children: [
             Image.asset('assets/images/empty.png'),
             Text(
-              '아직 아무런 이벤트가 등록되지 않았습니다',
+              '해당 가게에 등록된 이벤트가 없습니다.',
               style: TextStyle(color: kLiteFontColor),
-            ),
-            Text(
-              '먼저 이벤트를 등록해주세요!',
-              style: TextStyle(color: kLiteFontColor, height: 1.3),
             )
           ],
         ));
