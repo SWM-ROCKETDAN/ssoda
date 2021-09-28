@@ -12,19 +12,19 @@ class SsodaMapScreen extends StatefulWidget {
 }
 
 class _SsodaMapScreenState extends State<SsodaMapScreen> {
-  bool _isLoading = true;
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return Scaffold(
-        appBar: AppBar(),
         body: Container(
-          child: Center(
-            child: Text(
-              '이벤트 리스트 페이지',
-              style: TextStyle(fontSize: 36, fontWeight: FontWeight.bold),
-            ),
-          ),
-        ));
+      child: Center(
+        child: Text(
+          'SSODA\nSNS 해시태그 이벤트 마케팅 매니저',
+          textAlign: TextAlign.center,
+          style: TextStyle(
+              fontSize: 24, fontWeight: FontWeight.bold, color: kThemeColor),
+        ),
+      ),
+    ));
   }
 }
