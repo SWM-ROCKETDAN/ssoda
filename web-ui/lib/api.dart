@@ -1,4 +1,4 @@
-const baseUrl = 'https://ssoda.io';
+const baseUrl = 'https://api.ssoda.io';
 
 const s3Url = 'https://image.ssoda.io/';
 
