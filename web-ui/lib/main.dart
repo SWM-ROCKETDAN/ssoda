@@ -18,10 +18,10 @@ class MyApp extends StatelessWidget {
       onGenerateRoute: FRouter.router.generator,
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        primarySwatch: _createMaterialColor(kThemeColor),
-        visualDensity: VisualDensity.adaptivePlatformDensity,
-        scaffoldBackgroundColor: kScaffoldBackgroundColor,
-      ),
+          primarySwatch: _createMaterialColor(kThemeColor),
+          visualDensity: VisualDensity.adaptivePlatformDensity,
+          scaffoldBackgroundColor: kScaffoldBackgroundColor,
+          accentColor: kShadowColor),
       home: SsodaMapScreen(),
     );
   }
