@@ -9,7 +9,7 @@ services:
       context: .
       dockerfile: Dockerfile
     working_dir: /usr/src/app/server
-    command: python manage.py runserver server:8000 --settings=config.settings.development
+    command: python manage.py runserver --settings=config.settings.development
     volumes:
       - ./server:/usr/src/app/server
     expose:
