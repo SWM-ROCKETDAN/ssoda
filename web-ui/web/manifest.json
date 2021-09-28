@@ -1,6 +1,6 @@
 {
-    "name": "hashchecker_web",
-    "short_name": "hashchecker_web",
+    "name": "ssoda",
+    "short_name": "ssoda",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",
