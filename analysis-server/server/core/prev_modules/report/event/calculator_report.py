@@ -8,14 +8,14 @@ from .calculator_participate import calculate_participate_count
 from .calculator_post import calculate_public_post_count
 from .calculator_post import calculate_private_post_count
 from .calculator_post import calculate_deleted_post_count
-from core.modules.assist.time import parse_from_str_time_to_date_time
+from core.modules.assist.time import _parse_from_str_time_to_date_time
 
 
 def get_days_from_start_date_to_now_date(start_date) -> list:
     if not start_date:
         start_date = datetime.now().date()
     days = []
-    start_date = parse_from_str_time_to_date_time(start_date).date()
+    start_date = _parse_from_str_time_to_date_time(start_date).date()
     gap_day = (datetime.now().date() - start_date).days + 1
     for i in range(gap_day):
         day = start_date + timedelta(days=i)

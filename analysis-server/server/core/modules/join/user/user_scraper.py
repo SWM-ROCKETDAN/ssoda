@@ -1,5 +1,5 @@
-from server.core.modules.static.common import Type
-from server.core.exceptions import exceptions
+from core.modules.static.common import Type
+from core.exceptions import exceptions
 from . import user_scraper_instagram
 from . import user_scraper_facebook
 from .check_user import check_user_is_recently_scraped

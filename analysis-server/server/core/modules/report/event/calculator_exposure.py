@@ -1,5 +1,5 @@
-from server.core.modules.static.common import Type
-from server.core.modules.static.report import InstagramReport
+from core.modules.static.common import Type
+from core.modules.static.report import InstagramReport
 
 K = 1000
 

@@ -1,7 +1,8 @@
-from server.secret.key import Key
+from config.settings.base import get_secret
 from urllib.parse import urlencode
 
-API_KEY = Key.PROXY_API_KEY
+# API_KEY = Key.PROXY_API_KEY
+API_KEY = get_secret("WEBSCRAPING_AI_PROXY_API_KEY")
 
 
 def get_proxy_url(url):

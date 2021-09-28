@@ -8,9 +8,9 @@ from .calculator_report import get_comment_count
 from .calculator_report import get_expenditure_count
 from .calculator_report import get_level_expenditure
 from .calculator_report import get_days_from_start_date_to_now_date
-from core.modules.assist.time import parse_from_str_time_to_date_time
-from core.modules.assist.time import get_now_date
-from server.core.exceptions import exceptions
+from core.modules.assist.time import _parse_from_str_time_to_date_time
+from core.modules.assist.time import _get_now_date
+from core.exceptions import exceptions
 
 import pprint
 
@@ -27,7 +27,27 @@ calculator_handlers = {
 }
 
 
-def get_calculate_report_dict_format(event: dict) -> dict:
+def _get_calculate_report_dict_format(event: dict) -> dict:
+    """
+    {datetime.date(2021, 9, 27): {'comment_count': 0,
+                              'deleted_post_count': 0,
+                              'expenditure_count': 0,
+                              'exposure_count': 0,
+                              'level_expenditure': [0, 0, 0, 0, 0],
+                              'like_count': 0,
+                              'participate_count': 0,
+                              'private_post_count': 0,
+                              'public_post_count': 0},
+    datetime.date(2021, 9, 28): {'comment_count': 0,
+                              'deleted_post_count': 0,
+                              'expenditure_count': 0,
+                              'exposure_count': 0,
+                              'level_expenditure': [0, 0, 0, 0, 0],
+                              'like_count': 0,
+                              'participate_count': 0,
+                              'private_post_count': 0,
+                              'public_post_count': 0}}
+    """
     days = get_days_from_start_date_to_now_date(event['start_date'])
     calculate_report_dict = {}
     for day in days:
@@ -40,12 +60,12 @@ def get_calculate_report_dict_format(event: dict) -> dict:
     return calculate_report_dict
 
 
-def get_calculate_report_dict(event: dict, join_posts: list):
-    calculate_report_dict = get_calculate_report_dict_format(event)
+def _get_calculate_report_dict(event: dict, join_posts: list):
+    calculate_report_dict = _get_calculate_report_dict_format(event)
     for join_post in join_posts:
         if not join_post['upload_date']:
             continue
-        upload_date = parse_from_str_time_to_date_time(join_post['upload_date']).date()
+        upload_date = _parse_from_str_time_to_date_time(join_post['upload_date']).date()
         if upload_date not in calculate_report_dict:
             continue
         for calculator_name, calculator in calculator_handlers.items():
@@ -62,7 +82,37 @@ def get_calculate_report_dict(event: dict, join_posts: list):
     return calculate_report_dict
 
 
-def get_report_dict_format(event: dict) -> dict:
+def _get_report_dict_format(event: dict) -> dict:
+    """
+        {'day': {'comment_count': [],
+                 'deleted_post_count': [],
+                 'expenditure_count': [],
+                 'exposure_count': [],
+                 'level_expenditure': [0, 0, 0, 0, 0],
+                 'like_count': [],
+                 'participate_count': [],
+                 'private_post_count': [],
+                 'public_post_count': []},
+         'month': {'comment_count': [],
+                   'deleted_post_count': [],
+                   'expenditure_count': [],
+                   'exposure_count': [],
+                   'level_expenditure': [0, 0, 0, 0, 0],
+                   'like_count': [],
+                   'participate_count': [],
+                   'private_post_count': [],
+                   'public_post_count': []},
+         'week': {'comment_count': [],
+                  'deleted_post_count': [],
+                  'expenditure_count': [],
+                  'exposure_count': [],
+                  'level_expenditure': [0, 0, 0, 0, 0],
+                  'like_count': [],
+                  'participate_count': [],
+                  'private_post_count': [],
+                  'public_post_count': []}}
+
+    """
     days = get_days_from_start_date_to_now_date(event['start_date'])
     report_dict = {
         'day': {},
@@ -80,8 +130,15 @@ def get_report_dict_format(event: dict) -> dict:
     return report_dict
 
 
-def parse_calculate_report_dict_to_report_dict(calculate_report_dict: dict, report_dict: dict) -> dict:
-    now_day = get_now_date().date()
+def _sum_level_expenditure(origin: list, target: list):
+    x = origin
+    y = target
+    z = [a + b for a, b in zip(x, y)]
+    origin = z
+
+
+def _parse_calculate_report_dict_to_report_dict(calculate_report_dict: dict, report_dict: dict) -> dict:
+    now_day = _get_now_date().date()
     now_week = (now_day.isocalendar()[0], now_day.isocalendar()[1])
     now_month = now_day.month
     this_day = 0
@@ -102,20 +159,11 @@ def parse_calculate_report_dict_to_report_dict(calculate_report_dict: dict, repo
         for calculator_name, calculate_result in calculate_report_dict[day].items():
             if calculator_name == 'level_expenditure':
                 if this_day == now_day:
-                    x = report_dict['day'][calculator_name]
-                    y = calculate_result
-                    z = [a + b for a, b in zip(x, y)]
-                    report_dict['day'][calculator_name] = z
+                    _sum_level_expenditure(report_dict['day'][calculator_name], calculate_result)
                 if this_week == now_week:
-                    x = report_dict['week'][calculator_name]
-                    y = calculate_result
-                    z = [a + b for a, b in zip(x, y)]
-                    report_dict['week'][calculator_name] = z
+                    _sum_level_expenditure(report_dict['week'][calculator_name], calculate_result)
                 if this_month == now_month:
-                    x = report_dict['month'][calculator_name]
-                    y = calculate_result
-                    z = [a + b for a, b in zip(x, y)]
-                    report_dict['month'][calculator_name] = z
+                    _sum_level_expenditure(report_dict['month'][calculator_name], calculate_result)
                 continue
 
             report_dict_day_len = len(report_dict['day'][calculator_name])
@@ -140,10 +188,31 @@ def parse_calculate_report_dict_to_report_dict(calculate_report_dict: dict, repo
     return report_dict
 
 
-def get_event_report_dict(event: dict, join_posts: dict) -> dict:
-    calculate_report_dict = get_calculate_report_dict(event, join_posts)
-    event_report_dict = get_report_dict_format(event)
-    event_report_dict = parse_calculate_report_dict_to_report_dict(calculate_report_dict, event_report_dict)
+def _get_total_report_dict(join_posts: dict):
+    total_report_dict = {}
+
+    for calculator_name in calculator_handlers.keys():
+        if calculator_name == 'level_expenditure':
+            total_report_dict[calculator_name] = [0, 0, 0, 0, 0]
+            continue
+        total_report_dict[calculator_name] = 0
+
+    for join_post in join_posts:
+        for calculator_name, calculator in calculator_handlers.items():
+            if calculator_name == 'level_expenditure':
+                _sum_level_expenditure(total_report_dict[calculator_name], calculator(join_post))
+            else:
+                total_report_dict[calculator_name] += calculator(join_post)
+
+    return total_report_dict
+
+
+def _get_event_report_dict(event: dict, join_posts: dict) -> dict:
+    calculate_report_dict = _get_calculate_report_dict(event, join_posts)
+    event_report_dict = _get_report_dict_format(event)
+    event_report_dict = _parse_calculate_report_dict_to_report_dict(calculate_report_dict, event_report_dict)
+    event_report_dict['total'] = _get_total_report_dict(join_posts)
+
     return event_report_dict
 
 
@@ -154,7 +223,14 @@ class EventReportCalculator:
     def get_event_report(self):
         try:
             # pprint.pprint(self.event)
-            event_report_dict = get_event_report_dict(self.event, self.event['join_posts'])
+            event_report_dict = _get_event_report_dict(self.event, self.event['join_posts'])
         except Exception as e:
             raise exceptions.EventReportCalculateFailed()
         return event_report_dict
+
+    def get_total_event_report(self):
+        try:
+            total_report_dict = _get_total_report_dict(self.event['join_posts'])
+        except Exception as e:
+            raise exceptions.EventReportCalculateFailed()
+        return total_report_dict

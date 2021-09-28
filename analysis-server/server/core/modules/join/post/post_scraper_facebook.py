@@ -2,11 +2,11 @@ import pprint
 
 from bs4 import BeautifulSoup
 from urllib.request import urlopen
-from server.core.modules.assist.proxy import get_proxy_url
-from server.core.modules.assist.time import parse_from_utc_timestamp_to_date_time
-from server.core.modules.assist.time import get_now_date
-from server.core.modules.static.common import Type
-from server.core.modules.static.common import Status
+from core.modules.assist.proxy import get_proxy_url
+from core.modules.assist.time import _parse_from_utc_timestamp_to_date_time
+from core.modules.assist.time import _get_now_date
+from core.modules.static.common import Type
+from core.modules.static.common import Status
 import demjson
 
 
@@ -61,7 +61,7 @@ def scrap_post(dummy_url):
             dummy_require = dummy['jsmods']['require'][1][3][1]['t']
             publish_time_index = dummy_require.find("publish_time")
             publish_time = dummy_require[publish_time_index + 14: publish_time_index + 24]
-            upload_date = parse_from_utc_timestamp_to_date_time(publish_time)
+            upload_date = _parse_from_utc_timestamp_to_date_time(publish_time)
         except Exception as e:
             pass
         try:
@@ -88,7 +88,7 @@ def scrap_post(dummy_url):
         'upload_date': upload_date,
         'private_date': None,
         'delete_date': None,
-        'update_date': get_now_date(),
+        'update_date': _get_now_date(),
     }
     pprint.pprint(post)
     # return post

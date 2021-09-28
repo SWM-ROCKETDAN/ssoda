@@ -1,7 +1,7 @@
-from server.core.modules.static.common import Status
-from server.core.modules.static.common import Type
-from core.modules.assist.time import parse_from_str_time_to_date_time
-from core.modules.assist.time import get_interval_day_from_now_to_target_date_time
+from core.modules.static.common import Status
+from core.modules.static.common import Type
+from core.modules.assist.time import _parse_from_str_time_to_date_time
+from core.modules.assist.time import _get_interval_day_from_now_to_target_date_time
 from datetime import datetime
 
 
@@ -94,8 +94,8 @@ def check_post_status_is_deleted(post_status: int) -> bool:
 def check_post_upload_date_is_ok_from_event_start_date(post_upload_date: datetime, event_start_date: datetime) -> bool:
     if post_upload_date is None or event_start_date is None:
         return False
-    post_upload_date = parse_from_str_time_to_date_time(post_upload_date)
-    event_start_date = parse_from_str_time_to_date_time(event_start_date)
+    post_upload_date = _parse_from_str_time_to_date_time(post_upload_date)
+    event_start_date = _parse_from_str_time_to_date_time(event_start_date)
     if post_upload_date.date() < event_start_date.date():
         return False
     return True
@@ -106,8 +106,8 @@ def check_post_interval_day_is_over_from_target_day(post_create_date: datetime, 
     if not post_create_date and not target_day:
         return False
 
-    interval_day = get_interval_day_from_now_to_target_date_time(post_create_date)
-    interval_day = parse_from_str_time_to_date_time(interval_day)
+    interval_day = _get_interval_day_from_now_to_target_date_time(post_create_date)
+    interval_day = _parse_from_str_time_to_date_time(interval_day)
     if interval_day > target_day:
         return True
     return False

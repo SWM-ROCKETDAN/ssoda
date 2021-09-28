@@ -5,8 +5,8 @@ from .serializers import JoinPostSerializer
 from .serializers import JoinUserSerializer
 from core.modules.join.post.post_scraper import PostScraper
 from core.modules.join.user.user_scraper import UserScraper
-from core.modules.assist.time import get_interval_day_from_now_to_target_date_time
-from core.modules.assist.time import parse_from_str_time_to_date_time
+from core.modules.assist.time import _get_interval_day_from_now_to_target_date_time
+from core.modules.assist.time import _parse_from_str_time_to_date_time
 from datetime import datetime
 from datetime import timedelta
 
@@ -16,14 +16,14 @@ def task_scrap_post(pk: int) -> bool:
     from core.models import JoinPost
     from .serializers import JoinPostSerializer
     from core.modules.join.post.post_scraper import PostScraper
-    from core.modules.assist.time import get_timedelta_from_now_to_target
-    from core.modules.assist.time import parse_from_str_time_to_date_time
+    from core.modules.assist.time import _get_timedelta_from_now_to_target
+    from core.modules.assist.time import _parse_from_str_time_to_date_time
 
     try:
         join_post = JoinPost.objects.get(pk=pk)
         join_post_serializer = JoinPostSerializer(join_post)
-        update_date = parse_from_str_time_to_date_time(join_post_serializer.data['update_date'])
-        _timedelta = get_timedelta_from_now_to_target(update_date)
+        update_date = _parse_from_str_time_to_date_time(join_post_serializer.data['update_date'])
+        _timedelta = _get_timedelta_from_now_to_target(update_date)
         if (_timedelta.seconds / 3600) < 10:
             # print('아직 10시간이 안지났어요!', _timedelta.seconds / 3600)
             return False
@@ -51,8 +51,8 @@ def task_scrap_user(pk: int, max_day: int, queue_day: int) -> bool:
         join_user_serializer = JoinUserSerializer(join_user, scraped_user, partial=True)
         if join_user_serializer.is_valid():
             join_user_serializer.save()
-            create_date = parse_from_str_time_to_date_time(join_user_serializer.data['create_date'])
-            interval_day = get_interval_day_from_now_to_target_date_time(create_date)
+            create_date = _parse_from_str_time_to_date_time(join_user_serializer.data['create_date'])
+            interval_day = _get_interval_day_from_now_to_target_date_time(create_date)
             if interval_day < max_day:
                 queue_date_time = datetime.now() + timedelta(days=queue_day)
                 task_scrap_user.apply_async((pk, max_day, queue_day), expires=queue_date_time)

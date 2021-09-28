@@ -1,6 +1,6 @@
 from server.core.modules.static.common import Type
 from server.core.modules.static.common import Status
-from server.core.modules.assist.time import get_now_date
+from server.core.modules.assist.time import _get_now_date
 import random
 
 
@@ -16,8 +16,8 @@ def get_test_join_user(sns_id):
         'status': Status.PUBLIC,
         'follow_count': get_random_int_from_start_to_end(0, 1000),
         'post_count': get_random_int_from_start_to_end(0, 1000),
-        'create_date': get_now_date(),
-        'update_date': get_now_date(),
+        'create_date': _get_now_date(),
+        'update_date': _get_now_date(),
     }
     return test_join_user
 

@@ -88,6 +88,9 @@ class JoinUserScrapSerializer(serializers.ModelSerializer):
 
 
 class JoinRewardThisPostSerializer(serializers.ModelSerializer):
+    """
+
+    """
     event = EventSerializer()
     reward = RewardSerializer()
 

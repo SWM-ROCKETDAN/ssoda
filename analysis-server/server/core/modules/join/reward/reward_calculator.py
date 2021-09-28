@@ -1,7 +1,7 @@
-from server.core.modules.static.common import Type
+from core.modules.static.common import Type
 from .reward_calculator_instagram import get_reward_point as get_reward_point_instagram
 from .reward_calculator_facebook import get_reward_point as get_reward_point_facebook
-from server.core.exceptions import exceptions
+from core.exceptions import exceptions
 
 get_reward_point_handlers = {
     Type.INSTAGRAM: get_reward_point_instagram,

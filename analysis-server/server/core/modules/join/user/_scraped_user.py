@@ -1,4 +1,4 @@
-from core.modules.assist.time import get_now_date
+from core.modules.assist.time import _get_now_date
 
 
 class ScrapedUser:
@@ -9,7 +9,7 @@ class ScrapedUser:
         self._status = 0
         self._follow_count = 0
         self._post_count = 0
-        self._update_date = get_now_date()
+        self._update_date = _get_now_date()
 
     def get_scraped_user(self):
         scraped_user = {

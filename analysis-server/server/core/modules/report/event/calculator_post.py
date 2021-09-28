@@ -1,4 +1,4 @@
-from server.core.modules.static.common import Status
+from core.modules.static.common import Status
 
 
 def calculate_public_post_count(post_status):

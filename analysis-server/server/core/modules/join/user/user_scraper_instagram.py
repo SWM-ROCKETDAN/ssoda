@@ -1,9 +1,9 @@
 from bs4 import BeautifulSoup
 from urllib.request import urlopen
-from server.core.modules.assist.proxy import get_proxy_url
-from server.core.modules.assist.time import get_now_date
-from server.core.modules.static.common import Type
-from server.core.modules.static.common import Status
+from core.modules.assist.proxy import get_proxy_url
+from core.modules.assist.time import _get_now_date
+from core.modules.static.common import Type
+from core.modules.static.common import Status
 from ._scraped_user import ScrapedUser
 import re
 
@@ -25,7 +25,7 @@ def scrap_user(sns_id):
         scraped_user.url = url
         scraped_user.type = Type.INSTAGRAM
         scraped_user.status = Status.DELETED
-        scraped_user.update_date = get_now_date()
+        scraped_user.update_date = _get_now_date()
         return scraped_user.get_scraped_user()
     else:
         delete_date = None
@@ -45,6 +45,6 @@ def scrap_user(sns_id):
     scraped_user.status = Status.PUBLIC
     scraped_user.follow_count = user_nums[0]
     scraped_user.post_count = user_nums[2]
-    scraped_user.update_date = get_now_date()
+    scraped_user.update_date = _get_now_date()
 
     return scraped_user.get_scraped_user()

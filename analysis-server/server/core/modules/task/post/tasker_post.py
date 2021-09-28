@@ -1,8 +1,8 @@
 from datetime import datetime
 import pprint
-from server.core.modules.assist.time import parse_from_str_time_to_date_time
-from server.core.modules.assist.time import get_days_from_now_date_by_day_delta
-from server.core.modules.assist.time import get_now_date
+from server.core.modules.assist.time import _parse_from_str_time_to_date_time
+from server.core.modules.assist.time import _get_days_from_now_date_by_day_delta
+from server.core.modules.assist.time import _get_now_date
 from server.core.modules.static.task import Task
 import copy
 
@@ -39,7 +39,7 @@ def get_time_dict_by_task_time(task_time):
 
 # reward_date 를 reward_date_time 으로 파싱
 def parse_reward_date_time_from_reward_date(task_time, reward_date):
-    reward_date = parse_from_str_time_to_date_time(reward_date)
+    reward_date = _parse_from_str_time_to_date_time(reward_date)
     reward_date_hour = reward_date.hour
     reward_date_minute = reward_date.minute
     reward_date_second = reward_date.second
@@ -155,12 +155,12 @@ def get_scaled_task_time_dict_from_task_time_dicts(task_time, task_time_dicts):
 
 # 여러 날의 태스크 딕셔너리를 얻어낸다.
 def get_task_dict_from_task_time_and_day_delta_and_join_posts(task_time, day_delta, join_posts):
-    days = get_days_from_now_date_by_day_delta(day_delta)
+    days = _get_days_from_now_date_by_day_delta(day_delta)
     join_post_date_dict = parse_date_dict_from_date_times(days)
 
     # reward_date 를 기준으로 join_post 묶기
     for join_post in join_posts:
-        reward_date_time = parse_from_str_time_to_date_time(join_post['reward_date'])
+        reward_date_time = _parse_from_str_time_to_date_time(join_post['reward_date'])
         reward_date = reward_date_time.date()
         # print(reward_date.day)
         # print(join_post_date_dict)
@@ -198,7 +198,7 @@ class PostTasker:
     def get_now_task(self):
         task_time = self.task_time
         task_dict = self.get_task_dict_from_join_posts()
-        now_date = get_now_date()
+        now_date = _get_now_date()
         now_time = now_date.hour * 60 * 60 + now_date.minute * 60 + now_date.second
         now_task_time = now_time - (now_time % task_time)
 

@@ -1,6 +1,6 @@
 import pprint
-from server.core.modules.static.common import Type
-from server.core.exceptions import exceptions
+from core.modules.static.common import Type
+from core.exceptions import exceptions
 from . import post_scraper_instagram
 from . import post_scraper_facebook
 from .check_post import check_post_event_is_ok
@@ -25,6 +25,7 @@ class PostScraper:
 
     def __init__(self, join_post):
         self.join_post = join_post
+        print(join_post)
 
     def get_scraped_post_only_do_scrap(self):
         post_type = get_post_type_from_url(self.join_post['url'])
