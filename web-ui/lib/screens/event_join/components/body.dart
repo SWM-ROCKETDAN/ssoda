@@ -52,13 +52,25 @@ class _BodyState extends State<Body> {
             padding: const EdgeInsets.fromLTRB(20, 0, 20, 20),
             child:
                 Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-              Divider(height: kDefaultPadding * 2, color: kShadowColor),
+              Divider(
+                  height: kDefaultPadding * 2,
+                  color: kShadowColor,
+                  thickness: 1.2),
               EventRewards(event: widget.event),
-              Divider(height: kDefaultPadding * 2, color: kShadowColor),
+              Divider(
+                  height: kDefaultPadding * 2,
+                  color: kShadowColor,
+                  thickness: 1.2),
               EventHashtags(event: widget.event),
-              Divider(height: kDefaultPadding * 2, color: kShadowColor),
+              Divider(
+                  height: kDefaultPadding * 2,
+                  color: kShadowColor,
+                  thickness: 1.2),
               EventPeriod(event: widget.event),
-              Divider(height: kDefaultPadding * 2, color: kShadowColor),
+              Divider(
+                  height: kDefaultPadding * 2,
+                  color: kShadowColor,
+                  thickness: 1.2),
               EventJoinWithUrl(
                   event: widget.event,
                   eventId: widget.eventId,

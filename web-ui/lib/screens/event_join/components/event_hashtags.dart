@@ -1,3 +1,4 @@
+import 'package:flash/flash.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:hashchecker_web/constants.dart';
@@ -56,15 +57,8 @@ class EventHashtags extends StatelessWidget {
                       Clipboard.setData(new ClipboardData(
                               text: '#${event.hashtagList[index]}'))
                           .then((_) {
-                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                          content:
-                              Text('#${event.hashtagList[index]} 을(를) 복사했습니다.'),
-                          behavior: SnackBarBehavior.floating,
-                          duration: const Duration(milliseconds: 2500),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(12.0),
-                          ),
-                        ));
+                        _showCopiedFlashBar(context,
+                            '#${event.hashtagList[index]} 을(를) 복사했습니다.');
                       });
                     },
                     child: Chip(
@@ -80,7 +74,7 @@ class EventHashtags extends StatelessWidget {
                       label: Text(event.hashtagList[index]),
                       labelPadding: const EdgeInsets.fromLTRB(6, 2, 5, 2),
                       elevation: 9.0,
-                      shadowColor: kShadowColor,
+                      shadowColor: kShadowColor.withOpacity(0.6),
                       backgroundColor: kScaffoldBackgroundColor,
                     ),
                   )))
@@ -93,14 +87,17 @@ class EventHashtags extends StatelessWidget {
       hashtags += '#${event.hashtagList[i]} ';
 
     Clipboard.setData(new ClipboardData(text: hashtags)).then((_) {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        content: Text('모든 해시태그를 클립보드에 복사했습니다.'),
-        behavior: SnackBarBehavior.floating,
-        duration: const Duration(milliseconds: 2500),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(12.0),
-        ),
-      ));
+      _showCopiedFlashBar(context, '모든 해시태그가 클립보드에 복사되었습니다.');
     });
+  }
+
+  void _showCopiedFlashBar(BuildContext context, String message) {
+    context.showFlashBar(
+        barType: FlashBarType.success,
+        icon: const Icon(Icons.check_circle_rounded),
+        duration: const Duration(seconds: 3),
+        backgroundColor: Colors.white,
+        content: Text(message,
+            style: TextStyle(fontSize: 14, color: kDefaultFontColor)));
   }
 }

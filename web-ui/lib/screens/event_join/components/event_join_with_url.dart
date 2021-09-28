@@ -41,17 +41,8 @@ class _EventJoinWithUrlState extends State<EventJoinWithUrl> {
           onSubmitted: (_) {
             if (isValidUrl())
               sendUrlToGetReward();
-            else {
-              final snackBar = SnackBar(
-                content: Text('올바른 인스타그램 게시글 URL이 아닙니다.'),
-                behavior: SnackBarBehavior.floating,
-                duration: const Duration(milliseconds: 2500),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(12.0),
-                ),
-              );
-              ScaffoldMessenger.of(context).showSnackBar(snackBar);
-            }
+            else
+              _showValidationErrorFlashBar(context, '올바른 인스타그램 URL이 아닙니다.');
           },
           style: TextStyle(fontSize: 14),
           decoration: InputDecoration(
@@ -70,17 +61,9 @@ class _EventJoinWithUrlState extends State<EventJoinWithUrl> {
                     ? () {
                         if (isValidUrl())
                           sendUrlToGetReward();
-                        else {
-                          final snackBar = SnackBar(
-                            content: Text('올바른 인스타그램 게시글 URL이 아닙니다.'),
-                            behavior: SnackBarBehavior.floating,
-                            duration: const Duration(milliseconds: 2500),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(12.0),
-                            ),
-                          );
-                          ScaffoldMessenger.of(context).showSnackBar(snackBar);
-                        }
+                        else
+                          _showValidationErrorFlashBar(
+                              context, '올바른 인스타그램 URL이 아닙니다.');
                       }
                     : null,
                 child: Text('URL 업로드하고 이벤트 참여하기'))),
@@ -129,6 +112,7 @@ class _EventJoinWithUrlState extends State<EventJoinWithUrl> {
     dio.options.headers['Access-Control-Allow-Origin'] = '*';
 
     dio.interceptors.add(InterceptorsWrapper(onError: (error, handler) async {
+      widget.loading(false);
       if (error.response?.statusCode == 406) {
         final String errMsg = error.response?.data['message'];
         if (errMsg == "It's different from the previous event.")
@@ -142,18 +126,21 @@ class _EventJoinWithUrlState extends State<EventJoinWithUrl> {
         else
           _showValidationErrorFlashBar(context, '알 수 없는 오류가 발생하였습니다. [406]');
       } else {
-        _showValidationErrorFlashBar(context, '알 수 없는 오류가 발생하였습니다. [500]');
+        _showValidationErrorFlashBar(
+            context, '알 수 없는 오류가 발생하였습니다. [${error.response?.statusCode}]');
       }
     }));
 
-    final response = await dio.post(
+    var eventJoinResponse;
+
+    eventJoinResponse = await dio.post(
         getApi(API.GET_REWARD, suffix: '/${widget.eventId}'),
         data: urlJson);
 
     widget.loading(false);
 
-    if (response.statusCode == 200) {
-      JoinResult result = JoinResult.fromJson(response.data);
+    if (eventJoinResponse.statusCode == 200) {
+      JoinResult result = JoinResult.fromJson(eventJoinResponse.data);
       Navigator.pushReplacement(
           context,
           MaterialPageRoute(
