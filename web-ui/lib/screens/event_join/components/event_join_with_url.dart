@@ -90,7 +90,7 @@ class _EventJoinWithUrlState extends State<EventJoinWithUrl> {
           TextSpan(
               text: '게시글의 링크', style: TextStyle(fontWeight: FontWeight.bold)),
           TextSpan(text: '를 복사-붙여넣기하여 업로드\n'),
-          TextSpan(text: '3. 조건 달성률에 따라 이벤트 상품 즉시 지급!'),
+          TextSpan(text: '3. 조건 달성률에 따라 이벤트 상품 즉시 지급!\n'),
           TextSpan(text: '※ 이벤트 상품은 가게의 상품 재고와 참가자의 계정 팔로워 수에 기반하여 지급됩니다.')
         ], style: TextStyle(color: Colors.black54, fontSize: 13))),
       ],
