@@ -2,24 +2,24 @@ version: '3'
 
 services:
   server: &python
-    image: moyoung/ssoda-analysis-server:v0.1
+    image: moyoung/ssoda-analysis-server:v1.0
     container_name: server
     platform: linux/amd64
     build:
       context: .
       dockerfile: Dockerfile
     working_dir: /usr/src/app/server
-    command: gunicorn config.wsgi:application --bind 0.0.0.0:8000
+    command: python manage.py runserver server:8000 --settings=config.settings.development
     volumes:
       - ./server:/usr/src/app/server
     expose:
       - "8000"
   celery_worker:
-    image: moyoung/ssoda-analysis-server:v0.1
+    image: moyoung/ssoda-analysis-server:v1.0
     container_name: server-celery
     platform: linux/amd64
     <<: *python
-    command: celery -A config worker --loglevel=info
+    command: celery -A config.celery.development_celery worker --loglevel=info
     ports: [ ]
   nginx:
     image: nginx:latest

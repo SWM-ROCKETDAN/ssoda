@@ -188,10 +188,31 @@ def _parse_calculate_report_dict_to_report_dict(calculate_report_dict: dict, rep
     return report_dict
 
 
+def _get_total_report_dict(join_posts: dict):
+    total_report_dict = {}
+
+    for calculator_name in calculator_handlers.keys():
+        if calculator_name == 'level_expenditure':
+            total_report_dict[calculator_name] = [0, 0, 0, 0, 0]
+            continue
+        total_report_dict[calculator_name] = 0
+
+    for join_post in join_posts:
+        for calculator_name, calculator in calculator_handlers.items():
+            if calculator_name == 'level_expenditure':
+                _sum_level_expenditure(total_report_dict[calculator_name], calculator(join_post))
+            else:
+                total_report_dict[calculator_name] += calculator(join_post)
+
+    return total_report_dict
+
+
 def _get_event_report_dict(event: dict, join_posts: dict) -> dict:
     calculate_report_dict = _get_calculate_report_dict(event, join_posts)
     event_report_dict = _get_report_dict_format(event)
     event_report_dict = _parse_calculate_report_dict_to_report_dict(calculate_report_dict, event_report_dict)
+    event_report_dict['total'] = _get_total_report_dict(join_posts)
+
     return event_report_dict
 
 
@@ -206,3 +227,10 @@ class EventReportCalculator:
         except Exception as e:
             raise exceptions.EventReportCalculateFailed()
         return event_report_dict
+
+    def get_total_event_report(self):
+        try:
+            total_report_dict = _get_total_report_dict(self.event['join_posts'])
+        except Exception as e:
+            raise exceptions.EventReportCalculateFailed()
+        return total_report_dict

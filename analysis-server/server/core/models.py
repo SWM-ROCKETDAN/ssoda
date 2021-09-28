@@ -225,9 +225,9 @@ class User(models.Model):
     password = models.CharField(max_length=255)
     provider = models.CharField(max_length=255)
     user_id = models.CharField(max_length=255)
+    deleted = models.BooleanField(null=True, default=False)
 
     class Meta:
-        managed = False
         db_table = 'user'
 
 
@@ -249,7 +249,6 @@ class JoinPost(models.Model):
     update_date = models.DateTimeField(blank=True, null=True)
     reward_date = models.DateTimeField(blank=True, null=True)
     deleted = models.BooleanField(null=True, default=False)
-    # deleted = models.BinaryField(null=True, default=False)
 
     class Meta:
         db_table = 'join_post'
