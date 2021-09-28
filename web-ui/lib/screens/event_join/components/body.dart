@@ -74,6 +74,7 @@ class _BodyState extends State<Body> {
               EventJoinWithUrl(
                   event: widget.event,
                   eventId: widget.eventId,
+                  storeId: widget.storeId,
                   loading: _loading)
             ]),
           ),

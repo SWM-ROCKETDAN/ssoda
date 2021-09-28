@@ -10,6 +10,7 @@ class Body extends StatelessWidget {
   final rewardName;
   final rewardImage;
   final postId;
+  final storeId;
   final url;
   const Body(
       {Key? key,
@@ -17,6 +18,7 @@ class Body extends StatelessWidget {
       required this.eventTitle,
       required this.rewardName,
       required this.rewardImage,
+      required this.storeId,
       required this.postId,
       required this.url})
       : super(key: key);
@@ -26,7 +28,7 @@ class Body extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(children: [
-      HeaderWithReward(size: size, rewardImagePath: rewardImage),
+      HeaderWithReward(storeId: storeId, rewardImagePath: rewardImage),
       SizedBox(height: kDefaultPadding),
       MessageField(eventTitle: eventTitle, rewardName: rewardName),
       DoneButton(url: url, postId: postId)

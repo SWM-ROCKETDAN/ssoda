@@ -11,11 +11,13 @@ import 'package:hashchecker_web/screens/reward_get/reward_get_screen.dart';
 class EventJoinWithUrl extends StatefulWidget {
   final event;
   final eventId;
+  final storeId;
   final loading;
   const EventJoinWithUrl(
       {Key? key,
       required this.event,
       required this.eventId,
+      required this.storeId,
       required this.loading})
       : super(key: key);
 
@@ -149,6 +151,7 @@ class _EventJoinWithUrlState extends State<EventJoinWithUrl> {
                   rewardName: result.reward.name,
                   rewardImage: result.reward.imgPath,
                   url: _urlController.value.text.trim(),
+                  storeId: widget.storeId,
                   postId: result.postId)));
     }
   }
