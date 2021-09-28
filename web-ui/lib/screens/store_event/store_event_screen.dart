@@ -59,7 +59,7 @@ class _StoreEventScreenState extends State<StoreEventScreen> {
                     if (snapshot.hasData) {
                       return StoreHeader(store: snapshot.data!);
                     } else if (snapshot.hasError) {
-                      return Text('${snapshot.error}');
+                      return Text('${snapshot.stackTrace}');
                     }
 
                     return Center(child: const CircularProgressIndicator());
@@ -216,7 +216,7 @@ class _StoreEventScreenState extends State<StoreEventScreen> {
         (index) => EventListItem.fromJson(fetchedEventList[index]));
 
     if (dropdownValue == "최신 등록 순")
-      eventList.sort((a, b) => a.startDate.compareTo(b.startDate));
+      eventList = List.from(eventList.reversed);
     else if (dropdownValue == "빠른 종료 순")
       eventList.sort((a, b) => a.finishDate.compareTo(b.finishDate));
     else if (dropdownValue == "가나다 순")
