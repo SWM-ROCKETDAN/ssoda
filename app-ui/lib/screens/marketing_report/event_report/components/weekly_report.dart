@@ -7,12 +7,12 @@ import 'expenditure_report.dart';
 import 'exposure_report.dart';
 
 class WeeklyReport extends StatelessWidget {
-  const WeeklyReport({
-    Key? key,
-    required this.eventReport,
-  }) : super(key: key);
+  const WeeklyReport(
+      {Key? key, required this.eventReport, required this.eventRewardCount})
+      : super(key: key);
 
   final EventReportPerPeriod eventReport;
+  final int eventRewardCount;
 
   @override
   Widget build(BuildContext context) {
@@ -21,7 +21,8 @@ class WeeklyReport extends StatelessWidget {
         SizedBox(height: kDefaultPadding),
         ExposureReport(eventReport: eventReport),
         ParticipationReport(eventReport: eventReport),
-        ExpenditureReport(eventReport: eventReport),
+        ExpenditureReport(
+            eventReport: eventReport, eventRewardCount: eventRewardCount),
       ]),
     );
   }

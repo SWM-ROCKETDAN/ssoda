@@ -7,13 +7,12 @@ import 'exposure_report.dart';
 import 'participate_report.dart';
 
 class DailyReport extends StatelessWidget {
-  const DailyReport({
-    Key? key,
-    required this.eventReport,
-  }) : super(key: key);
+  const DailyReport(
+      {Key? key, required this.eventReport, required this.eventRewardCount})
+      : super(key: key);
 
   final EventReportPerPeriod eventReport;
-
+  final int eventRewardCount;
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
@@ -21,7 +20,8 @@ class DailyReport extends StatelessWidget {
         SizedBox(height: kDefaultPadding),
         ExposureReport(eventReport: eventReport),
         ParticipationReport(eventReport: eventReport),
-        ExpenditureReport(eventReport: eventReport),
+        ExpenditureReport(
+            eventReport: eventReport, eventRewardCount: eventRewardCount),
       ]),
     );
   }
