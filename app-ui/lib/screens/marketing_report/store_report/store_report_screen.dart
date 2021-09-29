@@ -8,6 +8,7 @@ import 'package:hashchecker/models/event_report_per_period.dart';
 import 'package:hashchecker/models/selected_store.dart';
 import 'package:hashchecker/models/store_report.dart';
 import 'package:hashchecker/models/store_report_overview.dart';
+import 'package:hashchecker/models/event_report_total_sum.dart';
 import 'package:hashchecker/screens/event_list/components/empty.dart';
 import 'package:hashchecker/screens/marketing_report/store_report/components/event_report_card.dart';
 import 'package:number_display/number_display.dart';
@@ -161,6 +162,9 @@ class _StoreReportScreenState extends State<StoreReportScreen> {
                                                 eventMonthReport: snapshot
                                                     .data![index]
                                                     .eventMonthReport,
+                                                eventTotalReport: snapshot
+                                                    .data![index]
+                                                    .eventTotalReport,
                                                 numberDisplay: numberDisplay),
                                           )),
                                 ));
@@ -202,6 +206,8 @@ class _StoreReportScreenState extends State<StoreReportScreen> {
           fetchedEventReportData['report']['week']);
       final EventReportPerPeriod monthReport = EventReportPerPeriod.fromJson(
           fetchedEventReportData['report']['month']);
+      final EventReportTotalSum totalReport = EventReportTotalSum.fromJson(
+          fetchedEventReportData['report']['total']);
 
       // get guestPrice & joinCount & likeCount of EventListItem
       final likeSum = monthReport.likeCount.reduce((a, b) => a + b);
@@ -231,7 +237,8 @@ class _StoreReportScreenState extends State<StoreReportScreen> {
           eventReportItem: reportItem,
           eventDayReport: dayReport,
           eventWeekReport: weekReport,
-          eventMonthReport: monthReport));
+          eventMonthReport: monthReport,
+          eventTotalReport: totalReport));
     }
 
     if (dropdownValue == "최신 등록 순") {

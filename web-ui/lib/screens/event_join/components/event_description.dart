@@ -25,7 +25,8 @@ class EventDescription extends StatelessWidget {
           TextSpan(text: ' 받아가세요!')
         ]),
         textAlign: TextAlign.center,
-        maxLines: 2,
+        maxLines: 3,
+        minFontSize: 8,
         style: TextStyle(color: kDefaultFontColor, height: 1.4, fontSize: 13),
       ),
     );

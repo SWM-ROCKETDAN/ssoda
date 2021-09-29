@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hashchecker/constants.dart';
 import 'package:hashchecker/models/event_report_per_period.dart';
+import 'package:hashchecker/models/event_report_total_sum.dart';
 import 'package:number_display/number_display.dart';
 import 'package:hashchecker/widgets/number_slider/number_slide_animation_widget.dart';
 
@@ -9,7 +10,7 @@ import '../report_design.dart';
 class ExposureReportTotal extends StatefulWidget {
   ExposureReportTotal({Key? key, required this.eventReport}) : super(key: key);
 
-  final EventReportPerPeriod eventReport;
+  final EventReportTotalSum eventReport;
   final numberDisplay = createDisplay();
 
   @override
@@ -20,10 +21,8 @@ class _ExposureReportTotalState extends State<ExposureReportTotal> {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
-    final exposureSum =
-        widget.eventReport.exposureCount.reduce((a, b) => a + b);
-    final expenditureSum =
-        widget.eventReport.expenditureCount.reduce((a, b) => a + b);
+    final exposureSum = widget.eventReport.exposureCount;
+    final expenditureSum = widget.eventReport.expenditureCount;
 
     return Container(
       padding: const EdgeInsets.all(20),
@@ -43,8 +42,7 @@ class _ExposureReportTotalState extends State<ExposureReportTotal> {
                       fontWeight: FontWeight.bold,
                       fontSize: 18)),
               NumberSlideAnimation(
-                  number: (widget.eventReport.exposureCount
-                      .reduce((a, b) => a + b)).toString(),
+                  number: exposureSum.toString(),
                   duration: kDefaultNumberSliderDuration,
                   curve: Curves.easeOut,
                   textStyle: TextStyle(
@@ -94,9 +92,9 @@ class _ExposureReportTotalState extends State<ExposureReportTotal> {
                             fontSize: 14,
                             color: kDefaultFontColor)),
                     NumberSlideAnimation(
-                        number: expenditureSum == 0
+                        number: exposureSum == 0
                             ? "0"
-                            : (exposureSum ~/ expenditureSum).toString(),
+                            : (expenditureSum ~/ exposureSum).toString(),
                         duration: kDefaultNumberSliderDuration,
                         curve: Curves.easeOut,
                         textStyle: TextStyle(

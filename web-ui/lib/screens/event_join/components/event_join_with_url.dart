@@ -4,21 +4,24 @@ import 'package:flutter/rendering.dart';
 import 'package:flash/flash.dart';
 import 'package:hashchecker_web/api.dart';
 import 'package:hashchecker_web/constants.dart';
+import 'package:hashchecker_web/models/event.dart';
 import 'package:hashchecker_web/models/join_result.dart';
 import 'package:hashchecker_web/models/reward.dart';
 import 'package:hashchecker_web/screens/reward_get/reward_get_screen.dart';
 
 class EventJoinWithUrl extends StatefulWidget {
-  final event;
+  final Event event;
   final eventId;
   final storeId;
   final loading;
+  final roulette;
   const EventJoinWithUrl(
       {Key? key,
       required this.event,
       required this.eventId,
       required this.storeId,
-      required this.loading})
+      required this.loading,
+      required this.roulette})
       : super(key: key);
 
   @override
@@ -118,11 +121,11 @@ class _EventJoinWithUrlState extends State<EventJoinWithUrl> {
       if (error.response?.statusCode == 406) {
         final String errMsg = error.response?.data['message'];
         if (errMsg == "It's different from the previous event.")
-          _showValidationErrorFlashBar(context, '이전에 참여한 이벤트와 다른 이벤트입니다.');
+          _showValidationErrorFlashBar(context, '이미 다른 이벤트에 참여한 게시글입니다.');
         else if (errMsg == "Post is private")
           _showValidationErrorFlashBar(context, '참여한 인스타그램 계정이 비공개 계정입니다.');
         else if (errMsg == "Post is deleted")
-          _showValidationErrorFlashBar(context, '참여한 인스타그램 포스트가 삭제되었습니다.');
+          _showValidationErrorFlashBar(context, '참여한 인스타그램 게시글이 삭제되었습니다.');
         else if (errMsg == "Post is different hashtag")
           _showValidationErrorFlashBar(context, '작성한 포스트의 해시태그가 일치하지 않습니다.');
         else
@@ -139,21 +142,25 @@ class _EventJoinWithUrlState extends State<EventJoinWithUrl> {
         getApi(API.GET_REWARD, suffix: '/${widget.eventId}'),
         data: urlJson);
 
+    JoinResult result = JoinResult.fromJson(eventJoinResponse.data);
+
     widget.loading(false);
 
-    if (eventJoinResponse.statusCode == 200) {
-      JoinResult result = JoinResult.fromJson(eventJoinResponse.data);
-      Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(
-              builder: (context) => RewardGetScreen(
-                  eventTitle: widget.event.title,
-                  rewardName: result.reward.name,
-                  rewardImage: result.reward.imgPath,
-                  url: _urlController.value.text.trim(),
-                  storeId: widget.storeId,
-                  postId: result.postId)));
+    if (widget.event.rewardList.length > 1) {
+      widget.roulette(0);
+      await Future.delayed(Duration(seconds: 6));
     }
+
+    Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+            builder: (context) => RewardGetScreen(
+                eventTitle: widget.event.title,
+                rewardName: result.reward.name,
+                rewardImage: result.reward.imgPath,
+                url: _urlController.value.text.trim(),
+                storeId: widget.storeId,
+                postId: result.postId)));
   }
 
   void _showValidationErrorFlashBar(BuildContext context, String message) {

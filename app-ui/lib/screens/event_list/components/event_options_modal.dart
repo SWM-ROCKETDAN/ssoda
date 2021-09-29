@@ -5,6 +5,7 @@ import 'package:hashchecker/models/event.dart';
 import 'package:hashchecker/models/event_edit_data.dart';
 import 'package:hashchecker/models/event_report.dart';
 import 'package:hashchecker/models/event_report_item.dart';
+import 'package:hashchecker/models/event_report_total_sum.dart';
 import 'package:hashchecker/models/event_report_per_period.dart';
 import 'package:hashchecker/screens/event_list/event_detail/event_detail_screen.dart';
 import 'package:hashchecker/screens/event_list/event_edit/event_edit_modal.dart';
@@ -80,7 +81,8 @@ class EventOptionsModal extends StatelessWidget {
                       eventReportItem: eventReport!.eventReportItem,
                       eventDayReport: eventReport!.eventDayReport,
                       eventWeekReport: eventReport!.eventWeekReport,
-                      eventMonthReport: eventReport!.eventMonthReport)));
+                      eventMonthReport: eventReport!.eventMonthReport,
+                      eventTotalReport: eventReport!.eventTotalReport)));
               }),
           ListTile(
             enabled: _isEnableToStop(),
@@ -356,11 +358,35 @@ class EventOptionsModal extends StatelessWidget {
         EventReportPerPeriod.fromJson(fetchedEventReportData['report']['week']);
     final EventReportPerPeriod monthReport = EventReportPerPeriod.fromJson(
         fetchedEventReportData['report']['month']);
+    final EventReportTotalSum totalReport =
+        EventReportTotalSum.fromJson(fetchedEventReportData['report']['total']);
+
+    // get guestPrice & joinCount & likeCount of EventListItem
+    final likeSum = monthReport.likeCount.reduce((a, b) => a + b);
+    final participateSum = monthReport.participateCount.reduce((a, b) => a + b);
+    final expenditureSum = monthReport.expenditureCount.reduce((a, b) => a + b);
+    final guestPrice = expenditureSum / participateSum;
+
+    // get rewardNameList of event
+    final getRewardListResponse = await dio
+        .get(getApi(API.GET_REWARD_OF_EVENT, suffix: '/$eventId/rewards'));
+    final fetchedRewardListData = getRewardListResponse.data;
+
+    final List<String> rewardNameList = List.generate(
+        fetchedRewardListData.length,
+        (index) => fetchedRewardListData[index]['name']);
+
+    // set additional info of EventListItem
+    reportItem.likeCount = likeSum;
+    reportItem.joinCount = participateSum;
+    reportItem.guestPrice = guestPrice;
+    reportItem.rewardNameList = rewardNameList;
 
     eventReport = EventReport(
         eventReportItem: reportItem,
         eventDayReport: dayReport,
         eventWeekReport: weekReport,
-        eventMonthReport: monthReport);
+        eventMonthReport: monthReport,
+        eventTotalReport: totalReport);
   }
 }

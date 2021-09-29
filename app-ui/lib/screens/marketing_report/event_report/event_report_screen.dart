@@ -4,6 +4,7 @@ import 'package:hashchecker/api.dart';
 import 'package:hashchecker/constants.dart';
 import 'package:hashchecker/models/event_report_item.dart';
 import 'package:hashchecker/models/event_report_per_period.dart';
+import 'package:hashchecker/models/event_report_total_sum.dart';
 
 import 'components/daily_report.dart';
 import 'components/monthly_report.dart';
@@ -16,13 +17,16 @@ class EventReportScreen extends StatefulWidget {
       required this.eventReportItem,
       required this.eventDayReport,
       required this.eventWeekReport,
-      required this.eventMonthReport})
+      required this.eventMonthReport,
+      required this.eventTotalReport})
       : super(key: key);
 
   final EventReportItem eventReportItem;
   final EventReportPerPeriod eventDayReport;
   final EventReportPerPeriod eventWeekReport;
   final EventReportPerPeriod eventMonthReport;
+  final EventReportTotalSum eventTotalReport;
+
   @override
   _EventReportScreenState createState() => _EventReportScreenState();
 }
@@ -128,10 +132,22 @@ class _EventReportScreenState extends State<EventReportScreen> {
               ],
           body: TabBarView(
             children: [
-              DailyReport(eventReport: widget.eventDayReport),
-              WeeklyReport(eventReport: widget.eventWeekReport),
-              MonthlyReport(eventReport: widget.eventMonthReport),
-              TotalReport(eventReport: widget.eventMonthReport)
+              DailyReport(
+                  eventReport: widget.eventDayReport,
+                  eventRewardCount:
+                      widget.eventReportItem.rewardNameList!.length),
+              WeeklyReport(
+                  eventReport: widget.eventWeekReport,
+                  eventRewardCount:
+                      widget.eventReportItem.rewardNameList!.length),
+              MonthlyReport(
+                  eventReport: widget.eventMonthReport,
+                  eventRewardCount:
+                      widget.eventReportItem.rewardNameList!.length),
+              TotalReport(
+                  eventReport: widget.eventTotalReport,
+                  eventRewardCount:
+                      widget.eventReportItem.rewardNameList!.length)
             ],
           )),
     ));
