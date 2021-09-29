@@ -1,6 +1,6 @@
 package com.rocketdan.serviceserver.app.dto.report.event;
 
-import com.rocketdan.serviceserver.domain.report.EventReportByPeriod;
+import com.rocketdan.serviceserver.domain.report.event.EventReport;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class EventReportResponseDto {
     private EventInEventReport event;
-    private EventReportByPeriod report;
+    private EventReport report;
 
     public EventReportResponseDto(EventInEventReport event, EventReportDto report) {
         this.event = event;

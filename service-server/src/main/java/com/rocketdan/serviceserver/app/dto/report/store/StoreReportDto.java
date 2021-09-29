@@ -1,6 +1,6 @@
 package com.rocketdan.serviceserver.app.dto.report.store;
 
-import com.rocketdan.serviceserver.domain.report.StoreReport;
+import com.rocketdan.serviceserver.domain.report.store.StoreReport;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

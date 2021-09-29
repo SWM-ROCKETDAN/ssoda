@@ -1,4 +1,4 @@
-package com.rocketdan.serviceserver.domain.report;
+package com.rocketdan.serviceserver.domain.report.store;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
