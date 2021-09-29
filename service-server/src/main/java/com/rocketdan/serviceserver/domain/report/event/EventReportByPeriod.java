@@ -1,4 +1,4 @@
-package com.rocketdan.serviceserver.domain.report;
+package com.rocketdan.serviceserver.domain.report.event;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -7,7 +7,7 @@ import java.util.List;
 
 @Getter
 @NoArgsConstructor
-public class EventReport {
+public class EventReportByPeriod {
     // 노출 수
     private List<Integer> exposure_count;
     // 참여 수
