@@ -25,6 +25,7 @@ dependencies:
   flutter_staggered_animations: ^1.0.0
   animations: ^2.0.1
   flash: ^2.0.1
+  flutter_fortune_wheel: ^1.1.0
   
 dev_dependencies:
   flutter_test:
