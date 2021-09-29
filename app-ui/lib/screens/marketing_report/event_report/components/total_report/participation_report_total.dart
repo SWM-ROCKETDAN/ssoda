@@ -5,6 +5,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:hashchecker/constants.dart';
 import 'package:hashchecker/models/event_report_per_period.dart';
+import 'package:hashchecker/models/event_report_total_sum.dart';
 import 'package:number_display/number_display.dart';
 import 'package:hashchecker/widgets/number_slider/number_slide_animation_widget.dart';
 
@@ -15,7 +16,7 @@ class ParticipationReportTotal extends StatefulWidget {
   ParticipationReportTotal({Key? key, required this.eventReport})
       : super(key: key);
 
-  final EventReportPerPeriod eventReport;
+  final EventReportTotalSum eventReport;
 
   @override
   _ParticipationReportTotalState createState() =>
@@ -24,25 +25,7 @@ class ParticipationReportTotal extends StatefulWidget {
 
 class _ParticipationReportTotalState extends State<ParticipationReportTotal> {
   final numberDisplay = createDisplay();
-  late int publicPostSum;
-  late int deletedPostSum;
-  late int participateSum;
-  late int commentSum;
-  late int likeSum;
   int? touchedIndex;
-
-  @override
-  void initState() {
-    super.initState();
-    publicPostSum = widget.eventReport.publicPostCount.reduce((a, b) => a + b);
-
-    deletedPostSum =
-        widget.eventReport.deletedPostCount.reduce((a, b) => a + b);
-    participateSum =
-        widget.eventReport.participateCount.reduce((a, b) => a + b);
-    commentSum = widget.eventReport.commentCount.reduce((a, b) => a + b);
-    likeSum = widget.eventReport.likeCount.reduce((a, b) => a + b);
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -72,7 +55,7 @@ class _ParticipationReportTotalState extends State<ParticipationReportTotal> {
                         fontWeight: FontWeight.bold,
                         fontSize: 18)),
                 NumberSlideAnimation(
-                    number: participateSum.toString(),
+                    number: widget.eventReport.participateCount.toString(),
                     duration: kDefaultNumberSliderDuration,
                     curve: Curves.easeOut,
                     textStyle: TextStyle(
@@ -136,8 +119,12 @@ class _ParticipationReportTotalState extends State<ParticipationReportTotal> {
                                   sections: [
                                     PieChartSectionData(
                                         radius: touchedIndex == 0 ? 40 : 30,
-                                        title: publicPostSum.toString(),
-                                        value: publicPostSum.toDouble(),
+                                        title: widget
+                                            .eventReport.publicPostCount
+                                            .toString(),
+                                        value: widget
+                                            .eventReport.publicPostCount
+                                            .toDouble(),
                                         color: kThemeColor,
                                         titleStyle: TextStyle(
                                             fontSize:
@@ -146,8 +133,12 @@ class _ParticipationReportTotalState extends State<ParticipationReportTotal> {
                                             color: Colors.white)),
                                     PieChartSectionData(
                                         radius: touchedIndex == 1 ? 40 : 30,
-                                        title: deletedPostSum.toString(),
-                                        value: deletedPostSum.toDouble(),
+                                        title: widget
+                                            .eventReport.deletedPostCount
+                                            .toString(),
+                                        value: widget
+                                            .eventReport.deletedPostCount
+                                            .toDouble(),
                                         color: Colors.grey.shade300,
                                         titleStyle: TextStyle(
                                             fontSize:
@@ -158,9 +149,12 @@ class _ParticipationReportTotalState extends State<ParticipationReportTotal> {
                             ),
                             Center(
                                 child: Text(
-                                    publicPostSum + deletedPostSum == 0
+                                    widget.eventReport.publicPostCount +
+                                                widget.eventReport
+                                                    .deletedPostCount ==
+                                            0
                                         ? '0%'
-                                        : '${(publicPostSum / (publicPostSum + deletedPostSum) * 100).toStringAsFixed(1)}%',
+                                        : '${(widget.eventReport.publicPostCount / (widget.eventReport.publicPostCount + widget.eventReport.deletedPostCount) * 100).toStringAsFixed(1)}%',
                                     style: TextStyle(
                                         fontSize: 15,
                                         color: kThemeColor,
@@ -188,7 +182,8 @@ class _ParticipationReportTotalState extends State<ParticipationReportTotal> {
                                 ),
                                 SizedBox(width: kDefaultPadding / 3),
                                 NumberSlideAnimation(
-                                  number: likeSum.toString(),
+                                  number:
+                                      widget.eventReport.likeCount.toString(),
                                   duration: kDefaultNumberSliderDuration,
                                   curve: Curves.easeOut,
                                   textStyle: TextStyle(
@@ -212,7 +207,8 @@ class _ParticipationReportTotalState extends State<ParticipationReportTotal> {
                                 ),
                                 SizedBox(width: kDefaultPadding / 3),
                                 NumberSlideAnimation(
-                                  number: commentSum.toString(),
+                                  number: widget.eventReport.commentCount
+                                      .toString(),
                                   duration: kDefaultNumberSliderDuration,
                                   curve: Curves.easeOut,
                                   textStyle: TextStyle(

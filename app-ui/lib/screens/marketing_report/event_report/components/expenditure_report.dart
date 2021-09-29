@@ -12,10 +12,12 @@ import 'package:hashchecker/widgets/number_slider/number_slide_animation_widget.
 import 'report_design.dart';
 
 class ExpenditureReport extends StatefulWidget {
-  const ExpenditureReport({Key? key, required this.eventReport})
+  const ExpenditureReport(
+      {Key? key, required this.eventRewardCount, required this.eventReport})
       : super(key: key);
 
   final EventReportPerPeriod eventReport;
+  final int eventRewardCount;
 
   @override
   _ExpenditureReportState createState() => _ExpenditureReportState();
@@ -31,6 +33,7 @@ class _ExpenditureReportState extends State<ExpenditureReport> {
 
   @override
   Widget build(BuildContext context) {
+    print(widget.eventReport.levelExpenditure.toString());
     Size size = MediaQuery.of(context).size;
     return Container(
       padding: const EdgeInsets.all(20),
@@ -92,9 +95,9 @@ class _ExpenditureReportState extends State<ExpenditureReport> {
           SizedBox(height: kDefaultPadding),
           Container(
             height: 200,
-            padding: const EdgeInsets.symmetric(horizontal: 15),
             width: size.width,
-            child: BarChart(mainBarData()),
+            padding: const EdgeInsets.symmetric(horizontal: 15),
+            child: Center(child: BarChart(mainBarData())),
           )
         ],
       ),
@@ -112,7 +115,7 @@ class _ExpenditureReportState extends State<ExpenditureReport> {
       x: x,
       barRods: [
         BarChartRodData(
-          y: isTouched ? y * 1.1 : y,
+          y: y,
           colors: [kThemeColor],
           width: width,
           backDrawRodData: BackgroundBarChartRodData(
@@ -127,7 +130,7 @@ class _ExpenditureReportState extends State<ExpenditureReport> {
   }
 
   List<BarChartGroupData> showingGroups() => List.generate(
-      widget.eventReport.levelExpenditure.length,
+      widget.eventRewardCount,
       (i) => makeGroupData(i, widget.eventReport.levelExpenditure[i].toDouble(),
           isTouched: i == touchedIndex));
 

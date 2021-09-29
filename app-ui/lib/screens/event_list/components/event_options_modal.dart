@@ -5,6 +5,7 @@ import 'package:hashchecker/models/event.dart';
 import 'package:hashchecker/models/event_edit_data.dart';
 import 'package:hashchecker/models/event_report_item.dart';
 import 'package:hashchecker/models/event_report_per_period.dart';
+import 'package:hashchecker/models/event_report_total_sum.dart';
 import 'package:hashchecker/screens/event_list/event_detail/event_detail_screen.dart';
 import 'package:hashchecker/screens/event_list/event_edit/event_edit_modal.dart';
 import 'package:hashchecker/screens/hall/hall_screen.dart';
@@ -346,11 +347,14 @@ class EventOptionsModal extends StatelessWidget {
         EventReportPerPeriod.fromJson(fetchedEventReportData['report']['week']);
     final EventReportPerPeriod monthReport = EventReportPerPeriod.fromJson(
         fetchedEventReportData['report']['month']);
+    final EventReportTotalSum totalReport =
+        EventReportTotalSum.fromJson(fetchedEventReportData['report']['total']);
 
     Navigator.of(context).push(slidePageRouting(EventReportScreen(
         eventReportItem: reportItem,
         eventDayReport: dayReport,
         eventWeekReport: weekReport,
-        eventMonthReport: monthReport)));
+        eventMonthReport: monthReport,
+        eventTotalReport: totalReport)));
   }
 }

@@ -5,6 +5,7 @@ import 'package:hashchecker/api.dart';
 import 'package:hashchecker/constants.dart';
 import 'package:hashchecker/models/event.dart';
 import 'package:hashchecker/models/event_report_per_period.dart';
+import 'package:hashchecker/models/event_report_total_sum.dart';
 import 'package:hashchecker/screens/marketing_report/event_report/event_report_screen.dart';
 import 'package:number_display/number_display.dart';
 import 'package:hashchecker/models/event_report_item.dart';
@@ -16,6 +17,7 @@ class EventReportCard extends StatelessWidget {
     required this.eventDayReport,
     required this.eventWeekReport,
     required this.eventMonthReport,
+    required this.eventTotalReport,
     required this.numberDisplay,
   }) : super(key: key);
 
@@ -23,6 +25,8 @@ class EventReportCard extends StatelessWidget {
   final EventReportPerPeriod eventDayReport;
   final EventReportPerPeriod eventWeekReport;
   final EventReportPerPeriod eventMonthReport;
+  final EventReportTotalSum eventTotalReport;
+
   final Display numberDisplay;
 
   @override
@@ -49,7 +53,8 @@ class EventReportCard extends StatelessWidget {
                     eventReportItem: eventReportItem,
                     eventDayReport: eventDayReport,
                     eventWeekReport: eventWeekReport,
-                    eventMonthReport: eventMonthReport),
+                    eventMonthReport: eventMonthReport,
+                    eventTotalReport: eventTotalReport),
                 closedBuilder: (context, openContainer) => InkWell(
                       highlightColor: kShadowColor,
                       overlayColor:

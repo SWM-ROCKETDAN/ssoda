@@ -3,6 +3,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:hashchecker/constants.dart';
 import 'package:hashchecker/models/event_report_per_period.dart';
+import 'package:hashchecker/models/event_report_total_sum.dart';
 import 'package:hashchecker/screens/marketing_report/event_report/components/delta_data.dart';
 import 'package:number_display/number_display.dart';
 import 'dart:math';
@@ -12,10 +13,12 @@ import 'package:hashchecker/widgets/number_slider/number_slide_animation_widget.
 import '../report_design.dart';
 
 class ExpenditureReportTotal extends StatefulWidget {
-  const ExpenditureReportTotal({Key? key, required this.eventReport})
+  const ExpenditureReportTotal(
+      {Key? key, required this.eventRewardCount, required this.eventReport})
       : super(key: key);
 
-  final EventReportPerPeriod eventReport;
+  final EventReportTotalSum eventReport;
+  final int eventRewardCount;
 
   @override
   _ExpenditureReportTotalState createState() => _ExpenditureReportTotalState();
@@ -32,8 +35,7 @@ class _ExpenditureReportTotalState extends State<ExpenditureReportTotal> {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
-    final expenditureSum =
-        widget.eventReport.expenditureCount.reduce((a, b) => a + b);
+    final expenditureSum = widget.eventReport.expenditureCount;
     return Container(
       padding: const EdgeInsets.all(20),
       width: size.width,
@@ -122,7 +124,7 @@ class _ExpenditureReportTotalState extends State<ExpenditureReportTotal> {
   }
 
   List<BarChartGroupData> showingGroups() => List.generate(
-      widget.eventReport.levelExpenditure.length,
+      widget.eventRewardCount,
       (i) => makeGroupData(i, widget.eventReport.levelExpenditure[i].toDouble(),
           isTouched: i == touchedIndex));
 
