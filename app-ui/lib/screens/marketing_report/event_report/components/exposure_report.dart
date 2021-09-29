@@ -21,6 +21,18 @@ class ExposureReport extends StatefulWidget {
 }
 
 class _ExposureReportState extends State<ExposureReport> {
+  List<int> exposureList = [];
+
+  @override
+  void initState() {
+    super.initState();
+    for (int i = 0; i < min(7, widget.eventReport.exposureCount.length); i++)
+      exposureList.add(widget.eventReport
+          .exposureCount[widget.eventReport.exposureCount.length - i - 1]);
+
+    exposureList = List.from(exposureList.reversed);
+  }
+
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -136,11 +148,11 @@ class _ExposureReportState extends State<ExposureReport> {
                             LineTouchTooltipData(tooltipBgColor: Colors.white)),
                     gridData: FlGridData(
                       show: true,
-                      drawVerticalLine: false,
+                      drawVerticalLine: true,
                       getDrawingHorizontalLine: (value) {
                         return FlLine(
                           color: kShadowColor,
-                          strokeWidth: 1,
+                          strokeWidth: 0,
                         );
                       },
                       getDrawingVerticalLine: (value) {
@@ -156,6 +168,7 @@ class _ExposureReportState extends State<ExposureReport> {
                         showTitles: false,
                       ),
                       leftTitles: SideTitles(
+                        interval: _getStandardDeviation(exposureList),
                         showTitles: true,
                         getTextStyles: (context, value) => const TextStyle(
                           color: kLiteFontColor,
@@ -163,32 +176,12 @@ class _ExposureReportState extends State<ExposureReport> {
                           fontSize: 12,
                         ),
                         getTitles: (value) {
-                          final exposureValue = value.toInt();
-                          if (exposureValue == 0) return "0";
-                          if (exposureValue ==
-                              widget.eventReport.exposureCount.reduce(max) *
-                                  1 ~/
-                                  3)
-                            return (widget.eventReport.exposureCount
-                                        .reduce(max) *
-                                    1 ~/
-                                    3)
-                                .toString();
-                          if (exposureValue ==
-                              widget.eventReport.exposureCount.reduce(max) *
-                                  2 ~/
-                                  3)
-                            return (widget.eventReport.exposureCount
-                                        .reduce(max) *
-                                    2 ~/
-                                    3)
-                                .toString();
-                          if (exposureValue ==
-                              widget.eventReport.exposureCount.reduce(max))
-                            return widget.eventReport.exposureCount
-                                .reduce(max)
-                                .toString();
-                          return "";
+                          final numberDisplay = createDisplay(
+                              length: 3,
+                              roundingType: RoundingType.ceil,
+                              units: ['K', 'M', 'G', 'T', 'P']);
+
+                          return numberDisplay(value.toInt());
                         },
                         reservedSize: 14,
                         margin: 12,
@@ -200,29 +193,14 @@ class _ExposureReportState extends State<ExposureReport> {
                             color: const Color(0xff37434d), width: 0)),
                     minX: 0,
                     maxX: 6,
-                    minY: 0,
-                    maxY: widget.eventReport.exposureCount
-                            .reduce(max)
-                            .toDouble() *
-                        1.1,
+                    minY: exposureList.reduce(min).toDouble(),
+                    maxY: exposureList.reduce(max).toDouble(),
                     lineBarsData: [
                       LineChartBarData(
                         spots: List.generate(
-                            min(7, widget.eventReport.exposureCount.length)
-                                .toInt(),
-                            (index) => FlSpot(
-                                index.toDouble(),
-                                widget
-                                    .eventReport
-                                    .exposureCount[widget
-                                            .eventReport.exposureCount.length -
-                                        min(
-                                                7,
-                                                widget.eventReport.exposureCount
-                                                    .length)
-                                            .toInt() +
-                                        index]
-                                    .toDouble())),
+                            exposureList.length,
+                            (index) => FlSpot(index.toDouble(),
+                                exposureList[index].toDouble())),
                         isCurved: false,
                         colors: gradientColors,
                         barWidth: 5,
@@ -246,5 +224,19 @@ class _ExposureReportState extends State<ExposureReport> {
         ],
       ),
     );
+  }
+
+  double _getStandardDeviation(List<int> list) {
+    int sum = list.reduce((a, b) => a + b);
+    if (sum == 0) return 100;
+    double ave = sum / list.length;
+    double variance = 0;
+    list.forEach((element) {
+      variance += (element - ave) * (element - ave);
+    });
+    variance /= list.length;
+    double stdDev = sqrt(variance);
+    if (stdDev <= 0) return list.reduce(max).toDouble();
+    return stdDev;
   }
 }

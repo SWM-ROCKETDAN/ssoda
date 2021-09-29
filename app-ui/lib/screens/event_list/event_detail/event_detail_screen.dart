@@ -48,6 +48,7 @@ class _EventDetailScreenState extends State<EventDetailScreen>
 
   @override
   Widget build(BuildContext context) {
+    final double statusBarHeight = MediaQuery.of(context).padding.top;
     return Scaffold(
         body: NotificationListener<ScrollNotification>(
       onNotification: _scrollListener,
@@ -68,7 +69,7 @@ class _EventDetailScreenState extends State<EventDetailScreen>
                 return Center(child: const CircularProgressIndicator());
               }),
           Container(
-            height: kToolbarHeight * 2,
+            height: statusBarHeight + kToolbarHeight,
             child: AnimatedBuilder(
               animation: _colorAnimationController,
               builder: (context, build) => AppBar(
