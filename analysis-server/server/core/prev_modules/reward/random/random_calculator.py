@@ -1,6 +1,13 @@
-from ..reward_calculator import RewardCalculator
-from ..reward_calculator import _get_valid_rewards
 import random
+
+
+def _get_valid_rewards(rewards: list) -> list:
+    _valid_rewards = []
+    for reward in rewards:
+        if not reward['deleted'] and reward['used_count'] < reward['count']:
+            _valid_rewards.append(reward)
+
+    return _valid_rewards
 
 
 def _get_rate_rewards(rewards: list) -> list:
@@ -32,7 +39,7 @@ def _get_reward_random_id(rewards: list):
     return reward_id.pop()
 
 
-class RewardRandomCalculator(RewardCalculator):
+class RewardRandomCalculator:
     """
     "event": {
                     "id": 21,

@@ -1,3 +1,4 @@
+from django.shortcuts import get_object_or_404
 from rest_framework import serializers
 from core.serializers import RewardSerializer
 from core.serializers import EventRewardSerializer
@@ -41,16 +42,32 @@ class JoinPostScrapSerializer(JoinPostSerializer):
         return representation
 
 
-class JoinUserScrapSerializer(JoinUserSerializer):
-    pass
+class JoinUserScrapSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = JoinUser
+        fields = '__all__'
 
 
-class JoinRewardThisPostSerializer(serializers.ModelSerializer):
-    pass
+class JoinUserSerializer(JoinUserSerializer):
+    class Meta:
+        model = JoinUser
+        fields = ['follow_count', ]
 
 
-class JoinRewardOtherPostSerializer(serializers.ModelSerializer):
-    pass
+class JoinRewardFollowCalculatorSerializer(serializers.ModelSerializer):
+    event = EventRewardSerializer()
+
+    class Meta:
+        model = JoinPost
+        fields = ['event', 'sns_id', 'type']
+
+    def to_representation(self, instance):
+        representation = super().to_representation(instance)
+        join_user = get_object_or_404(JoinUser, sns_id=representation['sns_id'], type=representation['type'])
+        join_user_serializer = JoinUserSerializer(join_user)
+        representation['follow_count'] = join_user_serializer.data['follow_count']
+
+        return representation
 
 
 class JoinRewardRandomCalculatorSerializer(serializers.ModelSerializer):
