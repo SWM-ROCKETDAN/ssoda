@@ -2,6 +2,11 @@ import json
 from pathlib import Path
 from django.core.exceptions import ImproperlyConfigured
 
+# mac DB 설정
+import pymysql
+
+pymysql.install_as_MySQLdb()
+
 BASE_DIR = Path(__file__).resolve().parent
 
 SECRET_DIR = BASE_DIR / "secrets.json"

@@ -25,7 +25,6 @@ class PostScraper:
 
     def __init__(self, join_post):
         self.join_post = join_post
-        print(join_post)
 
     def get_scraped_post_only_do_scrap(self):
         post_type = get_post_type_from_url(self.join_post['url'])

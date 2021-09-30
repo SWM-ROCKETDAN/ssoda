@@ -1,11 +1,6 @@
 from .base import *
 from kombu.utils.url import safequote
 
-# mac DB 설정
-import pymysql
-
-pymysql.install_as_MySQLdb()
-
 DEBUG = True
 
 ALLOWED_HOSTS = ["*"]
@@ -27,7 +22,7 @@ INSTALLED_APPS = [
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': get_secret("RDS_SSODA_NAME"),
+        'NAME': get_secret("RDS_DEV_SSODA_NAME"),
         'USER': get_secret("RDS_SSODA_USER"),
         'PASSWORD': get_secret("RDS_SSODA_PASSWORD"),
         'HOST': get_secret("RDS_SSODA_HOST"),

@@ -130,11 +130,11 @@ def _get_report_dict_format(event: dict) -> dict:
     return report_dict
 
 
-def _sum_level_expenditure(origin: list, target: list):
+def _get_sum_level_expenditure(origin: list, target: list):
     x = origin
     y = target
     z = [a + b for a, b in zip(x, y)]
-    origin = z
+    return z
 
 
 def _parse_calculate_report_dict_to_report_dict(calculate_report_dict: dict, report_dict: dict) -> dict:
@@ -159,11 +159,14 @@ def _parse_calculate_report_dict_to_report_dict(calculate_report_dict: dict, rep
         for calculator_name, calculate_result in calculate_report_dict[day].items():
             if calculator_name == 'level_expenditure':
                 if this_day == now_day:
-                    _sum_level_expenditure(report_dict['day'][calculator_name], calculate_result)
+                    _sum = _get_sum_level_expenditure(report_dict['day'][calculator_name], calculate_result)
+                    report_dict['day'][calculator_name] = _sum
                 if this_week == now_week:
-                    _sum_level_expenditure(report_dict['week'][calculator_name], calculate_result)
+                    _sum = _get_sum_level_expenditure(report_dict['week'][calculator_name], calculate_result)
+                    report_dict['week'][calculator_name] = _sum
                 if this_month == now_month:
-                    _sum_level_expenditure(report_dict['month'][calculator_name], calculate_result)
+                    _sum = _get_sum_level_expenditure(report_dict['month'][calculator_name], calculate_result)
+                    report_dict['month'][calculator_name] = _sum
                 continue
 
             report_dict_day_len = len(report_dict['day'][calculator_name])
@@ -200,7 +203,8 @@ def _get_total_report_dict(join_posts: dict):
     for join_post in join_posts:
         for calculator_name, calculator in calculator_handlers.items():
             if calculator_name == 'level_expenditure':
-                _sum_level_expenditure(total_report_dict[calculator_name], calculator(join_post))
+                _sum = _get_sum_level_expenditure(total_report_dict[calculator_name], calculator(join_post))
+                total_report_dict[calculator_name] = _sum
             else:
                 total_report_dict[calculator_name] += calculator(join_post)
 
