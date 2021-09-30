@@ -9,20 +9,18 @@ from .serializers import JoinPostScrapSerializer
 from .serializers import JoinUserScrapSerializer
 from .serializers import JoinRewardThisPostSerializer
 from .serializers import JoinRewardOtherPostSerializer
+from .serializers import JoinRewardRandomCalculatorSerializer
 from core.modules.join.post.post_scraper import PostScraper
 from core.modules.join.user.user_scraper import UserScraper
 from core.modules.join.reward.reward_calculator import RewardCalculator
+from core.modules.join.reward.random.random_calculator import RandomCalculator
 from core.exceptions import exceptions
-from core.modules.assist.time import _parse_from_str_time_to_date_time
 from join.tasks import task_scrap_post
-from datetime import datetime
-from datetime import timedelta
 
 
 # JoinPost PUT 요청
 class JoinPostsView(APIView):
     def put(self, request, pk):
-        # Join Post 가져오기
         join_post = get_object_or_404(JoinPost, pk=pk)
         join_post_update_serializer = JoinPostScrapSerializer(join_post)
         post_scraper = PostScraper(join_post_update_serializer.data)
@@ -30,7 +28,7 @@ class JoinPostsView(APIView):
         join_post_serializer = JoinPostSerializer(join_post, scraped_post, partial=True)
         if join_post_serializer.is_valid():
             join_post_serializer.save()
-            task_scrap_post.apply_async((pk,), countdown=3600*24)
+            task_scrap_post.apply_async((pk,), countdown=3600 * 24)
             raise exceptions.PostUpdateOk()
         raise exceptions.PostUpdateFailed()
 
@@ -38,7 +36,6 @@ class JoinPostsView(APIView):
 # JoinUser PUT 요청
 class JoinUsersView(APIView):
     def put(self, request, pk):
-        # Join User 가져오기
         join_user = get_object_or_404(JoinUser, pk=pk)
         join_user_update_serializer = JoinUserScrapSerializer(join_user)
         user_scraper = UserScraper(join_user_update_serializer.data)
@@ -66,3 +63,15 @@ class JoinRewardsView(APIView):
         if join_post_serializer.is_valid():
             join_post_serializer.save()
         raise exceptions.RewardCalculateOK({'reward_id': this_reward_id})
+
+
+class JoinRewardRandomView(APIView):
+    def get(self, request, pk):
+        join_post = get_object_or_404(JoinPost, pk=pk)
+        reward_random_serializer = JoinRewardRandomCalculatorSerializer(join_post)
+        random_calculator = RandomCalculator(reward_random_serializer.data['event']['rewards'])
+        reward_id = random_calculator.get_reward_id()
+        join_post_serializer = JoinPostSerializer(join_post, {'reward': reward_id}, partial=True)
+        if join_post_serializer.is_valid():
+            join_post_serializer.save()
+        raise exceptions.RewardCalculateOK({'reward_id': reward_id})
