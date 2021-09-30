@@ -209,14 +209,6 @@ class _StoreReportScreenState extends State<StoreReportScreen> {
       final EventReportTotalSum totalReport = EventReportTotalSum.fromJson(
           fetchedEventReportData['report']['total']);
 
-      // get guestPrice & joinCount & likeCount of EventListItem
-      final likeSum = monthReport.likeCount.reduce((a, b) => a + b);
-      final participateSum =
-          monthReport.participateCount.reduce((a, b) => a + b);
-      final expenditureSum =
-          monthReport.expenditureCount.reduce((a, b) => a + b);
-      final guestPrice = expenditureSum / participateSum;
-
       // get rewardNameList of event
       final getRewardListResponse = await dio.get(getApi(
           API.GET_REWARD_OF_EVENT,
@@ -228,9 +220,10 @@ class _StoreReportScreenState extends State<StoreReportScreen> {
           (index) => fetchedRewardListData[index]['name']);
 
       // set additional info of EventListItem
-      reportItem.likeCount = likeSum;
-      reportItem.joinCount = participateSum;
-      reportItem.guestPrice = guestPrice;
+      reportItem.likeCount = totalReport.likeCount;
+      reportItem.joinCount = totalReport.participateCount;
+      reportItem.guestPrice =
+          totalReport.expenditureCount / totalReport.participateCount;
       reportItem.rewardNameList = rewardNameList;
 
       eventReportList.add(EventReport(

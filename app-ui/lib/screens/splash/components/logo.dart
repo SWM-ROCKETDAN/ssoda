@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:hashchecker/screens/splash/splash_screen.dart';
 import 'package:simple_animations/simple_animations.dart';
@@ -67,12 +68,15 @@ class Logo extends StatelessWidget {
                         ]),
                       ),
                     ),
-                    Text('우리가게 SNS 이벤트 마케팅 매니저',
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 15,
-                            color: value.get(AniProps.color))),
+                    AutoSizeText(
+                      '우리가게 SNS 이벤트 마케팅 매니저',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 15,
+                          color: value.get(AniProps.color)),
+                      maxLines: 1,
+                    ),
                   ])),
     );
   }
