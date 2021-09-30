@@ -3,7 +3,7 @@ from kombu.utils.url import safequote
 
 DEBUG = False
 
-ALLOWED_HOSTS = ["ssoda.io", "www.ssoda.io", "api.ssoda.io"]
+ALLOWED_HOSTS = ["*"]
 
 INSTALLED_APPS = [
     'django.contrib.admin',

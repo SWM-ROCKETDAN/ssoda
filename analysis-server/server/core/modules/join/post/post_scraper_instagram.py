@@ -1,3 +1,5 @@
+import pprint
+
 from bs4 import BeautifulSoup
 from urllib.request import urlopen
 from core.modules.assist.proxy import get_proxy_url
@@ -41,7 +43,7 @@ def scrap_post(url: str) -> dict:
     post_data = post_data[post_data.find('{'):]
     json_acceptable_string = post_data.replace("'", "\"")
     post_data = json.loads(json_acceptable_string)
-
+    print(post_data)
     # user id
     if 'author' in post_data:
         sns_id = post_data['author']['alternateName'][1:]

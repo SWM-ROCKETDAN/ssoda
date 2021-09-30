@@ -128,11 +128,12 @@ class Event(models.Model):
     finish_date = models.DateTimeField(blank=True, null=True)
     start_date = models.DateTimeField()
     status = models.IntegerField()
-    title = models.CharField(max_length=255)
+    title = models.CharField(max_length=25)
     store = models.ForeignKey('Store', on_delete=models.CASCADE, blank=True, null=True)
     deleted = models.BooleanField(null=True, default=False)
 
     class Meta:
+        managed = False
         db_table = 'event'
 
 
@@ -141,6 +142,7 @@ class EventImages(models.Model):
     images = models.CharField(max_length=255)
 
     class Meta:
+        managed = False
         db_table = 'event_images'
 
 
@@ -149,15 +151,16 @@ class Hashtag(models.Model):
     id = models.OneToOneField(Event, related_name='hashtag', on_delete=models.CASCADE, db_column='id', primary_key=True)
 
     class Meta:
+        managed = False
         db_table = 'hashtag'
 
 
 class HashtagHashtags(models.Model):
-    id = models.BigAutoField(primary_key=True)
     hashtag = models.ForeignKey(Hashtag, related_name='hashtag_hashtags', on_delete=models.CASCADE)
     hashtags = models.CharField(max_length=255, blank=True, null=True)
 
     class Meta:
+        managed = False
         db_table = 'hashtag_hashtags'
 
 
@@ -166,6 +169,7 @@ class HashtagRequirements(models.Model):
     requirements = models.TextField()  # This field type is a guess.
 
     class Meta:
+        managed = False
         db_table = 'hashtag_requirements'
 
 
@@ -173,7 +177,7 @@ class Reward(models.Model):
     id = models.BigAutoField(primary_key=True)
     category = models.IntegerField(blank=True, null=True)
     count = models.IntegerField(blank=True, null=True)
-    name = models.CharField(max_length=255)
+    name = models.CharField(max_length=20)
     price = models.IntegerField(blank=True, null=True)
     level = models.BigIntegerField(blank=True, null=True)
     used_count = models.IntegerField(blank=True, null=True)
@@ -182,53 +186,68 @@ class Reward(models.Model):
     deleted = models.BooleanField(null=True, default=False)
 
     class Meta:
+        managed = False
         db_table = 'reward'
 
 
 class Store(models.Model):
     id = models.BigAutoField(primary_key=True)
-    city = models.CharField(max_length=255, blank=True, null=True)
-    country = models.CharField(max_length=255, blank=True, null=True)
-    road = models.CharField(max_length=255, blank=True, null=True)
-    town = models.CharField(max_length=255, blank=True, null=True)
-    zip_code = models.CharField(max_length=255, blank=True, null=True)
+    building_code = models.CharField(null=True, max_length=11)
+    city = models.CharField(max_length=40)
+    country = models.CharField(max_length=40)
     latitude = models.FloatField(blank=True, null=True)
     longitude = models.FloatField(blank=True, null=True)
-    category = models.IntegerField(blank=True, null=True)
-    description = models.TextField(blank=True, null=True)
-    name = models.CharField(max_length=255, blank=True, null=True)
-    user = models.ForeignKey('User', on_delete=models.CASCADE, blank=True, null=True)
-    logo_image_path = models.CharField(max_length=255, blank=True, null=True)
-    building_code = models.CharField(max_length=255, blank=True, null=True)
+    road = models.CharField(max_length=80)
+    town = models.CharField(max_length=40)
+    zip_code = models.CharField(max_length=5)
+    category = models.IntegerField()
     deleted = models.BooleanField(null=True, default=False)
+    description = models.TextField(blank=True, null=True)
+    logo_image_path = models.CharField(max_length=255, blank=True, null=True)
+    name = models.CharField(max_length=20)
+    user = models.ForeignKey('User', models.DO_NOTHING, blank=True, null=True)
 
     class Meta:
+        managed = False
         db_table = 'store'
 
 
 class StoreImages(models.Model):
+    id = models.BigAutoField(primary_key=True)
     store = models.ForeignKey(Store, on_delete=models.CASCADE)
     images = models.CharField(max_length=255, blank=True, null=True)
 
     class Meta:
+        managed = False
         db_table = 'store_images'
 
 
 class User(models.Model):
     id = models.BigAutoField(primary_key=True)
-    email = models.CharField(max_length=255, blank=True, null=True)
-    name = models.CharField(max_length=255)
-    picture = models.CharField(max_length=255, blank=True, null=True)
-    role = models.CharField(max_length=255)
     created_date = models.DateTimeField()
-    modified_date = models.DateTimeField()
-    password = models.CharField(max_length=255)
-    provider = models.CharField(max_length=255)
-    user_id = models.CharField(max_length=255)
     deleted = models.BooleanField(null=True, default=False)
+    email = models.CharField(max_length=255, blank=True, null=True)
+    modified_date = models.DateTimeField()
+    name = models.CharField(max_length=30)
+    password = models.CharField(max_length=80)
+    picture = models.CharField(max_length=255, blank=True, null=True)
+    provider = models.CharField(max_length=10)
+    role = models.CharField(max_length=10)
+    user_id = models.CharField(unique=True, max_length=80)
 
     class Meta:
+        managed = False
         db_table = 'user'
+
+
+class UserRefreshToken(models.Model):
+    id = models.BigAutoField(primary_key=True)
+    refresh_token = models.CharField(max_length=255)
+    user_id = models.CharField(unique=True, max_length=80)
+
+    class Meta:
+        managed = False
+        db_table = 'user_refresh_token'
 
 
 class JoinPost(models.Model):
