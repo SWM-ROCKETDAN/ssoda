@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:future_progress_dialog/future_progress_dialog.dart';
-import 'package:hashchecker/screens/hall/hall_screen.dart';
 
 const kThemeColor = Color(0xFF0071f1);
 const kScaffoldBackgroundColor = Color(0xFFfdfdfe);
@@ -9,7 +8,7 @@ const kDefaultFontColor = Color(0xFF001024);
 const kLiteFontColor = Color(0xFF848c97);
 const kLogoColor = Color(0xFF0088ff);
 const kDefaultPadding = 15.0;
-const kDefaultNumberSliderDuration = Duration(seconds: 2);
+const kDefaultNumberSliderDuration = Duration(seconds: 1);
 const kAppUrlScheme = 'com.rocketdan.ssoda';
 final kNewImagePrefix = 'HASHCHECKER_NEW_IMAGE';
 

@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:hashchecker/constants.dart';
 
@@ -8,9 +9,10 @@ class Copyright extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Text(
+    return AutoSizeText(
       'Copyright ⓒ 2021 Rocketdan All rights reserved.',
       style: TextStyle(fontSize: 12, color: kLiteFontColor),
+      maxLines: 1,
     );
   }
 }

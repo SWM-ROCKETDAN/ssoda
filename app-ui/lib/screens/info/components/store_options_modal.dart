@@ -40,6 +40,7 @@ class StoreOptionsModal extends StatelessWidget {
               leading: Icon(Icons.edit_rounded,
                   color: kDefaultFontColor.withOpacity(0.8)),
               onTap: () {
+                Navigator.pop(context);
                 Navigator.push(context, slidePageRouting(StoreEditScreen()));
               }),
           ListTile(
