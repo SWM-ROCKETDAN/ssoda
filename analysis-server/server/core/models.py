@@ -131,9 +131,9 @@ class Event(models.Model):
     title = models.CharField(max_length=25)
     store = models.ForeignKey('Store', on_delete=models.CASCADE, blank=True, null=True)
     deleted = models.BooleanField(null=True, default=False)
+    reward_policy = models.CharField(max_length=10)
 
     class Meta:
-        managed = False
         db_table = 'event'
 
 
@@ -142,7 +142,6 @@ class EventImages(models.Model):
     images = models.CharField(max_length=255)
 
     class Meta:
-        managed = False
         db_table = 'event_images'
 
 
@@ -151,7 +150,6 @@ class Hashtag(models.Model):
     id = models.OneToOneField(Event, related_name='hashtag', on_delete=models.CASCADE, db_column='id', primary_key=True)
 
     class Meta:
-        managed = False
         db_table = 'hashtag'
 
 
@@ -160,7 +158,6 @@ class HashtagHashtags(models.Model):
     hashtags = models.CharField(max_length=255, blank=True, null=True)
 
     class Meta:
-        managed = False
         db_table = 'hashtag_hashtags'
 
 
@@ -169,7 +166,6 @@ class HashtagRequirements(models.Model):
     requirements = models.TextField()  # This field type is a guess.
 
     class Meta:
-        managed = False
         db_table = 'hashtag_requirements'
 
 
@@ -186,7 +182,6 @@ class Reward(models.Model):
     deleted = models.BooleanField(null=True, default=False)
 
     class Meta:
-        managed = False
         db_table = 'reward'
 
 
@@ -208,7 +203,6 @@ class Store(models.Model):
     user = models.ForeignKey('User', models.DO_NOTHING, blank=True, null=True)
 
     class Meta:
-        managed = False
         db_table = 'store'
 
 
@@ -218,7 +212,6 @@ class StoreImages(models.Model):
     images = models.CharField(max_length=255, blank=True, null=True)
 
     class Meta:
-        managed = False
         db_table = 'store_images'
 
 
@@ -236,7 +229,6 @@ class User(models.Model):
     user_id = models.CharField(unique=True, max_length=80)
 
     class Meta:
-        managed = False
         db_table = 'user'
 
 
@@ -246,7 +238,6 @@ class UserRefreshToken(models.Model):
     user_id = models.CharField(unique=True, max_length=80)
 
     class Meta:
-        managed = False
         db_table = 'user_refresh_token'
 
 
