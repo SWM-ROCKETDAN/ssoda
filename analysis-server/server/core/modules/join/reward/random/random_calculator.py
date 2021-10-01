@@ -27,7 +27,10 @@ def _get_reward_random_id(rewards: list):
     _ids = [_id for _id, _rate in _rate_rewards]
     _rates = [_rate for _id, _rate in _rate_rewards]
 
-    reward_id = random.choices(population=_ids, weights=_rates, k=1)
+    reward_id = random.choices(population=_ids, weights=_rates, k=121)
+    # print(reward_id.count(9))
+    # print(reward_id.count(7))
+    # print(reward_id.count(8))
 
     return reward_id.pop()
 
