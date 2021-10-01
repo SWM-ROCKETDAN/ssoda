@@ -9,6 +9,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -23,10 +24,11 @@ public class Hashtag extends Event {
     private Long id;
 
     @ElementCollection
+    @Size(max = 10)
     private List<String> hashtags;
 
     @ElementCollection
-    @Column(nullable = false)
+    @Column(nullable = false, columnDefinition = "TINYINT")
     private List<Boolean> requirements;
 
     @Column(nullable = false)

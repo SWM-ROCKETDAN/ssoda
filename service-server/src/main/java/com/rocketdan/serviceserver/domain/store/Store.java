@@ -11,6 +11,7 @@ import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 
 import javax.persistence.*;
+import javax.validation.constraints.Size;
 import java.util.List;
 import java.util.Optional;
 
@@ -29,7 +30,8 @@ public class Store {
     private User user;
 
     // 가게 이름
-    @Column(nullable = false)
+    @Size(max = 20)
+    @Column(nullable = false, length = 20)
     private String name;
 
     // 가게 분류
@@ -41,7 +43,8 @@ public class Store {
     private Address address;
 
     // 가게 상세 설명
-    @Column(columnDefinition = "TEXT")
+    @Size(max = 100)
+    @Column(columnDefinition = "TEXT", length = 100)
     private String description;
 
     // 가게 이미지
@@ -56,7 +59,7 @@ public class Store {
     private List<Event> events;
 
     @ColumnDefault("false")
-    @Column(nullable = false)
+    @Column(nullable = false, columnDefinition = "TINYINT")
     private Boolean deleted = false;
 
     @Builder
