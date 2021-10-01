@@ -1,10 +1,12 @@
-package com.rocketdan.serviceserver.web;
+package com.rocketdan.serviceserver.web.dto.join;
 
 import com.rocketdan.serviceserver.domain.event.RewardPolicy;
+import lombok.Getter;
 
+@Getter
 public class SaveJoinPostResult {
-    Long joinPostId;
-    RewardPolicy rewardPolicy;
+    private Long joinPostId;
+    private RewardPolicy rewardPolicy;
 
     public SaveJoinPostResult(Long joinPostId, RewardPolicy rewardPolicy) {
         this.joinPostId = joinPostId;

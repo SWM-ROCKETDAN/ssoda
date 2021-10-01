@@ -1,5 +1,6 @@
 package com.rocketdan.serviceserver.app.dto.event;
 
+import com.rocketdan.serviceserver.domain.event.RewardPolicy;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -13,6 +14,7 @@ import java.util.List;
 @Getter
 @Setter
 public class EventSaveRequestDto {
+    private String rewardPolicy;
     private String title;
     @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
     private LocalDateTime startDate;
@@ -20,7 +22,8 @@ public class EventSaveRequestDto {
     private LocalDateTime finishDate;
     private List<MultipartFile> images;
 
-    public EventSaveRequestDto(String title, LocalDateTime startDate, LocalDateTime finishDate, List<MultipartFile> images) {
+    public EventSaveRequestDto(String rewardPolicy, String title, LocalDateTime startDate, LocalDateTime finishDate, List<MultipartFile> images) {
+        this.rewardPolicy = rewardPolicy;
         this.title = title;
         this.startDate = startDate;
         this.finishDate = finishDate;

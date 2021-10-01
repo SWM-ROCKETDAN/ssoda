@@ -9,11 +9,10 @@ import com.rocketdan.serviceserver.config.AnalysisServerConfig;
 import com.rocketdan.serviceserver.core.CommonResponse;
 import com.rocketdan.serviceserver.domain.event.Event;
 import com.rocketdan.serviceserver.domain.event.EventRepository;
-import com.rocketdan.serviceserver.domain.event.RewardPolicy;
 import com.rocketdan.serviceserver.domain.join.post.JoinPost;
 import com.rocketdan.serviceserver.domain.join.post.JoinPostRepository;
 import com.rocketdan.serviceserver.domain.reward.Reward;
-import com.rocketdan.serviceserver.web.SaveJoinPostResult;
+import com.rocketdan.serviceserver.web.dto.join.SaveJoinPostResult;
 import lombok.RequiredArgsConstructor;
 
 import org.springframework.http.HttpStatus;
@@ -103,7 +102,7 @@ public class JoinPostService {
     private boolean shouldFinishEvent(Event event, Integer increasedUsedCount, Integer rewardCount) {
         switch (event.getRewardPolicy()) {
             case RANDOM: // 전체 단계 리워드가 소진된 경우 종료
-                return event.getRewards().stream().anyMatch(reward -> reward.getCount() >= 0);
+                return event.getRewards().stream().noneMatch(reward -> reward.getUsedCount() < reward.getCount());
             case FOLLOWER: // 한 단계 리워드라도 소진되면 종료
                 return increasedUsedCount >= rewardCount;
             default:

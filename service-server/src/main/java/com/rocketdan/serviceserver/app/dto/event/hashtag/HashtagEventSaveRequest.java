@@ -1,6 +1,7 @@
 package com.rocketdan.serviceserver.app.dto.event.hashtag;
 
 import com.rocketdan.serviceserver.app.dto.event.EventSaveRequestDto;
+import com.rocketdan.serviceserver.domain.event.RewardPolicy;
 import com.rocketdan.serviceserver.domain.event.type.Hashtag;
 import lombok.Builder;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -15,9 +16,9 @@ public class HashtagEventSaveRequest extends EventSaveRequestDto {
     private Integer template;
 
     @Builder
-    public HashtagEventSaveRequest(String title, @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss") LocalDateTime startDate, @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss") LocalDateTime finishDate, List<MultipartFile> images,
+    public HashtagEventSaveRequest(String rewardPolicy, String title, @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss") LocalDateTime startDate, @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss") LocalDateTime finishDate, List<MultipartFile> images,
                                    List<String> hashtags, List<Boolean> requirements, Integer template) {
-        super(title, startDate, finishDate, images);
+        super(rewardPolicy, title, startDate, finishDate, images);
         this.hashtags = hashtags;
         this.requirements = requirements;
         this.template = template;
@@ -26,6 +27,7 @@ public class HashtagEventSaveRequest extends EventSaveRequestDto {
     // imgPaths는 나중에 주입받아야 하므로
     public Hashtag toEntity(List<String> imgPaths) {
         return Hashtag.builder()
+                .rewardPolicy(RewardPolicy.valueOf(super.getRewardPolicy()))
                 .title(super.getTitle())
                 .startDate(super.getStartDate())
                 .finishDate(super.getFinishDate())

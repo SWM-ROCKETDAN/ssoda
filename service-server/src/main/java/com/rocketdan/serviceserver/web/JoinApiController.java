@@ -5,6 +5,7 @@ import com.rocketdan.serviceserver.service.JoinPostService;
 import com.rocketdan.serviceserver.service.JoinUserService;
 import com.rocketdan.serviceserver.service.RewardService;
 import com.rocketdan.serviceserver.web.dto.join.JoinEventResponseDto;
+import com.rocketdan.serviceserver.web.dto.join.SaveJoinPostResult;
 import com.rocketdan.serviceserver.web.dto.reward.RewardLevelRequestDto;
 import com.rocketdan.serviceserver.web.dto.reward.RewardLevelResponseDto;
 import lombok.RequiredArgsConstructor;
@@ -27,19 +28,19 @@ public class JoinApiController {
         SaveJoinPostResult saveJoinPostResult = joinPostService.save(event_id, requestDto.getUrl());
 
         // (2) analysis-server에 join_post update 요청
-        CommonResponse putJoinPostResponse = joinPostService.putJoinPost(saveJoinPostResult.joinPostId);
+        CommonResponse putJoinPostResponse = joinPostService.putJoinPost(saveJoinPostResult.getJoinPostId());
 
         // (3) join_post의 snsId, type, createDate를 join_user에 저장
-        Long joinUserId = joinUserService.save(saveJoinPostResult.joinPostId);
+        Long joinUserId = joinUserService.save(saveJoinPostResult.getJoinPostId());
 
         // (4) analysis-server에 join_user update 요청
         CommonResponse putJoinUserResponse = joinUserService.putJoinUser(joinUserId);
 
         // (5) analysis-server에 reward level 요청
-        RewardLevelResponseDto rewardLevelResponse = rewardService.getRewardId(saveJoinPostResult.joinPostId, saveJoinPostResult.rewardPolicy);
+        RewardLevelResponseDto rewardLevelResponse = rewardService.getRewardId(saveJoinPostResult.getJoinPostId(), saveJoinPostResult.getRewardPolicy());
 
         // (6) reward 찾아 front에 response
-        return new JoinEventResponseDto(saveJoinPostResult.joinPostId, rewardService.findById(rewardLevelResponse.getReward_id()));
+        return new JoinEventResponseDto(saveJoinPostResult.getJoinPostId(), rewardService.findById(rewardLevelResponse.getReward_id()));
     }
 
     @PutMapping("/posts/{post_id}")

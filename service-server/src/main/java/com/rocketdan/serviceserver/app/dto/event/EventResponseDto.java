@@ -12,6 +12,7 @@ import java.util.List;
 @NoArgsConstructor
 public class EventResponseDto {
     private Long id;
+    private String rewardPolicy;
     private String title;
     private Integer status;
     @JsonFormat(shape=JsonFormat.Shape.STRING, pattern="yyyy-MM-dd'T'HH:mm:ss")
@@ -24,6 +25,7 @@ public class EventResponseDto {
 
     public EventResponseDto(Event entity) {
         this.id = entity.getId();
+        this.rewardPolicy = entity.getRewardPolicy().toString();
         this.title = entity.getTitle();
         this.status = entity.getStatus();
         this.startDate = entity.getStartDate();

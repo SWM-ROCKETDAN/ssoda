@@ -67,9 +67,9 @@ public abstract class Event {
     @Column(nullable = false, columnDefinition = "TINYINT")
     private Boolean deleted = false;
 
-    public Event(String title, RewardPolicy rewardPolicy, Integer status, LocalDateTime startDate, LocalDateTime finishDate, List<String> imagePaths, List<Reward> rewards, Store store) {
-        this.title = title;
+    public Event(RewardPolicy rewardPolicy, String title, Integer status, LocalDateTime startDate, LocalDateTime finishDate, List<String> imagePaths, List<Reward> rewards, Store store) {
         this.rewardPolicy = rewardPolicy;
+        this.title = title;
         this.status = status;
         this.startDate = startDate;
         this.finishDate = finishDate;

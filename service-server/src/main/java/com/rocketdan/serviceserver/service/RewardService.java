@@ -116,7 +116,7 @@ public class RewardService {
     // analysis-server에 random 이벤트 보상 get 요청
     private CommonResponse getRandomRewardId(Long joinPostId) {
         return analysisServerConfig.webClient().get() // GET method
-                .uri("/api/v1/join/random/" + joinPostId + "/") // baseUrl 이후 uri
+                .uri("/api/v1/join/rewards/random/" + joinPostId + "/") // baseUrl 이후 uri
                 .retrieve() // client message 전송
                 .onStatus(HttpStatus::is4xxClientError, clientResponse -> clientResponse.bodyToMono(CommonResponse.class).map(JoinEventFailedException::new))
                 .onStatus(HttpStatus::is5xxServerError, clientResponse -> clientResponse.bodyToMono(CommonResponse.class).map(AnalysisServerErrorException::new))
@@ -127,7 +127,7 @@ public class RewardService {
     // analysis-server에 follower 기반 이벤트 보상 get 요청
     private CommonResponse getFollowerRewardId(Long joinPostId) {
         return analysisServerConfig.webClient().get() // GET method
-                .uri("/api/v1/join/follower/" + joinPostId + "/") // baseUrl 이후 uri
+                .uri("/api/v1/join/rewards/follow/" + joinPostId + "/") // baseUrl 이후 uri
                 .retrieve() // client message 전송
                 .onStatus(HttpStatus::is4xxClientError, clientResponse -> clientResponse.bodyToMono(CommonResponse.class).map(JoinEventFailedException::new))
                 .onStatus(HttpStatus::is5xxServerError, clientResponse -> clientResponse.bodyToMono(CommonResponse.class).map(AnalysisServerErrorException::new))
