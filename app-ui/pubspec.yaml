@@ -3,7 +3,7 @@ description: Rocketdan hashchecker project.
 
 publish_to: 'none'
 
-version: 1.2.0+5
+version: 1.3.0+6
 
 environment:
   sdk: '>=2.12.0 <3.0.0'
