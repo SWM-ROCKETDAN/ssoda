@@ -14,6 +14,7 @@ class Event {
   List<bool> requireList;
   Template template;
   EventStatus? status;
+  String rewardPolicy;
 
   Event(
       {required this.title,
@@ -23,7 +24,8 @@ class Event {
       required this.images,
       required this.requireList,
       required this.template,
-      this.status});
+      this.status,
+      required this.rewardPolicy});
 
   Map<String, dynamic> toJson() => {
         'title': title,
@@ -60,6 +62,7 @@ class Event {
         images: images,
         requireList: requireList,
         template: Template(json['template']),
-        status: EventStatus.values[json['status']]);
+        status: EventStatus.values[json['status']],
+        rewardPolicy: json['rewardPolicy']);
   }
 }

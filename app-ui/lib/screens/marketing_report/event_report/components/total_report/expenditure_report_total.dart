@@ -43,13 +43,6 @@ class _ExpenditureReportTotalState extends State<ExpenditureReportTotal> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-            Text('오늘',
-                style: TextStyle(
-                    color: kDefaultFontColor,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 14)),
-          ]),
           Wrap(
             crossAxisAlignment: WrapCrossAlignment.center,
             runSpacing: 5.0,
@@ -134,7 +127,7 @@ class _ExpenditureReportTotalState extends State<ExpenditureReportTotal> {
             tooltipBgColor: kScaffoldBackgroundColor.withOpacity(0.8),
             getTooltipItem: (group, groupIndex, rod, rodIndex) {
               return BarTooltipItem(
-                '${numberDisplay(rod.y ~/ 1.1)}원',
+                '${numberDisplay(rod.y.toInt())}원',
                 TextStyle(
                   color: kThemeColor,
                   fontWeight: FontWeight.bold,

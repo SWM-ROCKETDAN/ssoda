@@ -10,7 +10,9 @@ const kLogoColor = Color(0xFF0088ff);
 const kDefaultPadding = 15.0;
 const kDefaultNumberSliderDuration = Duration(seconds: 1);
 const kAppUrlScheme = 'com.rocketdan.ssoda';
-final kNewImagePrefix = 'HASHCHECKER_NEW_IMAGE';
+const kNewImagePrefix = 'HASHCHECKER_NEW_IMAGE';
+const kRewardPolicyRandom = "RANDOM";
+const kRewardPolicyFollow = "FOLLOW";
 
 Route slidePageRouting(Widget page) {
   return PageRouteBuilder(

@@ -33,7 +33,8 @@ class _CreateEventStepScreenState extends State<CreateEventStepScreen> {
             DateTime.now(), DateTime.now().add(Duration(days: 30)), null),
         images: [null],
         requireList: List.generate(requireStringList.length, (index) => false),
-        template: Template(0));
+        template: Template(0),
+        rewardPolicy: kRewardPolicyRandom);
   }
 
   @override
