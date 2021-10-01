@@ -58,7 +58,7 @@ class _StoreReportScreenState extends State<StoreReportScreen> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                '리포트 요약',
+                '보고서 요약',
                 style: TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: 20,
@@ -82,7 +82,7 @@ class _StoreReportScreenState extends State<StoreReportScreen> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    '이벤트 별 리포트',
+                    '이벤트 별 보고서',
                     style: TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 20,
@@ -209,6 +209,8 @@ class _StoreReportScreenState extends State<StoreReportScreen> {
       final EventReportTotalSum totalReport = EventReportTotalSum.fromJson(
           fetchedEventReportData['report']['total']);
 
+      print(fetchedEventReportData['report']['month']);
+
       // get rewardNameList of event
       final getRewardListResponse = await dio.get(getApi(
           API.GET_REWARD_OF_EVENT,
@@ -271,7 +273,8 @@ class _StoreReportScreenState extends State<StoreReportScreen> {
     final likeSum = storeReport.likeCount;
     final participateSum = storeReport.participateCount;
     final expenditureSum = storeReport.expenditureCount;
-    final guestPrice = expenditureSum / participateSum;
+    final exposureSum = storeReport.exposureCount;
+    final guestPrice = exposureSum / participateSum;
 
     final StoreReportOverview storeReportOverview = StoreReportOverview(
         guestPrice: guestPrice, joinCount: participateSum, likeCount: likeSum);

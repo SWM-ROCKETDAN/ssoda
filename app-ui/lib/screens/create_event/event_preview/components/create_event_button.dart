@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:hashchecker/api.dart';
 import 'package:hashchecker/constants.dart';
 import 'package:hashchecker/models/event.dart';
+import 'package:hashchecker/models/reward.dart';
 import 'package:hashchecker/models/selected_store.dart';
 import 'package:hashchecker/screens/create_event/create_complete/create_complete_screen.dart';
 import 'package:intl/intl.dart';
@@ -84,12 +85,14 @@ class CreateEventButton extends StatelessWidget {
           (index) => MultipartFile.fromFileSync(event.images[index]!)),
       'hashtags': event.hashtagList,
       'requirements': event.requireList,
-      'template': event.template.id
+      'template': event.template.id,
+      'rewardPolicy': event.rewardPolicy
     });
 
     var eventResponse = await dio
         .post(getApi(API.CREATE_EVENT, suffix: '/$storeId'), data: eventData);
 
+    print(eventResponse.data);
     var rewardsData = FormData();
 
     for (int i = 0; i < event.rewardList.length; i++) {
@@ -111,6 +114,7 @@ class CreateEventButton extends StatelessWidget {
     var rewardsResponse = await dio.post(
         getApi(API.CREATE_REWARDS, suffix: '/${eventResponse.data}'),
         data: rewardsData);
+    print(rewardsResponse.data);
   }
 
   Future<String> _saveTemplateImage(BuildContext context) async {

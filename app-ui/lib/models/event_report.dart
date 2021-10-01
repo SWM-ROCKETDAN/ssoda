@@ -17,3 +17,10 @@ class EventReport {
       required this.eventMonthReport,
       required this.eventTotalReport});
 }
+
+enum EventReportPeriod { DAY, WEEK, MONTH }
+Map<EventReportPeriod, String> periodStringMap = {
+  EventReportPeriod.DAY: '오늘',
+  EventReportPeriod.WEEK: '이번 주에',
+  EventReportPeriod.MONTH: '이번 달에'
+};

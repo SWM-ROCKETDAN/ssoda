@@ -4,6 +4,7 @@ import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:hashchecker/constants.dart';
+import 'package:hashchecker/models/event_report.dart';
 import 'package:hashchecker/models/event_report_per_period.dart';
 import 'package:number_display/number_display.dart';
 import 'package:hashchecker/widgets/number_slider/number_slide_animation_widget.dart';
@@ -12,9 +13,12 @@ import 'delta_data.dart';
 import 'report_design.dart';
 
 class ParticipationReport extends StatefulWidget {
-  ParticipationReport({Key? key, required this.eventReport}) : super(key: key);
+  ParticipationReport(
+      {Key? key, required this.eventReport, required this.period})
+      : super(key: key);
 
   final EventReportPerPeriod eventReport;
+  final EventReportPeriod period;
 
   @override
   _ParticipationReportState createState() => _ParticipationReportState();
@@ -37,7 +41,7 @@ class _ParticipationReportState extends State<ParticipationReport> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-              Text('오늘',
+              Text(periodStringMap[widget.period]!,
                   style: TextStyle(
                       color: kDefaultFontColor,
                       fontWeight: FontWeight.bold,
