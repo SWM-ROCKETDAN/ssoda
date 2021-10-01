@@ -128,6 +128,9 @@ class _EventJoinWithUrlState extends State<EventJoinWithUrl> {
           _showValidationErrorFlashBar(context, '참여한 인스타그램 게시글이 삭제되었습니다.');
         else if (errMsg == "Post is different hashtag")
           _showValidationErrorFlashBar(context, '작성한 포스트의 해시태그가 일치하지 않습니다.');
+        else if (errMsg == "Post is already rewarded")
+          _showValidationErrorFlashBar(
+              context, '이미 같은 게시글로 해당 이벤트에 참여한 내역이 있습니다.');
         else
           _showValidationErrorFlashBar(context, '알 수 없는 오류가 발생하였습니다. [406]');
       } else {
@@ -147,7 +150,7 @@ class _EventJoinWithUrlState extends State<EventJoinWithUrl> {
     widget.loading(false);
 
     if (widget.event.rewardList.length > 1) {
-      widget.roulette(0);
+      widget.roulette(result.reward.id);
       await Future.delayed(Duration(seconds: 6));
     }
 

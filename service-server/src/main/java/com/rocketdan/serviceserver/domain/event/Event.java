@@ -9,6 +9,7 @@ import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 
 import javax.persistence.*;
+import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
@@ -28,8 +29,14 @@ public abstract class Event {
     private Long id;
 
     // 이벤트 제목
-    @Column(nullable = false)
+    @Size(max = 25)
+    @Column(nullable = false, length = 25)
     private String title;
+
+    // 보상 정책
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false, length = 10)
+    private RewardPolicy rewardPolicy;
 
     // 이벤트 상태 (대기중/진행중/종료)
     @Column(nullable = false)
@@ -57,10 +64,11 @@ public abstract class Event {
     private Store store;
 
     @ColumnDefault("false")
-    @Column(nullable = false)
+    @Column(nullable = false, columnDefinition = "TINYINT")
     private Boolean deleted = false;
 
-    public Event(String title, Integer status, LocalDateTime startDate, LocalDateTime finishDate, List<String> imagePaths, List<Reward> rewards, Store store) {
+    public Event(RewardPolicy rewardPolicy, String title, Integer status, LocalDateTime startDate, LocalDateTime finishDate, List<String> imagePaths, List<Reward> rewards, Store store) {
+        this.rewardPolicy = rewardPolicy;
         this.title = title;
         this.status = status;
         this.startDate = startDate;

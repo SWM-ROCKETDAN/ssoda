@@ -36,7 +36,7 @@ class DoneButton extends StatelessWidget {
             height: 50,
             child: TextButton(
               child: Text(
-                '완료',
+                '클릭하여 상품 수령 완료하기',
                 style: TextStyle(
                     color: Colors.white,
                     fontSize: 16,

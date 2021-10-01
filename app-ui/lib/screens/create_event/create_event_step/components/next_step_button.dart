@@ -8,7 +8,7 @@ class NextStepButton extends StatelessWidget {
   final step;
   final maxStep;
   final plusStep;
-  final event;
+  final Event event;
   const NextStepButton(
       {Key? key,
       required this.step,
@@ -106,7 +106,8 @@ class NextStepButton extends StatelessWidget {
         period: event.period,
         images: event.images.where((image) => image != null).toList(),
         requireList: event.requireList,
-        template: event.template);
+        template: event.template,
+        rewardPolicy: event.rewardPolicy);
 
     Navigator.push(
         context, slidePageRouting(EventPreviewScreen(event: savingEvent)));
