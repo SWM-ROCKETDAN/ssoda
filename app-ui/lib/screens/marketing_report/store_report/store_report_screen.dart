@@ -274,7 +274,7 @@ class _StoreReportScreenState extends State<StoreReportScreen> {
     final participateSum = storeReport.participateCount;
     final expenditureSum = storeReport.expenditureCount;
     final exposureSum = storeReport.exposureCount;
-    final guestPrice = exposureSum / participateSum;
+    final guestPrice = expenditureSum / exposureSum;
 
     final StoreReportOverview storeReportOverview = StoreReportOverview(
         guestPrice: guestPrice, joinCount: participateSum, likeCount: likeSum);
