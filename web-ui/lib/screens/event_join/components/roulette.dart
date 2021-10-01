@@ -1,10 +1,11 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_fortune_wheel/flutter_fortune_wheel.dart';
+import 'package:hashchecker_web/models/reward.dart';
 
 class Roulette extends StatelessWidget {
   final rouletteValue;
-  final rewardList;
+  final List<Reward> rewardList;
   const Roulette(
       {Key? key, required this.rouletteValue, required this.rewardList})
       : super(key: key);
@@ -40,7 +41,8 @@ class Roulette extends StatelessWidget {
                   )),
             ],
             physics: NoPanPhysics(),
-            selected: Stream.value(rouletteValue),
+            selected: Stream.value(rewardList
+                .indexWhere((element) => element.id == rouletteValue)),
             items: List.generate(
                 rewardList.length,
                 (index) => FortuneItem(
