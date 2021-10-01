@@ -11,6 +11,7 @@ import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 
 import javax.persistence.*;
+import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
 
 @Entity
@@ -29,6 +30,8 @@ public class JoinPost {
     @OneToOne
     private Reward reward;
 
+    @Size(max = 80)
+    @Column(length = 80)
     private String snsId;
 
     @Column(nullable = false)
@@ -59,7 +62,7 @@ public class JoinPost {
     private LocalDateTime rewardDate;
 
     @ColumnDefault("false")
-    @Column(nullable = false)
+    @Column(nullable = false, columnDefinition = "TINYINT")
     private Boolean deleted = false;
 
     @Builder

@@ -10,6 +10,7 @@ import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 
 import javax.persistence.*;
+import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
 
 @Entity
@@ -22,7 +23,8 @@ public class JoinUser {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
+    @Size(max = 80)
+    @Column(nullable = false, length = 80)
     private String snsId;
 
     private String url;
@@ -40,7 +42,7 @@ public class JoinUser {
     private LocalDateTime updateDate;
 
     @ColumnDefault("false")
-    @Column(nullable = false)
+    @Column(nullable = false, columnDefinition = "TINYINT")
     private Boolean deleted = false;
 
     @Builder

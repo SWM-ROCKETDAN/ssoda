@@ -10,6 +10,7 @@ import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 
 import javax.persistence.*;
+import javax.validation.constraints.Size;
 import java.util.Optional;
 
 @Entity
@@ -31,7 +32,8 @@ public class Reward {
 
     private Integer category;
 
-    @Column(nullable = false)
+    @Size(max = 20)
+    @Column(nullable = false, length = 20)
     private String name;
 
     private String imagePath;
@@ -48,7 +50,7 @@ public class Reward {
     private Integer usedCount = 0;
 
     @ColumnDefault("false")
-    @Column(nullable = false)
+    @Column(nullable = false, columnDefinition = "TINYINT")
     private Boolean deleted = false;
 
     @Builder

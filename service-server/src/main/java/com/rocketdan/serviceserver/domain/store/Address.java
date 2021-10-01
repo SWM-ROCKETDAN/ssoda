@@ -6,33 +6,40 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
+import javax.validation.constraints.Size;
 
 @Embeddable
 @Getter
 @NoArgsConstructor
 public class Address {
     // 시도명
-    @Column(nullable = false)
+    @Size(max = 40)
+    @Column(nullable = false, length = 40)
     private String city;
 
     // 시군구명
-    @Column(nullable = false)
+    @Size(max = 40)
+    @Column(nullable = false, length = 40)
     private String country;
 
     // 읍면동명
-    @Column(nullable = false)
+    @Size(max = 40)
+    @Column(nullable = false, length = 40)
     private String town;
 
     // 도로명
-    @Column(nullable = false)
+    @Size(max = 80)
+    @Column(nullable = false, length = 80)
     private String road;
 
     // 우편 번호
-    @Column(nullable = false)
+    @Size(max = 5)
+    @Column(nullable = false, length = 5)
     private String zipCode;
 
     // 건물 번호
-    @Column(nullable = false)
+    @Size(max = 11)
+    @Column(nullable = false, length = 11)
     private String buildingCode;
 
     // 위도
