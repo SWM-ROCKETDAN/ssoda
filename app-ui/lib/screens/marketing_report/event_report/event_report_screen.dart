@@ -65,7 +65,7 @@ class _EventReportScreenState extends State<EventReportScreen> {
                             maxLines: 1,
                           ),
                           AutoSizeText(
-                            '마케팅 성과 리포트',
+                            '마케팅 성과 보고서',
                             style: TextStyle(
                                 color: Colors.white,
                                 fontWeight: FontWeight.bold,

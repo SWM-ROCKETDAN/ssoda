@@ -126,7 +126,7 @@ class EventReportCard extends StatelessWidget {
                                               color: Colors.blueGrey,
                                             ),
                                             Text(
-                                              '${numberDisplay(eventReportItem.guestPrice)}원',
+                                              '${numberDisplay(eventReportItem.guestPrice) == "" ? '0' : numberDisplay(eventReportItem.guestPrice)}원',
                                               style: TextStyle(
                                                   color: kLiteFontColor,
                                                   fontSize: 14),
