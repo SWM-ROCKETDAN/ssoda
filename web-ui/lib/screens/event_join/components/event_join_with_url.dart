@@ -40,7 +40,7 @@ class _EventJoinWithUrlState extends State<EventJoinWithUrl> {
             style: TextStyle(fontWeight: FontWeight.bold, fontSize: 17)),
         SizedBox(height: kDefaultPadding),
         TextField(
-          enabled: _urlEnabled,
+          enabled: _urlEnabled && widget.event.status == EventStatus.PROCEEDING,
           controller: _urlController,
           textInputAction: TextInputAction.go,
           onSubmitted: (_) {
@@ -62,16 +62,19 @@ class _EventJoinWithUrlState extends State<EventJoinWithUrl> {
             width: MediaQuery.of(context).size.width,
             height: 40,
             child: ElevatedButton(
-                onPressed: _urlEnabled
-                    ? () {
-                        if (isValidUrl())
-                          sendUrlToGetReward();
-                        else
-                          _showValidationErrorFlashBar(
-                              context, '올바른 인스타그램 URL이 아닙니다.');
-                      }
-                    : null,
-                child: Text('URL 업로드하고 이벤트 참여하기'))),
+                onPressed:
+                    _urlEnabled && widget.event.status == EventStatus.PROCEEDING
+                        ? () {
+                            if (isValidUrl())
+                              sendUrlToGetReward();
+                            else
+                              _showValidationErrorFlashBar(
+                                  context, '올바른 인스타그램 URL이 아닙니다.');
+                          }
+                        : null,
+                child: Text(widget.event.status == EventStatus.PROCEEDING
+                    ? 'URL 업로드하고 이벤트 참여하기'
+                    : '현재 진행 중인 이벤트가 아닙니다'))),
         SizedBox(height: kDefaultPadding),
         Row(
           children: [
