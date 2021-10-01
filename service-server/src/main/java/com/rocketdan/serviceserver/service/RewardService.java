@@ -1,5 +1,6 @@
 package com.rocketdan.serviceserver.service;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.rocketdan.serviceserver.Exception.analysis.AnalysisServerErrorException;
 import com.rocketdan.serviceserver.Exception.join.JoinEventFailedException;
 import com.rocketdan.serviceserver.Exception.resource.NoAuthorityToResourceException;
@@ -7,7 +8,9 @@ import com.rocketdan.serviceserver.app.dto.reward.RewardUpdateRequestDto;
 import com.rocketdan.serviceserver.config.AnalysisServerConfig;
 import com.rocketdan.serviceserver.config.auth.UserIdValidCheck;
 import com.rocketdan.serviceserver.core.CommonResponse;
+import com.rocketdan.serviceserver.domain.event.RewardPolicy;
 import com.rocketdan.serviceserver.s3.service.UpdateImageService;
+import com.rocketdan.serviceserver.web.dto.reward.RewardLevelResponseDto;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
@@ -97,10 +100,34 @@ public class RewardService {
         rewardRepository.delete(reward);
     }
 
-    // analysis-server에 put 요청
-    public CommonResponse getRewardId(Long joinPostId) {
+    // Event 종류에 따라서 analysis-server에 따로 요청
+    public RewardLevelResponseDto getRewardId(Long joinPostId, RewardPolicy rewardPolicy) {
+        ObjectMapper objectMapper = new ObjectMapper();
+        switch (rewardPolicy) {
+            case RANDOM:
+                return objectMapper.convertValue(getRandomRewardId(joinPostId).getData(), RewardLevelResponseDto.class);
+            case FOLLOWER:
+                return objectMapper.convertValue(getFollowerRewardId(joinPostId).getData(), RewardLevelResponseDto.class);
+            default:
+                throw new JoinEventFailedException();
+        }
+    }
+
+    // analysis-server에 random 이벤트 보상 get 요청
+    private CommonResponse getRandomRewardId(Long joinPostId) {
         return analysisServerConfig.webClient().get() // GET method
-                .uri("/api/v1/join/rewards/" + joinPostId + "/") // baseUrl 이후 uri
+                .uri("/api/v1/join/random/" + joinPostId + "/") // baseUrl 이후 uri
+                .retrieve() // client message 전송
+                .onStatus(HttpStatus::is4xxClientError, clientResponse -> clientResponse.bodyToMono(CommonResponse.class).map(JoinEventFailedException::new))
+                .onStatus(HttpStatus::is5xxServerError, clientResponse -> clientResponse.bodyToMono(CommonResponse.class).map(AnalysisServerErrorException::new))
+                .bodyToMono(CommonResponse.class) // body type
+                .block(); // await
+    }
+
+    // analysis-server에 follower 기반 이벤트 보상 get 요청
+    private CommonResponse getFollowerRewardId(Long joinPostId) {
+        return analysisServerConfig.webClient().get() // GET method
+                .uri("/api/v1/join/follower/" + joinPostId + "/") // baseUrl 이후 uri
                 .retrieve() // client message 전송
                 .onStatus(HttpStatus::is4xxClientError, clientResponse -> clientResponse.bodyToMono(CommonResponse.class).map(JoinEventFailedException::new))
                 .onStatus(HttpStatus::is5xxServerError, clientResponse -> clientResponse.bodyToMono(CommonResponse.class).map(AnalysisServerErrorException::new))

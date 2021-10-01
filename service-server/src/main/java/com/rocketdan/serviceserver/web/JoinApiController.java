@@ -1,6 +1,5 @@
 package com.rocketdan.serviceserver.web;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.rocketdan.serviceserver.core.CommonResponse;
 import com.rocketdan.serviceserver.service.JoinPostService;
 import com.rocketdan.serviceserver.service.JoinUserService;
@@ -25,23 +24,22 @@ public class JoinApiController {
     @PostMapping("/events/{event_id}")
     public JoinEventResponseDto joinEventAndRetrieveReward(@PathVariable Long event_id, @RequestBody RewardLevelRequestDto requestDto) {
         // (1) join_post 저장
-        Long joinPostId = joinPostService.save(event_id, requestDto.getUrl());
+        SaveJoinPostResult saveJoinPostResult = joinPostService.save(event_id, requestDto.getUrl());
 
         // (2) analysis-server에 join_post update 요청
-        CommonResponse putJoinPostResponse = joinPostService.putJoinPost(joinPostId);
+        CommonResponse putJoinPostResponse = joinPostService.putJoinPost(saveJoinPostResult.joinPostId);
 
         // (3) join_post의 snsId, type, createDate를 join_user에 저장
-        Long joinUserId = joinUserService.save(joinPostId);
+        Long joinUserId = joinUserService.save(saveJoinPostResult.joinPostId);
 
         // (4) analysis-server에 join_user update 요청
         CommonResponse putJoinUserResponse = joinUserService.putJoinUser(joinUserId);
 
         // (5) analysis-server에 reward level 요청
-        ObjectMapper objectMapper = new ObjectMapper();
-        RewardLevelResponseDto rewardLevelResponse = objectMapper.convertValue(rewardService.getRewardId(joinPostId).getData(), RewardLevelResponseDto.class);
+        RewardLevelResponseDto rewardLevelResponse = rewardService.getRewardId(saveJoinPostResult.joinPostId, saveJoinPostResult.rewardPolicy);
 
         // (6) reward 찾아 front에 response
-        return new JoinEventResponseDto(joinPostId, rewardService.findById(rewardLevelResponse.getReward_id()));
+        return new JoinEventResponseDto(saveJoinPostResult.joinPostId, rewardService.findById(rewardLevelResponse.getReward_id()));
     }
 
     @PutMapping("/posts/{post_id}")

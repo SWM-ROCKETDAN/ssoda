@@ -33,6 +33,11 @@ public abstract class Event {
     @Column(nullable = false, length = 25)
     private String title;
 
+    // 보상 정책
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false, length = 10)
+    private RewardPolicy rewardPolicy;
+
     // 이벤트 상태 (대기중/진행중/종료)
     @Column(nullable = false)
     private Integer status;
@@ -62,8 +67,9 @@ public abstract class Event {
     @Column(nullable = false, columnDefinition = "TINYINT")
     private Boolean deleted = false;
 
-    public Event(String title, Integer status, LocalDateTime startDate, LocalDateTime finishDate, List<String> imagePaths, List<Reward> rewards, Store store) {
+    public Event(String title, RewardPolicy rewardPolicy, Integer status, LocalDateTime startDate, LocalDateTime finishDate, List<String> imagePaths, List<Reward> rewards, Store store) {
         this.title = title;
+        this.rewardPolicy = rewardPolicy;
         this.status = status;
         this.startDate = startDate;
         this.finishDate = finishDate;
