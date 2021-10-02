@@ -10,7 +10,7 @@ class Intro extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
-    double statusBarHeight = MediaQuery.of(context).padding.top;
+
     return GestureDetector(
       onTap: () {
         scrollController.animateTo(0,
@@ -60,7 +60,7 @@ class Intro extends StatelessWidget {
                   '쏘다는 사장님들을 위한 SNS 해시태그\n이벤트 마케팅 자동화 매니저입니다',
                   style: TextStyle(color: kLiteFontColor, fontSize: 12),
                   textAlign: TextAlign.center,
-                  maxLines: 2,
+                  maxLines: 3,
                 ),
                 SizedBox(height: kDefaultPadding),
                 Container(

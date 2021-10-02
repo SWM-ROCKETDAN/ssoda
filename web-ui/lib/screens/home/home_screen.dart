@@ -1,4 +1,3 @@
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:hashchecker_web/constants.dart';
 import 'package:hashchecker_web/screens/home/components/intro.dart';
@@ -21,20 +20,20 @@ class _HomeScreenState extends State<HomeScreen> {
   var _scrollOffset = 0.0;
 
   @override
-  Widget build(BuildContext context) {
-    Size size = MediaQuery.of(context).size;
-    final List<double> _offsetList = [
-      size.height * 0.33,
-      size.height * 1.33,
-      size.height * 2.33,
-      size.height * 3.33
-    ];
+  void initState() {
+    super.initState();
     _scrollController.addListener(() {
-      if (_offsetList.contains(_scrollController.offset))
+      if (_checkOffset(_scrollController.offset))
         setState(() {
           _scrollOffset = _scrollController.offset;
         });
     });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
+
     return Scaffold(
       extendBodyBehindAppBar: true,
       appBar: AppBar(
@@ -89,5 +88,21 @@ class _HomeScreenState extends State<HomeScreen> {
         Footer()
       ], controller: _scrollController),
     );
+  }
+
+  bool _checkOffset(double offset) {
+    double height = MediaQuery.of(context).size.height;
+
+    final List<double> offsetList = [
+      height * 0.33,
+      height * 1.33,
+      height * 2.33,
+      height * 3.33
+    ];
+    return offsetList[0] <= offset &&
+            offset <= offsetList[0] + height * 0.075 ||
+        offsetList[1] <= offset && offset <= offsetList[1] + height * 0.075 ||
+        offsetList[2] <= offset && offset <= offsetList[2] + height * 0.075 ||
+        offsetList[3] <= offset && offset <= offsetList[3] + height * 0.075;
   }
 }

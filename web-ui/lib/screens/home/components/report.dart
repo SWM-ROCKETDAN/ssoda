@@ -67,7 +67,7 @@ class Report extends StatelessWidget {
                       '이벤트 참여 기록과 참여자 정보를 종합하여\n마케팅 성과 보고서를 실시간으로 제공합니다\n ',
                       style: TextStyle(color: kLiteFontColor, fontSize: 12),
                       textAlign: TextAlign.center,
-                      maxLines: 2,
+                      maxLines: 3,
                     ),
                     SizedBox(height: kDefaultPadding),
                     Container(

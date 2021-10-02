@@ -43,7 +43,7 @@ class Create extends StatelessWidget {
                         TextSpan(children: [
                           TextSpan(text: '막막했던 '),
                           TextSpan(
-                              text: '이벤트 홍보물\n',
+                              text: '이벤트 시작하기\n',
                               style: TextStyle(
                                   color: Colors.greenAccent.shade700,
                                   fontWeight: FontWeight.w800)),
@@ -52,7 +52,7 @@ class Create extends StatelessWidget {
                               style: TextStyle(
                                   color: kThemeColor,
                                   fontWeight: FontWeight.w900)),
-                          TextSpan(text: '로 손쉽게 만드세요!'),
+                          TextSpan(text: '로 손쉽게 등록하세요!'),
                         ]),
                         style: TextStyle(
                             color: kDefaultFontColor,
@@ -67,7 +67,7 @@ class Create extends StatelessWidget {
                         '이벤트 정보를 입력하면 이벤트 템플릿이 생성되고\n이벤트 참여 웹페이지의 QR 코드가 발급됩니다\n ',
                         style: TextStyle(color: kLiteFontColor, fontSize: 12),
                         textAlign: TextAlign.center,
-                        maxLines: 2,
+                        maxLines: 3,
                       ),
                       SizedBox(height: kDefaultPadding),
                       Container(

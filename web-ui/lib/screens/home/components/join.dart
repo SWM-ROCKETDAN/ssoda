@@ -69,7 +69,7 @@ class Join extends StatelessWidget {
                       style: TextStyle(
                           color: kLiteFontColor, fontSize: 12, height: 1.2),
                       textAlign: TextAlign.center,
-                      maxLines: 2,
+                      maxLines: 3,
                     ),
                     SizedBox(height: kDefaultPadding),
                     Container(
