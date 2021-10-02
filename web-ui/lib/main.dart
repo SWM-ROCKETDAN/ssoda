@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hashchecker_web/constants.dart';
 import 'package:hashchecker_web/models/frouter.dart';
-import 'package:hashchecker_web/screens/ssoda_map/ssoda_map_screen.dart';
+import 'package:hashchecker_web/screens/home/home_screen.dart';
 import 'package:url_strategy/url_strategy.dart';
 
 void main() {
@@ -14,7 +14,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'SSODA',
+      title: '쏘다 - SNS 해시태그 이벤트 마케팅 매니저',
       onGenerateRoute: FRouter.router.generator,
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
@@ -22,7 +22,7 @@ class MyApp extends StatelessWidget {
           visualDensity: VisualDensity.adaptivePlatformDensity,
           scaffoldBackgroundColor: kScaffoldBackgroundColor,
           accentColor: kShadowColor),
-      home: SsodaMapScreen(),
+      home: HomeScreen(),
     );
   }
 
