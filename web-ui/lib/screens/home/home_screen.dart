@@ -1,3 +1,4 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:hashchecker_web/constants.dart';
 import 'package:hashchecker_web/screens/home/components/intro.dart';
@@ -53,9 +54,8 @@ class HomeScreen extends StatelessWidget {
         elevation: 0,
       ),
       body: ListView(
-        children: [Intro(), Create(), Join(), Report(), Outro(), Footer()],
-        controller: _scrollController,
-      ),
+          children: [Intro(), Create(), Join(), Report(), Outro(), Footer()],
+          controller: _scrollController),
     );
   }
 }
