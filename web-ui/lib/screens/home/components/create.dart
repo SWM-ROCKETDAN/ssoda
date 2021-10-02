@@ -43,7 +43,7 @@ class Create extends StatelessWidget {
                         TextSpan(children: [
                           TextSpan(text: '막막했던 '),
                           TextSpan(
-                              text: '이벤트 시작하기\n',
+                              text: '이벤트 만들기\n',
                               style: TextStyle(
                                   color: Colors.greenAccent.shade700,
                                   fontWeight: FontWeight.w800)),
@@ -62,12 +62,24 @@ class Create extends StatelessWidget {
                         textAlign: TextAlign.center,
                         maxLines: 2,
                       ),
-                      SizedBox(height: kDefaultPadding / 2),
-                      AutoSizeText(
-                        '이벤트 정보를 입력하면 이벤트 템플릿이 생성되고\n이벤트 참여 웹페이지의 QR 코드가 발급됩니다\n ',
-                        style: TextStyle(color: kLiteFontColor, fontSize: 12),
-                        textAlign: TextAlign.center,
-                        maxLines: 3,
+                      SizedBox(height: kDefaultPadding),
+                      Column(
+                        children: [
+                          AutoSizeText(
+                            '이벤트 정보를 입력하면 이벤트 템플릿이 생성되고',
+                            style:
+                                TextStyle(color: kLiteFontColor, fontSize: 12),
+                            textAlign: TextAlign.center,
+                            maxLines: 1,
+                          ),
+                          AutoSizeText(
+                            '이벤트 참여 웹페이지의 QR 코드가 발급됩니다',
+                            style:
+                                TextStyle(color: kLiteFontColor, fontSize: 12),
+                            textAlign: TextAlign.center,
+                            maxLines: 1,
+                          ),
+                        ],
                       ),
                       SizedBox(height: kDefaultPadding),
                       Container(

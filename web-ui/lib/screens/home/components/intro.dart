@@ -34,12 +34,13 @@ class Intro extends StatelessWidget {
                 ),
               ),
               children: [
+                SizedBox(height: kDefaultPadding / 5),
                 AutoSizeText.rich(
                   TextSpan(children: [
                     TextSpan(
                         text: 'SNS 이벤트 마케팅\n',
                         style: TextStyle(
-                            color: kThemeColor, fontWeight: FontWeight.bold)),
+                            color: kThemeColor, fontWeight: FontWeight.w800)),
                     TextSpan(text: '이제 '),
                     TextSpan(
                         text: '쏘다',
@@ -55,12 +56,22 @@ class Intro extends StatelessWidget {
                   textAlign: TextAlign.center,
                   maxLines: 2,
                 ),
-                SizedBox(height: kDefaultPadding / 2),
-                AutoSizeText(
-                  '쏘다는 사장님들을 위한 SNS 해시태그\n이벤트 마케팅 자동화 매니저입니다',
-                  style: TextStyle(color: kLiteFontColor, fontSize: 12),
-                  textAlign: TextAlign.center,
-                  maxLines: 3,
+                SizedBox(height: kDefaultPadding),
+                Column(
+                  children: [
+                    AutoSizeText(
+                      '쏘다는 사장님들을 위한 SNS 해시태그',
+                      style: TextStyle(color: kLiteFontColor, fontSize: 12),
+                      textAlign: TextAlign.center,
+                      maxLines: 1,
+                    ),
+                    AutoSizeText(
+                      '이벤트 마케팅 자동화 매니저입니다',
+                      style: TextStyle(color: kLiteFontColor, fontSize: 12),
+                      textAlign: TextAlign.center,
+                      maxLines: 1,
+                    ),
+                  ],
                 ),
                 SizedBox(height: kDefaultPadding),
                 Container(

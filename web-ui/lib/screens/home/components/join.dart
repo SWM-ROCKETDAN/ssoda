@@ -43,11 +43,11 @@ class Join extends StatelessWidget {
                       TextSpan(children: [
                         TextSpan(text: '번거로웠던 '),
                         TextSpan(
-                            text: '게시글 검사',
+                            text: '게시글 검사\n',
                             style: TextStyle(
-                                color: Colors.pinkAccent.shade200,
+                                color: Colors.pinkAccent.shade400,
                                 fontWeight: FontWeight.w800)),
-                        TextSpan(text: '\n이제 '),
+                        TextSpan(text: '이제 '),
                         TextSpan(
                             text: '쏘다',
                             style: TextStyle(
@@ -63,13 +63,22 @@ class Join extends StatelessWidget {
                       textAlign: TextAlign.center,
                       maxLines: 2,
                     ),
-                    SizedBox(height: kDefaultPadding / 2),
-                    AutoSizeText(
-                      '고객이 올린 게시글을 자동으로 검사하고\n비정상적인 경우엔 상품을 제공하지 않습니다\n ',
-                      style: TextStyle(
-                          color: kLiteFontColor, fontSize: 12, height: 1.2),
-                      textAlign: TextAlign.center,
-                      maxLines: 3,
+                    SizedBox(height: kDefaultPadding),
+                    Column(
+                      children: [
+                        AutoSizeText(
+                          '고객이 올린 게시글을 자동으로 검사하고',
+                          style: TextStyle(color: kLiteFontColor, fontSize: 12),
+                          textAlign: TextAlign.center,
+                          maxLines: 1,
+                        ),
+                        AutoSizeText(
+                          '비정상적인 경우엔 상품을 제공하지 않습니다',
+                          style: TextStyle(color: kLiteFontColor, fontSize: 12),
+                          textAlign: TextAlign.center,
+                          maxLines: 1,
+                        ),
+                      ],
                     ),
                     SizedBox(height: kDefaultPadding),
                     Container(

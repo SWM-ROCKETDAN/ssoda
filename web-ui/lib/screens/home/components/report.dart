@@ -62,12 +62,22 @@ class Report extends StatelessWidget {
                       textAlign: TextAlign.center,
                       maxLines: 2,
                     ),
-                    SizedBox(height: kDefaultPadding / 2),
-                    AutoSizeText(
-                      '이벤트 참여 기록과 참여자 정보를 종합하여\n마케팅 성과 보고서를 실시간으로 제공합니다\n ',
-                      style: TextStyle(color: kLiteFontColor, fontSize: 12),
-                      textAlign: TextAlign.center,
-                      maxLines: 3,
+                    SizedBox(height: kDefaultPadding),
+                    Column(
+                      children: [
+                        AutoSizeText(
+                          '이벤트 참여 기록과 참여자 정보를 종합하여',
+                          style: TextStyle(color: kLiteFontColor, fontSize: 12),
+                          textAlign: TextAlign.center,
+                          maxLines: 1,
+                        ),
+                        AutoSizeText(
+                          '마케팅 성과 보고서를 실시간으로 제공합니다',
+                          style: TextStyle(color: kLiteFontColor, fontSize: 12),
+                          textAlign: TextAlign.center,
+                          maxLines: 1,
+                        ),
+                      ],
                     ),
                     SizedBox(height: kDefaultPadding),
                     Container(
