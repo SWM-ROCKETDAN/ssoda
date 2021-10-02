@@ -11,7 +11,7 @@ class Outro extends StatelessWidget {
     double statusBarHeight = MediaQuery.of(context).padding.top;
     return Container(
       width: size.width,
-      height: size.height - kToolbarHeight - statusBarHeight,
+      height: size.height,
       color: kDefaultFontColor,
       padding: const EdgeInsets.fromLTRB(40, 40 + kToolbarHeight, 40, 40),
       child: Column(

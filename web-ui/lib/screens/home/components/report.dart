@@ -11,7 +11,7 @@ class Report extends StatelessWidget {
     double statusBarHeight = MediaQuery.of(context).padding.top;
     return Container(
       width: size.width,
-      height: size.height - kToolbarHeight - statusBarHeight,
+      height: size.height,
       color: kThemeColor.withOpacity(0.1),
       padding: const EdgeInsets.fromLTRB(20, 20 + kToolbarHeight, 20, 20),
       child: Column(

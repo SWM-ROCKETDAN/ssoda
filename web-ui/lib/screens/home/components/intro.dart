@@ -11,7 +11,7 @@ class Intro extends StatelessWidget {
     double statusBarHeight = MediaQuery.of(context).padding.top;
     return Container(
       width: size.width,
-      height: size.height - kToolbarHeight - statusBarHeight,
+      height: size.height,
       color: kScaffoldBackgroundColor,
       padding: const EdgeInsets.all(20),
       child: Column(
