@@ -9,21 +9,39 @@ import 'components/outro.dart';
 import 'components/report.dart';
 import 'components/footer.dart';
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
+
+  @override
+  _HomeScreenState createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  final _scrollController = ScrollController();
+  var _scrollOffset = 0.0;
+
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
-    double statusBarHeight = MediaQuery.of(context).padding.top;
-    final _scrollController = ScrollController();
-
+    final List<double> _offsetList = [
+      size.height * 0.33,
+      size.height * 1.33,
+      size.height * 2.33,
+      size.height * 3.33
+    ];
+    _scrollController.addListener(() {
+      if (_offsetList.contains(_scrollController.offset))
+        setState(() {
+          _scrollOffset = _scrollController.offset;
+        });
+    });
     return Scaffold(
       extendBodyBehindAppBar: true,
       appBar: AppBar(
         leadingWidth: 90,
         leading: GestureDetector(
           onTap: () {
-            _scrollController.animateTo(kToolbarHeight,
+            _scrollController.animateTo(0,
                 duration: Duration(milliseconds: 1500),
                 curve: Curves.fastOutSlowIn);
           },
@@ -62,10 +80,12 @@ class HomeScreen extends StatelessWidget {
       ),
       body: ListView(children: [
         Intro(scrollController: _scrollController),
-        Create(scrollController: _scrollController),
-        Join(scrollController: _scrollController),
-        Report(scrollController: _scrollController),
-        Outro(scrollController: _scrollController),
+        Create(
+            scrollController: _scrollController, scrollOffset: _scrollOffset),
+        Join(scrollController: _scrollController, scrollOffset: _scrollOffset),
+        Report(
+            scrollController: _scrollController, scrollOffset: _scrollOffset),
+        Outro(scrollController: _scrollController, scrollOffset: _scrollOffset),
         Footer()
       ], controller: _scrollController),
     );

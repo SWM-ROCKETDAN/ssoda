@@ -13,7 +13,7 @@ class Intro extends StatelessWidget {
     double statusBarHeight = MediaQuery.of(context).padding.top;
     return GestureDetector(
       onTap: () {
-        scrollController.animateTo(kToolbarHeight,
+        scrollController.animateTo(0,
             duration: Duration(milliseconds: 500), curve: Curves.fastOutSlowIn);
       },
       child: Container(
