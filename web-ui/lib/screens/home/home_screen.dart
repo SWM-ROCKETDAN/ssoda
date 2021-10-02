@@ -21,10 +21,17 @@ class HomeScreen extends StatelessWidget {
       extendBodyBehindAppBar: true,
       appBar: AppBar(
         leadingWidth: 90,
-        leading: Container(
-          margin: const EdgeInsets.only(left: 15),
-          width: size.width * 2 / 7,
-          child: Image.asset('assets/images/appbar_logo.png'),
+        leading: GestureDetector(
+          onTap: () {
+            _scrollController.animateTo(kToolbarHeight,
+                duration: Duration(milliseconds: 1500),
+                curve: Curves.fastOutSlowIn);
+          },
+          child: Container(
+            margin: const EdgeInsets.only(left: 15),
+            width: size.width * 2 / 7,
+            child: Image.asset('assets/images/appbar_logo.png'),
+          ),
         ),
         actions: [
           Container(
@@ -53,9 +60,14 @@ class HomeScreen extends StatelessWidget {
         backgroundColor: Colors.transparent,
         elevation: 0,
       ),
-      body: ListView(
-          children: [Intro(), Create(), Join(), Report(), Outro(), Footer()],
-          controller: _scrollController),
+      body: ListView(children: [
+        Intro(scrollController: _scrollController),
+        Create(scrollController: _scrollController),
+        Join(scrollController: _scrollController),
+        Report(scrollController: _scrollController),
+        Outro(scrollController: _scrollController),
+        Footer()
+      ], controller: _scrollController),
     );
   }
 }
