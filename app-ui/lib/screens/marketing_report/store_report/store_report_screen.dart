@@ -225,7 +225,7 @@ class _StoreReportScreenState extends State<StoreReportScreen> {
       reportItem.likeCount = totalReport.likeCount;
       reportItem.joinCount = totalReport.participateCount;
       reportItem.guestPrice =
-          totalReport.expenditureCount / totalReport.participateCount;
+          totalReport.expenditureCount / totalReport.exposureCount;
       reportItem.rewardNameList = rewardNameList;
 
       eventReportList.add(EventReport(
