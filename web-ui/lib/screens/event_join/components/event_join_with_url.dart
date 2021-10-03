@@ -53,7 +53,9 @@ class _EventJoinWithUrlState extends State<EventJoinWithUrl> {
           decoration: InputDecoration(
               border: OutlineInputBorder(),
               prefixIcon: Icon(Icons.link),
-              hintText: '인스타그램 게시글 URL을 붙여넣기 해주세요!',
+              hintText: widget.event.status == EventStatus.PROCEEDING
+                  ? '인스타그램 게시글 URL을 붙여넣기 해주세요!'
+                  : '',
               contentPadding: const EdgeInsets.all(8),
               isDense: true),
         ),
@@ -98,8 +100,7 @@ class _EventJoinWithUrlState extends State<EventJoinWithUrl> {
           TextSpan(
               text: '게시글의 링크', style: TextStyle(fontWeight: FontWeight.bold)),
           TextSpan(text: '를 복사-붙여넣기하여 업로드\n'),
-          TextSpan(text: '3. 조건 달성률에 따라 이벤트 상품 즉시 지급!\n'),
-          TextSpan(text: '※ 이벤트 상품은 가게의 상품 재고와 참가자의 계정 팔로워 수에 기반하여 지급됩니다.')
+          TextSpan(text: '3. 게시글 검사 후 이벤트 상품 즉시 지급!\n'),
         ], style: TextStyle(color: Colors.black54, fontSize: 13))),
       ],
     );

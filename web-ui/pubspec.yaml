@@ -26,7 +26,8 @@ dependencies:
   animations: ^2.0.1
   flash: ^2.0.1
   flutter_fortune_wheel: ^1.1.0
-  flutter_inappwebview: ^5.3.2
+  url_launcher: ^6.0.10
+  google_fonts: ^2.1.0
   
 dev_dependencies:
   flutter_test:
@@ -35,5 +36,6 @@ dev_dependencies:
 flutter:
   assets:
     - assets/images/
+    - assets/images/home/
 
   uses-material-design: true
