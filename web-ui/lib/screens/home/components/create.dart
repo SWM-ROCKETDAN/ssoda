@@ -2,6 +2,7 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:hashchecker_web/constants.dart';
+import 'package:hashchecker_web/screens/home/components/animation.dart';
 
 class Create extends StatelessWidget {
   const Create(
@@ -82,10 +83,7 @@ class Create extends StatelessWidget {
                         ],
                       ),
                       SizedBox(height: kDefaultPadding),
-                      Container(
-                          height: size.height * 0.6,
-                          margin: const EdgeInsets.all(20),
-                          child: Image.asset('assets/images/home/intro.png'))
+                      ImageAnimation(maxImgNum: 4, section: 'create')
                     ],
                   ),
                 )),

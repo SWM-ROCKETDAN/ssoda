@@ -94,6 +94,7 @@ class _HomeScreenState extends State<HomeScreen> {
     double height = MediaQuery.of(context).size.height;
 
     final List<double> offsetList = [
+      0,
       height * 0.33,
       height * 1.33,
       height * 2.33,
@@ -103,6 +104,7 @@ class _HomeScreenState extends State<HomeScreen> {
             offset <= offsetList[0] + height * 0.075 ||
         offsetList[1] <= offset && offset <= offsetList[1] + height * 0.075 ||
         offsetList[2] <= offset && offset <= offsetList[2] + height * 0.075 ||
-        offsetList[3] <= offset && offset <= offsetList[3] + height * 0.075;
+        offsetList[3] <= offset && offset <= offsetList[3] + height * 0.075 ||
+        offsetList[4] <= offset && offset <= offsetList[4] + height * 0.075;
   }
 }

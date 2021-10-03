@@ -13,7 +13,7 @@ class Intro extends StatelessWidget {
 
     return GestureDetector(
       onTap: () {
-        scrollController.animateTo(0,
+        scrollController.animateTo(0.0,
             duration: Duration(milliseconds: 500), curve: Curves.fastOutSlowIn);
       },
       child: Container(
@@ -76,7 +76,6 @@ class Intro extends StatelessWidget {
                 SizedBox(height: kDefaultPadding),
                 Container(
                     height: size.height * 0.6,
-                    margin: const EdgeInsets.all(20),
                     child: Image.asset('assets/images/home/intro.png'))
               ],
             ),
