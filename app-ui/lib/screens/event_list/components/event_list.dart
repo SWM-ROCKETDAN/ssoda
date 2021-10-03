@@ -27,36 +27,33 @@ class EventList extends StatelessWidget {
   Widget build(BuildContext context) {
     return eventList.isEmpty
         ? Empty()
-        : Column(children: [
-            Column(
-              children: [
-                SizedBox(height: kDefaultPadding),
-                AnimationLimiter(
-                  child: Column(
-                      children: AnimationConfiguration.toStaggeredList(
-                          duration: const Duration(milliseconds: 500),
-                          childAnimationBuilder: (widget) => SlideAnimation(
-                                horizontalOffset: 75,
-                                child: FadeInAnimation(
-                                  child: widget,
-                                ),
+        : Column(
+            children: [
+              SizedBox(height: kDefaultPadding),
+              AnimationLimiter(
+                child: Column(
+                    children: AnimationConfiguration.toStaggeredList(
+                        duration: const Duration(milliseconds: 500),
+                        childAnimationBuilder: (widget) => SlideAnimation(
+                              horizontalOffset: 75,
+                              child: FadeInAnimation(
+                                child: widget,
                               ),
-                          children: List.generate(
-                            eventList.length,
-                            (index) => (selectedStatusFilter == 0 ||
-                                    statusStringMap[eventList[index].status] ==
-                                        statusFilterString[
-                                            selectedStatusFilter])
-                                ? EventListTile(
-                                    size: size,
-                                    eventListItem: eventList[index],
-                                    statusStringMap: statusStringMap,
-                                    statusColorMap: statusColorMap)
-                                : Container(),
-                          ))),
-                )
-              ],
-            ),
-          ]);
+                            ),
+                        children: List.generate(
+                          eventList.length,
+                          (index) => (selectedStatusFilter == 0 ||
+                                  statusStringMap[eventList[index].status] ==
+                                      statusFilterString[selectedStatusFilter])
+                              ? EventListTile(
+                                  size: size,
+                                  eventListItem: eventList[index],
+                                  statusStringMap: statusStringMap,
+                                  statusColorMap: statusColorMap)
+                              : Container(),
+                        ))),
+              )
+            ],
+          );
   }
 }

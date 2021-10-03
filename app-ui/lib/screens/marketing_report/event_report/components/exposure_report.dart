@@ -144,7 +144,7 @@ class _ExposureReportState extends State<ExposureReport> {
                 ),
                 Container(
                   width: size.width * 0.7,
-                  height: 150,
+                  height: 100,
                   child: LineChart(LineChartData(
                     lineTouchData: LineTouchData(
                         touchTooltipData:
@@ -196,7 +196,7 @@ class _ExposureReportState extends State<ExposureReport> {
                             color: const Color(0xff37434d), width: 0)),
                     minX: 0,
                     maxX: 6,
-                    minY: exposureList.reduce(min).toDouble(),
+                    minY: 0,
                     maxY: exposureList.reduce(max).toDouble(),
                     lineBarsData: [
                       LineChartBarData(
