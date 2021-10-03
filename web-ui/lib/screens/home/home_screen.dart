@@ -8,22 +8,47 @@ import 'components/outro.dart';
 import 'components/report.dart';
 import 'components/footer.dart';
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
+
+  @override
+  _HomeScreenState createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  final _scrollController = ScrollController();
+  var _scrollOffset = 0.0;
+
+  @override
+  void initState() {
+    super.initState();
+    _scrollController.addListener(() {
+      if (_checkOffset(_scrollController.offset))
+        setState(() {
+          _scrollOffset = _scrollController.offset;
+        });
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
-    double statusBarHeight = MediaQuery.of(context).padding.top;
-    final _scrollController = ScrollController();
 
     return Scaffold(
       extendBodyBehindAppBar: true,
       appBar: AppBar(
         leadingWidth: 90,
-        leading: Container(
-          margin: const EdgeInsets.only(left: 15),
-          width: size.width * 2 / 7,
-          child: Image.asset('assets/images/appbar_logo.png'),
+        leading: GestureDetector(
+          onTap: () {
+            _scrollController.animateTo(0,
+                duration: Duration(milliseconds: 1500),
+                curve: Curves.fastOutSlowIn);
+          },
+          child: Container(
+            margin: const EdgeInsets.only(left: 15),
+            width: size.width * 2 / 7,
+            child: Image.asset('assets/images/appbar_logo.png'),
+          ),
         ),
         actions: [
           Container(
@@ -52,10 +77,32 @@ class HomeScreen extends StatelessWidget {
         backgroundColor: Colors.transparent,
         elevation: 0,
       ),
-      body: ListView(
-        children: [Intro(), Create(), Join(), Report(), Outro(), Footer()],
-        controller: _scrollController,
-      ),
+      body: ListView(children: [
+        Intro(scrollController: _scrollController),
+        Create(
+            scrollController: _scrollController, scrollOffset: _scrollOffset),
+        Join(scrollController: _scrollController, scrollOffset: _scrollOffset),
+        Report(
+            scrollController: _scrollController, scrollOffset: _scrollOffset),
+        Outro(scrollController: _scrollController, scrollOffset: _scrollOffset),
+        Footer()
+      ], controller: _scrollController),
     );
+  }
+
+  bool _checkOffset(double offset) {
+    double height = MediaQuery.of(context).size.height;
+
+    final List<double> offsetList = [
+      height * 0.33,
+      height * 1.33,
+      height * 2.33,
+      height * 3.33
+    ];
+    return offsetList[0] <= offset &&
+            offset <= offsetList[0] + height * 0.075 ||
+        offsetList[1] <= offset && offset <= offsetList[1] + height * 0.075 ||
+        offsetList[2] <= offset && offset <= offsetList[2] + height * 0.075 ||
+        offsetList[3] <= offset && offset <= offsetList[3] + height * 0.075;
   }
 }
