@@ -85,7 +85,7 @@ class _HorizontalAnimationState extends State<HorizontalAnimation> {
               autoPlayCurve: Curves.linear,
               autoPlay: true,
               height: size.height * 0.33,
-              viewportFraction: 0.8,
+              viewportFraction: 0.775,
               enlargeCenterPage: false),
           items: List.generate(
               widget.maxImgNum,
