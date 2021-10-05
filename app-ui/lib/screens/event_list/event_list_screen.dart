@@ -156,21 +156,19 @@ class _EventListScreenState extends State<EventListScreen> {
                                                     : kThemeColor),
                                       ),
                                       style: ButtonStyle(
-                                          padding:
-                                              MaterialStateProperty.all<EdgeInsetsGeometry>(
-                                                  EdgeInsets.all(0)),
+                                          padding: MaterialStateProperty.all<
+                                                  EdgeInsetsGeometry>(
+                                              EdgeInsets.all(0)),
                                           backgroundColor:
                                               MaterialStateProperty.all<Color>(
                                                   _selectedStatusFilter == index
                                                       ? kThemeColor
                                                       : Colors.transparent),
-                                          shape: MaterialStateProperty.all<OutlinedBorder>(RoundedRectangleBorder(
-                                              borderRadius:
-                                                  BorderRadius.circular(27.0),
-                                              side: _selectedStatusFilter == index
-                                                  ? BorderSide.none
-                                                  : BorderSide(
-                                                      color: kThemeColor))))),
+                                          shape: MaterialStateProperty.all<OutlinedBorder>(
+                                              RoundedRectangleBorder(
+                                                  borderRadius:
+                                                      BorderRadius.circular(27.0),
+                                                  side: BorderSide(color: kThemeColor))))),
                                 ))),
                   ]),
                 ))),

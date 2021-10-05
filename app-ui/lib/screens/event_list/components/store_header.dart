@@ -72,10 +72,10 @@ class StoreHeader extends StatelessWidget {
                             gradient: LinearGradient(
                               colors: [
                                 kScaffoldBackgroundColor,
-                                Colors.transparent
+                                kScaffoldBackgroundColor.withOpacity(0.0001)
                               ],
                               begin: Alignment.bottomCenter,
-                              end: Alignment.topCenter,
+                              end: Alignment.center,
                             ),
                           ))
                         ])),
