@@ -8,6 +8,7 @@ import 'package:hashchecker_web/models/event.dart';
 import 'package:hashchecker_web/models/join_result.dart';
 import 'package:hashchecker_web/models/reward.dart';
 import 'package:hashchecker_web/screens/reward_get/reward_get_screen.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class EventJoinWithUrl extends StatefulWidget {
   final Event event;
@@ -36,8 +37,24 @@ class _EventJoinWithUrlState extends State<EventJoinWithUrl> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text('이벤트 참여하기',
-            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 17)),
+        Row(
+          children: [
+            Text('이벤트 참여하기',
+                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 17)),
+            SizedBox(width: kDefaultPadding / 2),
+            GestureDetector(
+                onTap: () async {
+                  final _instagramUrl = 'https://www.instagram.com';
+                  await canLaunch(_instagramUrl)
+                      ? await launch(_instagramUrl)
+                      : throw 'Could not launch $_instagramUrl';
+                },
+                child: Container(
+                    width: 30,
+                    height: 30,
+                    child: Image.asset('assets/images/instagram.png'))),
+          ],
+        ),
         SizedBox(height: kDefaultPadding),
         TextField(
           enabled: _urlEnabled && widget.event.status == EventStatus.PROCEEDING,
@@ -47,7 +64,7 @@ class _EventJoinWithUrlState extends State<EventJoinWithUrl> {
             if (isValidUrl())
               sendUrlToGetReward();
             else
-              _showValidationErrorFlashBar(context, '올바른 인스타그램 URL이 아닙니다.');
+              _showValidationErrorFlashBar(context, '올바른 인스타그램 게시글 URL이 아닙니다.');
           },
           style: TextStyle(fontSize: 14),
           decoration: InputDecoration(
