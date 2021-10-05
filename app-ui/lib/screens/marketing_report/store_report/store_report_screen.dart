@@ -109,7 +109,7 @@ class _StoreReportScreenState extends State<StoreReportScreen> {
                       onChanged: (String? newValue) {
                         setState(() {
                           dropdownValue = newValue!;
-                          _fetchEventReportData();
+                          eventReportList = _fetchEventReportData();
                         });
                       },
                       items: eventSortDropdownItemList.map((String value) {
