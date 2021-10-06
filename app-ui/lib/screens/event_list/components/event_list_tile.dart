@@ -227,6 +227,18 @@ class EventListTile extends StatelessWidget {
                           fit: BoxFit.cover,
                         ),
                       ),
+                      decoration: BoxDecoration(
+                          boxShadow: [
+                            BoxShadow(
+                              color: kShadowColor,
+                              spreadRadius: 1,
+                              blurRadius: 7,
+                              offset:
+                                  Offset(-3, 3), // changes position of shadow
+                            ),
+                          ],
+                          color: kScaffoldBackgroundColor,
+                          borderRadius: BorderRadius.circular(12)),
                     )),
               ])),
     );

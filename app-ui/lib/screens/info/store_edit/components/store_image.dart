@@ -140,7 +140,12 @@ class _StoreImageState extends State<StoreImage> {
   }
 
   void _removeStoreImage(int index) {
-    widget.deletedImagePaths.add(widget.store.images[index]);
+    if (widget.store.images[index].startsWith(kNewImagePrefix))
+      widget.newImages.removeWhere((element) =>
+          element ==
+          widget.store.images[index].substring(kNewImagePrefix.length));
+    else
+      widget.deletedImagePaths.add(widget.store.images[index]);
     setState(() {
       widget.store.images.removeAt(index);
     });

@@ -44,7 +44,7 @@ class MyApp extends StatelessWidget {
                 primarySwatch: _createMaterialColor(kThemeColor),
                 visualDensity: VisualDensity.adaptivePlatformDensity,
                 scaffoldBackgroundColor: kScaffoldBackgroundColor,
-                accentColor: kShadowColor),
+                accentColor: kShadowColor.withOpacity(0.01)),
             home: snapshot.data,
             builder: (context, child) => MediaQuery(
                 child: child!,

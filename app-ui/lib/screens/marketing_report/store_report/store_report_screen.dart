@@ -58,7 +58,7 @@ class _StoreReportScreenState extends State<StoreReportScreen> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                '보고서 요약',
+                '마케팅 성과',
                 style: TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: 20,
@@ -109,7 +109,7 @@ class _StoreReportScreenState extends State<StoreReportScreen> {
                       onChanged: (String? newValue) {
                         setState(() {
                           dropdownValue = newValue!;
-                          _fetchEventReportData();
+                          eventReportList = _fetchEventReportData();
                         });
                       },
                       items: eventSortDropdownItemList.map((String value) {
