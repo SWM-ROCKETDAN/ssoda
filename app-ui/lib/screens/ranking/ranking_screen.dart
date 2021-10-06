@@ -20,7 +20,7 @@ class RankingScreen extends StatelessWidget {
                     SizedBox(height: kDefaultPadding / 1.2),
                     Column(
                       children: List.generate(
-                        10,
+                        3,
                         (index) => RankingTile(),
                       ),
                     ),
