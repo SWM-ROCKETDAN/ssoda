@@ -83,7 +83,7 @@ class Join extends StatelessWidget {
                       ],
                     ),
                     SizedBox(height: kDefaultPadding),
-                    ImageAnimation(maxImgNum: 4, section: 'join'),
+                    ImageAnimation(maxImgNum: 5, section: 'join'),
                   ],
                 ),
               )))
