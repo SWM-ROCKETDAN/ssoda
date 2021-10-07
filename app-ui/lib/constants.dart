@@ -11,8 +11,10 @@ const kDefaultPadding = 15.0;
 const kDefaultNumberSliderDuration = Duration(seconds: 1);
 const kAppUrlScheme = 'com.rocketdan.ssoda';
 const kNewImagePrefix = 'HASHCHECKER_NEW_IMAGE';
-const kRewardPolicyRandom = "RANDOM";
-const kRewardPolicyFollow = "FOLLOW";
+const kRewardPolicyRandom = 'RANDOM';
+const kRewardPolicyFollow = 'FOLLOW';
+const kGooglePlayStoreDownloadUrl =
+    'https://play.google.com/store/apps/details?id=com.rocketdan.ssoda';
 
 Route slidePageRouting(Widget page) {
   return PageRouteBuilder(
