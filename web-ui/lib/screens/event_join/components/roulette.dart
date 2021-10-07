@@ -51,11 +51,11 @@ class Roulette extends StatelessWidget {
                       child: AutoSizeText(
                         '   ${rewardList[index].name}',
                         style: TextStyle(
-                            fontSize: 21,
+                            fontSize: 20,
                             fontWeight: FontWeight.bold,
                             color: Colors.white),
                         maxLines: 1,
-                        minFontSize: 10,
+                        minFontSize: 5,
                       ),
                     ),
                     style: FortuneItemStyle(
