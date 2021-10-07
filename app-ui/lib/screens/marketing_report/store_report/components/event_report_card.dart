@@ -69,9 +69,10 @@ class EventReportCard extends StatelessWidget {
                             child: Stack(
                               children: [
                                 Image.network(
-                                  '$s3Url${eventReportItem.thumbnail}',
-                                  fit: BoxFit.cover,
-                                ),
+                                    '$s3Url${eventReportItem.thumbnail}',
+                                    fit: BoxFit.cover,
+                                    width: size.width,
+                                    height: size.width / 16 * 9),
                                 Positioned(
                                     bottom: 15,
                                     right: 15,
@@ -122,14 +123,14 @@ class EventReportCard extends StatelessWidget {
                                           child: Column(children: [
                                             Icon(
                                               Icons.attach_money_rounded,
-                                              size: 22,
+                                              size: 20,
                                               color: Colors.blueGrey,
                                             ),
                                             Text(
                                               '${numberDisplay(eventReportItem.guestPrice) == "" ? '0' : numberDisplay(eventReportItem.guestPrice)}원',
                                               style: TextStyle(
                                                   color: kLiteFontColor,
-                                                  fontSize: 14),
+                                                  fontSize: 12),
                                             ),
                                           ]),
                                         ),
@@ -141,7 +142,7 @@ class EventReportCard extends StatelessWidget {
                                           child: Column(children: [
                                             Icon(
                                               Icons.group_rounded,
-                                              size: 22,
+                                              size: 20,
                                               color: Colors.blueGrey,
                                             ),
                                             SizedBox(
@@ -150,7 +151,7 @@ class EventReportCard extends StatelessWidget {
                                                 '${numberDisplay(eventReportItem.joinCount)}명',
                                                 style: TextStyle(
                                                     color: kLiteFontColor,
-                                                    fontSize: 14)),
+                                                    fontSize: 12)),
                                           ]),
                                         ),
                                         VerticalDivider(
@@ -161,7 +162,7 @@ class EventReportCard extends StatelessWidget {
                                           child: Column(children: [
                                             Icon(
                                               Icons.favorite_rounded,
-                                              size: 22,
+                                              size: 20,
                                               color: Colors.blueGrey,
                                             ),
                                             SizedBox(
@@ -170,13 +171,13 @@ class EventReportCard extends StatelessWidget {
                                                 '${numberDisplay(eventReportItem.likeCount)}개',
                                                 style: TextStyle(
                                                     color: kLiteFontColor,
-                                                    fontSize: 14)),
+                                                    fontSize: 12)),
                                           ]),
                                         ),
                                       ],
                                     ),
                                   ),
-                                  SizedBox(height: kDefaultPadding),
+                                  SizedBox(height: kDefaultPadding / 2),
                                   Wrap(
                                       direction: Axis.horizontal,
                                       spacing: 5.0,
