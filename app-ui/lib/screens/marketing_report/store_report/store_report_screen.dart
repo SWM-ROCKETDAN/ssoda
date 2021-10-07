@@ -53,7 +53,7 @@ class _StoreReportScreenState extends State<StoreReportScreen> {
     return Scaffold(
       body: SingleChildScrollView(
         child: Padding(
-          padding: const EdgeInsets.fromLTRB(20, 20, 20, 30),
+          padding: const EdgeInsets.fromLTRB(18, 10, 18, 30),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -77,7 +77,7 @@ class _StoreReportScreenState extends State<StoreReportScreen> {
 
                     return Center(child: const CircularProgressIndicator());
                   }),
-              SizedBox(height: kDefaultPadding / 3 * 5),
+              SizedBox(height: kDefaultPadding * 2),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -92,7 +92,7 @@ class _StoreReportScreenState extends State<StoreReportScreen> {
                       dropdownColor: kScaffoldBackgroundColor.withOpacity(0.9),
                       value: dropdownValue,
                       icon: const Icon(
-                        Icons.sort,
+                        Icons.sort_rounded,
                         color: kDefaultFontColor,
                         size: 20,
                       ),
