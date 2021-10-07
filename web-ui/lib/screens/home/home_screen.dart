@@ -53,7 +53,7 @@ class _HomeScreenState extends State<HomeScreen> {
         actions: [
           Container(
             margin: const EdgeInsets.fromLTRB(12, 8, 12, 8),
-            width: size.width * 2 / 7,
+            width: 110,
             child: TextButton(
               onPressed: () {
                 _scrollController.animateTo(size.height * 4 + kToolbarHeight,
