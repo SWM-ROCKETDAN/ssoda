@@ -1,12 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:hashchecker/api.dart';
 import 'package:hashchecker/constants.dart';
-import 'package:hashchecker/models/user.dart';
+import 'package:hashchecker/models/selected_store.dart';
+import 'package:hashchecker/models/store.dart';
+import 'package:hashchecker/screens/info/components/store_options_modal.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
+import 'package:provider/provider.dart';
+
 import 'user_options_modal.dart';
 
-class UserInfo extends StatelessWidget {
-  final User user;
-  const UserInfo({Key? key, required this.user}) : super(key: key);
+class StoreInfo extends StatelessWidget {
+  final Store store;
+  const StoreInfo({Key? key, required this.store}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -18,7 +23,8 @@ class UserInfo extends StatelessWidget {
                 backgroundColor: Colors.transparent,
                 expand: false,
                 context: context,
-                builder: (context) => UserOptionsModal()),
+                builder: (context) => StoreOptionsModal(
+                    storeId: context.read<SelectedStore>().id)),
             highlightColor: kShadowColor,
             overlayColor: MaterialStateProperty.all<Color>(kShadowColor),
             borderRadius: BorderRadius.circular(12),
@@ -33,20 +39,18 @@ class UserInfo extends StatelessWidget {
                       decoration: BoxDecoration(
                           color: kShadowColor,
                           shape: BoxShape.circle,
-                          image: user.picture == null
-                              ? null
-                              : DecorationImage(
-                                  image: NetworkImage(user.picture!),
-                                  fit: BoxFit.cover))),
+                          image: DecorationImage(
+                              image: NetworkImage('$s3Url${store.logoImage}'),
+                              fit: BoxFit.cover))),
                   SizedBox(width: kDefaultPadding),
                   Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(user.name ?? "",
+                        Text(store.name,
                             style: TextStyle(
                                 color: kDefaultFontColor, fontSize: 14)),
                         SizedBox(height: kDefaultPadding / 5),
-                        Text(user.email ?? "카카오 계정",
+                        Text(store.address.getFullAddress(),
                             style:
                                 TextStyle(color: kLiteFontColor, fontSize: 12))
                       ])
