@@ -97,7 +97,7 @@ class _EventListScreenState extends State<EventListScreen> {
                                 kScaffoldBackgroundColor.withOpacity(0.9),
                             value: dropdownValue,
                             icon: const Icon(
-                              Icons.sort,
+                              Icons.sort_rounded,
                               color: kDefaultFontColor,
                               size: 20,
                             ),
