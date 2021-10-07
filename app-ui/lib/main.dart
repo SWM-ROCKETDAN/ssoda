@@ -14,8 +14,6 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:firebase_core/firebase_core.dart';
 
-final FirebaseMessaging firebaseMessaging = FirebaseMessaging.instance;
-
 void main() {
   SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
       statusBarColor: Colors.transparent,
@@ -91,12 +89,6 @@ class Init {
     await Future.delayed(Duration(milliseconds: 2000));
     await Firebase.initializeApp();
     SharedPreferences prefs = await SharedPreferences.getInstance();
-
-    String? token = await FirebaseMessaging.instance.getToken();
-    print(token);
-    FirebaseMessaging.instance.onTokenRefresh.listen((event) {
-      print(event);
-    });
 
     // on first launching
     final checkFirst = prefs.getBool('checkFirst');
