@@ -25,7 +25,7 @@ public class TokenAuthenticationFilter extends OncePerRequestFilter {
 
     private final JwtAuthTokenProvider jwtAuthTokenProvider;
     private final List<String> excludeUrlPatternsGET = List.of("/api/v1/events/**", "/api/v1/stores/**", "**login**", "/favicon.ico");
-    private final List<String> excludeUrlPatternsPOST = List.of("/api/v1/join/events/**");
+    private final List<String> excludeUrlPatternsPOST = List.of("/api/v1/join/events/**", "/api/v1/push/**");
     private final List<String> excludeUrlPatternsPUT = List.of("/api/v1/join/posts/**");
 
     @Override

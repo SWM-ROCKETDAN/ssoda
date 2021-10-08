@@ -1,4 +1,4 @@
-package com.rocketdan.serviceserver.domain.user;
+package com.rocketdan.serviceserver.domain.user.pushToken;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -8,7 +8,7 @@ import javax.persistence.*;
 @Getter
 @NoArgsConstructor
 @Entity
-public class UserRefreshToken {
+public class UserPushToken {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -17,14 +17,14 @@ public class UserRefreshToken {
     private String userId;
 
     @Column(nullable = false)
-    private String refreshToken;
+    private String pushToken;
 
-    public UserRefreshToken(String userId, String refreshToken) {
+    public UserPushToken(String userId, String pushToken) {
         this.userId = userId;
-        this.refreshToken = refreshToken;
+        this.pushToken = pushToken;
     }
 
-    public void updateRefreshToken(String refreshToken) {
-        this.refreshToken = refreshToken;
+    public void updatePushToken(String pushToken) {
+        this.pushToken = pushToken;
     }
 }
