@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:hashchecker/api.dart';
 import 'package:hashchecker/constants.dart';
 import 'package:hashchecker/models/selected_store.dart';
 import 'package:hashchecker/screens/hall/hall_screen.dart';
@@ -101,6 +102,13 @@ class Init {
 
     // on not login yet
     if (accessToken == null || refreshToken == null) return SignInScreen();
+
+    String? firebaseToken = await FirebaseMessaging.instance.getToken();
+
+    var dio = await authDio(context);
+    final firebaseTokenUpdateResponse = await dio.put(
+        'http://192.168.0.103:8080/api/v1/users/me/push',
+        data: {'pushToken': firebaseToken});
 
     // on empty store
     final selectedStore = prefs.getInt('selectedStore');

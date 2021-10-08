@@ -101,7 +101,13 @@ class _SignInScreenState extends State<SignInScreen> {
       showLoginFailDialog(e.toString());
     }
 
+    String? firebaseToken = await FirebaseMessaging.instance.getToken();
+
     var dio = await authDio(context);
+    final firebaseTokenUpdateResponse = await dio.put(
+        'https://3.37.85.236:8080/api/v1/users/me/push',
+        data: {'pushToken': firebaseToken});
+
     final getUserStoreListResponse = await dio.get(getApi(API.GET_USER_STORES));
     final storeList = getUserStoreListResponse.data;
 
