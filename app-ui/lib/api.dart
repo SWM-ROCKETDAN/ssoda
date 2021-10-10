@@ -68,7 +68,7 @@ Map<API, String> apiMap = {
   API.DELETE_STORE: '/api/v1/stores', // '/{store_id}'
   API.DELETE_EVENT: '/api/v1/events', // '/{event_id}'
   API.DELETE_REWARDS: '/api/v1/rewards',
-  API.UPDATE_FIREBASE_TOKEN: 'api/v1/users/me/push'
+  API.UPDATE_FIREBASE_TOKEN: '/api/v1/users/me/push'
 };
 
 String getApi(API apiType, {String? suffix}) {
