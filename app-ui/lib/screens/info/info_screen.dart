@@ -6,7 +6,6 @@ import 'package:hashchecker/models/store.dart';
 import 'package:hashchecker/models/user.dart';
 import 'package:hashchecker/screens/info/components/app_info.dart';
 import 'package:hashchecker/screens/info/components/app_setting.dart';
-import 'package:hashchecker/screens/info/components/button_list.dart';
 import 'package:hashchecker/screens/info/components/user_info.dart';
 import 'package:provider/provider.dart';
 

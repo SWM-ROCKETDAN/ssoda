@@ -1,3 +1,5 @@
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:hashchecker/api.dart';
 import 'package:hashchecker/constants.dart';
@@ -17,23 +19,7 @@ class AppInfo extends StatelessWidget {
               child: ListTile(
                 title: Text('오픈소스 라이센스'),
                 contentPadding: const EdgeInsets.all(5),
-                onTap: () async {
-                  var dio = await authDio(context);
-
-                  final getUserResponse =
-                      await dio.get(getApi(API.GET_USER_INFO));
-
-                  final User fetchedUser = User.fromJson(getUserResponse.data);
-
-                  final pushResponse = await dio.post(
-                      'http://192.168.0.103:8080/api/v1/push/users/${fetchedUser.id}',
-                      data: {
-                        'title': 'test title',
-                        'body': 'test message',
-                        'image': 'iamge.jpeg',
-                        'data': {'test': 'test'}
-                      });
-                },
+                onTap: () {},
                 trailing:
                     Icon(Icons.navigate_next_rounded, color: kLiteFontColor),
               ))),
@@ -59,7 +45,7 @@ class AppInfo extends StatelessWidget {
                   onTap: () async => await canLaunch(
                           kGooglePlayStoreDownloadUrl)
                       ? await launch(kGooglePlayStoreDownloadUrl)
-                      : throw 'Could not launch $kGooglePlayStoreDownloadUrl')))
+                      : throw 'Could not launch $kGooglePlayStoreDownloadUrl'))),
     ]);
   }
 }
