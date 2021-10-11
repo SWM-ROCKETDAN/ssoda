@@ -5,6 +5,7 @@ import 'package:flash/flash.dart';
 import 'package:hashchecker_web/api.dart';
 import 'package:hashchecker_web/constants.dart';
 import 'package:hashchecker_web/models/event.dart';
+import 'package:hashchecker_web/models/fcm.dart';
 import 'package:hashchecker_web/models/join_result.dart';
 import 'package:hashchecker_web/models/reward.dart';
 import 'package:hashchecker_web/screens/reward_get/reward_get_screen.dart';
@@ -160,13 +161,17 @@ class _EventJoinWithUrlState extends State<EventJoinWithUrl> {
       }
     }));
 
-    var eventJoinResponse;
-
-    eventJoinResponse = await dio.post(
+    final eventJoinResponse = await dio.post(
         getApi(API.GET_REWARD, suffix: '/${widget.eventId}'),
         data: urlJson);
 
     JoinResult result = JoinResult.fromJson(eventJoinResponse.data);
+
+    FCMessage fcMessage = createEventJoinNotification(widget.event.title);
+
+    final pushNotificationResponse = await dio.post(
+        getApi(API.PUSH_NOTIFICATION, suffix: '/${widget.storeId}'),
+        data: fcMessage);
 
     widget.loading(false);
 
