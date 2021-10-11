@@ -1,5 +1,6 @@
 package com.rocketdan.serviceserver.domain.user.pushToken;
 
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -19,6 +20,7 @@ public class UserPushToken {
     @Column(nullable = false)
     private String pushToken;
 
+    @Builder
     public UserPushToken(String userId, String pushToken) {
         this.userId = userId;
         this.pushToken = pushToken;

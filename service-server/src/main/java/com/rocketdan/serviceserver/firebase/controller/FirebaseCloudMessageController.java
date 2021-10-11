@@ -3,31 +3,30 @@ package com.rocketdan.serviceserver.firebase.controller;
 import com.google.firebase.messaging.FirebaseMessagingException;
 import com.google.firebase.messaging.Message;
 import com.google.firebase.messaging.Notification;
-import com.rocketdan.serviceserver.domain.user.pushToken.UserPushToken;
+import com.rocketdan.serviceserver.core.CommonResponse;
 import com.rocketdan.serviceserver.firebase.dto.PushMessageRequestDto;
+import com.rocketdan.serviceserver.firebase.dto.UserPushTokenResponseDto;
 import com.rocketdan.serviceserver.firebase.service.FirebaseCloudMessageService;
 import com.rocketdan.serviceserver.firebase.service.UserPushTokenService;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
 
-@Slf4j
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/push")
 public class FirebaseCloudMessageController {
     private final FirebaseCloudMessageService fcmService;
 
-    UserPushTokenService userPushTokenService;
+    private final UserPushTokenService userPushTokenService;
 
     @Value("${fcm.properties.firebase-multicast-message-size}")
     Long multicastMessageSize;
 
-    @PostMapping(value = "/topics/{topic}")
-    public void notificationTopics(@PathVariable("topic") String topic, @RequestBody PushMessageRequestDto requestDto) throws FirebaseMessagingException {
+    @PostMapping("/topics/{topic}")
+    public void notificationTopics(@PathVariable String topic, @RequestBody PushMessageRequestDto requestDto) throws FirebaseMessagingException {
         Notification notification = Notification.builder().setTitle(requestDto.getTitle()).setBody(requestDto.getBody()).setImage(requestDto.getImage()).build();
         Message.Builder builder = Message.builder();
 
@@ -58,10 +57,31 @@ public class FirebaseCloudMessageController {
         }
     }
 */
-    @PostMapping(value = "/users/{userId}")
-    public void notificationUser(@PathVariable("userId") Long userId, @RequestBody PushMessageRequestDto requestDto) throws FirebaseMessagingException {
-        UserPushToken userPushToken = userPushTokenService.findByUserId(userId);
+    @PostMapping("/users/{user_id}")
+    public CommonResponse notificationUser(@PathVariable Long user_id, @RequestBody PushMessageRequestDto requestDto) throws FirebaseMessagingException {
+        UserPushTokenResponseDto userPushToken = userPushTokenService.findByUserId(user_id);
+        notification(requestDto, userPushToken);
+        return CommonResponse.builder()
+                .message("Push notification.")
+                .code("PUSH_SUCCESS")
+                .status(200)
+                .data(user_id)
+                .build();
+    }
 
+    @PostMapping("/stores/{store_id}")
+    public CommonResponse notificationStore(@PathVariable Long store_id, @RequestBody PushMessageRequestDto requestDto) throws FirebaseMessagingException {
+        UserPushTokenResponseDto userPushToken = userPushTokenService.findByStoreId(store_id);
+        notification(requestDto, userPushToken);
+        return CommonResponse.builder()
+                .message("Push notification.")
+                .code("PUSH_SUCCESS")
+                .status(200)
+                .data(store_id)
+                .build();
+    }
+
+    private void notification(PushMessageRequestDto requestDto, UserPushTokenResponseDto userPushToken) throws FirebaseMessagingException {
         Notification notification = Notification.builder().setTitle(requestDto.getTitle()).setBody(requestDto.getBody()).setImage(requestDto.getImage()).build();
 
         Message.Builder builder = Message.builder();

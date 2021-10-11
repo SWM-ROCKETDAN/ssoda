@@ -1,6 +1,5 @@
 package com.rocketdan.serviceserver.app.dto.event;
 
-import com.rocketdan.serviceserver.domain.event.RewardPolicy;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
