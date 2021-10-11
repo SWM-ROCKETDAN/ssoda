@@ -3,22 +3,16 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:hashchecker/api.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
-const AndroidNotificationChannel channel = AndroidNotificationChannel(
-  'high_importance_channel', // id
-  'High Importance Notifications', // title
-  description:
-      'This channel is used for important notifications.', // description
-  importance: Importance.max,
-);
-
 final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
     FlutterLocalNotificationsPlugin();
 
 void localNotificationSetting() async {
-  await flutterLocalNotificationsPlugin
-      .resolvePlatformSpecificImplementation<
-          AndroidFlutterLocalNotificationsPlugin>()
-      ?.createNotificationChannel(channel);
+  final initializationSettingsAndroid =
+      AndroidInitializationSettings('@mipmap/ic_launcher');
+  final initSetttings =
+      InitializationSettings(android: initializationSettingsAndroid);
+
+  flutterLocalNotificationsPlugin.initialize(initSetttings);
 }
 
 void firebaseMessagingForegroundHandler(RemoteMessage message) {
@@ -26,18 +20,13 @@ void firebaseMessagingForegroundHandler(RemoteMessage message) {
   AndroidNotification? android = message.notification?.android;
 
   if (notification != null && android != null) {
+    final androidNotiDetails = AndroidNotificationDetails(
+        'dexterous.com.flutter.local_notifications', notification.title!,
+        importance: Importance.max, priority: Priority.max);
+
+    final details = NotificationDetails(android: androidNotiDetails);
+
     flutterLocalNotificationsPlugin.show(
-        notification.hashCode,
-        notification.title,
-        notification.body,
-        NotificationDetails(
-          android: AndroidNotificationDetails(
-            channel.id,
-            channel.name,
-            channelDescription: channel.description,
-            icon: android.smallIcon,
-            // other properties...
-          ),
-        ));
+        notification.hashCode, notification.title, notification.body, details);
   }
 }

@@ -9,7 +9,7 @@ import 'package:hashchecker/constants.dart';
 import 'package:hashchecker/screens/sign_in/sign_in_screen.dart';
 import 'package:cookie_jar/cookie_jar.dart';
 
-const baseUrl = 'https://api.ssoda.io';
+const baseUrl = 'http://ec2-3-37-85-236.ap-northeast-2.compute.amazonaws.com';
 
 const eventJoinUrl = 'https://ssoda.io';
 
@@ -40,7 +40,8 @@ enum API {
   DELETE_STORE,
   DELETE_EVENT,
   DELETE_REWARDS,
-  UPDATE_FIREBASE_TOKEN
+  UPDATE_FIREBASE_TOKEN,
+  UPDATE_FIREBASE_SETTING
 }
 
 Map<API, String> apiMap = {
@@ -68,7 +69,8 @@ Map<API, String> apiMap = {
   API.DELETE_STORE: '/api/v1/stores', // '/{store_id}'
   API.DELETE_EVENT: '/api/v1/events', // '/{event_id}'
   API.DELETE_REWARDS: '/api/v1/rewards',
-  API.UPDATE_FIREBASE_TOKEN: '/api/v1/users/me/push'
+  API.UPDATE_FIREBASE_TOKEN: '/api/v1/users/me/push',
+  API.UPDATE_FIREBASE_SETTING: '/api/v1/users/me/push/allowed'
 };
 
 String getApi(API apiType, {String? suffix}) {
@@ -94,12 +96,8 @@ Future<Dio> authDio(BuildContext context) async {
 
     if (error.response?.statusCode == 401) {
       // request refreshing with refreshToken
-      print('access token expired');
       final accessToken = await storage.read(key: 'ACCESS_TOKEN');
       final refreshToken = await storage.read(key: 'REFRESH_TOKEN');
-
-      print('accessToken: $accessToken');
-      print('refreshToken: $refreshToken');
 
       var refreshDio = Dio();
       refreshDio.interceptors.clear();
@@ -127,9 +125,6 @@ Future<Dio> authDio(BuildContext context) async {
       final newAccessToken = refreshResponse.headers['Authorization']![0];
       final newRefreshToken = refreshResponse.data['data']['refreshToken'];
 
-      print('newAccessToken: $newAccessToken');
-      print('newRefreshToken: $newRefreshToken');
-
       // update dio request headers token
       error.requestOptions.headers['Authorization'] = 'Bearer $newAccessToken';
 
@@ -137,7 +132,6 @@ Future<Dio> authDio(BuildContext context) async {
       await storage.write(key: 'ACCESS_TOKEN', value: newAccessToken);
       await storage.write(key: 'REFRESH_TOKEN', value: newRefreshToken);
 
-      print('change with new access token!');
       // create clonedRequest to request again
       final clonedRequest = await dio.request(error.requestOptions.path,
           options: Options(

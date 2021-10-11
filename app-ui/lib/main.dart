@@ -106,6 +106,19 @@ class Init {
     // on not login yet
     if (accessToken == null || refreshToken == null) return SignInScreen();
 
+    // firebase token update
+    final isFCMEnabled = await prefs.getBool('FCM_ENABLED');
+    if (isFCMEnabled == null || isFCMEnabled) {
+      String? firebaseToken = await FirebaseMessaging.instance.getToken();
+
+      if (firebaseToken != null) {
+        var dio = await authDio(context);
+        final firebaseTokenUpdateResponse = await dio.put(
+            'http://ec2-3-37-85-236.ap-northeast-2.compute.amazonaws.com/api/v1/users/me/push',
+            data: {'pushToken': firebaseToken});
+      }
+    }
+
     // on empty store
     final selectedStore = prefs.getInt('selectedStore');
     if (selectedStore == null) return CreateStoreIntroScreen();
