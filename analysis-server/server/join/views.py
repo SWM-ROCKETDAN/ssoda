@@ -15,6 +15,7 @@ from core.modules.join.reward import RewardFollowCalculator
 from core.modules.join.reward import RewardRandomCalculator
 from core.exceptions import exceptions
 from join.tasks import task_scrap_post
+from core.modules.join.post.post_scraper_naver_blog import scrap_post
 
 
 # JoinPost PUT 요청
@@ -70,3 +71,9 @@ class JoinRewardRandomView(APIView):
         if join_post_serializer.is_valid():
             join_post_serializer.save()
         raise exceptions.RewardCalculateOK({'reward_id': reward_id})
+
+
+# class JoinPostTestView(APIView):
+#     def put(self, request, pk):
+#         scrap_post("https://blog.naver.com/iam_robot/222529841822")
+#         raise exceptions.RewardCalculateOK()

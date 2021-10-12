@@ -43,7 +43,7 @@ def scrap_post(url: str) -> dict:
     post_data = post_data[post_data.find('{'):]
     json_acceptable_string = post_data.replace("'", "\"")
     post_data = json.loads(json_acceptable_string)
-    print(post_data)
+
     # user id
     if 'author' in post_data:
         sns_id = post_data['author']['alternateName'][1:]
@@ -88,6 +88,6 @@ def scrap_post(url: str) -> dict:
     scraped_post.upload_date = upload_date
     scraped_post.private_date = private_date
     scraped_post.delete_date = delete_date
-    scraped_post.update_date = _get_now_date()
+    scraped_post.update_date = _parse_from_str_time_to_date_time(_get_now_date())
 
     return scraped_post.get_scraped_post()

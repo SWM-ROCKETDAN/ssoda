@@ -1,3 +1,10 @@
-from django.shortcuts import render
+from django.shortcuts import get_object_or_404
+from rest_framework.views import APIView
+from core.models import Event
+from core.exceptions import exceptions
 
-# Create your views here.
+
+# Reward GET 요청
+class ReportEvent(APIView):
+    def get(self, request, pk):
+        event = get_object_or_404(Event, pk=pk)
