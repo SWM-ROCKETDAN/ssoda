@@ -3,6 +3,7 @@ const baseUrl = 'https://api.ssoda.io';
 const s3Url = 'https://image.ssoda.io/';
 
 const instagramPostUrlPrefix = 'https://www.instagram.com/p/';
+const naverBlogPostUrlPrefix = 'https://blog.naver.com/';
 
 enum API {
   GET_EVENT,
