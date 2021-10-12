@@ -2,11 +2,13 @@ from core.modules.static.common import Type
 from core.exceptions import exceptions
 from . import user_scraper_instagram
 from . import user_scraper_facebook
+from . import user_scraper_naver_blog
 from .check_user import check_user_is_recently_scraped
 
 scrap_handlers = {
     Type.INSTAGRAM: user_scraper_instagram.scrap_user,
     Type.FACEBOOK: user_scraper_facebook.scrap_user,
+    Type.NAVERBLOG: user_scraper_naver_blog.scrap_user,
 }
 
 
