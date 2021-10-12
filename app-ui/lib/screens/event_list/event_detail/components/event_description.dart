@@ -17,7 +17,7 @@ class EventDescription extends StatelessWidget {
       padding: const EdgeInsets.symmetric(horizontal: 20),
       child: AutoSizeText.rich(
         TextSpan(children: [
-          TextSpan(text: '인스타그램에 #해시태그와 함께 글 남기고\n'),
+          TextSpan(text: 'SNS에 #해시태그와 함께 글 남기고\n'),
           TextSpan(
               text: _createRewardNameList(),
               style: TextStyle(
