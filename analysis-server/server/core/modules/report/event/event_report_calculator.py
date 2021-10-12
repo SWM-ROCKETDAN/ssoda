@@ -232,9 +232,11 @@ class EventReportCalculator:
             raise exceptions.EventReportCalculateFailed()
         return event_report_dict
 
-    def get_total_event_report(self):
+    def get_event_report_obj(self):
         try:
             total_report_dict = _get_total_report_dict(self.event['join_posts'])
+            total_report_dict['event'] = self.event['id']
+            pprint.pprint(total_report_dict)
         except Exception as e:
             raise exceptions.EventReportCalculateFailed()
         return total_report_dict

@@ -5,6 +5,6 @@ from core.exceptions import exceptions
 
 
 # Reward GET 요청
-class ReportEvent(APIView):
+class RankExposure(APIView):
     def get(self, request, pk):
         event = get_object_or_404(Event, pk=pk)

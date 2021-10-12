@@ -1,14 +1,4 @@
 from celery import shared_task
-from core.models import JoinPost
-from core.models import JoinUser
-from .serializers import JoinPostSerializer
-from .serializers import JoinUserSerializer
-from core.modules.join.post.post_scraper import PostScraper
-from core.modules.join.user.user_scraper import UserScraper
-from core.modules.assist.time import _get_interval_day_from_now_to_target_date_time
-from core.modules.assist.time import _parse_from_str_time_to_date_time
-from datetime import datetime
-from datetime import timedelta
 
 
 @shared_task
@@ -39,28 +29,3 @@ def task_scrap_post(pk: int) -> bool:
     except Exception as e:
         pass
         # print('힘내 할수있다고 생각해.. ')
-
-
-@shared_task
-def task_scrap_user(pk: int, max_day: int, queue_day: int) -> bool:
-    try:
-        join_user = JoinUser.objects.get(pk=pk)
-        join_user_update_serializer = JoinUserSerializer(join_user)
-        user_scraper = UserScraper(join_user_update_serializer.data)
-        scraped_user = user_scraper.get_scraped_user()
-        join_user_serializer = JoinUserSerializer(join_user, scraped_user, partial=True)
-        if join_user_serializer.is_valid():
-            join_user_serializer.save()
-            create_date = _parse_from_str_time_to_date_time(join_user_serializer.data['create_date'])
-            interval_day = _get_interval_day_from_now_to_target_date_time(create_date)
-            if interval_day < max_day:
-                queue_date_time = datetime.now() + timedelta(days=queue_day)
-                task_scrap_user.apply_async((pk, max_day, queue_day), expires=queue_date_time)
-    except Exception as e:
-        pass
-    return True
-
-
-@shared_task
-def task_test():
-    print('hello')

@@ -290,7 +290,7 @@ class EventReport(models.Model):
     like_count = models.IntegerField(blank=True, null=True, default=0)
     comment_count = models.IntegerField(blank=True, null=True, default=0)
     expenditure_count = models.IntegerField(blank=True, null=True, default=0)
-    event = models.ForeignKey(Event, related_name='report_event', on_delete=models.DO_NOTHING)
+    event = models.ForeignKey(Event, related_name='report_event', on_delete=models.DO_NOTHING, unique=True)
 
     class Meta:
         db_table = 'event_report'
