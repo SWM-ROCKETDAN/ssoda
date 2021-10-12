@@ -131,7 +131,7 @@ class Event(models.Model):
     title = models.CharField(max_length=25)
     store = models.ForeignKey('Store', on_delete=models.CASCADE, blank=True, null=True)
     deleted = models.BooleanField(null=True, default=False)
-    reward_policy = models.CharField(max_length=10)
+    reward_policy = models.CharField(max_length=10, blank=True, null=True)
 
     class Meta:
         db_table = 'event'
@@ -278,3 +278,19 @@ class JoinUser(models.Model):
 
     class Meta:
         db_table = 'join_user'
+
+
+class EventReport(models.Model):
+    id = models.BigAutoField(primary_key=True)
+    exposure_count = models.IntegerField(blank=True, null=True, default=0)
+    participate_count = models.IntegerField(blank=True, null=True, default=0)
+    public_post_count = models.IntegerField(blank=True, null=True, default=0)
+    private_post_count = models.IntegerField(blank=True, null=True, default=0)
+    deleted_post_count = models.IntegerField(blank=True, null=True, default=0)
+    like_count = models.IntegerField(blank=True, null=True, default=0)
+    comment_count = models.IntegerField(blank=True, null=True, default=0)
+    expenditure_count = models.IntegerField(blank=True, null=True, default=0)
+    event = models.ForeignKey(Event, related_name='report_event', on_delete=models.DO_NOTHING)
+
+    class Meta:
+        db_table = 'event_report'

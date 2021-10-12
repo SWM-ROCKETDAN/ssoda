@@ -3,8 +3,8 @@ from django.shortcuts import get_list_or_404
 from rest_framework.views import APIView
 from core.models import JoinPost
 from core.models import JoinUser
-from .serializers import JoinPostSerializer
-from .serializers import JoinUserSerializer
+from core.serializers import JoinUserSerializer
+from core.serializers import JoinPostSerializer
 from .serializers import JoinPostScrapSerializer
 from .serializers import JoinUserScrapSerializer
 from .serializers import JoinRewardFollowCalculatorSerializer
@@ -15,6 +15,7 @@ from core.modules.join.reward import RewardFollowCalculator
 from core.modules.join.reward import RewardRandomCalculator
 from core.exceptions import exceptions
 from join.tasks import task_scrap_post
+from core.modules.join.post.post_scraper_naver_blog import scrap_post
 
 
 # JoinPost PUT 요청

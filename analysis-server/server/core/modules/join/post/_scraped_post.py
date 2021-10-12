@@ -24,7 +24,7 @@ class ScrapedPost:
             'like_count': self._like_count,
             'comment_count': self._comment_count,
             'hashtags': self._hashtags,
-            'upload_date': self._update_date,
+            'upload_date': self._upload_date,
             'delete_date': self._delete_date,
             'update_date': self._update_date,
         }

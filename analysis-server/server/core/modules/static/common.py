@@ -1,6 +1,7 @@
 class Type:
     INSTAGRAM = 0
     FACEBOOK = 1
+    NAVERBLOG = 2
 
 
 class Status:

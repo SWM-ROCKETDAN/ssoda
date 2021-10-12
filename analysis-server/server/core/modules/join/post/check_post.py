@@ -11,8 +11,8 @@ def get_post_type_from_url(post_url: str) -> int:
         return Type.INSTAGRAM
     elif 'facebook' in post_url:
         return Type.FACEBOOK
-    else:
-        return Type.INSTAGRAM
+    elif 'naver' in post_url:
+        return Type.NAVERBLOG
 
 
 # 게시물의 이벤트가 정상인지 체크
