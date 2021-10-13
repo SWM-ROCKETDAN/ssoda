@@ -1,4 +1,4 @@
-package com.rocketdan.serviceserver.domain.user;
+package com.rocketdan.serviceserver.domain.user.refreshToken;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;

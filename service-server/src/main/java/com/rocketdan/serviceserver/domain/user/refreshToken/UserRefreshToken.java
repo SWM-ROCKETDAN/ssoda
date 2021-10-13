@@ -1,4 +1,4 @@
-package com.rocketdan.serviceserver.domain.user;
+package com.rocketdan.serviceserver.domain.user.refreshToken;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;

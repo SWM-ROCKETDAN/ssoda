@@ -9,3 +9,7 @@ spring:
     open-in-view: false
   profiles:
     include: jwt, db, aws, analysis, oauth, cors
+fcm:
+  properties:
+    firebase-create-scoped: "https://www.googleapis.com/auth/cloud-platform"
+    firebase-multicast-message-size: 500

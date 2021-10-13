@@ -1,8 +1,8 @@
 package com.rocketdan.serviceserver.service;
 
 import com.rocketdan.serviceserver.Exception.auth.token.CustomRefreshTokenException;
-import com.rocketdan.serviceserver.domain.user.UserRefreshToken;
-import com.rocketdan.serviceserver.domain.user.UserRefreshTokenRepository;
+import com.rocketdan.serviceserver.domain.user.refreshToken.UserRefreshToken;
+import com.rocketdan.serviceserver.domain.user.refreshToken.UserRefreshTokenRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
