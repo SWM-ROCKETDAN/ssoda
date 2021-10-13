@@ -1,5 +1,9 @@
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
+import 'package:hashchecker/api.dart';
 import 'package:hashchecker/constants.dart';
+import 'package:hashchecker/models/user.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class AppInfo extends StatelessWidget {
@@ -41,7 +45,7 @@ class AppInfo extends StatelessWidget {
                   onTap: () async => await canLaunch(
                           kGooglePlayStoreDownloadUrl)
                       ? await launch(kGooglePlayStoreDownloadUrl)
-                      : throw 'Could not launch $kGooglePlayStoreDownloadUrl')))
+                      : throw 'Could not launch $kGooglePlayStoreDownloadUrl'))),
     ]);
   }
 }

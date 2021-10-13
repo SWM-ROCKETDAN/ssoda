@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:hashchecker/api.dart';
 import 'package:hashchecker/constants.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class AppSetting extends StatefulWidget {
   const AppSetting({Key? key}) : super(key: key);
@@ -29,9 +31,22 @@ class _AppSettingState extends State<AppSetting> {
             setState(() {
               _pushNotiEnabled = value;
             });
+            _updateSetting(_pushNotiEnabled);
           },
         ),
       ),
     );
+  }
+
+  void _updateSetting(bool opt) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setBool('FCM_ENABLED', opt);
+
+    Map<String, bool> data = {'allowed': opt};
+
+    var dio = await authDio(context);
+
+    final fcmSettingResponse =
+        await dio.put(getApi(API.UPDATE_FIREBASE_SETTING), data: data);
   }
 }

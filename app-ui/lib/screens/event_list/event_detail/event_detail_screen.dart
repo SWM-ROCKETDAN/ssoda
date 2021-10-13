@@ -63,7 +63,7 @@ class _EventDetailScreenState extends State<EventDetailScreen>
                     child: Body(event: snapshot.data!, eventId: widget.eventId),
                   );
                 } else if (snapshot.hasError) {
-                  return Text('${snapshot.error}');
+                  return buildErrorPage();
                 }
 
                 return Center(child: const CircularProgressIndicator());

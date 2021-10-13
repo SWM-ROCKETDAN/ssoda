@@ -59,7 +59,8 @@ class _StoreEventScreenState extends State<StoreEventScreen> {
                     if (snapshot.hasData) {
                       return StoreHeader(store: snapshot.data!);
                     } else if (snapshot.hasError) {
-                      return Text('${snapshot.error}');
+                      return buildErrorPage(
+                          message: '존재하지 않는 가게이거나\n네트워크에 연결할 수 없습니다.');
                     }
 
                     return Center(child: const CircularProgressIndicator());
@@ -183,7 +184,7 @@ class _StoreEventScreenState extends State<StoreEventScreen> {
                             statusFilterString: _statusFilterString,
                             statusColorMap: _statusColorMap);
                       } else if (snapshot.hasError) {
-                        return Text('${snapshot.error}');
+                        return buildErrorPage();
                       }
 
                       return Center(child: const CircularProgressIndicator());

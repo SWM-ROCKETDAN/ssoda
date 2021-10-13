@@ -3,6 +3,8 @@ const baseUrl = 'https://api.ssoda.io';
 const s3Url = 'https://image.ssoda.io/';
 
 const instagramPostUrlPrefix = 'https://www.instagram.com/p/';
+const naverBlogPostUrlPrefix = 'https://blog.naver.com/';
+const mobileNaverBlogPostUrlPrefix = 'https://m.blog.naver.com/';
 
 enum API {
   GET_EVENT,
@@ -10,7 +12,8 @@ enum API {
   GET_STORE,
   GET_EVENTS_OF_STORE,
   GET_REWARD_OF_EVENT,
-  JOIN_EVENT_COMPLETE
+  JOIN_EVENT_COMPLETE,
+  PUSH_NOTIFICATION
 }
 
 Map<API, String> apiMap = {
@@ -19,7 +22,8 @@ Map<API, String> apiMap = {
   API.GET_STORE: '/api/v1/stores',
   API.GET_EVENTS_OF_STORE: '/api/v1/stores',
   API.GET_REWARD_OF_EVENT: '/api/v1/events',
-  API.JOIN_EVENT_COMPLETE: '/api/v1/join/posts'
+  API.JOIN_EVENT_COMPLETE: '/api/v1/join/posts',
+  API.PUSH_NOTIFICATION: '/api/v1/push/store'
 };
 
 String getApi(API apiType, {String? suffix}) {

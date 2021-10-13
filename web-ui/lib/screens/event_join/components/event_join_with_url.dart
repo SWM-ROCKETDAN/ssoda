@@ -5,6 +5,7 @@ import 'package:flash/flash.dart';
 import 'package:hashchecker_web/api.dart';
 import 'package:hashchecker_web/constants.dart';
 import 'package:hashchecker_web/models/event.dart';
+import 'package:hashchecker_web/models/fcm.dart';
 import 'package:hashchecker_web/models/join_result.dart';
 import 'package:hashchecker_web/models/reward.dart';
 import 'package:hashchecker_web/screens/reward_get/reward_get_screen.dart';
@@ -53,6 +54,18 @@ class _EventJoinWithUrlState extends State<EventJoinWithUrl> {
                     width: 30,
                     height: 30,
                     child: Image.asset('assets/images/instagram.png'))),
+            SizedBox(width: kDefaultPadding / 2),
+            GestureDetector(
+                onTap: () async {
+                  final _naverBlogUrl = 'https://blog.naver.com';
+                  await canLaunch(_naverBlogUrl)
+                      ? await launch(_naverBlogUrl)
+                      : throw 'Could not launch $_naverBlogUrl';
+                },
+                child: Container(
+                    width: 30,
+                    height: 30,
+                    child: Image.asset('assets/images/naverblog.png'))),
           ],
         ),
         SizedBox(height: kDefaultPadding),
@@ -64,14 +77,14 @@ class _EventJoinWithUrlState extends State<EventJoinWithUrl> {
             if (isValidUrl())
               sendUrlToGetReward();
             else
-              _showValidationErrorFlashBar(context, '올바른 인스타그램 게시글 URL이 아닙니다.');
+              _showValidationErrorFlashBar(context, '올바른 게시글 URL이 아닙니다.');
           },
           style: TextStyle(fontSize: 14),
           decoration: InputDecoration(
               border: OutlineInputBorder(),
               prefixIcon: Icon(Icons.link),
               hintText: widget.event.status == EventStatus.PROCEEDING
-                  ? '인스타그램 게시글 URL을 붙여넣기 해주세요!'
+                  ? 'SNS 게시글 URL을 붙여넣기 해주세요!'
                   : '',
               contentPadding: const EdgeInsets.all(8),
               isDense: true),
@@ -88,7 +101,7 @@ class _EventJoinWithUrlState extends State<EventJoinWithUrl> {
                               sendUrlToGetReward();
                             else
                               _showValidationErrorFlashBar(
-                                  context, '올바른 인스타그램 URL이 아닙니다.');
+                                  context, '올바른 SNS URL이 아닙니다.');
                           }
                         : null,
                 child: Text(widget.event.status == EventStatus.PROCEEDING
@@ -112,7 +125,7 @@ class _EventJoinWithUrlState extends State<EventJoinWithUrl> {
         SizedBox(height: kDefaultPadding / 3),
         RichText(
             text: TextSpan(children: [
-          TextSpan(text: '1. 조건에 맞춰 인스타그램에 게시글을 작성\n'),
+          TextSpan(text: '1. 조건에 맞춰 SNS에 게시글을 작성\n'),
           TextSpan(text: '2. 작성한 '),
           TextSpan(
               text: '게시글의 링크', style: TextStyle(fontWeight: FontWeight.bold)),
@@ -144,9 +157,9 @@ class _EventJoinWithUrlState extends State<EventJoinWithUrl> {
         if (errMsg == "It's different from the previous event.")
           _showValidationErrorFlashBar(context, '이미 다른 이벤트에 참여한 게시글입니다.');
         else if (errMsg == "Post is private")
-          _showValidationErrorFlashBar(context, '참여한 인스타그램 계정이 비공개 계정입니다.');
+          _showValidationErrorFlashBar(context, '참여한 SNS 계정이 비공개 계정입니다.');
         else if (errMsg == "Post is deleted")
-          _showValidationErrorFlashBar(context, '참여한 인스타그램 게시글이 삭제되었습니다.');
+          _showValidationErrorFlashBar(context, '참여한 SNS 게시글이 삭제되었습니다.');
         else if (errMsg == "Post is different hashtag")
           _showValidationErrorFlashBar(context, '작성한 포스트의 해시태그가 일치하지 않습니다.');
         else if (errMsg == "Post is already rewarded")
@@ -160,13 +173,17 @@ class _EventJoinWithUrlState extends State<EventJoinWithUrl> {
       }
     }));
 
-    var eventJoinResponse;
-
-    eventJoinResponse = await dio.post(
+    final eventJoinResponse = await dio.post(
         getApi(API.GET_REWARD, suffix: '/${widget.eventId}'),
         data: urlJson);
 
     JoinResult result = JoinResult.fromJson(eventJoinResponse.data);
+
+    FCMessage fcMessage = createEventJoinNotification(widget.event.title);
+
+    final pushNotificationResponse = await dio.post(
+        getApi(API.PUSH_NOTIFICATION, suffix: '/${widget.storeId}'),
+        data: fcMessage);
 
     widget.loading(false);
 
@@ -200,9 +217,9 @@ class _EventJoinWithUrlState extends State<EventJoinWithUrl> {
   bool isValidUrl() {
     final String url = _urlController.value.text.trim();
     if (url == "") return false;
-    if (url.length <= instagramPostUrlPrefix.length ||
-        url.substring(0, instagramPostUrlPrefix.length) !=
-            instagramPostUrlPrefix) return false;
+    if (!url.startsWith(instagramPostUrlPrefix) &&
+        !url.startsWith(naverBlogPostUrlPrefix) &&
+        !url.startsWith(mobileNaverBlogPostUrlPrefix)) return false;
     return true;
   }
 }

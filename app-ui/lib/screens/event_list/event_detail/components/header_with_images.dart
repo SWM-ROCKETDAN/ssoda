@@ -166,7 +166,7 @@ class _HeaderWithImagesState extends State<HeaderWithImages> {
                                   fit: BoxFit.cover))),
                     );
                   } else if (snapshot.hasError) {
-                    return Text('${snapshot.error}');
+                    return buildErrorPage();
                   }
 
                   return Container(

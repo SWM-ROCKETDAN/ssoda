@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hashchecker/constants.dart';
+import 'package:hashchecker/models/event_rank.dart';
 import 'package:number_display/number_display.dart';
 
 import 'components/first_ranking_tile.dart';
@@ -13,6 +14,7 @@ class RankingScreen extends StatefulWidget {
 }
 
 class _RankingScreenState extends State<RankingScreen> {
+  late List<EventRank> eventRankList;
   final rankingSortDropdownItemList = [
     '객단가 순위',
     '참가자 순위',
@@ -20,6 +22,11 @@ class _RankingScreenState extends State<RankingScreen> {
   ];
 
   String dropdownValue = '객단가 순위';
+
+  @override
+  void initState() {
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {

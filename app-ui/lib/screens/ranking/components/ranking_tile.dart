@@ -46,7 +46,7 @@ class RankingTile extends StatelessWidget {
                                 decoration: BoxDecoration(
                                     image: DecorationImage(
                                         image: NetworkImage(
-                                            'https://ssoda-bucket.s3.ap-northeast-2.amazonaws.com/image/event/202110/1633271835601_image_cropper_1633271832843.jpg'),
+                                            'https://yjyoon-dev.github.io/rocketdan/hashchecker/assets/image/banner.png'),
                                         fit: BoxFit.cover,
                                         colorFilter: ColorFilter.mode(
                                             kScaffoldBackgroundColor

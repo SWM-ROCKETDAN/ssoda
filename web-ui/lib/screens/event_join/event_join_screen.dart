@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:hashchecker_web/api.dart';
+import 'package:hashchecker_web/constants.dart';
 import 'package:hashchecker_web/models/event.dart';
 import 'package:hashchecker_web/models/reward.dart';
 import 'components/body.dart';
@@ -36,7 +37,8 @@ class _EventJoinScreenState extends State<EventJoinScreen> {
                     event: snapshot.data!,
                     eventId: widget.eventId);
               } else if (snapshot.hasError) {
-                return Text('${snapshot.error}');
+                return buildErrorPage(
+                    message: '존재하지 않는 이벤트이거나\n네트워크에 연결할 수 없습니다.');
               }
 
               return Center(child: const CircularProgressIndicator());

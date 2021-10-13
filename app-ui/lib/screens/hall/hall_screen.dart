@@ -65,7 +65,7 @@ class _HallScreenState extends State<HallScreen> {
                       selectedStoreId: selectedStoreId,
                       storeList: snapshot.data!);
                 } else if (snapshot.hasError) {
-                  return Text('${snapshot.error}');
+                  return buildErrorPage();
                 }
 
                 return Container(

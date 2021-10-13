@@ -65,7 +65,7 @@ class _EventListScreenState extends State<EventListScreen> {
                     if (snapshot.hasData) {
                       return StoreHeader(store: snapshot.data!);
                     } else if (snapshot.hasError) {
-                      return Text('${snapshot.error}');
+                      return buildErrorPage();
                     }
 
                     return Center(child: const CircularProgressIndicator());
@@ -186,7 +186,7 @@ class _EventListScreenState extends State<EventListScreen> {
                             statusFilterString: _statusFilterString,
                             statusColorMap: _statusColorMap);
                       } else if (snapshot.hasError) {
-                        return Text('${snapshot.error}');
+                        return buildErrorPage();
                       }
 
                       return Center(child: const CircularProgressIndicator());
