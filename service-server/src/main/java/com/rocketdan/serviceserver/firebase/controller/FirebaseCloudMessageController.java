@@ -60,9 +60,17 @@ public class FirebaseCloudMessageController {
     @PostMapping("/users/{user_id}")
     public CommonResponse notificationUser(@PathVariable Long user_id, @RequestBody PushMessageRequestDto requestDto) throws FirebaseMessagingException {
         UserPushTokenResponseDto userPushToken = userPushTokenService.findByUserId(user_id);
-        notification(requestDto, userPushToken);
+        if (userPushToken.getAllowed()) {
+            notification(requestDto, userPushToken);
+            return CommonResponse.builder()
+                    .message("Push notification.")
+                    .code("PUSH_SUCCESS")
+                    .status(200)
+                    .data(user_id)
+                    .build();
+        }
         return CommonResponse.builder()
-                .message("Push notification.")
+                .message("User didn't allow push notification.")
                 .code("PUSH_SUCCESS")
                 .status(200)
                 .data(user_id)
@@ -72,9 +80,17 @@ public class FirebaseCloudMessageController {
     @PostMapping("/stores/{store_id}")
     public CommonResponse notificationStore(@PathVariable Long store_id, @RequestBody PushMessageRequestDto requestDto) throws FirebaseMessagingException {
         UserPushTokenResponseDto userPushToken = userPushTokenService.findByStoreId(store_id);
-        notification(requestDto, userPushToken);
+        if (userPushToken.getAllowed()) {
+            notification(requestDto, userPushToken);
+            return CommonResponse.builder()
+                    .message("Push notification.")
+                    .code("PUSH_SUCCESS")
+                    .status(200)
+                    .data(store_id)
+                    .build();
+        }
         return CommonResponse.builder()
-                .message("Push notification.")
+                .message("User didn't allow push notification.")
                 .code("PUSH_SUCCESS")
                 .status(200)
                 .data(store_id)

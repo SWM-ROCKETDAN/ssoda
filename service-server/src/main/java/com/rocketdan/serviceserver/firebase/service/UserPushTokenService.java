@@ -6,8 +6,9 @@ import com.rocketdan.serviceserver.domain.user.User;
 import com.rocketdan.serviceserver.domain.user.UserRepository;
 import com.rocketdan.serviceserver.domain.user.pushToken.UserPushToken;
 import com.rocketdan.serviceserver.domain.user.pushToken.UserPushTokenRepository;
+import com.rocketdan.serviceserver.firebase.dto.UserPushTokenAllowedUpdateRequestDto;
 import com.rocketdan.serviceserver.firebase.dto.UserPushTokenResponseDto;
-import com.rocketdan.serviceserver.firebase.dto.UserPushTokenSaveRequestDto;
+import com.rocketdan.serviceserver.firebase.dto.UserPushTokenSaveOrUpdateRequestDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,7 +23,7 @@ public class UserPushTokenService {
     private final StoreRepository storeRepository;
 
     @Transactional
-    public void saveOrUpdate(String userId, UserPushTokenSaveRequestDto requestDto) {
+    public void saveOrUpdate(String userId, UserPushTokenSaveOrUpdateRequestDto requestDto) {
         Optional<UserPushToken> optionalUserPushToken = userPushTokenRepository.findByUserId(userId);
 
         if (optionalUserPushToken.isPresent()) {
@@ -30,6 +31,14 @@ public class UserPushTokenService {
             userPushToken.updatePushToken(requestDto.getPushToken());
         } else {
             userPushTokenRepository.saveAndFlush(new UserPushToken(userId, requestDto.getPushToken()));
+        }
+    }
+
+    @Transactional
+    public void updateAllowed(String userId, UserPushTokenAllowedUpdateRequestDto requestDto) {
+        UserPushToken userPushToken = userPushTokenRepository.findByUserId(userId).orElseThrow(() -> new IllegalArgumentException("해당 유저의 Push Token이 없습니다. userId=" + userId));
+        if (!userPushToken.getAllowed().equals(requestDto.getAllowed())) {
+            userPushToken.updateAllowed(requestDto.getAllowed());
         }
     }
 

@@ -6,11 +6,11 @@ import lombok.NoArgsConstructor;
 
 @NoArgsConstructor
 @Getter
-public class UserPushTokenSaveRequestDto {
+public class UserPushTokenSaveOrUpdateRequestDto {
     private String pushToken;
 
     @Builder
-    public UserPushTokenSaveRequestDto(String pushToken) {
+    public UserPushTokenSaveOrUpdateRequestDto(String pushToken) {
         this.pushToken = pushToken;
     }
 }
