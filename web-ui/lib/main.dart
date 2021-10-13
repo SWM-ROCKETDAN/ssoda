@@ -23,7 +23,7 @@ class MyApp extends StatelessWidget {
           visualDensity: VisualDensity.adaptivePlatformDensity,
           scaffoldBackgroundColor: kScaffoldBackgroundColor,
           accentColor: kShadowColor),
-      home: StoreEventScreen(storeId: 1),
+      home: HomeScreen(),
     );
   }
 
