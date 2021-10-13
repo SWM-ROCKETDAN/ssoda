@@ -42,9 +42,11 @@ class _AppSettingState extends State<AppSetting> {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     await prefs.setBool('FCM_ENABLED', opt);
 
+    Map<String, bool> data = {'allowed': opt};
+
     var dio = await authDio(context);
 
     final fcmSettingResponse =
-        await dio.put(getApi(API.UPDATE_FIREBASE_SETTING));
+        await dio.put(getApi(API.UPDATE_FIREBASE_SETTING), data: data);
   }
 }

@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_web_auth/flutter_web_auth.dart';
@@ -101,7 +102,22 @@ class _SignInScreenState extends State<SignInScreen> {
       showLoginFailDialog(e.toString());
     }
 
+    await Firebase.initializeApp();
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+
     var dio = await authDio(context);
+
+    // firebase token update
+    final isFCMEnabled = await prefs.getBool('FCM_ENABLED');
+    if (isFCMEnabled == null || isFCMEnabled) {
+      String? firebaseToken = await FirebaseMessaging.instance.getToken();
+
+      if (firebaseToken != null) {
+        final firebaseTokenUpdateResponse = await dio.put(
+            getApi(API.UPDATE_FIREBASE_TOKEN),
+            data: {'pushToken': firebaseToken});
+      }
+    }
 
     final getUserStoreListResponse = await dio.get(getApi(API.GET_USER_STORES));
     final storeList = getUserStoreListResponse.data;

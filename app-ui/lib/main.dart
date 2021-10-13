@@ -119,7 +119,7 @@ class Init {
       if (firebaseToken != null) {
         var dio = await authDio(context);
         final firebaseTokenUpdateResponse = await dio.put(
-            'http://ec2-3-37-85-236.ap-northeast-2.compute.amazonaws.com/api/v1/users/me/push',
+            getApi(API.UPDATE_FIREBASE_TOKEN),
             data: {'pushToken': firebaseToken});
       }
     }
