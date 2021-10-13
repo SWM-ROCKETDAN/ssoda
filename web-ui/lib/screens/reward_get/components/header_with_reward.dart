@@ -105,7 +105,7 @@ class _HeaderWithRewardState extends State<HeaderWithReward> {
                                 image: NetworkImage('$s3Url${snapshot.data}'),
                                 fit: BoxFit.cover)));
                   } else if (snapshot.hasError) {
-                    return Text('${snapshot.error}');
+                    return buildErrorPage();
                   }
                   return Container(
                       height: size.width * 0.15,

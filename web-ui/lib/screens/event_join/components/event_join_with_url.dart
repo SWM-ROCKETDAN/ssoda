@@ -218,7 +218,8 @@ class _EventJoinWithUrlState extends State<EventJoinWithUrl> {
     final String url = _urlController.value.text.trim();
     if (url == "") return false;
     if (!url.startsWith(instagramPostUrlPrefix) &&
-        !url.startsWith(naverBlogPostUrlPrefix)) return false;
+        !url.startsWith(naverBlogPostUrlPrefix) &&
+        !url.startsWith(mobileNaverBlogPostUrlPrefix)) return false;
     return true;
   }
 }
