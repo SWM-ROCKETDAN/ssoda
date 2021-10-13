@@ -120,7 +120,7 @@ class _StoreEditScreenState extends State<StoreEditScreen> {
                     newImages: newImages,
                     deletedImagePaths: deletedImagePaths);
               } else if (snapshot.hasError) {
-                return Text('${snapshot.error}');
+                return buildErrorPage();
               }
 
               return Center(child: const CircularProgressIndicator());

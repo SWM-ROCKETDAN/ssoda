@@ -149,7 +149,7 @@ class _EventEditModalState extends State<EventEditModal> {
                     startDatePickerController: _startDatePickerController,
                     finishDatePickerController: _finishDatePickerController);
               } else if (snapshot.hasError) {
-                return Text('${snapshot.error}');
+                return buildErrorPage();
               }
 
               return Center(child: const CircularProgressIndicator());

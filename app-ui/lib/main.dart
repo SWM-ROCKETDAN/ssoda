@@ -34,6 +34,11 @@ class MyApp extends StatelessWidget {
       builder: (context, AsyncSnapshot snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return MaterialApp(home: SplashScreen());
+        } else if (snapshot.hasError) {
+          return MaterialApp(
+              home: Scaffold(
+                  body: buildErrorPage(
+                      message: '앱을 실행할 수 없습니다.\n네트워크 연결 상태를 확인해주세요!')));
         } else {
           return MaterialApp(
             debugShowCheckedModeBanner: false,

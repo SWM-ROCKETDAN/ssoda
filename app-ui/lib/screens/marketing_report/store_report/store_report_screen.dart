@@ -72,7 +72,7 @@ class _StoreReportScreenState extends State<StoreReportScreen> {
                       return ReportOverview(
                           size: size, storeReportOverview: snapshot.data!);
                     } else if (snapshot.hasError) {
-                      return Text('${snapshot.error}');
+                      return buildErrorPage();
                     }
 
                     return Center(child: const CircularProgressIndicator());
@@ -169,7 +169,7 @@ class _StoreReportScreenState extends State<StoreReportScreen> {
                                           )),
                                 ));
                     } else if (snapshot.hasError) {
-                      return Text('${snapshot.error}');
+                      return buildErrorPage();
                     }
 
                     return Center(child: const CircularProgressIndicator());

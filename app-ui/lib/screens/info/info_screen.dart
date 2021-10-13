@@ -21,7 +21,6 @@ class InfoScreen extends StatefulWidget {
 class _InfoScreenState extends State<InfoScreen> {
   late Future<User> user;
   late Future<Store> store;
-  bool _pushNotiEnabled = true;
 
   @override
   void initState() {
@@ -54,7 +53,7 @@ class _InfoScreenState extends State<InfoScreen> {
                   if (snapshot.hasData) {
                     return UserInfo(user: snapshot.data!);
                   } else if (snapshot.hasError) {
-                    return Text('${snapshot.error}');
+                    return buildErrorPage();
                   }
 
                   return Center(child: const CircularProgressIndicator());
@@ -74,7 +73,7 @@ class _InfoScreenState extends State<InfoScreen> {
                   if (snapshot.hasData) {
                     return StoreInfo(store: snapshot.data!);
                   } else if (snapshot.hasError) {
-                    return Text('${snapshot.error}');
+                    return buildErrorPage();
                   }
 
                   return Center(child: const CircularProgressIndicator());
