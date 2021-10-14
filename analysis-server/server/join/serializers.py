@@ -13,6 +13,18 @@ from core.models import JoinUser
 from core.models import JoinPost
 
 
+class JoinPostUpdateSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = JoinPost
+        fields = '__all__'
+
+
+class JoinUserUpdateSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = JoinUser
+        fields = '__all__'
+
+
 class JoinPostScrapSerializer(JoinPostSerializer):
     event = EventHashtagRewardSerializer()
     reward = RewardSerializer()
@@ -48,7 +60,7 @@ class JoinUserScrapSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
-class JoinUserSerializer(JoinUserSerializer):
+class JoinUserFollowSerializer(JoinUserSerializer):
     class Meta:
         model = JoinUser
         fields = ['follow_count', ]
@@ -64,7 +76,7 @@ class JoinRewardFollowCalculatorSerializer(serializers.ModelSerializer):
     def to_representation(self, instance):
         representation = super().to_representation(instance)
         join_user = get_object_or_404(JoinUser, sns_id=representation['sns_id'], type=representation['type'])
-        join_user_serializer = JoinUserSerializer(join_user)
+        join_user_serializer = JoinUserFollowSerializer(join_user)
         representation['follow_count'] = join_user_serializer.data['follow_count']
 
         return representation

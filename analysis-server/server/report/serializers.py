@@ -6,8 +6,15 @@ from core.models import Event
 from core.models import Store
 from core.models import HashtagHashtags
 from core.models import Hashtag
+from core.models import EventReport
 from core.models import JoinUser
 from core.models import JoinPost
+
+
+class EventReportUpdateSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = EventReport
+        fields = '__all__'
 
 
 class RewardSerializer(serializers.ModelSerializer):

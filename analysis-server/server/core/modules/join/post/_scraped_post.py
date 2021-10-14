@@ -1,4 +1,5 @@
 from core.modules.assist.time import _get_now_date
+from core.modules.assist.time import _parse_from_str_time_to_date_time
 
 
 class ScrapedPost:
@@ -13,7 +14,7 @@ class ScrapedPost:
         self._upload_date = None
         self._private_date = None
         self._delete_date = None
-        self._update_date = _get_now_date()
+        self._update_date = _parse_from_str_time_to_date_time(_get_now_date())
 
     def get_scraped_post(self):
         scraped_post = {
