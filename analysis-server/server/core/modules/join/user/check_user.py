@@ -5,11 +5,12 @@ from core.modules.static.common import Status
 
 # 유저 업데이트 날짜 체크
 def check_user_is_recently_scraped(update_date):
+    return False
     if update_date is None:
         return False
 
     interval_day = _get_interval_day_from_now(update_date)
-    if interval_day < Scrap.USER_SCRAP_NEED_DAY:
+    if interval_day > Scrap.USER_SCRAP_NEED_DAY:
         return False
     return True
 
