@@ -3,7 +3,7 @@ from core.modules.static.common import Type
 from core.exceptions import exceptions
 from . import post_scraper_instagram
 from . import post_scraper_facebook
-from . import post_scraper_naver_blog
+from . import post_scraper_naver
 from .check_post import check_post_event_is_ok
 from .check_post import check_post_event_reward_is_ok
 from .check_post import check_post_reward_is_ok
@@ -17,7 +17,7 @@ from .check_post import get_post_type_from_url
 scrap_handlers = {
     Type.INSTAGRAM: post_scraper_instagram.scrap_post,
     Type.FACEBOOK: post_scraper_facebook.scrap_post,
-    Type.NAVERBLOG: post_scraper_naver_blog.scrap_post,
+    Type.NAVERBLOG: post_scraper_naver.scrap_post_naver_pc,
 }
 
 

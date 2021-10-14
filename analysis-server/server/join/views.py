@@ -15,7 +15,7 @@ from core.modules.join.reward import RewardFollowCalculator
 from core.modules.join.reward import RewardRandomCalculator
 from core.exceptions import exceptions
 from join.tasks import task_scrap_post
-from core.modules.join.post.post_scraper_naver_blog import scrap_post
+from core.modules.join.post.post_scraper_naver import scrap_post_naver_pc
 
 
 # JoinPost PUT 요청

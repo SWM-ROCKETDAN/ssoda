@@ -23,6 +23,13 @@ def _parse_from_str_time_to_date_time(str_time):
     return date_time
 
 
+def _get_interval_day_from_now(target: datetime):
+    _now = _parse_from_str_time_to_date_time(_get_now_date())
+    _target = _parse_from_str_time_to_date_time(target)
+    interval_day = (_now - _target).days
+    return interval_day
+
+
 def _parse_from_utc_timestamp_to_date_time(timestamp):
     date_time = datetime.fromtimestamp(int(timestamp)).strftime('%Y-%m-%dT%H:%M:%S')
     date_time = _parse_from_str_time_to_date_time(date_time)
