@@ -1,6 +1,5 @@
 package com.rocketdan.serviceserver.app.dto.report.store;
 
-import com.rocketdan.serviceserver.domain.report.store.StoreReport;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -8,10 +7,10 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 public class StoreReportResponseDto {
-    private StoreReport report;
+    private StoreReportInStoreReportResponseDto report;
 
     @Builder
-    public StoreReportResponseDto(StoreReportDto report) {
+    public StoreReportResponseDto(StoreReportReceiveDto report) {
         this.report = report.getStore_report();
     }
 }

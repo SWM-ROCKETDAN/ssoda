@@ -6,7 +6,7 @@ import lombok.NoArgsConstructor;
 
 @Getter
 @NoArgsConstructor
-public class EventRankDto {
+public class EventRankReceiveDto {
     // 이벤트 아이디
     private Long event_id;
     // 객단가
@@ -17,7 +17,7 @@ public class EventRankDto {
     private Integer react_count;
 
     @Builder
-    public EventRankDto(Long event_id, Double guest_price, Integer participate_count, Integer react_count) {
+    public EventRankReceiveDto(Long event_id, Double guest_price, Integer participate_count, Integer react_count) {
         this.event_id = event_id;
         this.guest_price = guest_price;
         this.participate_count = participate_count;

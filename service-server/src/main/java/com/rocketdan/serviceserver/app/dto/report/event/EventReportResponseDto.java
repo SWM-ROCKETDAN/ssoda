@@ -1,16 +1,15 @@
 package com.rocketdan.serviceserver.app.dto.report.event;
 
-import com.rocketdan.serviceserver.domain.report.event.EventReport;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Getter
 @NoArgsConstructor
 public class EventReportResponseDto {
-    private EventInEventReport event;
-    private EventReport report;
+    private EventInEventReportResponseDto event;
+    private EventReportInEventReportResponseDto report;
 
-    public EventReportResponseDto(EventInEventReport event, EventReportDto report) {
+    public EventReportResponseDto(EventInEventReportResponseDto event, EventReportReceiveDto report) {
         this.event = event;
         this.report = report.getEvent_report();
     }

@@ -1,17 +1,16 @@
 package com.rocketdan.serviceserver.app.dto.report.store;
 
-import com.rocketdan.serviceserver.domain.report.store.StoreReport;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Getter
 @NoArgsConstructor
-public class StoreReportDto {
-    private StoreReport store_report;
+public class StoreReportReceiveDto {
+    private StoreReportInStoreReportResponseDto store_report;
 
     @Builder
-    public StoreReportDto(StoreReport store_report) {
+    public StoreReportReceiveDto(StoreReportInStoreReportResponseDto store_report) {
         this.store_report = store_report;
     }
 }

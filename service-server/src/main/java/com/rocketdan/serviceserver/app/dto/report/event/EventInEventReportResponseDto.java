@@ -8,12 +8,12 @@ import java.util.Optional;
 
 @Getter
 @NoArgsConstructor
-public class EventInEventReport {
+public class EventInEventReportResponseDto {
     private String imagePath;
     private String title;
     private Integer status;
 
-    public EventInEventReport(Event entity) {
+    public EventInEventReportResponseDto(Event entity) {
         Optional.ofNullable(entity.getImagePaths()).ifPresent(none -> this.imagePath = entity.getImagePaths().get(0));
         this.title = entity.getTitle();
         this.status = entity.getStatus();

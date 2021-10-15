@@ -1,4 +1,4 @@
-package com.rocketdan.serviceserver.domain.report.event;
+package com.rocketdan.serviceserver.app.dto.report.event;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;

@@ -25,13 +25,13 @@ public class EventRankResponseDto {
     // 반응 수
     private Integer reactCount;
 
-    public EventRankResponseDto(Event event, Store store, EventRankDto eventRankDto) {
+    public EventRankResponseDto(Event event, Store store, EventRankReceiveDto eventRankReceiveDto) {
         this.storeName = store.getName();
         this.storeLogoImagePath = store.getLogoImagePath();
         this.eventTitle = event.getTitle();
         Optional.ofNullable(event.getImagePaths()).ifPresent(none -> this.eventImagePath = event.getImagePaths().get(0));
-        this.guestPrice = eventRankDto.getGuest_price();
-        this.participateCount = eventRankDto.getParticipate_count();
-        this.reactCount = eventRankDto.getReact_count();
+        this.guestPrice = eventRankReceiveDto.getGuest_price();
+        this.participateCount = eventRankReceiveDto.getParticipate_count();
+        this.reactCount = eventRankReceiveDto.getReact_count();
     }
 }

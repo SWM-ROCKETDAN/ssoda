@@ -2,7 +2,7 @@ package com.rocketdan.serviceserver.app;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.rocketdan.serviceserver.app.dto.rank.EventRankDto;
+import com.rocketdan.serviceserver.app.dto.rank.EventRankReceiveDto;
 import com.rocketdan.serviceserver.app.dto.rank.EventRankResponseDto;
 import com.rocketdan.serviceserver.service.RankService;
 import lombok.RequiredArgsConstructor;
@@ -23,11 +23,11 @@ public class RankApiController {
     @GetMapping()
     public List<EventRankResponseDto> retrieveEventRank(@RequestParam String sort) {
         ObjectMapper objectMapper = new ObjectMapper();
-        List<EventRankDto> eventRankDtoList = objectMapper.convertValue(rankService.getEventRank(sort).getData(), new TypeReference<List<EventRankDto>>(){});
+        List<EventRankReceiveDto> eventRankReceiveDtoList = objectMapper.convertValue(rankService.getEventRank(sort).getData(), new TypeReference<List<EventRankReceiveDto>>(){});
 
         List<EventRankResponseDto> eventRankResponseDtoList = new ArrayList<>();
-        for (EventRankDto eventRankDto : eventRankDtoList) {
-            eventRankResponseDtoList.add(rankService.wrapEventRank(eventRankDto));
+        for (EventRankReceiveDto eventRankReceiveDto : eventRankReceiveDtoList) {
+            eventRankResponseDtoList.add(rankService.wrapEventRank(eventRankReceiveDto));
         }
         return eventRankResponseDtoList;
     }
