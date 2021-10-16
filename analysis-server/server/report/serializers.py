@@ -96,7 +96,7 @@ class JoinPostAndUserSerializer(serializers.ModelSerializer):
         return representation
 
 
-class EventReportSerializer(serializers.ModelSerializer):
+class ReportEventSerializer(serializers.ModelSerializer):
     rewards = RewardSerializer(many=True)
 
     class Meta:
@@ -116,7 +116,7 @@ class EventReportSerializer(serializers.ModelSerializer):
         return representation
 
 
-class StoreReportSerializer(serializers.ModelSerializer):
+class ReportStoreSerializer(serializers.ModelSerializer):
     class Meta:
         model = Store
         fields = '__all__'
@@ -128,7 +128,7 @@ class StoreReportSerializer(serializers.ModelSerializer):
         except Event.DoesNotExist:
             representation['events'] = []
         else:
-            event_report_serializer = EventReportSerializer(data=events, many=True)
+            event_report_serializer = ReportEventSerializer(data=events, many=True)
             event_report_serializer.is_valid()
             representation['events'] = event_report_serializer.data
 

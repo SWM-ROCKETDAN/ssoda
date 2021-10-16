@@ -17,6 +17,7 @@ INSTALLED_APPS = [
     'core',
     'join',
     'report',
+    'rank',
 ]
 
 DATABASES = {

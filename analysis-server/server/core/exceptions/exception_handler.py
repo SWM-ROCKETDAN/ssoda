@@ -18,6 +18,7 @@ def custom_exception_handler(exc, context):
         exceptions.StoreReportCalculateOK.__name__: parse_custom_exception,
         exceptions.PostIsAlreadyCalculatedRewardAndOK.__name__: parse_custom_exception,
         exceptions.UserRecentlyUpdateAndOK.__name__: parse_custom_exception,
+        exceptions.EventRankCalculateOK.__name__: parse_custom_exception,
 
         # Client Error
         exceptions.PostIsPrivate.__name__: parse_custom_exception,
@@ -36,6 +37,7 @@ def custom_exception_handler(exc, context):
         exceptions.RewardCalculateFailed.__name__: parse_custom_exception,
         exceptions.EventReportCalculateFailed.__name__: parse_custom_exception,
         exceptions.StoreReportCalculateFailed.__name__: parse_custom_exception,
+        exceptions.EventRankCalculateFailed.__name__: parse_custom_exception,
     }
 
     response = exception_handler(exc, context)
