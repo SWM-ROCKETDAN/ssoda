@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:future_progress_dialog/future_progress_dialog.dart';
 import 'package:hashchecker/models/oss.dart';
 
-const kThemeColor = Color(0xFF0071f1);
-const kScaffoldBackgroundColor = Color(0xFFfdfdfe);
-final kShadowColor = Color(0xFF90a0b8).withOpacity(0.3);
-const kDefaultFontColor = Color(0xFF001024);
-const kLiteFontColor = Color(0xFF848c97);
-const kLogoColor = Color(0xFF0088ff);
+const kThemeColor = Color(0xFF01a6d6);
+const kScaffoldBackgroundColor = Color(0xFFfcfeff);
+final kShadowColor = Color(0xFF90aab7).withOpacity(0.3);
+const kDefaultFontColor = Color(0xFF001c24);
+const kLiteFontColor = Color(0xFF849397);
+const kLogoColor = Color(0xFF00a5d5);
 const kDefaultPadding = 15.0;
 const kDefaultNumberSliderDuration = Duration(seconds: 1);
 const kAppUrlScheme = 'com.rocketdan.ssoda';

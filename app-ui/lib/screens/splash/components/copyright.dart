@@ -11,7 +11,7 @@ class Copyright extends StatelessWidget {
   Widget build(BuildContext context) {
     return AutoSizeText(
       'Copyright ⓒ 2021 Rocketdan All rights reserved.',
-      style: TextStyle(fontSize: 12, color: kLiteFontColor),
+      style: TextStyle(fontSize: 8, color: kThemeColor),
       maxLines: 1,
     );
   }

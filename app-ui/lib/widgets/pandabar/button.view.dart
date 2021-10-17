@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:hashchecker/constants.dart';
 
 class PandaBarButton extends StatefulWidget {
   final IconData icon;
@@ -66,7 +67,7 @@ class _PandaBarButtonState extends State<PandaBarButton>
           children: [
             Icon(widget.icon,
                 color: widget.isSelected
-                    ? (widget.selectedColor ?? Color(0xFF078DF0))
+                    ? (widget.selectedColor ?? kThemeColor)
                     : (widget.unselectedColor ?? Color(0xFF9FACBE))),
             Container(
               height: animation.value,
@@ -74,7 +75,7 @@ class _PandaBarButtonState extends State<PandaBarButton>
             Text(widget.title,
                 style: TextStyle(
                     color: widget.isSelected
-                        ? (widget.selectedColor ?? Color(0xFF078DF0))
+                        ? (widget.selectedColor ?? kThemeColor)
                         : (widget.unselectedColor ?? Color(0xFF9FACBE)),
                     fontWeight: FontWeight.bold,
                     fontSize: 10))

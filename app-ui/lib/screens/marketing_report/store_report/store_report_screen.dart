@@ -173,7 +173,8 @@ class _StoreReportScreenState extends State<StoreReportScreen> {
                     }
 
                     return Center(child: const CircularProgressIndicator());
-                  })
+                  }),
+              SizedBox(height: 70)
             ],
           ),
         ),

@@ -37,7 +37,7 @@ class EventReportCard extends StatelessWidget {
         child: Card(
             color: kScaffoldBackgroundColor,
             shadowColor: kShadowColor,
-            elevation: 18,
+            elevation: 12,
             child: OpenContainer<bool>(
                 openColor: kScaffoldBackgroundColor,
                 openElevation: 0,

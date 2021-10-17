@@ -33,11 +33,15 @@ class _RankingScreenState extends State<RankingScreen> {
     return Scaffold(
         appBar: buildAppBar(),
         body: SingleChildScrollView(
-          child: Column(
-            children: List.generate(
-              5,
-              (index) =>
-                  index == 0 ? FirstRankingTile() : RankingTile(ranking: index),
+          child: Container(
+            margin: const EdgeInsets.only(bottom: 75),
+            child: Column(
+              children: List.generate(
+                5,
+                (index) => index == 0
+                    ? FirstRankingTile()
+                    : RankingTile(ranking: index),
+              ),
             ),
           ),
         ));
@@ -45,23 +49,12 @@ class _RankingScreenState extends State<RankingScreen> {
 
   AppBar buildAppBar() {
     return AppBar(
-      title: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Text(
-            '이벤트 랭킹',
-            style: TextStyle(
-                fontWeight: FontWeight.bold,
-                fontSize: 20,
-                color: kDefaultFontColor),
-          ),
-          SizedBox(height: kDefaultPadding / 5),
-          Text(
-            '매일 오전 12:00 마다 업데이트 됩니다',
-            style: TextStyle(color: kLiteFontColor, fontSize: 10),
-          )
-        ],
+      title: Text(
+        '이벤트 랭킹',
+        style: TextStyle(
+            fontWeight: FontWeight.bold,
+            fontSize: 20,
+            color: kDefaultFontColor),
       ),
       backgroundColor: kScaffoldBackgroundColor,
       elevation: 6,

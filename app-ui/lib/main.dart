@@ -95,7 +95,7 @@ class Init {
   static final instance = Init._();
 
   Future<Widget?> initialize(BuildContext context) async {
-    await Future.delayed(Duration(milliseconds: 2000));
+    await Future.delayed(Duration(milliseconds: 1500));
     await Firebase.initializeApp();
     SharedPreferences prefs = await SharedPreferences.getInstance();
 
