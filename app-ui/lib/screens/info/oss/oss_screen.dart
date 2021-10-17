@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hashchecker/constants.dart';
 import 'package:hashchecker/models/oss.dart';
-import 'package:hashchecker/screens/info/oss/components/oss_tile.dart';
+import 'package:hashchecker/screens/info/oss/components/oss_list.dart';
 
 class OssScreen extends StatelessWidget {
   const OssScreen({Key? key}) : super(key: key);
@@ -17,7 +17,6 @@ class OssScreen extends StatelessWidget {
           iconTheme: IconThemeData(color: kDefaultFontColor),
         ),
         body: Container(
-            padding: const EdgeInsets.all(8),
             child: ListView.builder(
                 itemCount: ossList.length,
                 itemBuilder: (context, index) => OssList(index: index))));

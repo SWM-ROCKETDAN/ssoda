@@ -13,6 +13,16 @@ class OssList extends StatefulWidget {
 }
 
 class _OssListState extends State<OssList> {
+  late List<OSSTile> _ossList;
+
+  @override
+  void initState() {
+    super.initState();
+    _ossList = ossList;
+    _ossList
+        .sort((a, b) => a.name.toUpperCase().compareTo(b.name.toUpperCase()));
+  }
+
   @override
   Widget build(BuildContext context) {
     return ExpansionPanelList(
@@ -21,19 +31,20 @@ class _OssListState extends State<OssList> {
       elevation: 0,
       expansionCallback: (item, status) {
         setState(() {
-          ossList[widget.index].isExpanded = !ossList[widget.index].isExpanded;
+          _ossList[widget.index].isExpanded =
+              !_ossList[widget.index].isExpanded;
         });
       },
       children: [
         ExpansionPanel(
           backgroundColor: kScaffoldBackgroundColor,
           headerBuilder: (context, isExpanded) => Container(
-            padding: const EdgeInsets.all(8),
+            padding: const EdgeInsets.all(15),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  ossList[widget.index].name,
+                  _ossList[widget.index].name,
                   style: TextStyle(
                       color: kDefaultFontColor,
                       fontWeight: FontWeight.bold,
@@ -44,20 +55,20 @@ class _OssListState extends State<OssList> {
                 RichText(
                     overflow: TextOverflow.ellipsis,
                     text: TextSpan(
-                        text: ossList[widget.index].link,
+                        text: _ossList[widget.index].link,
                         style: TextStyle(color: Colors.blue),
                         recognizer: TapGestureRecognizer()
                           ..onTap = () {
-                            launch(ossList[widget.index].link);
+                            launch(_ossList[widget.index].link);
                           })),
                 SizedBox(height: kDefaultPadding / 10),
-                Text(ossList[widget.index].license.getLicenseName(),
+                Text(_ossList[widget.index].license.getLicenseName(),
                     style: TextStyle(
                         color: kLiteFontColor,
                         fontSize: 12,
                         fontWeight: FontWeight.bold)),
                 Text(
-                  ossList[widget.index].copyright,
+                  _ossList[widget.index].copyright,
                   style: TextStyle(color: kLiteFontColor, fontSize: 12),
                   overflow: TextOverflow.ellipsis,
                 )
@@ -65,15 +76,16 @@ class _OssListState extends State<OssList> {
             ),
           ),
           body: Container(
-            padding: const EdgeInsets.all(16),
+            margin: const EdgeInsets.symmetric(horizontal: 15),
+            padding: const EdgeInsets.all(12),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(12),
               color: Colors.grey.shade200,
             ),
-            child: Text(ossList[widget.index].license.getLicenseDescription(),
+            child: Text(_ossList[widget.index].license.getLicenseDescription(),
                 style: TextStyle(fontSize: 12)),
           ),
-          isExpanded: ossList[widget.index].isExpanded,
+          isExpanded: _ossList[widget.index].isExpanded,
         )
       ],
     );
