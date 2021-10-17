@@ -14,22 +14,24 @@ class StoreCate extends StatefulWidget {
 class _StoreCateState extends State<StoreCate> {
   @override
   Widget build(BuildContext context) {
-    return Row(children: [
-      Icon(Icons.local_offer_rounded, color: kLiteFontColor),
-      SizedBox(width: kDefaultPadding),
-      Row(
-          children: List.generate(
-              storeCategoryList.length,
-              (index) => Container(
-                  margin: const EdgeInsets.only(right: 7),
-                  child: GestureDetector(
-                    onTap: () {
-                      setState(() {
-                        widget.store.category =
-                            storeCategoryList[index].category;
-                      });
-                    },
-                    child: Chip(
+    return Container(
+      margin: const EdgeInsets.only(right: 20),
+      child: Row(children: [
+        Icon(Icons.local_offer_rounded, color: kLiteFontColor),
+        SizedBox(width: kDefaultPadding),
+        Row(
+            children: List.generate(
+                storeCategoryList.length,
+                (index) => Container(
+                    margin: const EdgeInsets.only(right: 7),
+                    child: GestureDetector(
+                      onTap: () {
+                        setState(() {
+                          widget.store.category =
+                              storeCategoryList[index].category;
+                        });
+                      },
+                      child: Chip(
                         label: Text(
                           storeCategoryList[index].name,
                           style: TextStyle(
@@ -52,13 +54,15 @@ class _StoreCateState extends State<StoreCate> {
                                     : kLiteFontColor),
                         backgroundColor: kScaffoldBackgroundColor,
                         shape: RoundedRectangleBorder(
-                            side: BorderSide(
-                                color: storeCategoryList[index].category ==
-                                        widget.store.category
-                                    ? kThemeColor
-                                    : kLiteFontColor),
-                            borderRadius: BorderRadius.circular(24))),
-                  ))))
-    ]);
+                            borderRadius: BorderRadius.circular(24)),
+                        elevation: 5.0,
+                        shadowColor: storeCategoryList[index].category ==
+                                widget.store.category
+                            ? kThemeColor.withOpacity(0.3)
+                            : kShadowColor,
+                      ),
+                    ))))
+      ]),
+    );
   }
 }

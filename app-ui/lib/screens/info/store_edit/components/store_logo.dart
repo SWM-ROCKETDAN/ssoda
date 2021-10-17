@@ -21,6 +21,7 @@ class _StoreLogoState extends State<StoreLogo> {
     return GestureDetector(
         onTap: _getImageFromGallery,
         child: Container(
+            margin: const EdgeInsets.only(right: 20),
             height: 80,
             width: 80,
             decoration: BoxDecoration(

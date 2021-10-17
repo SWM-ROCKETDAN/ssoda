@@ -21,7 +21,8 @@ class ConfirmButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
+    return Container(
+      margin: const EdgeInsets.only(right: 20),
       width: MediaQuery.of(context).size.width,
       height: 50,
       child: ElevatedButton(

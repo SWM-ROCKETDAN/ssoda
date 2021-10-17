@@ -31,9 +31,10 @@ class CreateButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
+    return Container(
       width: MediaQuery.of(context).size.width,
       height: 50,
+      margin: const EdgeInsets.only(right: 20),
       child: ElevatedButton(
         onPressed: () async {
           if (_checkStoreValidation(context)) {
