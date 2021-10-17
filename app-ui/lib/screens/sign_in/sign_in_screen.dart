@@ -107,6 +107,7 @@ class _SignInScreenState extends State<SignInScreen> {
 
     var dio = await authDio(context);
 
+    /*
     // firebase token update
     final isFCMEnabled = await prefs.getBool('FCM_ENABLED');
     if (isFCMEnabled == null || isFCMEnabled) {
@@ -117,7 +118,7 @@ class _SignInScreenState extends State<SignInScreen> {
             getApi(API.UPDATE_FIREBASE_TOKEN),
             data: {'pushToken': firebaseToken});
       }
-    }
+    }*/
 
     final getUserStoreListResponse = await dio.get(getApi(API.GET_USER_STORES));
     final storeList = getUserStoreListResponse.data;

@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:hashchecker/api.dart';
 import 'package:hashchecker/constants.dart';
 import 'package:hashchecker/models/user.dart';
+import 'package:hashchecker/screens/info/oss/oss_screen.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class AppInfo extends StatelessWidget {
@@ -19,7 +20,9 @@ class AppInfo extends StatelessWidget {
               child: ListTile(
                 title: Text('오픈소스 라이센스'),
                 contentPadding: const EdgeInsets.all(5),
-                onTap: () {},
+                onTap: () {
+                  Navigator.push(context, slidePageRouting(OssScreen()));
+                },
                 trailing:
                     Icon(Icons.navigate_next_rounded, color: kLiteFontColor),
               ))),
