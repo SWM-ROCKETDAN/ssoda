@@ -95,7 +95,8 @@ class _InfoScreenState extends State<InfoScreen> {
                   fontSize: 20,
                   color: kDefaultFontColor),
             ),
-            AppInfo()
+            AppInfo(),
+            SizedBox(height: 45)
           ],
         ),
       ),

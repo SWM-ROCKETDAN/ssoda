@@ -28,13 +28,13 @@ class _PandaBarFabButtonState extends State<PandaBarFabButton> {
   Widget build(BuildContext context) {
     final _colors = widget.colors ??
         [
-          Color(0xFF0071f1),
-          Color(0xFF0286EA),
-          Color(0xFF27A1FE),
+          kThemeColor,
+          Color(0xFF5dc3d1),
+          Color(0xFFa2d6c0),
         ];
 
     return Padding(
-      padding: EdgeInsets.only(bottom: 17),
+      padding: EdgeInsets.only(bottom: 12),
       child: InkResponse(
         highlightColor: Colors.transparent,
         splashColor: Colors.transparent,
@@ -50,17 +50,12 @@ class _PandaBarFabButtonState extends State<PandaBarFabButton> {
             width: _touched ? widget.size - 1 : widget.size,
             height: _touched ? widget.size - 1 : widget.size,
             decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(widget.size),
-                gradient: LinearGradient(
-                    begin: Alignment.centerLeft,
-                    end: Alignment.centerRight,
-                    colors: _touched ? _colors : _colors.reversed.toList()),
-                boxShadow: [
-                  BoxShadow(
-                      color: kShadowColor.withOpacity(0.5),
-                      blurRadius: 5,
-                      offset: Offset(3, 3))
-                ]),
+              borderRadius: BorderRadius.circular(widget.size),
+              gradient: LinearGradient(
+                  begin: Alignment.centerLeft,
+                  end: Alignment.centerRight,
+                  colors: _touched ? _colors : _colors.reversed.toList()),
+            ),
             child: Center(
               child: Transform.rotate(
                   angle: -45 * math.pi / 180,

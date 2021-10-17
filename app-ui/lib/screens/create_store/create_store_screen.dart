@@ -221,7 +221,7 @@ class _CreateStoreScreenState extends State<CreateStoreScreen> {
           return shouldClose;
         },
         child: Container(
-          padding: const EdgeInsets.all(20),
+          padding: const EdgeInsets.fromLTRB(20, 20, 0, 20),
           child: Column(
             children: [
               Expanded(

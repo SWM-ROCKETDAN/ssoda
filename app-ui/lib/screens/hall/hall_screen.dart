@@ -101,21 +101,19 @@ class _HallScreenState extends State<HallScreen> {
           });
         },
       ),
-      body: SafeArea(
-        child: PageTransitionSwitcher(
-          transitionBuilder: (
-            Widget child,
-            Animation<double> animation,
-            Animation<double> secondaryAnimation,
-          ) {
-            return FadeThroughTransition(
-              animation: animation,
-              secondaryAnimation: secondaryAnimation,
-              child: child,
-            );
-          },
-          child: pageMap[currentPage],
-        ),
+      body: PageTransitionSwitcher(
+        transitionBuilder: (
+          Widget child,
+          Animation<double> animation,
+          Animation<double> secondaryAnimation,
+        ) {
+          return FadeThroughTransition(
+            animation: animation,
+            secondaryAnimation: secondaryAnimation,
+            child: child,
+          );
+        },
+        child: pageMap[currentPage],
       ),
     );
   }

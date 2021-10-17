@@ -207,7 +207,7 @@ class EventListTile extends StatelessWidget {
                               BoxShadow(
                                 color: kShadowColor,
                                 spreadRadius: 1,
-                                blurRadius: 7,
+                                blurRadius: 6,
                                 offset:
                                     Offset(3, 3), // changes position of shadow
                               ),
@@ -232,7 +232,7 @@ class EventListTile extends StatelessWidget {
                             BoxShadow(
                               color: kShadowColor,
                               spreadRadius: 1,
-                              blurRadius: 7,
+                              blurRadius: 6,
                               offset:
                                   Offset(-3, 3), // changes position of shadow
                             ),
