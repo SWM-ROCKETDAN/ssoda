@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:hashchecker/api.dart';
 import 'package:hashchecker/constants.dart';
+import 'package:hashchecker/models/event_rank.dart';
 import 'package:number_display/number_display.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class FirstRankingTile extends StatelessWidget {
-  const FirstRankingTile({Key? key}) : super(key: key);
+  final EventRank event;
+  const FirstRankingTile({Key? key, required this.event}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -28,7 +32,9 @@ class FirstRankingTile extends StatelessWidget {
             child: Material(
               color: Colors.white.withOpacity(0.0),
               child: InkWell(
-                onTap: () {},
+                onTap: () {
+                  launch('$eventJoinUrl/${event.storeId}/${event.eventId}');
+                },
                 highlightColor: kShadowColor,
                 overlayColor: MaterialStateProperty.all<Color>(kShadowColor),
                 borderRadius: BorderRadius.circular(12),
@@ -46,15 +52,15 @@ class FirstRankingTile extends StatelessWidget {
                                   color: kShadowColor,
                                   shape: BoxShape.circle,
                                   image: DecorationImage(
-                                      image: AssetImage(
-                                          'assets/images/icon/icon.png'),
+                                      image: NetworkImage(
+                                          '$s3Url${event.storeLogo}'),
                                       fit: BoxFit.cover))),
                           SizedBox(height: kDefaultPadding / 2),
-                          Text('이벤트를 진행 중인 가게 명',
+                          Text(event.storeName,
                               style: TextStyle(
                                   color: kLiteFontColor, fontSize: 12)),
                           SizedBox(height: kDefaultPadding / 7.5),
-                          Text('진행 중인 이벤트 제목',
+                          Text(event.eventTitle,
                               style: TextStyle(
                                   color: kDefaultFontColor,
                                   fontWeight: FontWeight.bold,
@@ -73,7 +79,7 @@ class FirstRankingTile extends StatelessWidget {
                                     color: Colors.blueGrey,
                                   ),
                                   Text(
-                                    '${numberDisplay(1234)}원',
+                                    '${numberDisplay(event.guestPrice)}원',
                                     style: TextStyle(
                                         color: kLiteFontColor, fontSize: 12),
                                   ),
@@ -89,7 +95,7 @@ class FirstRankingTile extends StatelessWidget {
                                     color: Colors.blueGrey,
                                   ),
                                   SizedBox(width: kDefaultPadding / 3),
-                                  Text('${numberDisplay(1234)}명',
+                                  Text('${numberDisplay(event.joinCount)}명',
                                       style: TextStyle(
                                           color: kLiteFontColor, fontSize: 12)),
                                 ]),
@@ -104,7 +110,7 @@ class FirstRankingTile extends StatelessWidget {
                                     color: Colors.blueGrey,
                                   ),
                                   SizedBox(width: kDefaultPadding / 3),
-                                  Text('${numberDisplay(1234)}개',
+                                  Text('${numberDisplay(event.likeCount)}개',
                                       style: TextStyle(
                                           color: kLiteFontColor, fontSize: 12)),
                                 ]),
@@ -127,8 +133,7 @@ class FirstRankingTile extends StatelessWidget {
         ]),
         decoration: BoxDecoration(
           image: DecorationImage(
-              image: NetworkImage(
-                  'https://ssoda-bucket.s3.ap-northeast-2.amazonaws.com/image/event/202110/1633271835601_image_cropper_1633271832843.jpg'),
+              image: NetworkImage('$s3Url${event.eventImage}'),
               fit: BoxFit.cover,
               colorFilter: ColorFilter.mode(
                   kScaffoldBackgroundColor.withOpacity(0.25),

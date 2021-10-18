@@ -1,11 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:hashchecker/api.dart';
 import 'package:hashchecker/constants.dart';
+import 'package:hashchecker/models/event_rank.dart';
 import 'package:number_display/number_display.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class RankingTile extends StatelessWidget {
-  const RankingTile({Key? key, required this.ranking}) : super(key: key);
+  const RankingTile({Key? key, required this.event, required this.index})
+      : super(key: key);
 
-  final ranking;
+  final EventRank event;
+  final int index;
   @override
   Widget build(BuildContext context) {
     final numberDisplay = createDisplay();
@@ -29,7 +34,9 @@ class RankingTile extends StatelessWidget {
           child: Material(
             color: Colors.white.withOpacity(0.0),
             child: InkWell(
-              onTap: () {},
+              onTap: () {
+                launch('$eventJoinUrl/${event.storeId}/${event.eventId}');
+              },
               highlightColor: kShadowColor,
               overlayColor: MaterialStateProperty.all<Color>(kShadowColor),
               borderRadius: BorderRadius.circular(12),
@@ -46,7 +53,7 @@ class RankingTile extends StatelessWidget {
                                 decoration: BoxDecoration(
                                     image: DecorationImage(
                                         image: NetworkImage(
-                                            'https://yjyoon-dev.github.io/rocketdan/hashchecker/assets/image/banner.png'),
+                                            '$s3Url${event.eventImage}'),
                                         fit: BoxFit.cover,
                                         colorFilter: ColorFilter.mode(
                                             kScaffoldBackgroundColor
@@ -88,18 +95,18 @@ class RankingTile extends StatelessWidget {
                                       color: kDefaultFontColor.withOpacity(0.2))
                                 ],
                                 image: DecorationImage(
-                                    image: AssetImage(
-                                        'assets/images/icon/icon.png'),
+                                    image: NetworkImage(
+                                        '$s3Url${event.storeLogo}'),
                                     fit: BoxFit.cover))),
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.end,
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            Text('이벤트를 진행 중인 가게 명',
+                            Text(event.storeName,
                                 style: TextStyle(
                                     color: kLiteFontColor, fontSize: 10)),
                             SizedBox(height: kDefaultPadding / 7.5),
-                            Text('진행 중인 이벤트 제목',
+                            Text(event.eventTitle,
                                 style: TextStyle(
                                     color: kDefaultFontColor,
                                     fontWeight: FontWeight.bold)),
@@ -117,7 +124,7 @@ class RankingTile extends StatelessWidget {
                                       color: Colors.blueGrey,
                                     ),
                                     Text(
-                                      '${numberDisplay(1234)}원',
+                                      '${numberDisplay(event.guestPrice)}원',
                                       style: TextStyle(
                                           color: kLiteFontColor, fontSize: 10),
                                     ),
@@ -133,7 +140,7 @@ class RankingTile extends StatelessWidget {
                                       color: Colors.blueGrey,
                                     ),
                                     SizedBox(width: kDefaultPadding / 3),
-                                    Text('${numberDisplay(1234)}명',
+                                    Text('${numberDisplay(event.joinCount)}명',
                                         style: TextStyle(
                                             color: kLiteFontColor,
                                             fontSize: 10)),
@@ -149,7 +156,7 @@ class RankingTile extends StatelessWidget {
                                       color: Colors.blueGrey,
                                     ),
                                     SizedBox(width: kDefaultPadding / 3),
-                                    Text('${numberDisplay(1234)}개',
+                                    Text('${numberDisplay(event.likeCount)}개',
                                         style: TextStyle(
                                             color: kLiteFontColor,
                                             fontSize: 10)),
@@ -167,11 +174,11 @@ class RankingTile extends StatelessWidget {
             ),
           ),
         ),
-        if (ranking < 3)
+        if (index < 3)
           Positioned(
               left: 2,
               top: 0,
-              child: Image.asset('assets/images/ranking/${ranking + 1}.png',
+              child: Image.asset('assets/images/ranking/${index + 1}.png',
                   width: size.width * 0.1, height: size.width * 0.1)),
       ]),
     );
