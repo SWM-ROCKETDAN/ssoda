@@ -3,6 +3,7 @@ import 'package:hashchecker/api.dart';
 import 'package:hashchecker/constants.dart';
 import 'package:hashchecker/models/event_rank.dart';
 import 'package:number_display/number_display.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class RankingTile extends StatelessWidget {
   const RankingTile({Key? key, required this.event, required this.index})
@@ -33,7 +34,9 @@ class RankingTile extends StatelessWidget {
           child: Material(
             color: Colors.white.withOpacity(0.0),
             child: InkWell(
-              onTap: () {},
+              onTap: () {
+                launch('$eventJoinUrl/${event.storeId}/${event.eventId}');
+              },
               highlightColor: kShadowColor,
               overlayColor: MaterialStateProperty.all<Color>(kShadowColor),
               borderRadius: BorderRadius.circular(12),

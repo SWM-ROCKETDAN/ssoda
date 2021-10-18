@@ -53,7 +53,7 @@ class _RankingScreenState extends State<RankingScreen> {
                 ),
               );
             } else if (snapshot.hasError) {
-              return Text('${snapshot.stackTrace}');
+              buildErrorPage();
             }
 
             return Center(child: const CircularProgressIndicator());
