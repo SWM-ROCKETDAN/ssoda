@@ -179,12 +179,6 @@ class _EventJoinWithUrlState extends State<EventJoinWithUrl> {
 
     JoinResult result = JoinResult.fromJson(eventJoinResponse.data);
 
-    FCMessage fcMessage = createEventJoinNotification(widget.event.title);
-
-    final pushNotificationResponse = await dio.post(
-        getApi(API.PUSH_NOTIFICATION, suffix: '/${widget.storeId}'),
-        data: fcMessage);
-
     widget.loading(false);
 
     if (widget.event.rewardList.length > 1) {
