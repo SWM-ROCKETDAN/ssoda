@@ -111,6 +111,8 @@ class Init {
     // on not login yet
     if (accessToken == null || refreshToken == null) return SignInScreen();
 
+    print('accessToken: $accessToken');
+    print('refreshToken: $refreshToken');
     // firebase token update
     final isFCMEnabled = await prefs.getBool('FCM_ENABLED');
     if (isFCMEnabled == null || isFCMEnabled) {

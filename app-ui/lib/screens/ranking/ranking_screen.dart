@@ -53,7 +53,7 @@ class _RankingScreenState extends State<RankingScreen> {
                 ),
               );
             } else if (snapshot.hasError) {
-              return Text('${snapshot.error}');
+              return Text('${snapshot.stackTrace}');
             }
 
             return Center(child: const CircularProgressIndicator());
@@ -128,7 +128,11 @@ class _RankingScreenState extends State<RankingScreen> {
     var dio = await authDio(context);
     final getEventRankList = await dio
         .get('$baseUrl/api/v1/rank?sort=${sortStringMap[sort]}&limit=30');
-    final List<EventRank> fetchEventRankListData = getEventRankList.data;
-    return fetchEventRankListData;
+    final fetchedEventRankListData = getEventRankList.data;
+    print(fetchedEventRankListData);
+    final List<EventRank> eventRankList = List.generate(
+        fetchedEventRankListData.length,
+        (index) => EventRank.fromJson(fetchedEventRankListData[index]));
+    return eventRankList;
   }
 }
