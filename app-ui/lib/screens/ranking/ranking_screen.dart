@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:hashchecker/api.dart';
 import 'package:hashchecker/constants.dart';
 import 'package:hashchecker/models/event_rank.dart';
 import 'package:number_display/number_display.dart';
@@ -14,37 +15,50 @@ class RankingScreen extends StatefulWidget {
 }
 
 class _RankingScreenState extends State<RankingScreen> {
-  late List<EventRank> eventRankList;
+  late Future<List<EventRank>> eventRankList;
   final rankingSortDropdownItemList = [
-    '객단가 순위',
     '참가자 순위',
+    '객단가 순위',
     '좋아요 순위',
   ];
 
-  String dropdownValue = '객단가 순위';
+  String dropdownValue = '참가자 순위';
 
   @override
   void initState() {
     super.initState();
+    eventRankList = _fetchEventRankListData(dropdownValue);
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: buildAppBar(),
-        body: SingleChildScrollView(
-          child: Container(
-            margin: const EdgeInsets.only(bottom: 75),
-            child: Column(
-              children: List.generate(
-                5,
-                (index) => index == 0
-                    ? FirstRankingTile()
-                    : RankingTile(ranking: index),
-              ),
-            ),
-          ),
-        ));
+      appBar: buildAppBar(),
+      body: FutureBuilder<List<EventRank>>(
+          future: eventRankList,
+          builder: (context, snapshot) {
+            if (snapshot.hasData) {
+              return SingleChildScrollView(
+                child: Container(
+                  margin: const EdgeInsets.only(bottom: 75),
+                  child: Column(
+                    children: List.generate(
+                      snapshot.data!.length,
+                      (index) => index == 0
+                          ? FirstRankingTile(event: snapshot.data![index])
+                          : RankingTile(
+                              event: snapshot.data![index], index: index),
+                    ),
+                  ),
+                ),
+              );
+            } else if (snapshot.hasError) {
+              return Text('${snapshot.error}');
+            }
+
+            return Center(child: const CircularProgressIndicator());
+          }),
+    );
   }
 
   AppBar buildAppBar() {
@@ -83,6 +97,7 @@ class _RankingScreenState extends State<RankingScreen> {
                 onChanged: (String? newValue) {
                   setState(() {
                     dropdownValue = newValue!;
+                    eventRankList = _fetchEventRankListData(dropdownValue);
                   });
                 },
                 items: rankingSortDropdownItemList.map((String value) {
@@ -102,5 +117,18 @@ class _RankingScreenState extends State<RankingScreen> {
         )
       ],
     );
+  }
+
+  Future<List<EventRank>> _fetchEventRankListData(String sort) async {
+    Map<String, String> sortStringMap = {
+      '참가자 순위': 'participate',
+      '객단가 순위': 'guestprice',
+      '좋아요 순위': 'react'
+    };
+    var dio = await authDio(context);
+    final getEventRankList = await dio
+        .get('$baseUrl/api/v1/rank?sort=${sortStringMap[sort]}&limit=30');
+    final List<EventRank> fetchEventRankListData = getEventRankList.data;
+    return fetchEventRankListData;
   }
 }

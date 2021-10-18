@@ -15,4 +15,15 @@ class EventRank {
       required this.guestPrice,
       required this.joinCount,
       required this.likeCount});
+
+  factory EventRank.fromJson(Map<String, dynamic> json) {
+    return EventRank(
+        storeName: json['storeName'],
+        storeLogo: json['storeLogoImagePath'],
+        eventTitle: json['eventTitle'],
+        eventImage: json['eventImagePath'],
+        guestPrice: json['guestPrice'],
+        joinCount: json['participateCount'],
+        likeCount: json['reactCount']);
+  }
 }
