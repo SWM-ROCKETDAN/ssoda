@@ -1,5 +1,5 @@
+import pytest
 from .test_setup import TestSetUp
-
 
 class JoinPostViewTest(TestSetUp):
     def test_join_post_put_view(self):
