@@ -220,23 +220,21 @@ def _get_event_report_dict(event: dict, join_posts: dict) -> dict:
     return event_report_dict
 
 
-class EventReportCalculator:
+class ReportEventCalculator:
     def __init__(self, event):
         self.event = event
 
+    def get_report_event(self):
+        try:
+            report_event_dict = _get_event_report_dict(self.event, self.event['join_posts'])
+        except Exception as e:
+            raise exceptions.EventReportCalculateFailed()
+        return report_event_dict
+
     def get_event_report(self):
         try:
-            # pprint.pprint(self.event)
-            event_report_dict = _get_event_report_dict(self.event, self.event['join_posts'])
+            event_report_dict = _get_total_report_dict(self.event['join_posts'])
+            event_report_dict['event'] = self.event['id']
         except Exception as e:
             raise exceptions.EventReportCalculateFailed()
         return event_report_dict
-
-    def get_event_report_obj(self):
-        try:
-            total_report_dict = _get_total_report_dict(self.event['join_posts'])
-            total_report_dict['event'] = self.event['id']
-            pprint.pprint(total_report_dict)
-        except Exception as e:
-            raise exceptions.EventReportCalculateFailed()
-        return total_report_dict

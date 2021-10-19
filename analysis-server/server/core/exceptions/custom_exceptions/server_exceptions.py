@@ -63,3 +63,12 @@ class StoreReportCalculateFailed(CustomException):
 
     def __init__(self, data=None):
         super().__init__(data)
+
+
+class EventRankCalculateFailed(CustomException):
+    default_detail = 'Event rank calculate failed'
+    status_code = 500
+    default_code = 'SERVER_ERROR_008'
+
+    def __init__(self, data=None):
+        super().__init__(data)

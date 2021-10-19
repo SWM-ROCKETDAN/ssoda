@@ -63,3 +63,12 @@ class UserRecentlyUpdateAndOK(CustomException):
 
     def __init__(self, data=None):
         super().__init__(data)
+
+
+class EventRankCalculateOK(CustomException):
+    default_detail = "Event rank calculate ok"
+    status_code = 200
+    default_code = "OK_008"
+
+    def __init__(self, data=None):
+        super().__init__(data)
