@@ -14,13 +14,13 @@ from core.models import JoinPost
 class EventReportUpdateSerializer(serializers.ModelSerializer):
     class Meta:
         model = EventReport
-        fields = '__all__'
+        fields = "__all__"
 
 
 class RewardSerializer(serializers.ModelSerializer):
     class Meta:
         model = Reward
-        fields = ['level', 'count', 'price', 'used_count']
+        fields = ["level", "count", "price", "used_count"]
 
 
 class EventSerializer(serializers.ModelSerializer):
@@ -28,52 +28,19 @@ class EventSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Event
-        fields = '__all__'
-
-
-class ThisJoinSerializer(serializers.ModelSerializer):
-    reward = RewardSerializer()
-
-    class Meta:
-        model = JoinPost
-        fields = [
-            'reward',
-            'event',
-            'sns_id',
-            'type',
-            'status',
-            'like_count',
-            'comment_count',
-            'hashtags',
-            'upload_date',
-            'private_date',
-            'delete_date',
-        ]
-
-    def to_representation(self, instance):
-        representation = super().to_representation(instance)
-        try:
-            join_user = JoinUser.objects.get(sns_id=representation['sns_id'], type=representation['type'])
-        except JoinUser.DoesNotExist:
-            join_user = {
-                'follow_count': 0,
-            }
-        join_user_serializer = JoinUserSerializer(join_user)
-        representation['join_user'] = join_user_serializer.data
-
-        return representation
+        fields = "__all__"
 
 
 class JoinPostSerializer(serializers.ModelSerializer):
     class Meta:
         model = JoinPost
-        fields = '__all__'
+        fields = "__all__"
 
 
 class JoinUserSerializer(serializers.ModelSerializer):
     class Meta:
         model = JoinUser
-        fields = ['follow_count']
+        fields = ["follow_count", ]
 
 
 class JoinPostAndUserSerializer(serializers.ModelSerializer):
@@ -81,17 +48,18 @@ class JoinPostAndUserSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = JoinPost
-        fields = '__all__'
+        fields = "__all__"
 
     def to_representation(self, instance):
         representation = super().to_representation(instance)
         try:
-            join_user = JoinUser.objects.get(sns_id=representation['sns_id'], type=representation['type'])
-        except JoinUser.DoesNotExist:
-            representation['join_user'] = {}
-        else:
+            join_user = JoinUser.objects.get(sns_id=representation["sns_id"], type=representation["type"])
             join_user_serializer = JoinUserSerializer(join_user)
-            representation['join_user'] = join_user_serializer.data
+            _join_user = join_user_serializer.data
+        except JoinUser.DoesNotExist:
+            _join_user = {}
+
+        representation["join_user"] = _join_user
 
         return representation
 
@@ -101,35 +69,38 @@ class ReportEventSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Event
-        fields = '__all__'
+        fields = "__all__"
 
     def to_representation(self, instance):
         representation = super().to_representation(instance)
         try:
-            join_posts = JoinPost.objects.filter(event_id=representation['id'])
-        except JoinPost.DoesNotExist:
-            representation['join_posts'] = {}
-        else:
+            join_posts = JoinPost.objects.filter(event_id=representation["id"])
             join_post_and_user_serializer = JoinPostAndUserSerializer(data=join_posts, many=True)
             join_post_and_user_serializer.is_valid()
-            representation['join_posts'] = join_post_and_user_serializer.data
+            _join_posts = join_post_and_user_serializer.data
+        except JoinPost.DoesNotExist:
+            _join_posts = {}
+
+        representation["join_posts"] = _join_posts
+
         return representation
 
 
 class ReportStoreSerializer(serializers.ModelSerializer):
     class Meta:
         model = Store
-        fields = '__all__'
+        fields = "__all__"
 
     def to_representation(self, instance):
         representation = super().to_representation(instance)
         try:
-            events = Event.objects.filter(store_id=representation['id'])
+            events = Event.objects.filter(store_id=representation["id"])
+            report_event_serializer = ReportEventSerializer(data=events, many=True)
+            report_event_serializer.is_valid()
+            _events = report_event_serializer.data
         except Event.DoesNotExist:
-            representation['events'] = []
-        else:
-            event_report_serializer = ReportEventSerializer(data=events, many=True)
-            event_report_serializer.is_valid()
-            representation['events'] = event_report_serializer.data
+            _events = []
+
+        representation["events"] = _events
 
         return representation

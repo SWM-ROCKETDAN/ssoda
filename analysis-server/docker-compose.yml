@@ -2,7 +2,7 @@ version: '3'
 
 services:
   server: &python
-    image: moyoung/ssoda-analysis-server:v1.2
+    image: moyoung/ssoda-analysis-server:v1.3
     container_name: server
     platform: linux/amd64
     build:
@@ -15,7 +15,7 @@ services:
     expose:
       - "8000"
   celery_worker:
-    image: moyoung/ssoda-analysis-server:v1.2
+    image: moyoung/ssoda-analysis-server:v1.3
     container_name: server-celery_config
     platform: linux/amd64
     <<: *python

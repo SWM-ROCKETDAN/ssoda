@@ -1,8 +1,4 @@
-import pprint
-
 from django.shortcuts import get_object_or_404
-from django.shortcuts import get_list_or_404
-from django.http.response import Http404
 from rest_framework.views import APIView
 from core.models import Event
 from core.models import Store
@@ -15,7 +11,7 @@ from core.modules.report.store.store_report_calculator import StoreReportCalcula
 from core.exceptions import exceptions
 
 
-# Reward GET 요청
+# Report Event GET 요청
 class ReportEvent(APIView):
     def get(self, request, pk):
         event = get_object_or_404(Event, pk=pk)
@@ -25,7 +21,7 @@ class ReportEvent(APIView):
 
         _event_report = report_event_calculator.get_event_report()
         _event_report["event"] = report_event_serializer.data["id"]
-        _event_report["status"] = report_event_serializer.data["status"]
+        _event_report["event_status"] = report_event_serializer.data["status"]
         try:
             event_report = EventReport.objects.get(event_id=pk)
             event_report_update_serializer = EventReportUpdateSerializer(event_report, _event_report, partial=True)
@@ -34,9 +30,10 @@ class ReportEvent(APIView):
         if event_report_update_serializer.is_valid():
             event_report_update_serializer.save()
 
-        raise exceptions.EventReportCalculateOK({'event_report': report_event})
+        raise exceptions.EventReportCalculateOK({"event_report": report_event})
 
 
+# Report Store GET 요청
 class ReportStore(APIView):
     def get(self, request, pk):
         store = get_object_or_404(Store, pk=pk)
@@ -44,4 +41,4 @@ class ReportStore(APIView):
         store_report_calculator = StoreReportCalculator(store_report_serializer.data)
         store_report = store_report_calculator.get_store_report()
 
-        raise exceptions.StoreReportCalculateOK({'store_report': store_report})
+        raise exceptions.StoreReportCalculateOK({"store_report": store_report})

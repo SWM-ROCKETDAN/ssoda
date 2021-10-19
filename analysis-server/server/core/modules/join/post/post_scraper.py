@@ -17,7 +17,7 @@ from .check_post import get_post_type_from_url
 scrap_handlers = {
     Type.INSTAGRAM: post_scraper_instagram.scrap_post,
     Type.FACEBOOK: post_scraper_facebook.scrap_post,
-    Type.NAVERBLOG: post_scraper_naver.scrap_post_naver_pc,
+    Type.NAVERBLOG: post_scraper_naver.scrap_post,
 }
 
 

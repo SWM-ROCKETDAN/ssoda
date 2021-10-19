@@ -18,7 +18,7 @@ class EventRankParticipate(APIView):
         event_report_serializer = EventReportSerializer(event_reports, many=True)
         event_report_calculator = EventRankCalculator(event_report_serializer.data)
         event_ranks = event_report_calculator.get_event_ranks()
-        
+
         raise exceptions.EventReportCalculateOK({'event_ranks': event_ranks})
 
 

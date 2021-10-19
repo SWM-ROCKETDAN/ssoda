@@ -1,5 +1,4 @@
 from django.shortcuts import get_object_or_404
-from django.shortcuts import get_list_or_404
 from rest_framework.views import APIView
 from core.models import JoinPost
 from core.models import JoinUser
@@ -15,7 +14,6 @@ from core.modules.join.reward import RewardFollowCalculator
 from core.modules.join.reward import RewardRandomCalculator
 from core.exceptions import exceptions
 from join.tasks import task_scrap_post
-from core.modules.join.post.post_scraper_naver import scrap_post_naver_pc
 
 
 # JoinPost PUT 요청
@@ -30,6 +28,7 @@ class JoinPostsView(APIView):
             join_post_update_serializer.save()
             task_scrap_post.apply_async((pk,), countdown=3600 * 24)
             raise exceptions.PostUpdateOk()
+
         raise exceptions.PostUpdateFailed()
 
 
@@ -44,6 +43,7 @@ class JoinUsersView(APIView):
         if join_user_update_serializer.is_valid():
             join_user_update_serializer.save()
             raise exceptions.UserUpdateOk()
+
         raise exceptions.UserUpdateFailed()
 
 
@@ -58,6 +58,7 @@ class JoinRewardFollowView(APIView):
         join_post_update_serializer = JoinPostUpdateSerializer(join_post, {'reward': reward_id}, partial=True)
         if join_post_update_serializer.is_valid():
             join_post_update_serializer.save()
+
         raise exceptions.RewardCalculateOK({'reward_id': reward_id})
 
 
@@ -70,4 +71,5 @@ class JoinRewardRandomView(APIView):
         join_post_update_serializer = JoinPostUpdateSerializer(join_post, {'reward': reward_id}, partial=True)
         if join_post_update_serializer.is_valid():
             join_post_update_serializer.save()
+
         raise exceptions.RewardCalculateOK({'reward_id': reward_id})
