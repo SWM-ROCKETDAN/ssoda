@@ -1,7 +1,10 @@
 import 'package:animations/animations.dart';
 import 'package:flutter/material.dart';
 import 'package:hashchecker/constants.dart';
+import 'package:hashchecker/models/selected_store.dart';
 import 'package:hashchecker/screens/create_event/create_event_step/create_event_step_screen.dart';
+import 'package:hashchecker/screens/create_store/create_store_screen.dart';
+import 'package:provider/provider.dart';
 import 'fab-button.view.dart';
 import 'model.dart';
 import 'pandabar.dart';
@@ -116,7 +119,10 @@ class _PandaBarState extends State<PandaBar> {
         OpenContainer<bool>(
           transitionType: ContainerTransitionType.fade,
           openBuilder: (BuildContext context, VoidCallback _) {
-            return const CreateEventStepScreen();
+            if (context.read<SelectedStore>().id != null)
+              return const CreateEventStepScreen();
+            else
+              return const CreateStoreScreen();
           },
           tappable: false,
           closedElevation: 0,

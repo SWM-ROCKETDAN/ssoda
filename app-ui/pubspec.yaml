@@ -74,5 +74,6 @@ flutter:
     - assets/images/create_store/
     - assets/images/icon/
     - assets/images/ranking/
+    - assets/images/sample/
           
   uses-material-design: true
