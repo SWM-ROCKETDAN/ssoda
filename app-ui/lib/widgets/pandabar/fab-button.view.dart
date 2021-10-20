@@ -30,7 +30,6 @@ class _PandaBarFabButtonState extends State<PandaBarFabButton> {
         [
           kThemeColor,
           Color(0xFF5dc3d1),
-          Color(0xFFa2d6c0),
         ];
 
     return Padding(

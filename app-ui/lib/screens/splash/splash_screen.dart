@@ -16,18 +16,12 @@ class SplashScreen extends StatefulWidget {
 class _SplashScreenState extends State<SplashScreen> {
   @override
   Widget build(BuildContext context) {
-    Size size = MediaQuery.of(context).size;
-
     return Scaffold(
       backgroundColor: kScaffoldBackgroundColor,
       body: Container(
           padding: const EdgeInsets.all(10),
           color: kScaffoldBackgroundColor,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [Expanded(child: Logo()), Copyright()],
-          )),
+          child: Logo()),
     );
   }
 }
