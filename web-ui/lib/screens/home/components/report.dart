@@ -52,7 +52,7 @@ class Report extends StatelessWidget {
                               text: '쏘다',
                               style: TextStyle(
                                   color: kThemeColor,
-                                  fontWeight: FontWeight.bold)),
+                                  fontWeight: FontWeight.w900)),
                           TextSpan(text: '에서 '),
                           TextSpan(text: '바로 확인하세요!'),
                         ]),
