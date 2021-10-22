@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
@@ -28,25 +29,28 @@ class _SignInScreenState extends State<SignInScreen> {
     Size size = MediaQuery.of(context).size;
 
     return Scaffold(
+      backgroundColor: kThemeColor,
       body: Container(
           padding: const EdgeInsets.fromLTRB(20, 0, 20, 16),
           child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Expanded(
-                  child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Image.asset('assets/images/sign_in/hello.png'),
-                        Text('시작하기',
-                            style: TextStyle(
-                                fontSize: 12.0, color: kLiteFontColor)),
-                        SizedBox(height: kDefaultPadding / 2),
-                        Text('안녕하세요, 사장님',
-                            style: TextStyle(
-                                fontSize: 26.0, fontWeight: FontWeight.bold))
-                      ]),
+                  child: Container(
+                    width: size.width,
+                    child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          AutoSizeText('안녕하세요,\n사장님',
+                              style: TextStyle(
+                                  fontSize: 36,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.white),
+                              maxLines: 2)
+                        ]),
+                  ),
                 ),
                 Container(
                   child: Column(
@@ -63,7 +67,7 @@ class _SignInScreenState extends State<SignInScreen> {
                       SizedBox(height: kDefaultPadding / 3 * 2),
                       Text('로그인 할 플랫폼을 선택해주세요!',
                           style:
-                              TextStyle(fontSize: 12.0, color: kLiteFontColor)),
+                              TextStyle(fontSize: 12.0, color: Colors.white)),
                     ],
                   ),
                   decoration:

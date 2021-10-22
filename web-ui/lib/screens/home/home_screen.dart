@@ -46,7 +46,7 @@ class _HomeScreenState extends State<HomeScreen> {
           },
           child: Container(
             margin: const EdgeInsets.only(left: 15),
-            width: size.width * 2 / 7,
+            width: size.width * 2.5 / 7,
             child: Image.asset('assets/images/appbar_logo.png'),
           ),
         ),

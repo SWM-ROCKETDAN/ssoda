@@ -18,6 +18,7 @@ class _LogoState extends State<Logo> {
 
   @override
   Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
     Future.delayed(Duration.zero, () {
       setState(() {
         _opacity = 1.0;
@@ -26,12 +27,12 @@ class _LogoState extends State<Logo> {
     return Center(
         child: AnimatedOpacity(
       opacity: _opacity,
-      duration: const Duration(milliseconds: 1250),
+      duration: const Duration(milliseconds: 500),
       curve: Curves.fastOutSlowIn,
       child: Image.asset(
         'assets/images/splash/logo.png',
-        width: 250,
-        height: 250,
+        width: size.width * 0.4,
+        height: size.width * 0.4,
       ),
     ));
   }

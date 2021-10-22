@@ -257,35 +257,28 @@ class _CreateStoreIntroScreenState extends State<CreateStoreIntroScreen> {
                 Material(
                   color: Colors.white.withOpacity(0),
                   child: InkWell(
-                    onTap: () {
-                      Navigator.push(
-                          context, slidePageRouting(CreateStoreScreen()));
-                    },
-                    overlayColor:
-                        MaterialStateProperty.all<Color>(kShadowColor),
-                    child: Container(
-                        color: Colors.black26,
-                        width: size.width,
-                        height: size.height,
-                        child: Center(
-                            child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            Icon(Icons.add, color: Colors.white, size: 96),
-                            SizedBox(height: kDefaultPadding),
-                            Text(
-                              '쏘다에 우리가게를\n등록해보세요!',
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 24,
-                                  fontWeight: FontWeight.bold),
-                            ),
-                          ],
-                        ))),
-                  ),
-                )
+                      onTap: () {
+                        Navigator.push(
+                            context, slidePageRouting(CreateStoreScreen()));
+                      },
+                      overlayColor:
+                          MaterialStateProperty.all<Color>(kShadowColor),
+                      child: Container(
+                          color: kShadowColor.withOpacity(0.4),
+                          width: size.width,
+                          height: size.height,
+                          child: Center(
+                            child: Stack(children: [
+                              Positioned(
+                                  left: 1.0,
+                                  top: 1.0,
+                                  child: Icon(Icons.add,
+                                      color: kShadowColor.withOpacity(0.8),
+                                      size: 72)),
+                              Icon(Icons.add, color: Colors.white, size: 72),
+                            ]),
+                          ))),
+                ),
               ])),
               floating: false,
               elevation: 0,
@@ -411,6 +404,7 @@ class _CreateStoreIntroScreenState extends State<CreateStoreIntroScreen> {
   void _showStoreCreateDialog() async {
     await showDialog(
         context: context,
+        barrierDismissible: false,
         builder: (context) => AlertDialog(
             title: Center(
               child: Text('우리가게 등록',
