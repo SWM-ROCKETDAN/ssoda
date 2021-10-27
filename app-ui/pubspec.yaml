@@ -50,6 +50,7 @@ dependencies:
   firebase_messaging: ^10.0.8
   firebase_core: ^1.7.0
   flutter_local_notifications: ^9.0.0
+  flutter_otp_text_field: ^1.0.0
     
 dev_dependencies:
   flutter_test:
@@ -60,9 +61,6 @@ flutter_icons:
     ios: true
     image_path: "assets/images/icon/icon.png"
   
-
-  
-
 flutter:
   assets:
     - assets/images/
@@ -75,5 +73,6 @@ flutter:
     - assets/images/icon/
     - assets/images/ranking/
     - assets/images/sample/
+    - assets/images/easter_egg/
           
   uses-material-design: true
