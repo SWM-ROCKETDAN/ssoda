@@ -219,8 +219,6 @@ class _EventListScreenState extends State<EventListScreen> {
 
     final fetchedEventList = getEventListResponse.data;
 
-    print(fetchedEventList);
-
     List<EventListItem> eventList = List.generate(fetchedEventList.length,
         (index) => EventListItem.fromJson(fetchedEventList[index]));
 

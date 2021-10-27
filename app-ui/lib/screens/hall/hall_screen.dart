@@ -5,6 +5,7 @@ import 'package:hashchecker/constants.dart';
 import 'package:hashchecker/models/selected_store.dart';
 import 'package:hashchecker/models/store.dart';
 import 'package:hashchecker/models/store_list_item.dart';
+import 'package:hashchecker/screens/easter_egg/easter_egg_screen.dart';
 import 'package:hashchecker/screens/event_list/event_list_screen.dart';
 import 'package:hashchecker/screens/hall/components/store_select.dart';
 import 'package:hashchecker/screens/info/info_screen.dart';
@@ -51,10 +52,15 @@ class _HallScreenState extends State<HallScreen> {
         backgroundColor: kScaffoldBackgroundColor,
         shadowColor: kShadowColor,
         elevation: 1,
-        title: Container(
-          padding: const EdgeInsets.only(left: 1),
-          child: Image.asset('assets/images/appbar_logo.png'),
-          height: kToolbarHeight * 0.75,
+        title: GestureDetector(
+          onLongPress: () {
+            Navigator.push(context, slidePageRouting(EasterEggScreen()));
+          },
+          child: Container(
+            padding: const EdgeInsets.only(left: 1),
+            child: Image.asset('assets/images/appbar_logo.png'),
+            height: kToolbarHeight * 0.75,
+          ),
         ),
         actions: [
           FutureBuilder<List<StoreListItem>>(

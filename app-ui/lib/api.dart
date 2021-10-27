@@ -9,7 +9,7 @@ import 'package:hashchecker/constants.dart';
 import 'package:hashchecker/screens/sign_in/sign_in_screen.dart';
 import 'package:cookie_jar/cookie_jar.dart';
 
-const baseUrl = 'http://ec2-3-37-85-236.ap-northeast-2.compute.amazonaws.com';
+const baseUrl = 'https://api.ssoda.io';
 
 const eventJoinUrl = 'https://ssoda.io';
 
@@ -104,7 +104,6 @@ Future<Dio> authDio(BuildContext context) async {
       refreshDio.interceptors
           .add(InterceptorsWrapper(onError: (error, handler) async {
         if (error.response?.statusCode == 401) {
-          print('refresh token expired');
           await storage.deleteAll();
           Navigator.of(context).pushAndRemoveUntil(
               slidePageRouting(SignInScreen()),
