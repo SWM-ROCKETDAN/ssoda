@@ -21,8 +21,6 @@ void main() {
       statusBarColor: Colors.transparent,
       statusBarIconBrightness: Brightness.dark,
       statusBarBrightness: Brightness.dark));
-  localNotificationSetting();
-  FirebaseMessaging.onMessage.listen(firebaseMessagingForegroundHandler);
   runApp(Provider(create: (_) => SelectedStore(), child: MyApp()));
 }
 
@@ -96,8 +94,10 @@ class Init {
 
   Future<Widget?> initialize(BuildContext context) async {
     await Future.delayed(Duration(milliseconds: 1500));
-    await Firebase.initializeApp();
     SharedPreferences prefs = await SharedPreferences.getInstance();
+
+    // FCM setting
+    fcmSetting();
 
     // on first launching
     final checkFirst = prefs.getBool('checkFirst');

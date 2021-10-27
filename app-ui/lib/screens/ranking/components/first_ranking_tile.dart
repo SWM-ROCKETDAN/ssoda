@@ -15,122 +15,115 @@ class FirstRankingTile extends StatelessWidget {
     Size size = MediaQuery.of(context).size;
     return Container(
         margin: const EdgeInsets.fromLTRB(0, 0, 0, 15),
-        child: Stack(children: [
-          Container(
-            margin: const EdgeInsets.all(20),
-            decoration: BoxDecoration(
-                boxShadow: [
-                  BoxShadow(
-                    color: kShadowColor,
-                    spreadRadius: 1,
-                    blurRadius: 6,
-                    offset: Offset(3, 3), // changes position of shadow
+        child: Container(
+          margin: const EdgeInsets.all(20),
+          decoration: BoxDecoration(
+              boxShadow: [
+                BoxShadow(
+                  color: kShadowColor,
+                  spreadRadius: 1,
+                  blurRadius: 6,
+                  offset: Offset(3, 3), // changes position of shadow
+                ),
+              ],
+              color: kScaffoldBackgroundColor,
+              borderRadius: BorderRadius.circular(12)),
+          child: Material(
+            color: Colors.white.withOpacity(0.0),
+            child: InkWell(
+              onTap: () {
+                launch('$eventJoinUrl/${event.storeId}/${event.eventId}');
+              },
+              highlightColor: kShadowColor,
+              overlayColor: MaterialStateProperty.all<Color>(kShadowColor),
+              borderRadius: BorderRadius.circular(12),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.all(12),
+                    child: Column(
+                      children: [
+                        Container(
+                            height: size.height * 0.075,
+                            width: size.height * 0.075,
+                            decoration: BoxDecoration(
+                                color: kShadowColor,
+                                shape: BoxShape.circle,
+                                image: DecorationImage(
+                                    image: NetworkImage(
+                                        '$s3Url${event.storeLogo}'),
+                                    fit: BoxFit.cover))),
+                        SizedBox(height: kDefaultPadding / 2),
+                        Text(event.storeName,
+                            style:
+                                TextStyle(color: kLiteFontColor, fontSize: 12)),
+                        SizedBox(height: kDefaultPadding / 7.5),
+                        Text(event.eventTitle,
+                            style: TextStyle(
+                                color: kDefaultFontColor,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 16)),
+                        SizedBox(height: kDefaultPadding / 2),
+                        Container(
+                          height: 15,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Row(children: [
+                                Icon(
+                                  Icons.attach_money_rounded,
+                                  size: 14,
+                                  color: Colors.blueGrey,
+                                ),
+                                Text(
+                                  '${numberDisplay(event.guestPrice)}원',
+                                  style: TextStyle(
+                                      color: kLiteFontColor, fontSize: 12),
+                                ),
+                              ]),
+                              VerticalDivider(
+                                width: kDefaultPadding,
+                                color: kShadowColor.withOpacity(0.6),
+                              ),
+                              Row(children: [
+                                Icon(
+                                  Icons.group_rounded,
+                                  size: 14,
+                                  color: Colors.blueGrey,
+                                ),
+                                SizedBox(width: kDefaultPadding / 3),
+                                Text('${numberDisplay(event.joinCount)}명',
+                                    style: TextStyle(
+                                        color: kLiteFontColor, fontSize: 12)),
+                              ]),
+                              VerticalDivider(
+                                width: kDefaultPadding,
+                                color: kShadowColor.withOpacity(0.6),
+                              ),
+                              Row(children: [
+                                Icon(
+                                  Icons.favorite_rounded,
+                                  size: 14,
+                                  color: Colors.blueGrey,
+                                ),
+                                SizedBox(width: kDefaultPadding / 3),
+                                Text('${numberDisplay(event.likeCount)}개',
+                                    style: TextStyle(
+                                        color: kLiteFontColor, fontSize: 12)),
+                              ]),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                 ],
-                color: kScaffoldBackgroundColor,
-                borderRadius: BorderRadius.circular(12)),
-            child: Material(
-              color: Colors.white.withOpacity(0.0),
-              child: InkWell(
-                onTap: () {
-                  launch('$eventJoinUrl/${event.storeId}/${event.eventId}');
-                },
-                highlightColor: kShadowColor,
-                overlayColor: MaterialStateProperty.all<Color>(kShadowColor),
-                borderRadius: BorderRadius.circular(12),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.all(12),
-                      child: Column(
-                        children: [
-                          Container(
-                              height: size.height * 0.075,
-                              width: size.height * 0.075,
-                              decoration: BoxDecoration(
-                                  color: kShadowColor,
-                                  shape: BoxShape.circle,
-                                  image: DecorationImage(
-                                      image: NetworkImage(
-                                          '$s3Url${event.storeLogo}'),
-                                      fit: BoxFit.cover))),
-                          SizedBox(height: kDefaultPadding / 2),
-                          Text(event.storeName,
-                              style: TextStyle(
-                                  color: kLiteFontColor, fontSize: 12)),
-                          SizedBox(height: kDefaultPadding / 7.5),
-                          Text(event.eventTitle,
-                              style: TextStyle(
-                                  color: kDefaultFontColor,
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 16)),
-                          SizedBox(height: kDefaultPadding / 2),
-                          Container(
-                            height: 15,
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                Row(children: [
-                                  Icon(
-                                    Icons.attach_money_rounded,
-                                    size: 14,
-                                    color: Colors.blueGrey,
-                                  ),
-                                  Text(
-                                    '${numberDisplay(event.guestPrice)}원',
-                                    style: TextStyle(
-                                        color: kLiteFontColor, fontSize: 12),
-                                  ),
-                                ]),
-                                VerticalDivider(
-                                  width: kDefaultPadding,
-                                  color: kShadowColor.withOpacity(0.6),
-                                ),
-                                Row(children: [
-                                  Icon(
-                                    Icons.group_rounded,
-                                    size: 14,
-                                    color: Colors.blueGrey,
-                                  ),
-                                  SizedBox(width: kDefaultPadding / 3),
-                                  Text('${numberDisplay(event.joinCount)}명',
-                                      style: TextStyle(
-                                          color: kLiteFontColor, fontSize: 12)),
-                                ]),
-                                VerticalDivider(
-                                  width: kDefaultPadding,
-                                  color: kShadowColor.withOpacity(0.6),
-                                ),
-                                Row(children: [
-                                  Icon(
-                                    Icons.favorite_rounded,
-                                    size: 14,
-                                    color: Colors.blueGrey,
-                                  ),
-                                  SizedBox(width: kDefaultPadding / 3),
-                                  Text('${numberDisplay(event.likeCount)}개',
-                                      style: TextStyle(
-                                          color: kLiteFontColor, fontSize: 12)),
-                                ]),
-                              ],
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
               ),
             ),
           ),
-          Positioned(
-              left: 0,
-              top: 5,
-              child: Image.asset('assets/images/ranking/1.png',
-                  width: size.width * 0.15, height: size.width * 0.15)),
-        ]),
+        ),
         decoration: BoxDecoration(
           image: DecorationImage(
               image: NetworkImage('$s3Url${event.eventImage}'),
