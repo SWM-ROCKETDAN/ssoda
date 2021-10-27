@@ -10,6 +10,7 @@ import 'event_require.dart';
 import 'event_reward.dart';
 import 'event_template.dart';
 import 'event_title.dart';
+import 'event_type.dart';
 import 'step_count.dart';
 import 'step_progressbar.dart';
 
@@ -69,16 +70,18 @@ class Body extends StatelessWidget {
   Widget _getStepComponents(int step) {
     switch (step) {
       case 0:
-        return EventTitle(event: event);
+        return EventType();
       case 1:
-        return EventReward(event: event);
+        return EventTitle(event: event);
       case 2:
-        return EventHashtags(event: event);
+        return EventReward(event: event);
       case 3:
-        return EventPeriod(event: event);
+        return EventHashtags(event: event);
       case 4:
-        return EventImage(event: event);
+        return EventPeriod(event: event);
       case 5:
+        return EventImage(event: event);
+      case 6:
         return EventTemplate(event: event);
       default:
         return Container(child: Text('유효하지 않은 단계입니다.'));

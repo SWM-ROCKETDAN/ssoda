@@ -53,31 +53,33 @@ class NextStepButton extends StatelessWidget {
   bool _checkStepValidation(BuildContext context) {
     switch (step) {
       case 0:
+        return true;
+      case 1:
         if (event.title == "") {
           _showValidationErrorFlashBar(context, '이벤트 제목을 입력해주세요!');
           return false;
         }
         break;
-      case 1:
+      case 2:
         if (event.rewardList.length == 1) {
           _showValidationErrorFlashBar(context, '이벤트 상품을 최소 1개 이상 등록해주세요!');
           return false;
         }
         break;
-      case 2:
+      case 3:
         if (event.hashtagList.isEmpty) {
           _showValidationErrorFlashBar(context, '필수 해시태그를 최소 1개 이상 등록해주세요!');
           return false;
         }
         break;
-      case 3:
+      case 4:
         if (event.period.finishDate != null &&
             event.period.startDate.isAfter(event.period.finishDate!)) {
           _showValidationErrorFlashBar(context, '종료 날짜가 시작 날짜보다 앞서있어요!');
           return false;
         }
         break;
-      case 4:
+      case 5:
         if (event.images.length == 1 && event.images.last == null) {
           _showValidationErrorFlashBar(context, '대표 이미지를 최소 1개 이상 등록해주세요!');
           return false;
