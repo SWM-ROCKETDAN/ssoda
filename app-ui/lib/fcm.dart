@@ -3,30 +3,54 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:hashchecker/api.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
-final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
-    FlutterLocalNotificationsPlugin();
+void fcmSetting() async {
+  await Firebase.initializeApp();
 
-void localNotificationSetting() async {
-  final initializationSettingsAndroid =
-      AndroidInitializationSettings('@mipmap/ic_launcher');
-  final initSetttings =
-      InitializationSettings(android: initializationSettingsAndroid);
+  await FirebaseMessaging.instance.requestPermission(
+      alert: true,
+      announcement: true,
+      badge: true,
+      carPlay: true,
+      criticalAlert: true,
+      provisional: true,
+      sound: true);
 
-  flutterLocalNotificationsPlugin.initialize(initSetttings);
-}
+  const AndroidNotificationChannel channel = AndroidNotificationChannel(
+    'high_importance_channel',
+    'High Importance Notifications',
+    description: 'This channel is used for important notifications.',
+    importance: Importance.max,
+  );
 
-void firebaseMessagingForegroundHandler(RemoteMessage message) {
-  RemoteNotification? notification = message.notification;
-  AndroidNotification? android = message.notification?.android;
+  final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
+      FlutterLocalNotificationsPlugin();
+  await flutterLocalNotificationsPlugin
+      .resolvePlatformSpecificImplementation<
+          AndroidFlutterLocalNotificationsPlugin>()
+      ?.createNotificationChannel(channel);
 
-  if (notification != null && android != null) {
-    final androidNotiDetails = AndroidNotificationDetails(
-        'dexterous.com.flutter.local_notifications', notification.title!,
-        importance: Importance.max, priority: Priority.max);
+  await flutterLocalNotificationsPlugin.initialize(
+      InitializationSettings(
+          android: AndroidInitializationSettings('@mipmap/ic_launcher'),
+          iOS: IOSInitializationSettings()),
+      onSelectNotification: (String? payload) async {});
 
-    final details = NotificationDetails(android: androidNotiDetails);
-
-    flutterLocalNotificationsPlugin.show(
-        notification.hashCode, notification.title, notification.body, details);
-  }
+  FirebaseMessaging.onMessage.listen((RemoteMessage message) {
+    RemoteNotification? notification = message.notification;
+    AndroidNotification? android = message.notification?.android;
+    if (notification != null && android != null) {
+      flutterLocalNotificationsPlugin.show(
+          notification.hashCode,
+          notification.title,
+          notification.body,
+          NotificationDetails(
+            android: AndroidNotificationDetails(
+              channel.id,
+              channel.name,
+              channelDescription: channel.description,
+              icon: android.smallIcon,
+            ),
+          ));
+    }
+  });
 }
