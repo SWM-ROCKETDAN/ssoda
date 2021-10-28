@@ -14,12 +14,21 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.conf.urls import url
+from django.conf.urls import url, re_path
+from django.urls import path
+from rest_framework.urlpatterns import format_suffix_patterns
 from django.conf.urls import include
 
+# urlpatterns = [
+#     url(r'^admin/', admin.site.urls),
+#     url(r'^api/v1/join/', include('join.urls'), name='join'),
+#     url(r'^api/v1/report/', include('report.urls'), name='report'),
+#     url(r'^api/v1/rank/', include('rank.urls'), name='rank'),
+# ]
+
 urlpatterns = [
-    url(r'^admin/', admin.site.urls),
-    url(r'^api/v1/join/', include('join.urls'), name='join'),
-    url(r'^api/v1/report/', include('report.urls'), name='report'),
-    url(r'^api/v1/rank/', include('rank.urls'), name='rank'),
+    re_path(r'^admin/', admin.site.urls),
+    re_path(r'^api/v1/join/', include('join.urls'), name='join'),
+    re_path(r'^api/v1/report/', include('report.urls'), name='report'),
+    re_path(r'^api/v1/rank/', include('rank.urls'), name='rank'),
 ]
