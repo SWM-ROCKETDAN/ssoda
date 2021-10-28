@@ -19,7 +19,7 @@ class EventRankParticipate(APIView):
         event_report_calculator = EventRankCalculator(event_report_serializer.data)
         event_ranks = event_report_calculator.get_event_ranks()
 
-        raise exceptions.EventReportCalculateOK({'event_ranks': event_ranks})
+        raise exceptions.EventRankCalculateOK({'event_ranks': event_ranks})
 
 
 class EventRankReact(APIView):
@@ -36,7 +36,7 @@ class EventRankReact(APIView):
         event_report_calculator = EventRankCalculator(event_report_serializer.data)
         event_ranks = event_report_calculator.get_event_ranks()
 
-        raise exceptions.EventReportCalculateOK({'event_ranks': event_ranks})
+        raise exceptions.EventRankCalculateOK({'event_ranks': event_ranks})
 
 
 class EventRankGuestPrice(APIView):
@@ -53,4 +53,4 @@ class EventRankGuestPrice(APIView):
         event_report_calculator = EventRankCalculator(event_report_serializer.data)
         event_ranks = event_report_calculator.get_event_ranks()
 
-        raise exceptions.EventReportCalculateOK({'event_ranks': event_ranks})
+        raise exceptions.EventRankCalculateOK({'event_ranks': event_ranks})

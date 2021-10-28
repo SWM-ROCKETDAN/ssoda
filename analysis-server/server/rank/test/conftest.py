@@ -15,7 +15,7 @@ TEST_NAVER_BLOG_SNS_ID = get_secret("TEST_NAVER_BLOG_SNS_ID")
 
 
 @pytest.fixture()
-def store1_for_report_api():
+def store1_for_rank_api():
     store = Store.objects.create(
         building_code="test",
         city="test city",
@@ -35,14 +35,14 @@ def store1_for_report_api():
 
 
 @pytest.fixture()
-def event1_for_report_api(store1_for_report_api):
+def event1_for_rank_api(store1_for_rank_api):
     event = Event.objects.create(
         etype=0,
         finish_date=datetime(2023, 11, 23),
         start_date=datetime(2021, 9, 23),
         status=0,
         title="테스트 이벤트",
-        store=store1_for_report_api,
+        store=store1_for_rank_api,
         deleted=False,
         reward_policy="RANDOM",
     )
