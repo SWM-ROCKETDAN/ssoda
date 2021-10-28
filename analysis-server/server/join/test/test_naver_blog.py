@@ -12,7 +12,7 @@ TEST_NAVER_BLOG_URL = get_secret("TEST_NAVER_BLOG_URL")
 @pytest.mark.urls(urls="config.urls")
 @pytest.mark.django_db(transaction=True)
 class TestJoinPostNaverBlog:
-    def test_post_update_ok(self, client, origin_event):
+    def test_join_posts_update_ok(self, client, origin_event):
         join_post = JoinPost.objects.create(
             event=origin_event,
             url=TEST_NAVER_BLOG_URL,
@@ -29,7 +29,7 @@ class TestJoinPostNaverBlog:
 
         assert response.json()["message"] == exceptions.PostUpdateOk.default_detail
 
-    def test_post_is_diff_hashtag(self, client, diff_hashtag_event):
+    def test_join_posts_is_diff_hashtag(self, client, diff_hashtag_event):
         join_post = JoinPost.objects.create(
             event=diff_hashtag_event,
             url=TEST_NAVER_BLOG_URL,
@@ -46,7 +46,7 @@ class TestJoinPostNaverBlog:
 
         assert response.json()["message"] == exceptions.PostIsDiffHashtag.default_detail
 
-    def test_post_is_already_calculate_reward_and_ok(self, client, origin_event):
+    def test_join_posts_is_already_calculate_reward_and_ok(self, client, origin_event):
         join_post = JoinPost.objects.create(
             event=origin_event,
             url=TEST_NAVER_BLOG_URL,
@@ -64,7 +64,7 @@ class TestJoinPostNaverBlog:
 
         assert response.json()["message"] == exceptions.PostIsAlreadyCalculatedRewardAndOK.default_detail
 
-    def test_post_is_already_rewarded(self, client, origin_event):
+    def test_join_posts_is_already_rewarded(self, client, origin_event):
         join_post = JoinPost.objects.create(
             event=origin_event,
             url=TEST_NAVER_BLOG_URL,
@@ -83,7 +83,7 @@ class TestJoinPostNaverBlog:
 
         assert response.json()["message"] == exceptions.PostIsAlreadyRewarded.default_detail
 
-    def test_post_upload_is_faster_than_event_start(self, client, slow_event):
+    def test_join_posts_upload_is_faster_than_event_start(self, client, slow_event):
         join_post = JoinPost.objects.create(
             event=slow_event,
             url=TEST_NAVER_BLOG_URL,
@@ -104,10 +104,10 @@ class TestJoinPostNaverBlog:
 @pytest.mark.urls(urls="config.urls")
 @pytest.mark.django_db(transaction=True)
 class TestJoinUserNaverBlog:
-    def test_user_is_already_rewarded(self, client, join_post):
+    def test_join_users_is_already_rewarded(self, client, join_post_naver_blog):
         join_user = JoinUser.objects.create(
-            sns_id=join_post.sns_id,
-            type=join_post.type,
+            sns_id=join_post_naver_blog.sns_id,
+            type=join_post_naver_blog.type,
             status=0,
             create_date=datetime.now(),
         )
@@ -116,10 +116,10 @@ class TestJoinUserNaverBlog:
 
         assert response.json()["message"] == exceptions.UserUpdateOk.default_detail
 
-    def test_user_recently_update_and_ok(self, client, join_post):
+    def test_users_recently_update_and_ok(self, client, join_post_naver_blog):
         join_user = JoinUser.objects.create(
-            sns_id=join_post.sns_id,
-            type=join_post.type,
+            sns_id=join_post_naver_blog.sns_id,
+            type=join_post_naver_blog.type,
             status=0,
             create_date=datetime.now(),
             update_date=datetime.now(),
@@ -132,26 +132,14 @@ class TestJoinUserNaverBlog:
 @pytest.mark.urls(urls="config.urls")
 @pytest.mark.django_db(transaction=True)
 class TestJoinRewardNaverBlog:
-    def test_user_is_already_rewarded(self, client, join_post):
-        join_user = JoinUser.objects.create(
-            sns_id=join_post.sns_id,
-            type=join_post.type,
-            status=0,
-            create_date=datetime.now(),
-        )
-        url = reverse(viewname="join_users", args=[join_user.id, ])
-        response = client.put(url)
+    def test_join_rewards_random_calculate_ok(self, client, join_post_naver_blog):
+        url = reverse(viewname="join_rewards_random", args=[join_post_naver_blog.id, ])
+        response = client.get(url)
 
-        assert response.json()["message"] == exceptions.UserUpdateOk.default_detail
+        assert response.json()["message"] == exceptions.RewardCalculateOK.default_detail
 
-    def test_user_recently_update_and_ok(self, client, join_post):
-        join_user = JoinUser.objects.create(
-            sns_id=join_post.sns_id,
-            type=join_post.type,
-            status=0,
-            create_date=datetime.now(),
-            update_date=datetime.now(),
-        )
-        url = reverse(viewname="join_users", args=[join_user.id, ])
-        response = client.put(url)
-        assert response.json()["message"] == exceptions.UserRecentlyUpdateAndOK.default_detail
+    def test_join_rewards_follow_calculate_ok(self, client, join_post_naver_blog):
+        url = reverse(viewname="join_rewards_follow", args=[join_post_naver_blog.id, ])
+        response = client.get(url)
+
+        assert response.json()["message"] == exceptions.RewardCalculateOK.default_detail

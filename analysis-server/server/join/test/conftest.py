@@ -3,12 +3,14 @@ from core.models import Reward
 from core.models import Hashtag
 from core.models import HashtagHashtags
 from core.models import JoinPost
+from core.models import JoinUser
 from config.settings.base import get_secret
 from datetime import datetime
 import pytest
 
 TEST_NAVER_BLOG_URL = get_secret("TEST_NAVER_BLOG_URL")
 TEST_NAVER_BLOG_SNS_ID = get_secret("TEST_NAVER_BLOG_SNS_ID")
+
 
 @pytest.fixture()
 def origin_event():
@@ -161,17 +163,38 @@ def diff_hashtag_event():
 
 
 @pytest.fixture()
-def join_post(origin_event):
+def join_post_naver_blog(origin_event):
     join_post = JoinPost.objects.create(
         event=origin_event,
-        url=TEST_NAVER_BLOG_URL,
+        reward=None,
         sns_id=TEST_NAVER_BLOG_SNS_ID,
+        url=TEST_NAVER_BLOG_URL,
         type=2,
         status=0,
-        like_count=0,
-        comment_count=0,
+        like_count=2,
+        comment_count=3,
         hashtags=None,
         create_date=datetime.now(),
+        upload_date=datetime.now(),
+        private_date=None,
+        delete_date=None,
+        update_date=None,
+        reward_date=None,
         deleted=False,
     )
     return join_post
+
+
+@pytest.fixture()
+def join_user_naver_blog(join_post_naver_blog):
+    join_user = JoinUser.objects.create(
+        sns_id=join_post_naver_blog.sns_id,
+        url=join_post_naver_blog.url,
+        type=join_post_naver_blog.type,
+        status=0,
+        follow_count=1000,
+        post_count=0,
+        create_date=datetime.now(),
+        update_date=datetime.now(),
+        deleted=False,
+    )
