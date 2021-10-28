@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:hashchecker/api.dart';
 import 'package:hashchecker/constants.dart';
+import 'package:hashchecker/models/event.dart';
 import 'package:hashchecker/models/event_report.dart';
 import 'package:hashchecker/models/event_report_item.dart';
 import 'package:hashchecker/models/event_report_per_period.dart';
@@ -201,6 +202,9 @@ class _StoreReportScreenState extends State<StoreReportScreen> {
 
       final EventReportItem reportItem =
           EventReportItem.fromJson(fetchedEventReportData['event']);
+
+      if (reportItem.status == EventStatus.WAITING) continue;
+
       final EventReportPerPeriod dayReport = EventReportPerPeriod.fromJson(
           fetchedEventReportData['report']['day']);
       final EventReportPerPeriod weekReport = EventReportPerPeriod.fromJson(
