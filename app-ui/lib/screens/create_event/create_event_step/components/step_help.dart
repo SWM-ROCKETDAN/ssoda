@@ -65,28 +65,34 @@ class _HelpDialogState extends State<HelpDialog> {
   Widget build(BuildContext context) {
     return Dialog(
         child: GestureDetector(
-      onTap: () {
-        Navigator.of(context, rootNavigator: true).pop();
-      },
-      child: Container(
-        width: MediaQuery.of(context).size.width * 0.8,
-        child: AnimatedCrossFade(
-            firstCurve: Curves.easeInCirc,
-            firstChild: Image.asset(
-              'assets/images/create_event_step_help/draft.png',
-              width: MediaQuery.of(context).size.width * 0.8,
-              fit: BoxFit.fitWidth,
-            ),
-            secondChild: Image.asset(
-              'assets/images/create_event_step_help/${_stepFileName[widget._step]}.png',
-              width: MediaQuery.of(context).size.width * 0.8,
-              fit: BoxFit.fitWidth,
-            ),
-            crossFadeState: _imageSwitch
-                ? CrossFadeState.showSecond
-                : CrossFadeState.showFirst,
-            duration: const Duration(milliseconds: 500)),
-      ),
-    ));
+          onTap: () {
+            Navigator.of(context, rootNavigator: true).pop();
+          },
+          child: Container(
+            width: MediaQuery.of(context).size.width * 0.8,
+            child: AnimatedCrossFade(
+                firstCurve: Curves.easeInCirc,
+                firstChild: ClipRRect(
+                    child: Image.asset(
+                      'assets/images/create_event_step_help/draft.png',
+                      width: MediaQuery.of(context).size.width * 0.8,
+                      fit: BoxFit.fitWidth,
+                    ),
+                    borderRadius: BorderRadius.circular(16)),
+                secondChild: ClipRRect(
+                    child: Image.asset(
+                      'assets/images/create_event_step_help/${_stepFileName[widget._step]}.png',
+                      width: MediaQuery.of(context).size.width * 0.8,
+                      fit: BoxFit.fitWidth,
+                    ),
+                    borderRadius: BorderRadius.circular(16)),
+                crossFadeState: _imageSwitch
+                    ? CrossFadeState.showSecond
+                    : CrossFadeState.showFirst,
+                duration: const Duration(milliseconds: 500)),
+            decoration: BoxDecoration(borderRadius: BorderRadius.circular(16)),
+          ),
+        ),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)));
   }
 }
