@@ -5,7 +5,6 @@ from core.modules.static.common import Status
 
 # 유저 업데이트 날짜 체크
 def check_user_is_recently_scraped(update_date):
-    return False
     if update_date is None:
         return False
 

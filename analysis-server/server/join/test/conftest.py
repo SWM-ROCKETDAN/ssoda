@@ -3,10 +3,12 @@ from core.models import Reward
 from core.models import Hashtag
 from core.models import HashtagHashtags
 from core.models import JoinPost
-from test import *
+from config.settings.base import get_secret
+from datetime import datetime
+import pytest
 
 TEST_NAVER_BLOG_URL = get_secret("TEST_NAVER_BLOG_URL")
-
+TEST_NAVER_BLOG_SNS_ID = get_secret("TEST_NAVER_BLOG_SNS_ID")
 
 @pytest.fixture()
 def origin_event():
@@ -159,10 +161,11 @@ def diff_hashtag_event():
 
 
 @pytest.fixture()
-def join_post():
+def join_post(origin_event):
     join_post = JoinPost.objects.create(
         event=origin_event,
         url=TEST_NAVER_BLOG_URL,
+        sns_id=TEST_NAVER_BLOG_SNS_ID,
         type=2,
         status=0,
         like_count=0,
