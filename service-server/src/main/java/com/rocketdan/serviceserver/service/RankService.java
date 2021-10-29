@@ -28,9 +28,9 @@ public class RankService {
     }
 
     // analysis-server에 event rank get 요청
-    public CommonResponse getEventRank(String sort) {
+    public CommonResponse getEventRank(String sort, Integer limit) {
         return analysisServerConfig.webClient().get() // GET method
-                .uri("/api/v1/rank/" + sort + "/") // baseUrl 이후 uri
+                .uri("/api/v1/rank/events/" + sort + "/" + limit + "/") // baseUrl 이후 uri
                 .retrieve() // client message 전송
                 .onStatus(HttpStatus::is4xxClientError, clientResponse -> clientResponse.bodyToMono(CommonResponse.class).map(GetRankFailedException::new))
                 .onStatus(HttpStatus::is5xxServerError, clientResponse -> clientResponse.bodyToMono(CommonResponse.class).map(AnalysisServerErrorException::new))
