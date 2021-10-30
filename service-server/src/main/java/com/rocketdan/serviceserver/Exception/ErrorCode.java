@@ -25,7 +25,9 @@ public enum ErrorCode {
     // 리포트
     GET_REPORT_FAILED(406, "REPORT001", "Failed to get report."), // report get 실패
     // Request
-    INVALID_REQUEST_BODY(403, "REQUEST001", "Request body is invalid"); // request 내용이 invalid 한 경우
+    INVALID_REQUEST_BODY(403, "REQUEST001", "Request body is invalid"), // request 내용이 invalid 한 경우
+    // Rank
+    GET_RANK_FAILED(406, "RANK001", "Failed to get report."); // rank get 실패
 
     private final String code;
     private final String message;

@@ -1,11 +1,13 @@
-package com.rocketdan.serviceserver.domain.report.store;
+package com.rocketdan.serviceserver.app.dto.report.event;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Getter
 @NoArgsConstructor
-public class StoreReport {
+public class EventReportTotal {
     // 노출 수
     private Integer exposure_count;
     // 참여 수
@@ -20,6 +22,8 @@ public class StoreReport {
     private Integer like_count;
     // 댓글 수
     private Integer comment_count;
-    // 지출 수
+    // 지출
     private Integer expenditure_count;
+    // 레벨 당 지출
+    private List<Integer> level_expenditure;
 }

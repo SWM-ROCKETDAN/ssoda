@@ -49,9 +49,9 @@ dependencies {
 	// Firebase
 	implementation 'com.google.firebase:firebase-admin:8.1.0'
 
-	compileOnly 'org.projectlombok:lombok:1.18.20'
+	compileOnly 'org.projectlombok:lombok:1.18.22'
 	developmentOnly 'org.springframework.boot:spring-boot-devtools:2.5.5'
-	annotationProcessor 'org.projectlombok:lombok:1.18.20'
+	annotationProcessor 'org.projectlombok:lombok:1.18.22'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test:2.5.5'
 }
 

@@ -13,6 +13,7 @@ import com.rocketdan.serviceserver.Exception.auth.CustomJwtRuntimeException;
 import com.rocketdan.serviceserver.Exception.auth.LoginFailedException;
 import com.rocketdan.serviceserver.Exception.join.JoinInvalidEventException;
 import com.rocketdan.serviceserver.Exception.join.NoRewardForEventException;
+import com.rocketdan.serviceserver.Exception.rank.GetRankFailedException;
 import com.rocketdan.serviceserver.Exception.report.GetReportFailedException;
 import com.rocketdan.serviceserver.Exception.resource.InvalidRequestBodyException;
 import com.rocketdan.serviceserver.Exception.resource.NoAuthorityToResourceException;
@@ -273,5 +274,23 @@ public class GlobalExceptionHandler {
                 .build();
 
         return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    /*
+    Rank
+    */
+
+    @ExceptionHandler(GetRankFailedException.class)
+    protected ResponseEntity<CommonResponse> handleGetRankFailedException(GetRankFailedException e) {
+
+        log.info("handleGetRankFailedException", e);
+
+        CommonResponse response = CommonResponse.builder()
+                .code(ErrorCode.GET_REPORT_FAILED.getCode())
+                .message(e.getMessage())
+                .status(ErrorCode.GET_REPORT_FAILED.getStatus())
+                .build();
+
+        return new ResponseEntity<>(response, HttpStatus.NOT_ACCEPTABLE);
     }
 }

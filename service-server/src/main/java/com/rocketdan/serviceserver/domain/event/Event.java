@@ -1,6 +1,7 @@
 package com.rocketdan.serviceserver.domain.event;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.rocketdan.serviceserver.domain.report.event.EventReport;
 import com.rocketdan.serviceserver.domain.reward.Reward;
 import com.rocketdan.serviceserver.domain.store.Store;
 import lombok.*;
@@ -63,11 +64,15 @@ public abstract class Event {
     @JsonBackReference
     private Store store;
 
+    // 이벤트 리포트
+    @OneToMany(mappedBy = "event", cascade = CascadeType.REMOVE)
+    private List<EventReport> eventReports;
+
     @ColumnDefault("false")
     @Column(nullable = false, columnDefinition = "TINYINT")
     private Boolean deleted = false;
 
-    public Event(RewardPolicy rewardPolicy, String title, Integer status, LocalDateTime startDate, LocalDateTime finishDate, List<String> imagePaths, List<Reward> rewards, Store store) {
+    public Event(RewardPolicy rewardPolicy, String title, Integer status, LocalDateTime startDate, LocalDateTime finishDate, List<String> imagePaths, List<Reward> rewards, Store store, List<EventReport> eventReports) {
         this.rewardPolicy = rewardPolicy;
         this.title = title;
         this.status = status;
@@ -76,6 +81,7 @@ public abstract class Event {
         this.imagePaths = imagePaths;
         this.rewards = rewards;
         this.store = store;
+        this.eventReports = eventReports;
     }
 
     public void updateStatus() {
