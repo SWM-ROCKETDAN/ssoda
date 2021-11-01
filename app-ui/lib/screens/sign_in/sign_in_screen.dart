@@ -8,6 +8,7 @@ import 'package:hashchecker/api.dart';
 import 'package:hashchecker/constants.dart';
 import 'package:hashchecker/models/selected_store.dart';
 import 'package:hashchecker/screens/create_store/components/intro.dart';
+import 'package:hashchecker/screens/create_store/create_store_screen.dart';
 import 'package:hashchecker/screens/hall/hall_screen.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:provider/provider.dart';
@@ -98,7 +99,7 @@ class _SignInScreenState extends State<SignInScreen> {
       // parsing accessToken & refreshToken from callback data
       final accessToken = Uri.parse(result).queryParameters['access-token'];
       final refreshToken = Uri.parse(result).queryParameters['refresh-token'];
-
+      print('accessToken : $accessToken');
       // save tokens on secure storage
       await storage.write(key: 'ACCESS_TOKEN', value: accessToken);
       await storage.write(key: 'REFRESH_TOKEN', value: refreshToken);
@@ -116,13 +117,16 @@ class _SignInScreenState extends State<SignInScreen> {
     if (isFCMEnabled == null || isFCMEnabled) {
       String? firebaseToken = await FirebaseMessaging.instance.getToken();
 
-      /*
       if (firebaseToken != null) {
         final firebaseTokenUpdateResponse = await dio.put(
             getApi(API.UPDATE_FIREBASE_TOKEN),
             data: {'pushToken': firebaseToken});
-      }*/
+      }
     }
+
+    final pushNotificationResponse = await dio.post(
+        'https://api.ssoda.io/api/v1/push/stores/14',
+        data: {'title': 'title', 'body': 'body', 'image': 'image', 'data': {}});
 
     final getUserStoreListResponse = await dio.get(getApi(API.GET_USER_STORES));
     final storeList = getUserStoreListResponse.data;
@@ -130,7 +134,7 @@ class _SignInScreenState extends State<SignInScreen> {
     Widget nextScreen;
 
     if (storeList.length == 0)
-      nextScreen = CreateStoreIntroScreen();
+      nextScreen = CreateStoreScreen();
     else {
       final selectedStoreId = storeList.last['id'];
       SharedPreferences prefs = await SharedPreferences.getInstance();

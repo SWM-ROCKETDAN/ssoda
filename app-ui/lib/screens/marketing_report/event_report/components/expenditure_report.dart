@@ -53,13 +53,7 @@ class _ExpenditureReportState extends State<ExpenditureReport> {
                     color: kDefaultFontColor,
                     fontWeight: FontWeight.bold,
                     fontSize: 14)),
-            DeltaData(
-              value: (widget.eventReport.expenditureCount.length > 1
-                  ? widget.eventReport.expenditureCount.last -
-                      widget.eventReport.expenditureCount[
-                          widget.eventReport.expenditureCount.length - 2]
-                  : widget.eventReport.expenditureCount.last),
-            )
+            DeltaData(value: -8000),
           ]),
           Wrap(
             crossAxisAlignment: WrapCrossAlignment.center,
@@ -71,7 +65,7 @@ class _ExpenditureReportState extends State<ExpenditureReport> {
                       fontWeight: FontWeight.bold,
                       fontSize: 18)),
               NumberSlideAnimation(
-                number: (widget.eventReport.expenditureCount.last).toString(),
+                number: '153900',
                 duration: kDefaultNumberSliderDuration,
                 curve: Curves.easeOut,
                 textStyle: TextStyle(
@@ -133,10 +127,13 @@ class _ExpenditureReportState extends State<ExpenditureReport> {
     );
   }
 
-  List<BarChartGroupData> showingGroups() => List.generate(
-      widget.eventRewardCount,
-      (i) => makeGroupData(i, widget.eventReport.levelExpenditure[i].toDouble(),
-          isTouched: i == touchedIndex));
+  List<BarChartGroupData> showingGroups() => [
+        makeGroupData(0, 400),
+        makeGroupData(1, 600),
+        makeGroupData(2, 200),
+        makeGroupData(3, 300),
+        makeGroupData(4, 500)
+      ];
 
   BarChartData mainBarData() {
     return BarChartData(

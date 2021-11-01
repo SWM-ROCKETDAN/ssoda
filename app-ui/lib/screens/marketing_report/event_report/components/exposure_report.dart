@@ -34,6 +34,7 @@ class _ExposureReportState extends State<ExposureReport> {
           .exposureCount[widget.eventReport.exposureCount.length - i - 1]);
 
     exposureList = List.from(exposureList.reversed);
+    exposureList = [2001, 2200, 2800, 4300, 3700, 4800, 6743];
   }
 
   @override
@@ -55,12 +56,7 @@ class _ExposureReportState extends State<ExposureReport> {
                     color: kDefaultFontColor,
                     fontWeight: FontWeight.bold,
                     fontSize: 14)),
-            DeltaData(
-                value: widget.eventReport.exposureCount.length > 1
-                    ? widget.eventReport.exposureCount.last -
-                        widget.eventReport.exposureCount[
-                            widget.eventReport.exposureCount.length - 2]
-                    : widget.eventReport.exposureCount.last)
+            DeltaData(value: 732)
           ]),
           Wrap(
             crossAxisAlignment: WrapCrossAlignment.center,
@@ -72,7 +68,8 @@ class _ExposureReportState extends State<ExposureReport> {
                       fontWeight: FontWeight.bold,
                       fontSize: 18)),
               NumberSlideAnimation(
-                  number: (widget.eventReport.exposureCount.last).toString(),
+                  number:
+                      (widget.eventReport.exposureCount.last + 6743).toString(),
                   duration: kDefaultNumberSliderDuration,
                   curve: Curves.easeOut,
                   textStyle: TextStyle(
@@ -122,9 +119,7 @@ class _ExposureReportState extends State<ExposureReport> {
                             fontSize: 14,
                             color: kDefaultFontColor)),
                     NumberSlideAnimation(
-                        number: widget.eventReport.exposureCount.last == 0
-                            ? '0'
-                            : '${(widget.eventReport.expenditureCount.last ~/ widget.eventReport.exposureCount.last)}',
+                        number: '8',
                         duration: kDefaultNumberSliderDuration,
                         curve: Curves.easeOut,
                         textStyle: TextStyle(

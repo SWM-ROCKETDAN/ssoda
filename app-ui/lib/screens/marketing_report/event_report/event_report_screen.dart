@@ -95,7 +95,7 @@ class _EventReportScreenState extends State<EventReportScreen> {
                                 end: FractionalOffset.bottomCenter,
                                 colors: [
                                   Colors.transparent.withOpacity(0.0),
-                                  Colors.black.withOpacity(0.7),
+                                  Colors.black.withOpacity(0.5),
                                 ],
                                 stops: [
                                   0.0,

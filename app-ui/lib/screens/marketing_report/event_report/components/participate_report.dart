@@ -31,6 +31,7 @@ class _ParticipationReportState extends State<ParticipationReport> {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
+
     return Container(
       padding: const EdgeInsets.all(20),
       width: size.width,
@@ -46,12 +47,7 @@ class _ParticipationReportState extends State<ParticipationReport> {
                       color: kDefaultFontColor,
                       fontWeight: FontWeight.bold,
                       fontSize: 14)),
-              DeltaData(
-                  value: widget.eventReport.participateCount.length > 1
-                      ? widget.eventReport.participateCount.last -
-                          widget.eventReport.participateCount[
-                              widget.eventReport.participateCount.length - 2]
-                      : widget.eventReport.participateCount.last)
+              DeltaData(value: 41)
             ]),
             Wrap(
               crossAxisAlignment: WrapCrossAlignment.center,
@@ -63,8 +59,7 @@ class _ParticipationReportState extends State<ParticipationReport> {
                         fontWeight: FontWeight.bold,
                         fontSize: 18)),
                 NumberSlideAnimation(
-                    number:
-                        (widget.eventReport.participateCount.last).toString(),
+                    number: '378',
                     duration: kDefaultNumberSliderDuration,
                     curve: Curves.easeOut,
                     textStyle: TextStyle(
@@ -128,12 +123,8 @@ class _ParticipationReportState extends State<ParticipationReport> {
                                   sections: [
                                     PieChartSectionData(
                                         radius: touchedIndex == 0 ? 40 : 30,
-                                        title: widget
-                                            .eventReport.publicPostCount.last
-                                            .toString(),
-                                        value: widget
-                                            .eventReport.publicPostCount.last
-                                            .toDouble(),
+                                        title: '298',
+                                        value: 298,
                                         color: kThemeColor,
                                         titleStyle: TextStyle(
                                             fontSize:
@@ -142,12 +133,8 @@ class _ParticipationReportState extends State<ParticipationReport> {
                                             color: Colors.white)),
                                     PieChartSectionData(
                                         radius: touchedIndex == 1 ? 40 : 30,
-                                        title: widget
-                                            .eventReport.deletedPostCount.last
-                                            .toString(),
-                                        value: widget
-                                            .eventReport.deletedPostCount.last
-                                            .toDouble(),
+                                        title: '80',
+                                        value: 80,
                                         color: Colors.grey.shade300,
                                         titleStyle: TextStyle(
                                             fontSize:
@@ -157,13 +144,7 @@ class _ParticipationReportState extends State<ParticipationReport> {
                                   ])),
                             ),
                             Center(
-                                child: Text(
-                                    widget.eventReport.publicPostCount.last +
-                                                widget.eventReport
-                                                    .deletedPostCount.last ==
-                                            0
-                                        ? '0%'
-                                        : '${(widget.eventReport.publicPostCount.last / (widget.eventReport.publicPostCount.last + widget.eventReport.deletedPostCount.last) * 100).toStringAsFixed(1)}%',
+                                child: Text('78.8%',
                                     style: TextStyle(
                                         fontSize: 15,
                                         color: kThemeColor,
@@ -191,8 +172,7 @@ class _ParticipationReportState extends State<ParticipationReport> {
                                 ),
                                 SizedBox(width: kDefaultPadding / 3),
                                 NumberSlideAnimation(
-                                  number: (widget.eventReport.likeCount.last)
-                                      .toString(),
+                                  number: '5389',
                                   duration: kDefaultNumberSliderDuration,
                                   curve: Curves.easeOut,
                                   textStyle: TextStyle(
@@ -216,8 +196,7 @@ class _ParticipationReportState extends State<ParticipationReport> {
                                 ),
                                 SizedBox(width: kDefaultPadding / 3),
                                 NumberSlideAnimation(
-                                  number: (widget.eventReport.commentCount.last)
-                                      .toString(),
+                                  number: '1030',
                                   duration: kDefaultNumberSliderDuration,
                                   curve: Curves.easeOut,
                                   textStyle: TextStyle(

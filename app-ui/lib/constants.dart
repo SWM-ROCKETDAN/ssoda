@@ -3,7 +3,7 @@ import 'package:future_progress_dialog/future_progress_dialog.dart';
 import 'package:hashchecker/models/oss.dart';
 
 const kThemeColor = Color(0xFF29a7e1);
-const kScaffoldBackgroundColor = Color(0xFFfcfeff);
+const kScaffoldBackgroundColor = Color(0xFFffffff);
 final kShadowColor = Color(0xFF90abb7).withOpacity(0.3);
 const kDefaultFontColor = Color(0xFF001924);
 const kLiteFontColor = Color(0xFF849197);
