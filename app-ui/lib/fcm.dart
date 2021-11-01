@@ -31,7 +31,7 @@ void fcmSetting() async {
 
   await flutterLocalNotificationsPlugin.initialize(
       InitializationSettings(
-          android: AndroidInitializationSettings('@mipmap/ic_launcher'),
+          android: AndroidInitializationSettings('@mipmap/launcher_icon'),
           iOS: IOSInitializationSettings()),
       onSelectNotification: (String? payload) async {});
 
