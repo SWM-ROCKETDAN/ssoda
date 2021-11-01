@@ -115,13 +115,13 @@ class Init {
     final isFCMEnabled = await prefs.getBool('FCM_ENABLED');
     if (isFCMEnabled == null || isFCMEnabled) {
       String? firebaseToken = await FirebaseMessaging.instance.getToken();
-      /*
+
       if (firebaseToken != null) {
         var dio = await authDio(context);
         final firebaseTokenUpdateResponse = await dio.put(
             getApi(API.UPDATE_FIREBASE_TOKEN),
             data: {'pushToken': firebaseToken});
-      }*/
+      }
     }
 
     // on empty store
