@@ -111,6 +111,8 @@ class UserOptionsModal extends StatelessWidget {
   Future<void> _logout(BuildContext context) async {
     final storage = new FlutterSecureStorage();
     await storage.deleteAll();
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.remove('selectedStore');
   }
 
   Future<void> _deleteUser(BuildContext context) async {
