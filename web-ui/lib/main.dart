@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:hashchecker_web/constants.dart';
 import 'package:hashchecker_web/models/frouter.dart';
 import 'package:hashchecker_web/screens/home/home_screen.dart';
+import 'package:hashchecker_web/screens/ssoda_map/ssoda_map_screen.dart';
 import 'package:hashchecker_web/screens/store_event/store_event_screen.dart';
 import 'package:url_strategy/url_strategy.dart';
 

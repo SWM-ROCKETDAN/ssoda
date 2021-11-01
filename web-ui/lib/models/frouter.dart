@@ -1,11 +1,15 @@
 import 'package:fluro/fluro.dart';
 import 'package:hashchecker_web/screens/event_join/event_join_screen.dart';
+import 'package:hashchecker_web/screens/ssoda_map/ssoda_map_screen.dart';
 import 'package:hashchecker_web/screens/store_event/store_event_screen.dart';
 
 class FRouter {
   static FluroRouter router = FluroRouter();
 
   static void setupRouter() {
+    router.define('/map',
+        handler: Handler(handlerFunc: (context, params) => SsodaMapScreen()),
+        transitionType: TransitionType.fadeIn);
     router.define('/:storeId',
         handler: Handler(
             handlerFunc: (context, params) =>
