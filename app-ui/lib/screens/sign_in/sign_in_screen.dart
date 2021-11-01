@@ -116,12 +116,11 @@ class _SignInScreenState extends State<SignInScreen> {
     if (isFCMEnabled == null || isFCMEnabled) {
       String? firebaseToken = await FirebaseMessaging.instance.getToken();
 
-      /*
       if (firebaseToken != null) {
         final firebaseTokenUpdateResponse = await dio.put(
             getApi(API.UPDATE_FIREBASE_TOKEN),
             data: {'pushToken': firebaseToken});
-      }*/
+      }
     }
 
     final getUserStoreListResponse = await dio.get(getApi(API.GET_USER_STORES));
