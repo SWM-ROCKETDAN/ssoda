@@ -3,6 +3,7 @@ import 'package:hashchecker/api.dart';
 import 'package:hashchecker/constants.dart';
 import 'package:hashchecker/models/selected_store.dart';
 import 'package:hashchecker/models/store_list_item.dart';
+import 'package:hashchecker/screens/create_store/components/naver_smart_store.dart';
 import 'package:hashchecker/screens/create_store/create_store_screen.dart';
 import 'package:hashchecker/screens/hall/hall_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -32,7 +33,7 @@ class _StoreSelectState extends State<StoreSelect> {
     return PopupMenuButton(
       onSelected: (value) {
         if (value as int == -1) {
-          Navigator.push(context, slidePageRouting(CreateStoreScreen()));
+          Navigator.push(context, slidePageRouting(NaverSmartStoreScreen()));
         } else {
           _setSelectedStore(value);
           Navigator.pushAndRemoveUntil(
