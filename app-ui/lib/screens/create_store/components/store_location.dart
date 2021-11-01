@@ -71,7 +71,7 @@ class StoreLocation extends StatelessWidget {
                         loadingColor: kThemeColor,
                         callback: (Kpostal result) {
                           Address address = Address(
-                              city: '${result.sido}시',
+                              city: result.sido,
                               country: result.sigungu,
                               town: result.bname,
                               road: result.roadname,
