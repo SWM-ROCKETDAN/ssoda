@@ -30,20 +30,8 @@ class AppInfo extends StatelessWidget {
           color: Colors.white.withOpacity(0),
           child: InkWell(
               onTap: () {},
-              onLongPress: () {},
               child: ListTile(
-                title: Text('개발자 정보'),
-                contentPadding: const EdgeInsets.all(5),
-                onTap: () {},
-                trailing:
-                    Icon(Icons.navigate_next_rounded, color: kLiteFontColor),
-              ))),
-      Material(
-          color: Colors.white.withOpacity(0),
-          child: InkWell(
-              onTap: () {},
-              child: ListTile(
-                  title: Text('현재 버전 1.5.0'),
+                  title: Text('현재 버전 2.0.0'),
                   contentPadding: const EdgeInsets.all(5),
                   onTap: () async => await canLaunch(
                           kGooglePlayStoreDownloadUrl)
