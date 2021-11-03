@@ -89,7 +89,7 @@ class _EasterEggScreenState extends State<EasterEggScreen> {
                   fieldWidth: size.width * 0.15,
                   onSubmit: (code) {
                     if (code == "0422")
-                      launch("https://ssoda.io");
+                      launch("https://blog.naver.com/sw_maestro/222556553980");
                     else {
                       setState(() {
                         _boom = false;

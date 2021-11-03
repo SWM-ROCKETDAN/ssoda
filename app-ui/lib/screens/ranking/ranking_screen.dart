@@ -129,7 +129,6 @@ class _RankingScreenState extends State<RankingScreen> {
     final getEventRankList = await dio
         .get('$baseUrl/api/v1/rank?sort=${sortStringMap[sort]}&limit=30');
     final fetchedEventRankListData = getEventRankList.data;
-    print(fetchedEventRankListData);
     final List<EventRank> eventRankList = List.generate(
         fetchedEventRankListData.length,
         (index) => EventRank.fromJson(fetchedEventRankListData[index]));

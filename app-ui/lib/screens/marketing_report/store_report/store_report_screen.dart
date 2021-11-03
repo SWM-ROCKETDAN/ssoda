@@ -214,8 +214,6 @@ class _StoreReportScreenState extends State<StoreReportScreen> {
       final EventReportTotalSum totalReport = EventReportTotalSum.fromJson(
           fetchedEventReportData['report']['total']);
 
-      print(fetchedEventReportData['report']['month']);
-
       // get rewardNameList of event
       final getRewardListResponse = await dio.get(getApi(
           API.GET_REWARD_OF_EVENT,

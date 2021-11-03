@@ -188,6 +188,31 @@ final List<OSSTile> ossList = [
       name: 'Flutter Local Notifications',
       link: 'https://github.com/MaikuB/flutter_local_notifications',
       copyright: 'Copyright 2018 Michael Bui.',
+      license: OSLicense(type: OSLicenseType.BSD3CLAUSE)),
+  OSSTile(
+      name: 'Flutter Holo Date Picker',
+      link: 'https://github.com/kfiross/flutter_holo_date_picker',
+      copyright: 'Copyright 2020 Kfir Matityahu.',
+      license: OSLicense(type: OSLicenseType.MIT)),
+  OSSTile(
+      name: 'Kpostal',
+      link: 'https://github.com/tykann/kpostal',
+      copyright: 'Copyright 2021 Taeyoon Kang.',
+      license: OSLicense(type: OSLicenseType.MIT)),
+  OSSTile(
+      name: 'Pandabar',
+      link: 'https://github.com/kemalturk/panda-bar',
+      copyright: 'Copyright 2020 Kemal Türk.',
+      license: OSLicense(type: OSLicenseType.MIT)),
+  OSSTile(
+      name: 'Number Slide Animation',
+      link: 'https://github.com/kiesman99/number_slide_animation',
+      copyright: 'Copyright 2021 Justin Vietz.',
+      license: OSLicense(type: OSLicenseType.MIT)),
+  OSSTile(
+      name: 'Flutter OTP Text Field',
+      link: 'https://github.com/david-legend/otp_textfield',
+      copyright: 'Copyright 2020 David Cobbina.',
       license: OSLicense(type: OSLicenseType.BSD3CLAUSE))
 ];
 
