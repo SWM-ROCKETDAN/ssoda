@@ -23,7 +23,7 @@ Map<API, String> apiMap = {
   API.GET_EVENTS_OF_STORE: '/api/v1/stores',
   API.GET_REWARD_OF_EVENT: '/api/v1/events',
   API.JOIN_EVENT_COMPLETE: '/api/v1/join/posts',
-  API.PUSH_NOTIFICATION: '/api/v1/push/store'
+  API.PUSH_NOTIFICATION: '/api/v1/push/stores'
 };
 
 String getApi(API apiType, {String? suffix}) {
