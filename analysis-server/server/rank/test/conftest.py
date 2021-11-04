@@ -3,19 +3,12 @@ from core.models import Event
 from core.models import Reward
 from core.models import Hashtag
 from core.models import HashtagHashtags
-from core.models import JoinPost
-from core.models import JoinUser
-
-from config.settings.base import get_secret
 from datetime import datetime
 import pytest
 
-TEST_NAVER_BLOG_URL = get_secret("TEST_NAVER_BLOG_URL")
-TEST_NAVER_BLOG_SNS_ID = get_secret("TEST_NAVER_BLOG_SNS_ID")
-
 
 @pytest.fixture()
-def store1_for_rank_api():
+def store_origin():
     store = Store.objects.create(
         building_code="test",
         city="test city",
@@ -35,14 +28,14 @@ def store1_for_rank_api():
 
 
 @pytest.fixture()
-def event1_for_rank_api(store1_for_rank_api):
+def event_origin(store_origin):
     event = Event.objects.create(
         etype=0,
         finish_date=datetime(2023, 11, 23),
         start_date=datetime(2021, 9, 23),
         status=0,
-        title="테스트 이벤트",
-        store=store1_for_rank_api,
+        title="테스트 이벤트 입니다.",
+        store=store_origin,
         deleted=False,
         reward_policy="RANDOM",
     )
