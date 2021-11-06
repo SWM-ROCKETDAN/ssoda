@@ -182,32 +182,36 @@ class _EventJoinWithUrlState extends State<EventJoinWithUrl> {
     FCMessage fcMessage =
         createEventJoinNotification(widget.event.title, result.reward.name);
 
-    final pushNotificationResponse = await dio.post(
-        getApi(API.PUSH_NOTIFICATION, suffix: '/${widget.storeId}'),
-        data: {
-          'title': fcMessage.title,
-          'body': fcMessage.body,
-          'image': fcMessage.image,
-          'data': {}
-        });
+    var fcmDio = Dio();
 
-    widget.loading(false);
+    try {
+      final pushNotificationResponse = await fcmDio.post(
+          getApi(API.PUSH_NOTIFICATION, suffix: '/${widget.storeId}'),
+          data: {
+            'title': fcMessage.title,
+            'body': fcMessage.body,
+            'image': fcMessage.image,
+            'data': {}
+          });
+    } catch (e) {} finally {
+      widget.loading(false);
 
-    if (widget.event.rewardList.length > 1) {
-      widget.roulette(result.reward.id);
-      await Future.delayed(Duration(seconds: 6));
+      if (widget.event.rewardList.length > 1) {
+        widget.roulette(result.reward.id);
+        await Future.delayed(Duration(seconds: 6));
+      }
+
+      Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+              builder: (context) => RewardGetScreen(
+                  eventTitle: widget.event.title,
+                  rewardName: result.reward.name,
+                  rewardImage: result.reward.imgPath,
+                  url: _urlController.value.text.trim(),
+                  storeId: widget.storeId,
+                  postId: result.postId)));
     }
-
-    Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(
-            builder: (context) => RewardGetScreen(
-                eventTitle: widget.event.title,
-                rewardName: result.reward.name,
-                rewardImage: result.reward.imgPath,
-                url: _urlController.value.text.trim(),
-                storeId: widget.storeId,
-                postId: result.postId)));
   }
 
   void _showValidationErrorFlashBar(BuildContext context, String message) {
