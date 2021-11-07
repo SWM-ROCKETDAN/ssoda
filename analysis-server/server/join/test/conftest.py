@@ -12,8 +12,9 @@ TEST_NAVER_BLOG_URL = get_secret("TEST_NAVER_BLOG_URL")
 TEST_NAVER_BLOG_SNS_ID = get_secret("TEST_NAVER_BLOG_SNS_ID")
 
 
+# 정상적인 이벤트
 @pytest.fixture()
-def origin_event():
+def event_origin():
     event = Event.objects.create(
         etype=0,
         finish_date=datetime(2023, 11, 23),
@@ -62,8 +63,9 @@ def origin_event():
     return event
 
 
+# 시작날이 느린 이벤트
 @pytest.fixture()
-def slow_event():
+def event_slow():
     event = Event.objects.create(
         etype=0,
         finish_date=datetime(2023, 11, 23),
@@ -113,7 +115,7 @@ def slow_event():
 
 
 @pytest.fixture()
-def diff_hashtag_event():
+def event_hashtag():
     event = Event.objects.create(
         etype=0,
         finish_date=datetime(2023, 11, 23),
@@ -163,9 +165,9 @@ def diff_hashtag_event():
 
 
 @pytest.fixture()
-def join_post_naver_blog(origin_event):
+def join_post_naver_blog(event_origin):
     join_post = JoinPost.objects.create(
-        event=origin_event,
+        event=event_origin,
         reward=None,
         sns_id=TEST_NAVER_BLOG_SNS_ID,
         url=TEST_NAVER_BLOG_URL,
@@ -173,13 +175,13 @@ def join_post_naver_blog(origin_event):
         status=0,
         like_count=2,
         comment_count=3,
-        hashtags=None,
+        hashtags="",
         create_date=datetime.now(),
         upload_date=datetime.now(),
-        private_date=None,
-        delete_date=None,
-        update_date=None,
-        reward_date=None,
+        private_date=datetime.now(),
+        delete_date=datetime.now(),
+        update_date=datetime.now(),
+        reward_date=datetime.now(),
         deleted=False,
     )
     return join_post
@@ -198,3 +200,4 @@ def join_user_naver_blog(join_post_naver_blog):
         update_date=datetime.now(),
         deleted=False,
     )
+    return join_user

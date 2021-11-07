@@ -3,21 +3,15 @@ from core.models import Event
 from core.models import Reward
 from core.models import Hashtag
 from core.models import HashtagHashtags
-from core.models import JoinPost
-from core.models import JoinUser
-
-from config.settings.base import get_secret
+from core.models import EventReport
 from datetime import datetime
 import pytest
 
-TEST_NAVER_BLOG_URL = get_secret("TEST_NAVER_BLOG_URL")
-TEST_NAVER_BLOG_SNS_ID = get_secret("TEST_NAVER_BLOG_SNS_ID")
-
 
 @pytest.fixture()
-def store1_for_report_api():
+def store_origin():
     store = Store.objects.create(
-        building_code="test",
+        building_code="test store",
         city="test city",
         latitude=None,
         longitude=None,
@@ -35,14 +29,14 @@ def store1_for_report_api():
 
 
 @pytest.fixture()
-def event1_for_report_api(store1_for_report_api):
+def event_origin(store_origin):
     event = Event.objects.create(
         etype=0,
         finish_date=datetime(2023, 11, 23),
         start_date=datetime(2021, 9, 23),
         status=0,
         title="테스트 이벤트",
-        store=store1_for_report_api,
+        store=store_origin,
         deleted=False,
         reward_policy="RANDOM",
     )
@@ -82,3 +76,22 @@ def event1_for_report_api(store1_for_report_api):
     )
 
     return event
+
+
+@pytest.fixture()
+def event_report_origin(event_origin):
+    event_report = EventReport.objects.create(
+        exposure_count=0,
+        participate_count=0,
+        public_post_count=0,
+        private_post_count=0,
+        deleted_post_count=0,
+        like_count=0,
+        comment_count=0,
+        expenditure_count=0,
+        event=event_origin,
+        deleted=False,
+        event_status=0,
+    )
+
+    return event_report

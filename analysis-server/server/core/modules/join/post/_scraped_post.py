@@ -26,6 +26,7 @@ class ScrapedPost:
             'comment_count': self._comment_count,
             'hashtags': self._hashtags,
             'upload_date': self._upload_date,
+            "private_date": self._private_date,
             'delete_date': self._delete_date,
             'update_date': self._update_date,
         }

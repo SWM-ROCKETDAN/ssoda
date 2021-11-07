@@ -12,9 +12,9 @@ TEST_NAVER_BLOG_URL = get_secret("TEST_NAVER_BLOG_URL")
 @pytest.mark.urls(urls="config.urls")
 @pytest.mark.django_db(transaction=True)
 class TestJoinPostNaverBlog:
-    def test_post_update_ok(self, client, origin_event):
+    def test_post_update_ok(self, client, event_origin):
         join_post = JoinPost.objects.create(
-            event=origin_event,
+            event=event_origin,
             url=TEST_NAVER_BLOG_URL,
             type=2,
             status=None,
@@ -29,9 +29,9 @@ class TestJoinPostNaverBlog:
 
         assert response.json()["message"] == exceptions.PostUpdateOk.default_detail
 
-    def test_post_is_diff_hashtag(self, client, diff_hashtag_event):
+    def test_post_is_diff_hashtag(self, client, event_hashtag):
         join_post = JoinPost.objects.create(
-            event=diff_hashtag_event,
+            event=event_hashtag,
             url=TEST_NAVER_BLOG_URL,
             type=2,
             status=None,
@@ -46,9 +46,9 @@ class TestJoinPostNaverBlog:
 
         assert response.json()["message"] == exceptions.PostIsDiffHashtag.default_detail
 
-    def test_post_is_already_calculate_reward_and_ok(self, client, origin_event):
+    def test_post_is_already_calculate_reward_and_ok(self, client, event_origin):
         join_post = JoinPost.objects.create(
-            event=origin_event,
+            event=event_origin,
             url=TEST_NAVER_BLOG_URL,
             type=2,
             status=None,
@@ -56,7 +56,7 @@ class TestJoinPostNaverBlog:
             comment_count=0,
             hashtags=None,
             create_date=datetime.now(),
-            reward=origin_event.rewards.first(),
+            reward=event_origin.rewards.first(),
             deleted=False,
         )
         url = reverse(viewname="join_posts", args=[join_post.id, ])
@@ -64,9 +64,9 @@ class TestJoinPostNaverBlog:
 
         assert response.json()["message"] == exceptions.PostIsAlreadyCalculatedRewardAndOK.default_detail
 
-    def test_post_is_already_rewarded(self, client, origin_event):
+    def test_post_is_already_rewarded(self, client, event_origin):
         join_post = JoinPost.objects.create(
-            event=origin_event,
+            event=event_origin,
             url=TEST_NAVER_BLOG_URL,
             type=2,
             status=None,
@@ -74,7 +74,7 @@ class TestJoinPostNaverBlog:
             comment_count=0,
             hashtags=None,
             create_date=datetime.now(),
-            reward=origin_event.rewards.first(),
+            reward=event_origin.rewards.first(),
             reward_date=datetime.now(),
             deleted=False,
         )
@@ -83,9 +83,9 @@ class TestJoinPostNaverBlog:
 
         assert response.json()["message"] == exceptions.PostIsAlreadyRewarded.default_detail
 
-    def test_post_upload_is_faster_than_event_start(self, client, slow_event):
+    def test_post_upload_is_faster_than_event_start(self, client, event_slow):
         join_post = JoinPost.objects.create(
-            event=slow_event,
+            event=event_slow,
             url=TEST_NAVER_BLOG_URL,
             type=2,
             status=None,

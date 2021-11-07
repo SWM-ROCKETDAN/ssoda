@@ -37,14 +37,14 @@ def scrap_user(sns_id):
     for c in "., ":
         user_meta = user_meta.replace(c, "")
 
-    user_nums = re.findall("\d+", user_meta)
+    user_nums = re.findall(r'\d+', user_meta)
 
     scraped_user.sns_id = sns_id
     scraped_user.url = url
     scraped_user.type = Type.INSTAGRAM
     scraped_user.status = Status.PUBLIC
-    scraped_user.follow_count = user_nums[0]
-    scraped_user.post_count = user_nums[2]
+    scraped_user.follow_count = int(user_nums[0])
+    scraped_user.post_count = int(user_nums[2])
     scraped_user.update_date = _get_now_date()
 
     return scraped_user.get_scraped_user()
